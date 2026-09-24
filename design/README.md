@@ -1,66 +1,58 @@
-# MealLoop · iOS design
+# MealLoop · iOS design (Lab)
 
 Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 
 | Page | Contents |
 | --- | --- |
-| 00 MoodBoard | Yours (empty when the file was built) |
-| 01 Foundations | Concept, principles, semantic colour in Light/Dark, type ramp, spacing, radii, elevation, texture |
-| 02 Components | 29 components/sets with variants, properties, states and a usage note beside each |
-| 03 Screens – Light | 33 screens in 6 sections: Onboarding, Home, Meals, Feedback & SOS, Community, You. Prototype-linked |
-| 04 Screens – Dark | Same 33 screens; Semantic collection set to Dark on each section |
-| 05 States | Offline, after-cutoff, errors, empty, loading, Accessibility XL (AX3), Tamil localization |
-| 06 Flow | Six journeys drawn with live thumbnails and labeled arrows |
+| 00 MoodBoard / 00 Before | References and the first version, kept for comparison |
+| 01 Foundations | Lab colour tokens (Light/Dark), type, spacing, radii, glass recipe |
+| 02 Mood Frames | Approved review frames: Home, Attendance, Special Meal Pass flow, Waste |
+| 03 Components | 50+ components bound to variables, each with a usage note |
+| 04 Student Light | Sections A–O: Onboarding, Home, Meals, Intent, Attendance, Special Meal Pass, Crowd, Feedback, Report/SOS, Community, Waste, Private spending, Rewards, Notifications, You (160 screens) |
+| 05 Student Dark | The same 160 screens in Dark mode |
+| 06 States & Accessibility | Section P: Accessibility XL (Home, Attendance, Pass live, Report step 1), Tamil length test (Translation pending), both in Light and Dark |
+| 07 Prototype & QA | 9 prototype flows with starting points, plus the QA summary |
 
-`tokens.json` is the exported token set (primitives → semantic Light/Dark, layout, type).
+`tokens.json` is from the first (v1) system and is out of date. The source of truth is the variable collections in the Figma file.
 
-## Concept: "The mess, crafted"
+## Direction: "Lab"
 
-Paper and ink, taken from the printed meal token and the hand-lettered menu board. Curry leaf for action, turmeric for moments, chilli for real trouble.
-The meal pass is a physical object: paper grain, a perforation with canvas-coloured notches, a stub and a mono serial number.
-Everything else stays quiet. Hierarchy comes from type, hairlines and whitespace, and data is shown like instrumentation.
+- Canvas #EDEDE8, white cards and #111 ink. Lime #D4F25A is a fill only: on light surfaces it always has a 1 px #111 outline and is never used for text. Numbers are set in mono.
+- iOS 26 Liquid Glass is used only on the floating tab capsule, 44 pt nav circles, sheets and menus.
+- Dark: canvas #0B0B0B, cards #161616, ink #F2F2EC.
 
-## Key design decisions
+## Rules the screens follow
 
-- **One accent per screen.** `action/primary` (curry leaf) is the only action colour. Turmeric (`highlight`) is fill-only; text uses `highlight/text` (turmeric-deep, AA). Chilli appears only on SOS and destructive actions.
-- **Meal intent as a ledger, not tiles.** Eating · Skipping · Not sure sit in one hairline-bordered row with dividers, like a register. After 10:30 the row switches to *Locked* variants and a walk-in message replaces the prompt.
-- **Editorial menu.** Dish names in Instrument Serif. FSSAI-style veg/non-veg/egg marks, which students already recognise. Specials get a dotted leader to a "Special" label, as on a menu board. No cards.
-- **Pass lifecycle as component states.** Available → hold-to-redeem sheet (1.5 s hold, not a tap) → Live (rotating 4-character code, QR, 60 s ring) → Redeemed (rotated curry-leaf stamp). Offline shows the last valid code with its timestamp.
-- **Instruments, not infographics.** The crowd meter is 12 rising ticks. Stats are separated by hairlines, not boxes. Charts use ink bars with a single turmeric "now" bar.
-- **Privacy as a visible promise.** The `Privacy Note` component sits on every tracker screen. The `ID Fallback` component sits on every pass/QR screen. QR tokens stay dark-on-light in Dark mode so scanners keep working.
-- **Voice.** Warm and specific: "Thanks for saying so. The kitchen will cook for one less, and you still get your 5 points." / "Suspiciously peaceful."
+- Instances only. Anything unknown gets an Open decision note, and the UI shows neutral placeholders such as "Cutoff: set by mess".
+- Saved, Received, Redeemed, Checked in and Resolved appear only in server-confirmed states. Every submit has a sending state and a failed state with a retry, and a failed state never shows a receipt.
+- Silence is "No response", never "No". Points never depend on attendance or reports.
+- The Special Meal Pass works like this: Hold to Confirm records a single use, then Live Verification starts. It rotates colour and code, the clock ticks, and a countdown ends in Redeemed. A small fallback QR stays in the corner.
 
-## Where the wireframe was changed, and why
+## Prototype (page 07)
 
-| Wireframe | Now | Why |
-| --- | --- | --- |
-| 2×2 tile grid + quick-action row on Home | Greeting → meal-intent ledger → menu board → pass stub → crowd line → one impact line | One primary job per screen (answer by 10:30); removes the templated grid |
-| Food-waste section (3 screens, kg charts) | One positive line on Home | Rule 7 |
-| Community feed with names, avatars, comments, "Add a post" | Anonymous issues, "I faced this too" once per student, public at 3 reports | Rule 3 |
-| Issue statuses Resolved / In progress / Escalated | Reported → Verified → Action taken → Student recheck → Resolved timeline, plus a Recheck screen | Rule 4 |
-| Free-text "Request a menu change" + open voting | Replace-from-approved-alternatives form, 150-supporter threshold, committee review, final vote on Home (30% turnout, 60% yes, results hidden until close), one-cycle trial | Rule 5 |
-| "Hold to redeem" as a button tap | Press-and-hold control inside a native sheet, plus the SRM ID fallback | Irreversible action; the app is never required to eat |
-| Rewards: Extra dessert / merchandise / priority slot | Extra fruit, Fresh juice, Ice cream, Priority menu-vote access, monthly badge; points for answering (eating = skipping) | Rule 6 |
-| Outside-food tracker in the profile list | Private tracker with lock line, Face ID option, log-on-skip in the Skip sheet | Rule 2 |
-| Attendance "Absent" in red | "Missed · no answer" in a neutral tone | Never policing |
-| Separate Crowd tile | Crowd line on Home + Live crowd screen with an hourly chart and "usually quieter after 1:30" | Useful, calm |
+The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendance · Special Meal Pass (While pressing to confirm, then Live 1→2→3 on a 3 s delay, then Redeemed) · Dish feedback → recheck · Report → receipt → timeline · Community → support · Spending add.
 
-## QA (checked by script in the file)
+## Open decisions
 
-- 0 unbound solid paints across Screens, States and Components (~1,850 paints on Screens alone). All colour goes through Semantic variables; spacing and radii are bound to Layout variables inside components.
-- 0 detached instances, 0 hidden layers outside instance property toggles. 533 component instances on the Light page.
-- Hit targets ≥ 44 pt on buttons, rows, nav, tabs, close and stars (52). Choice chips are 40 pt with a 4 pt gap (documented).
-- `ID Fallback` on all 8 pass/QR screens. `Privacy Note` on all 4 tracker screens (Skip sheet, Tracker, Add expense, Empty tracker).
-- Community screens contain no names, avatars, comments or posts.
-- Contrast (WCAG 2.1): text/primary 15.6:1; text/secondary 6.6:1; text/tertiary 4.9:1 (ink-3 is 3.25:1, so a darker `ink-3-text` was added); action label 7.3:1; `status/danger-text` 5.9:1 (chilli is 4.39:1 on paper, so text uses `chilli-deep`); turmeric-deep 5.3:1. Dark: bone 15.5:1, bone-2 8.8:1, bone-3 5.0:1, curry-leaf-dark 8.3:1.
+- Sign-in provider. Access while a profile correction is pending, who reviews it, and the reply time. Contact route for students not linked to a mess.
+- Meal cutoff times. Impact card only after staff measurement. Special Meal Pass eligibility and weeks. Crowd data source and freshness rule; whether to show a wait range.
+- Who verifies nutrition and allergens. When dish rating opens. How menu changes are announced.
+- How intent reasons are used and how long they are kept. Answer changes after the cutoff.
+- SRM ID as the only offline entry route. Attendance correction window and reviewer.
+- How counter staff know the live colour and code. Countdown length (60–90 s) and rotation interval.
+- Feedback photos. Staff reply time.
+- Report recipients and duty hours. Emergency numbers. Report photos. Acknowledgement target. Reopen policy.
+- Minimum group size for support counts. Moderation and review time. Archive timing.
+- Waste measurement method and cadence. Who can correct figures.
+- Spending storage (server or device only). Category list.
+- How points are earned and valued. Who sets offers and terms. How rewards are collected. Points disputes.
+- Reminder timing. Whether safety-report updates can be turned off. Default quiet hours. Issue title on the lock screen.
+- SRM fields on You. Profile corrections. Whether staff see who sent a report. Export and deletion scope. Help contact channel.
+- Live pass at AX sizes (the code and ring stay fixed). Real Tamil copy (translation pending).
 
-## What the tools couldn't do
+## Known limits
 
-- **SF Pro didn't render** in the cloud renderer: text measured 0 px wide, and SF Symbol glyphs from `getSfSymbolCharacter` came out blank. All `iOS/*`, `Numeric/*` and `AX3/*` styles use **Inter as a stand-in** with the exact SF sizes, line heights and tracking. The style descriptions record the spec. With SF Pro installed, switch the family on those styles and every screen re-measures.
-- **Icons** are hand-drawn SVGs in one Icon component set. The variant names are the exact SF Symbol names, so they map 1:1 to `Image(systemName:)`. A free-text property wasn't practical because the glyphs can't render here; you pick the symbol from a dropdown instead.
-- **SF Mono** isn't available: the `Mono/*` styles use Geist Mono.
-- **Tabular figures** can't be set through the plugin API. Use `.monospacedDigit()` in code, or turn on "tnum" on the Numeric styles.
-- **Photography**: no network access to image sources. Food photos are a `Photo` component (warm soft fill, grain, thali-rim motif, caption as alt text) to replace.
-- Instance child position and size overrides aren't writable here. The Progress Meter is therefore a variant set (Value in 5% steps × Threshold 30/60) with scale constraints.
-- Dark mode is applied per section (explicit variable mode) rather than as a document-level switch.
-- Moodboard page was empty, so the five "crafted" observations on 01 Foundations come from the brief's reference objects.
+- SF Pro and SF Mono don't render in this environment, so Inter and JetBrains Mono stand in at SF sizes.
+- AX frames are detached copies with scaled text; the nav title and tab bar keep their instances. Build with Dynamic Type.
+- The Tamil test uses "~" filler (+40%), not Tamil. It found that "Not sure" clips in the three-choice row.
+- Figma prototypes can't animate the Live ring or tick the clock.
