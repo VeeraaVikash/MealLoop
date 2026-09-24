@@ -8,10 +8,11 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 | 01 Foundations | Lab colour tokens (Light/Dark), type, spacing, radii, glass recipe |
 | 02 Mood Frames | Approved review frames: Home, Attendance, Special Meal Pass flow, Waste |
 | 03 Components | 50+ components bound to variables, each with a usage note |
-| 04 Student Light | Sections A–O plus Home by time of day, the three answer paths, the 3-hour recheck and this round's new screens (189 screens) |
-| 05 Student Dark | The same 189 screens in Dark mode, regenerated from 04 |
+| 04 Student Light | Sections A–O plus Home by time of day, the three answer paths, the 3-hour recheck, lock screens, the comments sheet and full-scroll copies (273 screens) |
+| 05 Student Dark | The same 273 screens in Dark mode, regenerated from 04 |
 | 06 States & Accessibility | Section P: Accessibility XL (Home, Attendance, Pass live, Report step 1), Tamil length test (Translation pending), both in Light and Dark |
-| 07 Prototype & QA | 14 prototype flows with starting points, plus the QA summary |
+| 07 Prototype & QA | 21 prototype flows with starting points, plus the QA summary |
+| 08 Voice & Patterns | Glossary, format rules, UX patterns and the Copy check table |
 
 `tokens.json` is from the first (v1) system and is out of date. The source of truth is the variable collections in the Figma file.
 
@@ -53,6 +54,14 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 - All screens are 393 × 852. Long screens have a "(full scroll)" copy in section Z. Every frame's clock matches a "Moment" note under it.
 - Shared patterns: the black ticket receipt (`ReportTicket`), inline error card + "Try again", centred EmptyState for empty and error, inline titles on pushed screens, the tab bar everywhere except flows and sheets, and the primary pill at the bottom.
 
+## Fix round (answer selection, bottom edge, lock screen, comments)
+
+- Meal answer: `MealHero` has a Selected property (I'm in / Skip / Not sure) × State Tap / Sending / Failed. The tapped pill is lime with a check. While sending, it shows a spinner and the other two pills are at 50%. On failure all pills go back to #F2F2EC and the line "Didn't save. Try again" shows. The saved card is a lime answer chip, then the line, then "Change till 6 PM" in mono, then Change. `IntentChoice` gained a Sending state.
+- Bottom edge: a `ScrollEdgeFade` (canvas colour, 60 pt above the glass tab bar) sits on every tab screen. Screens without a tab bar keep 34 pt clear above the bottom.
+- Lock screen: one `LockScreen` component (Single, Expanded, Stack, List, Saved) covers every lock frame. The wallpaper is a blurred, dimmed crop of the ribbon art. The glass notification (`LockNotification`) uses the Plate-loop app icon, and the long-press action group is `LockActions`. The same app icon and wording are used on the in-app inbox rows. Inter Bold stands in for SF Pro Display on the clock.
+- Comments: a glass sheet sized to its content, with a close button, the line "Checked before they show. No names.", one white card of `CommentRow` rows (Visible / Hidden / Pending), and a sticky `CommentComposer`. There are frames for the large detent, the menu (`ContextMenu`), Typing (`Keyboard`), Sending, Pending, Failed, Reported and Empty. The Issue screen's "4 comments" row shows the newest visible comment.
+- Prototype flows 16–21: lock-screen recheck (long press, then actions; Change opens the Home hero, and every other action shows a Saved banner), fix check, stack, and comments.
+
 ## Prototype (page 07)
 
 The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendance · Special Meal Pass (While pressing to confirm, then Live 1→2→3 on a 3 s delay, then Redeemed) · Dish feedback → recheck · Report → receipt → timeline · Community → support · Spending add.
@@ -81,7 +90,7 @@ The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendanc
 
 ## Known limits
 
-- SF Pro and SF Mono don't render in this environment, so Inter and JetBrains Mono stand in at SF sizes.
+- SF Pro and SF Mono don't render in this environment, so Inter and JetBrains Mono stand in at SF sizes. Inter Display isn't available either, so the lock-screen clock uses Inter Bold.
 - AX frames are detached copies with scaled text; the nav title and tab bar keep their instances. Build with Dynamic Type.
 - The Tamil test uses "~" filler (+40%), not Tamil. It found that "Not sure" clips in the three-choice row.
 - Figma prototypes can't animate the Live ring or tick the clock.
