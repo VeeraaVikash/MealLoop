@@ -44,7 +44,7 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 - Category icons: `CategoryIcon` (40 pt, radius 12) is the single icon per report category: triangle, nose, drop, fork and knife, people, ellipsis. ✕ is only for close.
 - Home copy: "Hey Aarav", "You in for dinner?", "I'm in / Skip / Not sure" (the data is still Yes / No / Not sure), "Decide by 6 PM · 4h left", YOUR PASSES, crowd "Quiet / Getting busy / Packed" and "Mess is closed".
 - Every Home frame shows one moment (7:00 AM, 12:30 PM, 2:00 PM, 4:30 PM, 6:30 PM, 7:00 PM or 10:00 PM), stated in a note under the frame. The dinner cutoff is 6 PM; the recheck at 4:30 PM comes before it.
-- Explorations on 02 Mood Frames, waiting for a pick: three logo options (plate loop, ribbon m, ladle ring), and meal-time wash (V1) vs food photos (V2).
+- Picked: logo A "Plate loop" (`Logo` component, on onboarding Welcome) and background V2. `MealWash` (breakfast warm, lunch lime, dinner dusk; 18% in dark), dish photos in the Home hero (`MealHero` Show Photo), round thumbnails on menu rows (`DishLine` Show Photo) and a photo header on Dish detail (`DishHeaderPhoto`). Photos are labelled placeholders until real SRM mess photos exist.
 
 ## Prototype (page 07)
 
