@@ -38,6 +38,14 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 - Redesigned: Menu, Dish detail (nutrition bento), Community, Crowd (dial hero, today-so-far chart), Dish feedback (2 steps), You (ID card + bento), Rewards.
 - New components: StepBar, MetaChip, CreditsChip, BentoTile, HeroNumber, HomeHeader, CategoryRow, ReportSummary, ReportTicket, IssueCard, IssueHero, UpdateCard, CommentsRow, DishLine, MealRow, NutritionBento, CrowdLegend, SlotChart, FeelingChoice, RewardCard, IdentityCard, PointsRow, LockActions; MealHero gained In, Skipping, Not sure yet, In near meal, Recheck (×3), During meal and Day done.
 
+## Round 4 changes
+
+- Onboarding: one `OnboardingPage` template (ribbon art on top, bold text block below, fixed positions) for 16 screens: Welcome, 3 carousel pages, Sign in, Verifying, Confirm, the correction flow, All set and 4 errors. `OnboardingArt` rotates the ribbon a little per page. In dark mode, the `art-light` / `art-dark` variables swap in a "dark ribbon render needed" placeholder.
+- Category icons: `CategoryIcon` (40 pt, radius 12) is the single icon per report category: triangle, nose, drop, fork and knife, people, ellipsis. ✕ is only for close.
+- Home copy: "Hey Aarav", "You in for dinner?", "I'm in / Skip / Not sure" (the data is still Yes / No / Not sure), "Decide by 6 PM · 4h left", YOUR PASSES, crowd "Quiet / Getting busy / Packed" and "Mess is closed".
+- Every Home frame shows one moment (7:00 AM, 12:30 PM, 2:00 PM, 4:30 PM, 6:30 PM, 7:00 PM or 10:00 PM), stated in a note under the frame. The dinner cutoff is 6 PM; the recheck at 4:30 PM comes before it.
+- Explorations on 02 Mood Frames, waiting for a pick: three logo options (plate loop, ribbon m, ladle ring), and meal-time wash (V1) vs food photos (V2).
+
 ## Prototype (page 07)
 
 The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendance · Special Meal Pass (While pressing to confirm, then Live 1→2→3 on a 3 s delay, then Redeemed) · Dish feedback → recheck · Report → receipt → timeline · Community → support · Spending add.
