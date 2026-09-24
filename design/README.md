@@ -46,6 +46,13 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 - Every Home frame shows one moment (7:00 AM, 12:30 PM, 2:00 PM, 4:30 PM, 6:30 PM, 7:00 PM or 10:00 PM), stated in a note under the frame. The dinner cutoff is 6 PM; the recheck at 4:30 PM comes before it.
 - Picked: logo A "Plate loop" (`Logo` component, on onboarding Welcome) and background V2. `MealWash` (breakfast warm, lunch lime, dinner dusk; 18% in dark), dish photos in the Home hero (`MealHero` Show Photo), round thumbnails on menu rows (`DishLine` Show Photo) and a photo header on Dish detail (`DishHeaderPhoto`). Photos are labelled placeholders until real SRM mess photos exist.
 
+## Consistency round (final)
+
+- Page **08 Voice & Patterns** is the single source of truth: glossary, format rules, UX patterns and a Copy check table (old → new).
+- V1 is final. There are no photo slots anywhere. One lime `MealWash` (#E9F7B0 → clear; dark #2A3312 → #111111) sits on every screen except onboarding, Entry QR, pass live and lock screens. Scrim is #111 at 40%. The dark canvas is #111111, and the dark hero is #1C1C1C with a border.
+- All screens are 393 × 852. Long screens have a "(full scroll)" copy in section Z. Every frame's clock matches a "Moment" note under it.
+- Shared patterns: the black ticket receipt (`ReportTicket`), inline error card + "Try again", centred EmptyState for empty and error, inline titles on pushed screens, the tab bar everywhere except flows and sheets, and the primary pill at the bottom.
+
 ## Prototype (page 07)
 
 The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendance · Special Meal Pass (While pressing to confirm, then Live 1→2→3 on a 3 s delay, then Redeemed) · Dish feedback → recheck · Report → receipt → timeline · Community → support · Spending add.
