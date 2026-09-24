@@ -8,10 +8,10 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 | 01 Foundations | Lab colour tokens (Light/Dark), type, spacing, radii, glass recipe |
 | 02 Mood Frames | Approved review frames: Home, Attendance, Special Meal Pass flow, Waste |
 | 03 Components | 50+ components bound to variables, each with a usage note |
-| 04 Student Light | Sections A–O: Onboarding, Home, Meals, Intent, Attendance, Special Meal Pass, Crowd, Feedback, Report/SOS, Community, Waste, Private spending, Rewards, Notifications, You (160 screens) |
-| 05 Student Dark | The same 160 screens in Dark mode |
+| 04 Student Light | Sections A–O plus Home by time of day, the three answer paths, the 3-hour recheck and this round's new screens (189 screens) |
+| 05 Student Dark | The same 189 screens in Dark mode, regenerated from 04 |
 | 06 States & Accessibility | Section P: Accessibility XL (Home, Attendance, Pass live, Report step 1), Tamil length test (Translation pending), both in Light and Dark |
-| 07 Prototype & QA | 9 prototype flows with starting points, plus the QA summary |
+| 07 Prototype & QA | 14 prototype flows with starting points, plus the QA summary |
 
 `tokens.json` is from the first (v1) system and is out of date. The source of truth is the variable collections in the Figma file.
 
@@ -27,6 +27,16 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 - Saved, Received, Redeemed, Checked in and Resolved appear only in server-confirmed states. Every submit has a sending state and a failed state with a retry, and a failed state never shows a receipt.
 - Silence is "No response", never "No". Points never depend on attendance or reports.
 - The Special Meal Pass works like this: Hold to Confirm records a single use, then Live Verification starts. It rotates colour and code, the clock ticks, and a countdown ends in Redeemed. A small fallback QR stays in the corner.
+
+## Round 3 changes
+
+- Lab rules everywhere: one black hero or big mono number per screen, no label/value tables (bento tiles instead), mono caps labels, a 4-step progress bar (done ink, current lime, pending hatched), lime only on the current thing.
+- Realistic sample values in the UI (Aarav Sharma · RA2411003010238 · Main Mess, Block A; "Answer by 4 PM"; 120 pts). Notes about unknowns sit outside the frames.
+- Plain status words: Sent → Seen → Working on it → Fixed, plus Need more info and Reopened.
+- Home: new header with credits chip, compact tiles, slim crowd row, time-of-day variants. Collapsed hero after each answer, and a 3-hour recheck (lock screen, hero, inbox, settings toggle).
+- Report: plain categories with examples; urgent categories skip to "Tell the counter staff now". Ticket receipt, My reports with progress bars.
+- Redesigned: Menu, Dish detail (nutrition bento), Community, Crowd (dial hero, today-so-far chart), Dish feedback (2 steps), You (ID card + bento), Rewards.
+- New components: StepBar, MetaChip, CreditsChip, BentoTile, HeroNumber, HomeHeader, CategoryRow, ReportSummary, ReportTicket, IssueCard, IssueHero, UpdateCard, CommentsRow, DishLine, MealRow, NutritionBento, CrowdLegend, SlotChart, FeelingChoice, RewardCard, IdentityCard, PointsRow, LockActions; MealHero gained In, Skipping, Not sure yet, In near meal, Recheck (×3), During meal and Day done.
 
 ## Prototype (page 07)
 
@@ -49,6 +59,10 @@ The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendanc
 - Reminder timing. Whether safety-report updates can be turned off. Default quiet hours. Issue title on the lock screen.
 - SRM fields on You. Profile corrections. Whether staff see who sent a report. Export and deletion scope. Help contact channel.
 - Live pass at AX sizes (the code and ring stay fixed). Real Tamil copy (translation pending).
+- Meal cutoff must be later than the 3-hour recheck (today dinner cutoff 4 PM is before the 4:30 PM recheck).
+- Nutrition bar reference. "Usually quieter after 1:30 PM" needs real scan data. Scan timestamps for the slot chart.
+- Urgent reports: photos, and whether anyone is alerted in real time. Category list and which ones are urgent.
+- Point values and offer costs are sample. Who fills in a community issue's owner and next update. When Home switches to "during meal".
 
 ## Known limits
 
