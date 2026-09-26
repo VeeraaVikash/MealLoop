@@ -11,8 +11,9 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 | 04 Student Light | Sections A–O plus Home by time of day, the three answer paths, the 3-hour recheck, lock screens, the comments sheet and full-scroll copies (273 screens) |
 | 05 Student Dark | The same 273 screens in Dark mode, regenerated from 04 |
 | 06 States & Accessibility | Section P: Accessibility XL (Home, Attendance, Pass live, Report step 1), Tamil length test (Translation pending), both in Light and Dark |
-| 07 Prototype & QA | 21 prototype flows with starting points, plus the QA summary |
+| 07 Prototype & QA | One connected app (start "MealLoop app"), a States gallery, and the 21 flows as extra starting points |
 | 08 Voice & Patterns | Glossary, format rules, UX patterns and the Copy check table |
+| 99 Archive | Frames replaced by newer ones (moved, not deleted) |
 
 `tokens.json` is from the first (v1) system and is out of date. The source of truth is the variable collections in the Figma file.
 
@@ -64,6 +65,9 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 
 ## Prototype (page 07)
 
+One copy of each of the 207 screens. "MealLoop app" starts at Onboarding · Welcome and reaches 130 screens: the tab bar works on every tab screen, Back goes to the previous screen, and every Done or receipt screen returns to Home. "States gallery" steps through the 77 error, empty, loading and offline screens (tap the right half for next, the left half for back), with a title frame per section. Demo hotspots: tap the status bar on Home to change the time of day; on Entry · Scanned, tap the card ("Scan again") for Already scanned; Notification settings rows preview the lock screens. You gained a "Feedback history" row. Frames replaced by newer ones are on page 99 Archive.
+
+Earlier summary: 
 The flows are: Sign in → Home · Intent Yes · Intent No + reason · Attendance · Special Meal Pass (While pressing to confirm, then Live 1→2→3 on a 3 s delay, then Redeemed) · Dish feedback → recheck · Report → receipt → timeline · Community → support · Spending add.
 
 ## Open decisions
