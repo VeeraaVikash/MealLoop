@@ -291,3 +291,9 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | # | Frame(s) | Issue | Severity | Suggested fix |
 |---|---|---|---|---|
 | 73 | H6 (04/05/07) | The "Today" title sits 26 pt left of centre because the two trailing slots make the right side 52 pt wider than the left. | Low | Override the `Center` frame's left padding to 52 on the H6 NavHeader instance (no component edit). |
+
+## Stage 3.3 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 73 | **Fixed.** H6 title centred via a `Center` paddingLeft = 52 instance override on 04/05/07. It reverts if the header instance is reset or swapped (contract 3.3). |

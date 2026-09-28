@@ -1568,3 +1568,21 @@ Page 03 was read twice under the new rule and gave the same value both times (`9
 
 - All 17 section-H frames plus H10b on pages 04 and 05 were rendered before and after the link change: **0 px** changed, max 0.
 - Page 07 is structurally unchanged (0 nodes changed) and has no link changes, so no re-render was needed.
+
+## Stage 3.3 - H6 title centred (instance override) (2026-09-28)
+
+- **Change:** on H6's NavHeader instance, the `Center` layer (`74:130`) gets `paddingLeft` **0 → 52**, as an **instance override** on page 04 (`327:23368`), page 05 (`329:71921`) and the page-07 copy (`570:45054`).
+  - The NavHeader component is not edited; its `Center` padding is still 0.
+  - The override is listed on each instance as `74:130: paddingLeft`.
+- **Result (all three pages):**
+  - Title "Today" is centred at **196.5** (was 170.5).
+  - The content box is 112–281 (169 pt) and the text is 49 pt wide, with auto width and truncation disabled, so it does not truncate.
+  - Clearance to the back button (ends at x 60) is **112 pt**.
+  - Light and Dark render the same.
+- **Pixel check:**
+  - On H6 (04, 05, 07), before vs after, the only pixels above 6 are inside **x 146–221, y 73–90** (the title glyphs moving). Outside the title area (x 60–281, y 58–102), 0 pixels are above 6.
+  - Every other frame is structurally identical to the `st32` snapshot (0 nodes changed on 03, 04, 05 and 07), and no other frame was touched.
+- **Links:** 7 / 7 / 1162 (unchanged).
+- **Fragile spot:** this is an instance override. It **reverts to 0 padding (title 26 pt off-centre)** if H6's header instance is reset ("Reset all changes"), swapped to another NavHeader variant, or replaced. The same applies to the Stage 3.1 trailing-slot overrides (Show Trailing / Show Trailing 2 and the plus and gear icons).
+  - If the header is ever rebuilt, re-apply the padding on all three places, and re-copy page 04 → 07 only through the source rule.
+  - If a trailing slot is later hidden, remove the padding: it equals the 52 pt width difference between the two trailing slots and the back slot.
