@@ -208,3 +208,20 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 54 | H8 Weekly view | Shows a computed average but has no Estimate pill (H8 is outside the H2–H7 / H9 list). | Low | Decide whether H8 gets the pill. |
 | 55 | H11 | Digits remain in portion chips, the date chip and the status bar (not nutrition values). | Info | Confirm that "digit-free" means nutrition values only. |
 | 56 | KcalGauge Goal=Off | The 240 pt readout sits centred in a 353 pt hero card; the split bar is only 200 pt. It reads lighter than the old arc. | Med | Stretch the hero to card width, with a full-width split bar and a larger legend (awaiting direction). |
+
+## Stage 2.5 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 53 | **Fixed.** H10 and H12 padding is now 124. H12 clears its Save bar by 22 pt; H10 does not scroll (312 pt). |
+| 54 | **Fixed.** H8 has the Estimate pill (04 and 05). |
+| 55 | **Confirmed.** H11's hero shows no digits: an empty track plus "Numbers hidden / Portions only". |
+| 56 | **Fixed.** The hero is full width with a 168 pt composition ring and a full-width legend. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 57 | H4 Your plate · saved | The two-line chip row ("Planned · counts after Entry QR") leaves only 10 pt between the first row's chips and the Save bar at rest. | Low | Put both chips on one line, or shorten the planned-state chip, if the fit gets tighter. |
+| 58 | H6 Day view | The legend (P/C/F grams and %) and the Macro rings card (P/C/F/Fibre grams) repeat the same grams. Kept as instructed. | Info | Revisit if H6 gets a goal-off Macro rings variant without P/C/F. |
+| 59 | H8 Weekly view | The Estimate pill is an absolute layer over the Average card instance. | Low | Re-check the pill's position if the card's padding or height changes. |

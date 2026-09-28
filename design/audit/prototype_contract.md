@@ -1027,3 +1027,137 @@ Before starting, a snapshot was stored in root plugin data (`st2_*`; the `st111_
 | Meals · Meal detail | 22,466 px, max 15 | 22,223 px, max 15 | 0 |
 
 - **H1, H12, H13 (no edits):** the structural diff shows no change. A pixel comparison isn't available, because no before-render of these frames was taken at the start of this stage. From Stage 3 on, before-renders are taken at the start of every stage.
+
+## Stage 2.5 - Composition ring (section H, pages 04 and 05) (2026-09-28)
+
+A snapshot was stored before any change (`st25_*`; the `st2_*` chunks were cleared). 1× before-renders of all 16 section-H frames on page 04, plus H2 and H6 on page 05, are in `design/audit/stage2_5/before/`.
+
+**Noise floor:**
+- The same capture rendered twice: 0 px differ.
+- Two separate clones of H2: 8,420 px differ, max 3.
+- Pass rule for frames that must not change: **no pixel above 6**.
+
+**Scope:** the KcalGauge component (page 03) and its instances, Macro rings removed from H2–H5 / H14 / H2b, the Estimate pill on H8, and H10 / H12 padding. Page 07 is unchanged.
+
+The first attempt stopped at the dish-row fit check: with the Macro rings card still in place, the first dish row's chips ended 78 pt under the Save bar on H2. The approved fix was option 1: remove the Macro rings card on the plate screens and move Fibre into the hero.
+
+### 2.5.1 KcalGauge Goal=Off (page 03)
+
+- **Width:** the gauge is now 321 pt, the full inner width of the Hero card. Its height hugs its content.
+  - Numeric variants: 338 pt with the Fibre line, 314 pt without it.
+  - Hidden: 285 pt.
+  - Bottom padding is 0, so the card's own 16 pt padding balances the sides.
+- **Order, top to bottom:** Estimate pill (unchanged, 94×44) → Ring → Caption → Legend block.
+- **Ring:**
+  - Closed, 168 pt across, 14 pt stroke, centre radius 77.
+  - Three stroked vector arcs with round caps, starting at 12 o'clock and running clockwise: P, C, F.
+  - Each arc's visible length (the path plus two 7 pt caps) is proportional to its energy share (4P, 4C, 9F on the displayed grams).
+  - Visible gaps are 3 pt, so the path gap is 17 / 77 rad.
+- **Ring colours** (variables only, so Dark comes from the Dark mode):
+  - P: `lime`
+  - C: `on-hero`
+  - F: `on-hero-secondary`
+- **Centre:** only the kcal number (ML/Hero Metric 52, bound to `Number`) and "kcal" (ML/Hero Unit). There is no target, no knob and no over state.
+- **Caption:** one line, ML/Mono Footnote, `on-hero-secondary`, bound to `Caption` ("this plate" / "today").
+- **Legend:** three equal columns across the full width. Each has a 10 pt swatch, the name (ML/Footnote, secondary), then grams (ML/Mono Footnote, `on-hero`) and percent (ML/Mono Footnote, secondary).
+  - Percentages use largest-remainder rounding and add up to 100.
+
+| Variant | Grams P / C / F | Energy 4P / 4C / 9F | Percentages | Arc angle (path) |
+|---|---|---|---|---|
+| 630 | 33 / 72 / 23 | 132 / 288 / 207 = 627 | **21 / 46 / 33** | 64.0° / 151.9° / 106.2° |
+| 720 | 35 / 92 / 23 | 140 / 368 / 207 = 715 | **20 / 51 / 29** | 58.8° / 171.4° / 91.9° |
+| 870 | 38 / 112 / 29 | 152 / 448 / 261 = 861 | **18 / 52 / 30** | 52.0° / 173.4° / 96.7° |
+
+- **Fibre line:**
+  - Sits 6 pt under the legend in the same Legend block, in ML/Mono Footnote, secondary.
+  - Uses new component properties `Fibre` (text, default "Fibre 10 g") and `Show fibre` (boolean, default off).
+  - It has no percentage and does not enter the energy split.
+  - It is on only on H2–H5, H14 and H2b, which lost their Macro rings card:
+    - "Fibre 10 g" on H2, H14 and H2b.
+    - "Fibre 11 g" on H3, H4 and H5.
+  - These are the values the removed Fibre ring displayed on each frame.
+- **Value=Hidden:**
+  - A 94×44 "Pill space" at the top, so the ring sits at the same y as on H3 (numbers toggled).
+  - An empty track: an ellipse with a 14 pt `on-hero` stroke at layer opacity 0.18, matching the Goal=On track.
+  - Below it, "Numbers hidden / Portions only". There are no digits.
+- **Goal=On** (H6b) is untouched. The arc, knob and pill render pixel-identical.
+- **Contrast on the hero card:**
+
+| Mode | on-hero | on-hero-secondary | lime |
+|---|---|---|---|
+| Light | 18.9:1 | 9.2:1 | 15.0:1 |
+| Dark | 15.2:1 | 6.7:1 | 13.5:1 |
+
+  All pass AA for both text and graphics.
+- **Rule for later stages:** moving a text node into a new parent inside a component dropped its `componentPropertyReferences`, the same as cloning does. Re-bind and check after any restructure.
+
+### 2.5.2 Frames (pages 04 and 05)
+
+- **H2–H5, H14, H2b:** the `Macro rings` card was removed; it had no links. `Show fibre` is on with the frame's value.
+- **H6, H6b, H7:** untouched. H6 keeps its Macro rings card.
+- **H8 Weekly view:** added an Estimate pill (`Surface=On dark`) at the top-right of the Average card, vertically centred on the "DAILY AVERAGE" eyebrow.
+  - It is an absolute child of the scrolling Content (x 259, y 66), because the card is an instance.
+  - The Dark render comes from the Dark mode.
+- **H10, H12:** Content bottom padding went from 120 to **124**.
+
+### 2.5.3 Checks
+
+**At rest, first dish row: stepper and chips vs the Save bar (top at 750)**
+
+| Frame | Hero (y) | First dish row | Stepper → chips | Clearance |
+|---|---|---|---|---|
+| H2 | 152–514 | 526–716 | 602–702 | **48 pt** |
+| H3 | 152–514 | 526–716 | 602–702 | **48 pt** |
+| H4 | 190–552 | 564–754 | 640–740 | **10 pt** (≥ 8) |
+| H5 | 170–532 | 544–734 | 620–720 | **30 pt** |
+| H11 | 152–461 | 473–663 | 549–649 | 101 pt |
+| H14 (under sheet) | 152–514 | 526–716 | 602–702 | 48 pt |
+| H2b | 152–514 | 526–742 | 628–728 | 22 pt |
+
+Pages 04 and 05 give identical values.
+
+**At the end of the scroll: last item vs the sticky bar**
+
+| Frame | Content height (before → after) | Scrolls | Clearance |
+|---|---|---|---|
+| H2 / H3 / H14 | 1350 → 1348 | yes | 22 pt |
+| H4 | 1388 → 1386 | yes | 22 pt |
+| H5 | 1368 → 1366 | yes | 22 pt |
+| H2b | 1454 → 1452 | yes | 22 pt |
+| H11 | 1198 → 1277 | yes | 22 pt |
+| H10 | 448 → 452 | no | 312 pt |
+| H12 | 740 → 744 | yes (now 854 > 852) | 22 pt (was 20) |
+| H6 (tab bar at 748) | 935 → 1043 | yes | 20 pt (R9b) |
+| H9 | 430 → 554 | under sheet | — |
+
+- **H6 layout:**
+  - Hero at 186–524 (338 pt gauge), Macro rings at 536–658, Meals card from 670.
+  - The legend and the macro rings are both on the first screen, above the tab bar (748). The Lunch row header starts at 670.
+  - The Hero grew 108 pt: 124 for the ring, minus 16 for the bottom padding.
+- **Totals** (both pages; hero value = sum of the displayed dish values):
+  - H2 / H14 / H2b: 110+180+90+250 = 630. Dish macros sum to P 33, C 72, F 23 (as on H2b). Energy 627 (0.5% off).
+  - H3–H5 / H11: 110+270+90+250 = 720. P 35, C 92, F 23. Energy 715 (0.7% off).
+  - H6: 720 + 150 = 870. P 38, C 112, F 29. Energy 861 (1.0% off).
+- **Links:** 04 = 7, 05 = 7, 07 = 1054 (966 navigate + 88 back). No change.
+- **Structural diff against `st25`:**
+  - Page 03 changed only in the KcalGauge set (Off variants and two new properties).
+  - On pages 04 and 05, the top-level counts are unchanged (1036 / 847). The edits are inside the frames listed above.
+  - Page 07: all 265 nodes are present with the same geometry and child counts.
+- **Pixel diffs** (1×, paired renders, threshold "no pixel above 6"):
+
+| Frame | Pixels differing | Pixels above 6 | Result |
+|---|---|---|---|
+| H1 | 0 | 0 | unchanged |
+| H6b | 0 | 0 | unchanged |
+| H7 | 0 | 0 | unchanged |
+| H12 | 0 | 0 | unchanged (padding is below the fold) |
+| H13 | 0 | 0 | unchanged |
+| H10 | 0 | 0 | unchanged (padding only) |
+| Page 07, all 228 frames (4 grid captures rendered before and after the frame edits) | 0 | 0 | unchanged |
+| H8 | 2,368 | 2,368 | pill only |
+| H2–H6, H9, H11, H14, H2b | changed as intended | | |
+
+Evidence: `design/audit/stage2_5/`
+- `before/` and `after/`: 1× frames.
+- `pair_light_H2|H6|H7.png` and `pair_dark_H2|H6.png`: before and after side by side.
+- `stopped/`: the first attempt.
