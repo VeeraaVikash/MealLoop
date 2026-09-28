@@ -277,3 +277,17 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 70 | H6 (all) | With the toggle, the Lunch row is 32/72 pt visible at rest (accepted). | Info | Revisit if the Day view gains more above-the-fold content. |
 | 71 | Page 03 structure read | The NavHeader set's nested-instance count keeps flipping between reads (10/11/12) with no edits. | Info | Exclude nested-instance counts inside component sets from the fingerprint, or compare variant-level signatures only. |
 | 72 | You → Nutrition | The product rule sends tracking-off users to H12. The prototype has no tracking-off You state, so the Nutrition row always opens H6. | Low | Add a conditional on a `trackingOn` variable if the off path must be demoable. |
+
+## Stage 3.2 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 69 | **Fixed.** Nutrients card → H7 on 04/05; both pages are back to 7 links. |
+| 71 | **Closed by rule:** page 03 is compared on geometry, fills and layer order; nested counts are advisory. |
+| 72 | **Recorded as an engineering rule** (contract 3.2.3a); not in the prototype. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 73 | H6 (04/05/07) | The "Today" title sits 26 pt left of centre because the two trailing slots make the right side 52 pt wider than the left. | Low | Override the `Center` frame's left padding to 52 on the H6 NavHeader instance (no component edit). |

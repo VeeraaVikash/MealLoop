@@ -1485,3 +1485,86 @@ The page-07 link count went from 1156 to **1162** (−6 removed, +12 added). The
 1. **PlateSummaryCard** shows on Home only when the plate tracker is **on** and a plate has been **saved today**.
 2. **You → Nutrition** opens the Day view (H6) when tracking is on. When tracking is **off**, it opens the first-run screen (H12).
 3. **Goal setup lives only in Settings** (Nutrition → Daily goal → H10/H10b). H6 has no goal link.
+
+## Stage 3.2 - Design-page link, title report, source map (2026-09-28)
+
+**Snapshot:** `st32_*` (the `st31_*` page chunks were cleared; `st31_h10b` and `st3_copies` are kept).
+
+| Page | Top-level nodes | Links |
+|---|---|---|
+| 03 | 265 | 0 |
+| 04 | 1038 | 6 |
+| 05 | 849 | 6 |
+| 07 | 287 | 1162 |
+
+Page 03 was read twice under the new rule and gave the same value both times (`9s8v9i`).
+
+### 3.2.0 Page-03 comparison rule (applies from this stage on)
+
+- For page 03, "unchanged" means **geometry** (x, y, w, h), **direct child count**, **fills** and **layer order** (child id list) are equal.
+- Nested instance counts, nested text counts and text hashes inside component sets are **advisory only**. They flip on the first load of a session (seen on NavHeader, MealHero, IssueCard, IdentityCard, OnboardingPage and GlassSheet) with no edits.
+- Other pages keep the full signature.
+
+### 3.2.1 Link (pages 04 and 05)
+
+- **Added one link per page:** H6 **Nutrients** card → H7 Nutrients detail, ON_CLICK, Dissolve 0.2 s. This matches the design-page link the removed "All nutrients" row had.
+  - 04: `561:27714` → `353:24728`
+  - 05: `561:53168` → `354:73679`
+- **Counts:** pages 04 and 05 are back to **7** links each. Page 07 stays at 1162, with 0 added and 0 removed.
+- **No other link changed** (link-dump diff against `st32`).
+
+### 3.2.2 H6 "Today" title position (report only, nothing changed)
+
+| Page | Title centre x | Frame centre | Offset |
+|---|---|---|---|
+| 04 | 170.5 | 196.5 | **26 pt left** |
+| 05 | 170.5 | 196.5 | **26 pt left** |
+| 07 copy | 170.5 | 196.5 | **26 pt left** |
+
+- **Cause:** the NavHeader "Bar" is Back (x16, w44), then Center (x60, w221), then Trailing Group (x281, w96).
+  - The title hugs its text and is centred inside Center.
+  - With two trailing slots on, the trailing side is 52 pt wider than the leading side, so Center's midpoint is 26 pt left of the frame's.
+- **Can it be centred without editing NavHeader? Yes, as an instance override.** Set the `Center` frame's left padding to 52 on the H6 instance. The content box then runs from 112 to 281, and its midpoint is 196.5. Overriding padding on a nested instance layer is allowed and leaves the component untouched.
+  - An alternative is an invisible 52 pt spacer in the leading slot, but that is a structural override and less clean.
+  - Not applied here.
+
+### 3.2.3 Engineering rules (not shown in the prototype)
+
+- **(a)** "You → Nutrition shows first-run (H12) when tracking is off" is an **engineering rule**. The prototype has no tracking-off state, so You → Nutrition always opens H6. There is no `trackingOn` variable.
+- **(b) Source map:**
+  - **Page 04 is the source.**
+  - **Page 07 holds Light prototype copies** (frames can't be instanced, so copies do not inherit changes).
+  - **Page 05 is the Dark twin** of page 04, built from the Dark variable mode, with no prototype.
+  - Every edit to a frame listed below must be made on all its places with the same operation, then checked for text and structure equality.
+
+| Key | Frame | Page 04 (source) | Page 05 (Dark) | Page 07 (copy) |
+|---|---|---|---|---|
+| LS | Meal detail · Answer Yes · Sending | 303:22149 | 303:43698 | 570:43678 |
+| LV | Meal detail · Answer Yes · Saved | 303:22257 | 303:43806 | 570:43818 |
+| H1 | Meal detail · Track this meal? | 327:22544 | 329:71774 | 570:43951 |
+| H2 | Your plate · expanded | 327:22639 | 329:71810 | 570:44104 |
+| H3 | Your plate · adjusting | 327:22823 | 329:71837 | 570:44344 |
+| H4 | Your plate · saved | 327:22998 | 329:71864 | 570:44579 |
+| H5 | Your plate · offline | 327:23181 | 329:71894 | 570:44819 |
+| H6 | You · Daily breakdown | 327:23368 | 329:71921 | 570:45054 |
+| H7 | You · Nutrients detail | 353:24728 | 354:73679 | 570:45230 |
+| H8 | You · Weekly view | 327:23511 | 329:71951 | 570:45349 |
+| H9 | You · Quick add | 353:25011 | 354:73825 | 570:45488 |
+| H10 | Settings · Daily goal | 353:25149 | 354:73860 | 570:45642 |
+| H10b | Settings · Daily goal · option selected | 584:83377 | 584:83464 | 584:83549 |
+| H11 | Your plate · numbers hidden | 353:25268 | 354:73883 | 570:45721 |
+| H12 | Plate tracker · First run | 353:25506 | 354:73911 | 570:45925 |
+| H13 | Settings · Nutrition | 327:23630 | 329:72001 | 570:46012 |
+| H14 | Your plate · About estimates | 507:26490 | 507:52275 | 570:46121 |
+| H6b | You · Daily breakdown · goal on | 507:26752 | 507:52312 | 570:46366 |
+| H2b | Your plate · per-dish macros | 507:26970 | 507:52342 | 570:46540 |
+
+- **Not copies:** the rest of page 07 (Home, Meals, You, Search, gallery and so on) was built on page 07 and exists there only.
+  - Their page-04/05 counterparts with the same name (for example You, Sign out, You · Offline) are design versions kept in step by hand.
+  - The Nutrition row (Stage 3) was added to all of them on 04, 05 and 07.
+  - PlateSummaryCard is on page-07 Home · After last meal only.
+
+### 3.2.4 Pixel check
+
+- All 17 section-H frames plus H10b on pages 04 and 05 were rendered before and after the link change: **0 px** changed, max 0.
+- Page 07 is structurally unchanged (0 nodes changed) and has no link changes, so no re-render was needed.
