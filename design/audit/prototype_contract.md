@@ -754,3 +754,183 @@ Not affected: You, You · Offline, Meals · Menu, Menu changed, Loading, Offline
 | Settings · System off | 1 |
 | Sheet backgrounds | 4 |
 | **Total** | **45** |
+
+---
+
+## Stage 1.11 - Status fade, Home/Answer scroll, inline-title backdrop (2026-09-28)
+
+**Snapshot:** stored in root plugin data (`st111_*`; the `st110_*` chunks were cleared). Page 03 read `gxy1sk` and then `x9xc34` twice (the lazy-load flip); the stable value was stored. A named version still cannot be saved.
+
+**Components untouched:** the NavHeader and HomeHeader components and all their variants.
+
+**All three parts passed.**
+
+**Pixel-test method:**
+- Temporary copies were rendered at 1× and compared per pixel with PIL.
+- The renderer isn't deterministic around glass effects. Two identical copies of the same frame differ in about 27–36k pixels below the status bar, by up to 4–15 levels (the noise floor).
+- A test passes when the changed copy differs from the original by no more than that floor, with **no pixel above the noise ceiling (15)** in the region under test.
+
+### 1.11.A Status fade
+
+**Measurements (Part A.1):**
+
+| Frame | Status content bottom | First header element | Layer top → gap | Rendered top incl. glass drop shadow → gap |
+|---|---|---|---|---|
+| Home · Morning | 37.5 | Credits chip | 54 → **16.5** | 42 → 4.5 |
+| Meals · Menu | 37.5 | Title | 118 → 80.8 | 118 → 80.8 |
+| Spending · This week | 37.5 | Back | 58 → **20.5** | 46 → 8.5 |
+
+The stop rule was applied to the element itself (its layer top): gap ≥ 16.5, so Part A went ahead. To be safe with the glass shadow halos, the fade is still **clear by y 42**, above the highest halo.
+
+**`ScrollEdgeFade / Style=Status`** (`486:2`):
+- 393×42, used rotated 180° at y 0.
+- Opaque from 0 to 38, behind all status text (bottom 37.5), then clear by 42.
+- Colour follows the Meal wash composite:
+  - Light: `#E9F7B0` → `#EAF6B7` at 38 → `#EAF6B8`.
+  - Dark: `#2A3312` → `#272F12` → `#262E12`.
+- Same visibility variables as the other styles.
+
+**Pixel test (no-fade copy vs Status copy):**
+
+| Frame | Below y 42 (all header-row elements) | Status band (y 0–42) |
+|---|---|---|
+| Home · Morning | noise level: 35,804 px differ, max 4 (identical-copy baseline 35,838, max 11) | 1–3 levels (the fade's colour vs the wash; no header element there) |
+| Meals · Menu | 16,074, max 4 | 1–3 levels |
+| Community · List | 29,605, max 15 (baseline 29,660) | as above |
+| Spending · This week | 27,452, max 14 (baseline 27,426, max 15) | as above |
+
+**Result:** Pass. Nothing above the noise ceiling.
+
+**Swap (Part A.3):** 16 frames, each `Wash 100 pt → Status 0–42`: You, You · Offline, Sign out (alert), Meals · Menu, Community · List, Meals · Menu changed, Meals · Loading, Meals · Offline, Community · Offline, and Spending · This week, This month, Saved, Offline, Loading, Empty, Error.
+
+**Verified:**
+- The Community (i) buttons and the Spending Back button and title start rendering at y 46, below the fade (bottom 42), so they're fully visible at rest.
+- Status text contrast (`ink`) over the fade: **16.5:1**. It's the same over dark content, because the fade is opaque behind the text.
+- No top fade uses Wash or Plain any more. `Style=Wash` now has 0 instances (kept, unused). Plain remains the bottom fade.
+- Links: 1054.
+
+### 1.11.B Home and Answer (22 frames)
+
+**Treatment** (as in 1.10 Part A, but with the Status fade), applied to:
+- Home: Morning, Afternoon, After last meal, After cutoff, Crowd stale, Hero unavailable, Offline, Pass hidden, Rewards soon.
+- Answer Yes: Tap, Sending, Saved, Near meal, Failed.
+- Answer No: Tap, Sending, Saved, Failed.
+- Answer Not sure: Tap, Sending, Saved, Failed.
+
+**New layer order (bottom → top):** Meal wash, content, **Home Header** (scrolls), Top edge fade (Status), Status Bar, Scroll edge fade, Tab Bar, Home Indicator, [Toast], [gallery hotspots]. Fixed: 5, 6 (with Toast) or 7 (with the gallery hotspots).
+
+**Every frame's last item ends at y 728, exactly 20 pt above the tab bar.**
+
+| Frame | Scroll range |
+|---|---|
+| Home · Morning | 191 |
+| Home · Afternoon | 137 |
+| Home · After last meal | 118 |
+| Home · After cutoff | 137 |
+| Home · Crowd stale | 99 |
+| Home · Hero unavailable | 67 |
+| Home · Offline | 197 |
+| Home · Pass hidden | 137 |
+| Home · Rewards soon | 137 |
+| Answer Yes, No, Not sure · Tap / Sending | 137 |
+| Answer Yes · Near meal | 118 |
+| Answer Yes · Saved, No · Saved | 56 |
+| Answer Not sure · Saved | 79 |
+| Answer · Failed ×3 | 163 |
+
+**Pixel test:**
+- Home · Morning and Answer Yes · Tap, before vs after, below y 42: noise only (max 4 / 5; 0 pixels above 15).
+- **Header row (y 42–100) vs the untouched Home · During meal:** 4,400 px differ, max 15, 0 above 15. That's the same as the original Home · Morning vs During meal (4,586, max 15). So the wordmark, points, message and bell are unchanged at rest.
+
+**Not touched:** Home · During meal, Home · Modules hidden, Home · Loading, Recheck · Home ×3, Answer No · Why not (sheet).
+
+### 1.11.C Inline-title screens (11 frames)
+
+**`HeaderBackdrop`** (new component, page 03, `489:1720`):
+- 393×102, opaque from y 0 to the bottom of the header row.
+- Colour follows the wash composite: Light `#E9F7B0` → `#EAF4C3`; Dark `#2A3312` → `#222712`.
+- Hard bottom edge, no stroke or hairline.
+- Same Light/Dark visibility variables as the fades.
+
+**Pixel test (original vs treated), in the backdrop zone (y 0–102):**
+
+| Frame | Pixels differing by ≤ 3 levels | Pixels above 3 |
+|---|---|---|
+| Meal detail | 30,314 | 4, all in the status-bar text, where the noise floor is 14–15 |
+| Intent · Cutoff passed | 30,289 | 0 |
+| Spending · This week | 20,077 | 4, also status text |
+
+- **Hard edge (rows 100–104):** max 4.
+- **Below y 102:** noise only, 0 above 15.
+
+**Result:** Pass. The remaining ≤ 3-level differences come from rounding the wash gradient's end colours to whole values, and they're invisible.
+
+**New layer order:** Meal wash, content, [EmptyState / Error overlays], **Header backdrop, Top edge fade (Status), Nav Header, Status Bar**, Scroll edge fade, Tab Bar, [Footer], Home Indicator, [Toast], [gallery hotspots]. Everything from the Header backdrop up is fixed.
+- The NavHeader (title and Back) is fixed.
+- The header's layers and text are unchanged.
+- On Spending this reverses the Stage 1.9 scrolling of its title bar.
+
+**Bottom padding and clearance:**
+
+| Frame | Padding | Scroll range | Last item at max scroll | Clearance |
+|---|---|---|---|---|
+| Meals · Meal detail | 120 → **124** | 140 | Crowd 868 → 728 | 20 pt above the tab bar |
+| Intent · Cutoff passed | 124 (checked, unchanged) | 144 | 728 | 20 pt |
+| Intent · Correction requested | 124 | 269 | 728 | 20 pt |
+| Intent · No response | 124 | 84 | 728 | 20 pt |
+| Spending · This week, This month, Saved, Offline | 124 → **188** | 468 / 340 / 468 / 574 | 664 | **20 pt above Add expense** (84 above the tab bar) |
+| Spending · Loading, Empty, Error | 124 (unchanged) | 0 | fits | – |
+
+### 1.11.D Checks
+
+**Links:** 1054 (+0 −0); every existing link is unchanged.
+
+**Walks:**
+- **Home · Morning:**
+  1. Scroll 191 pt; the Home Header scrolls away.
+  2. Impact moves 782 → **591–728**, and its (i) 797 → **606**.
+  3. The (i) → Waste · How this is measured (Dissolve 0.25).
+- **Meals → Meal detail → Crowd → Back:**
+  1. Home · Afternoon · Tab / Meals → Meals · Menu (Dissolve 0.15).
+  2. Meal / Dinner (visible at rest, at 670) → Meals · Meal detail (Move in 0.3).
+  3. Scroll 140 pt; the header and Back stay fixed. Crowd moves 814 → **674–728**.
+  4. Crowd → Crowd · Detail (Move in 0.3).
+  5. Crowd · Detail · Back → BACK, returning to Meal detail.
+  6. Meal detail · Back → BACK, returning to Meals · Menu.
+- **Spending → Canteen → Edit expense → Back → Back:**
+  1. You · Tile / SPENDING → Spending · This week (Move in 0.3).
+  2. Scroll 468 pt; the header stays fixed. Canteen moves 876 → **408**.
+  3. Canteen → Edit expense (Dissolve 0.25).
+  4. Edit expense · Back → BACK, returning to Spending.
+  5. Spending · Back → You (Move out right 0.3).
+
+**Readiness (report only; no cards added):**
+
+| Frame | Card | Scroll range now | Range with the card | Last item at max scroll | Result |
+|---|---|---|---|---|---|
+| Home · After cutoff | +120 pt | 137 | 269 | 728 (20 pt) | **Meets R9b** |
+| Meals · Meal detail | +200 pt | 140 | 352 | 728 (20 pt) | **Meets R9b** |
+
+**Remaining overflowing frames (not in this stage):**
+
+| Group | Frames | Count |
+|---|---|---|
+| Waste | Last week, Dish breakdown, Corrected, No baseline, Not comparable, Partial | 6 |
+| Feedback | Step 2 · Not good, Sending, Failed | 3 |
+| Rewards | Rewards, Rewards · Offline | 2 |
+| Report | My reports, Fixed | 2 |
+| Notifications | Offline | 1 |
+| Settings | System off | 1 |
+| Sheet backgrounds | Request correction, Correction · Sent, Correction · Failed, Waste · How this is measured | 4 |
+| **Total** | | **19** |
+
+The Home, Answer, Intent, Meal detail and Spending families no longer overflow.
+
+### 1.11.E Top-edge rule (R9c, adopted; supersedes R9a)
+
+**R9c.** On a scrolling screen, the top edge uses **`ScrollEdgeFade / Style=Status`**: 42 pt, opaque behind the status text to y 38, clear by 42. It must never cover a header element at rest. Any header whose first element starts at or below y 42, including a glass shadow halo, keeps working unchanged.
+
+- **Large title or HomeHeader:** the header scrolls with the content (R9). Fixed: Status fade, Status Bar, bottom fade, tab bar, home indicator, [footer, toast, hotspots].
+- **Inline title with Back:** the NavHeader stays fixed, with **`HeaderBackdrop`** (0 to header bottom, hard edge, wash-tracked) and the Status fade behind it. Content scrolls beneath the backdrop.
+- **Clearance:** the last item ends at least 20 pt above the tab bar (R9b), or at least 20 pt above a sticky footer when there is one.
+- **Invisible at rest:** every top-edge treatment must pass a pixel test against the untouched frame, at the renderer's noise level.

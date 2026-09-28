@@ -173,3 +173,23 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 48 | 07 Spending ×7 (from Stage 1.9) | At rest, the Back button and "Spending" title sit under the Wash top fade, about 54% covered. | High | Status-bar-only fade (R9c), or keep the NavHeader fixed above the fade once it has a material background. |
 | 49 | 07 Community · List, Community · Offline (from Stage 1.8) | At rest, the (i) trailing button sits under the Wash top fade, about 54% covered. | Med | Same as #48. |
 | 50 | ScrollEdgeFade | There is no status-bar-only style (opaque 0–44, clear by 54). Every header whose controls start at y 54 conflicts with the current 100 pt fades. | High | Add a `Style=Status` (Wash and Plain colours) and use it wherever a header row starts at y 54. |
+
+## Stage 1.11 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 42 | **Fixed.** Home and Answer (22 frames) scroll; Impact and its (i) are reachable on Home · Morning. |
+| 43 | **Fixed.** Meal detail: fixed NavHeader over HeaderBackdrop; Crowd is reachable. |
+| 45 | **Fixed.** Spending's last row clears Add expense by 20 pt (padding 188). |
+| 46 | **Fixed.** Meal detail padding is 124. |
+| 47 | **Fixed** without changing NavHeader, using HeaderBackdrop. |
+| 48 | **Fixed.** Spending Back and title fully visible at rest (Status fade). |
+| 49 | **Fixed.** Community (i) fully visible at rest. |
+| 50 | **Fixed.** ScrollEdgeFade Style=Status added (R9c). |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 51 | ScrollEdgeFade Style=Wash | It now has no instances. | Info | Keep it for reference, or remove it in a later clean-up. |
+| 52 | 19 frames (Waste, Feedback, Rewards, Report, Notifications · Offline, Settings · System off, sheets) | They still overflow without scrolling. | Med | Apply R9c by family. |
