@@ -297,3 +297,14 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | # | Status |
 |---|---|
 | 73 | **Fixed.** H6 title centred via a `Center` paddingLeft = 52 instance override on 04/05/07. It reverts if the header instance is reset or swapped (contract 3.3). |
+
+## Stage 3.4 update (2026-09-28)
+
+29 of 46 unclassified page-07 links now have roles; **17 remain** (contract 3.4.2).
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 74 | Onboarding · All set → Home | Drill-in into Home: Home is a tab root, and Back from Home would return into onboarding. | Low | Consider Dissolve 0.25 plus SWAP for this last step (needs approval under R1a). |
+| 75 | Fixed back arrows (5) | Still Dissolve 0.2, not R1b Move out right. | Low | Apply R1b when approved. |

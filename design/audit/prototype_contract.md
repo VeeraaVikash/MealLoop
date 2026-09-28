@@ -1586,3 +1586,76 @@ Page 03 was read twice under the new rule and gave the same value both times (`9
 - **Fragile spot:** this is an instance override. It **reverts to 0 padding (title 26 pt off-centre)** if H6's header instance is reset ("Reset all changes"), swapped to another NavHeader variant, or replaced. The same applies to the Stage 3.1 trailing-slot overrides (Show Trailing / Show Trailing 2 and the plus and gear icons).
   - If the header is ever rebuilt, re-apply the padding on all three places, and re-copy page 04 → 07 only through the source rule.
   - If a trailing slot is later hidden, remove the padding: it equals the 52 pt width difference between the two trailing slots and the back slot.
+
+## Stage 3.4 - Classify the remaining links (page 07, transitions only) (2026-09-28)
+
+**Snapshot:** `st34_*`, taken before any edit. It includes the full page-07 link dump. Page 03 was read by the Stage 3.2 rule; two reads agree (`9s8v9i`).
+
+**Scope:** only `transition` objects on page-07 links changed. No destinations, triggers, navigation, frames, layers or components changed.
+
+### 3.4.1 Changes (29 links; full table in `design/audit/stage3_4/changes.md`)
+
+**Onboarding steps (12): Dissolve 0.2 → Move in from right 0.3 s ease-out (drill-in)**
+- Welcome → Carousel 1
+- Carousel 1 → Carousel 2 and Carousel 1 → Sign in
+- Carousel 2 → Carousel 3 and Carousel 2 → Sign in
+- Carousel 3 → Sign in
+- Sign in → Verifying
+- Verifying → Confirm profile (1.5 s timer)
+- Confirm profile → All set and Confirm profile → Request correction
+- Request sent → All set
+- All set → Home · Afternoon
+
+**"Done → Home" (5): Dissolve 0.2 → Dissolve 0.25 s**
+- Feedback · Receipt
+- Feedback · Recheck thanks
+- Report · Urgent receipt
+- Report · Receipt
+- Rewards · Got it
+
+All five go to Home · Afternoon.
+
+**Notification and lock-screen launches (12): all Dissolve 0.25 s.** Every destination is Home, a Home state or a tab root; none is a detail screen.
+
+| Source | Destination | Kind |
+|---|---|---|
+| Recheck · Inbox · "Dinner at 7:30. Eating here?" | Recheck · Home · Recheck | Home state |
+| Recheck · Inbox · "Lunch menu is up" | Meals · Menu | tab root |
+| Notifications · Inbox · "Eating dinner here?" | Recheck · Home · Recheck | Home state |
+| Notifications · Inbox · "Lunch menu is up" | Meals · Menu | tab root |
+| Lock screen previews · Notification 1 | Recheck · Home · Recheck | Home state |
+| Recheck · Lock · Said yes (expanded) · Action 2 | Recheck · Home · Recheck yes | Home state |
+| Recheck · Lock · Said no (expanded) · Action 2 | Recheck · Home · Recheck no | Home state |
+| Lock · Saved · Not sure | Home · Afternoon | Home |
+| Lock · Saved · Still in | Home · Afternoon | Home |
+| Lock · Saved · Still skipping | Home · Afternoon | Home |
+| Lock · Saved · Yes, better | Home · Afternoon | Home |
+| Lock · Saved · Still bad | Home · Afternoon | Home |
+
+### 3.4.2 Left unchanged (17, still Dissolve 0.2 s)
+
+| Group | Link → where it goes today | Reason |
+|---|---|---|
+| Fixed back arrows (5) | Entry · Under review · Back → Entry history; Pass · Live 1 / Live 2 / Live 3 / Used · Back → Home · Afternoon | Entered by timers, so BACK would loop (R1a). They would take R1b (Move out right 0.3 s) once approved; left as instructed. |
+| Return to a list (4) | Report · Need more info · Button → My reports; Report · Fixed · Button → My reports; Report · Fixed · "Didn't try" → My reports; Report · Fixed · Button → Report · What's wrong | They move **up** the hierarchy, so drill-in is wrong. BACK is not equivalent, since these frames are reached from several places. A pop transition needs a decision. |
+| Settings → lock-screen previews (4) | Notification settings rows: 3-hour recheck → Recheck · Lock · No answer; Pass → Lock screen previews; Report updates → Lock · Stack; Fix checks → Lock · Fix check | Demo jumps out of the app into the lock-screen simulator. No real navigation role. |
+| Meal detail → answer (3) | Meals · Meal detail I'm in / Skip / Not sure → Answer Yes / No / Not sure · Tap (Home frames) | The destination is a Home-area frame, so it changes both screen and tab. It needs either a Meals-area answer state (the lunch Meal detail answer frames exist) or a decision. |
+| Community · Suggestion "Me too" (1) | Support → Community · List | Looks like a wrong destination (should toggle to a supported state on the same card). Open question since Stage 0.5. |
+
+**Unclassified count:** 46 → **17**.
+
+### 3.4.3 Verification
+
+- The link count stays at **1162** (reactions and actions).
+- **In-script comparison** of the before and after dumps: for every action it checked the trigger, type, destination, navigation and all non-transition fields. The script was set to throw and roll back on any difference.
+  - **29** transition differences, all on the listed links.
+  - **0** other differences.
+- Node fingerprints on every page match `st34`.
+
+### 3.4.4 Walks (page 07)
+
+1. **Onboarding to Home:**
+   - Welcome → (drill-in) Carousel 1 → (drill-in) Carousel 2 → (drill-in) Carousel 3 → (drill-in) Sign in → (drill-in) Verifying → [1.5 s timer, drill-in] Confirm profile → (drill-in) All set → (drill-in) Home · Afternoon.
+   - Skip links on Carousel 1 and 2 → Sign in are also drill-ins.
+2. **Notification launch:** Notifications · Inbox → "Eating dinner here?" → (Dissolve 0.25) Recheck · Home · Recheck.
+3. **Done → Home:** Feedback · Receipt → Done → (Dissolve 0.25) Home · Afternoon.
