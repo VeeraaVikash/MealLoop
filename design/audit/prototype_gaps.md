@@ -157,3 +157,19 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 45 | 07 Spending · This week, This month, Saved, Offline | At max scroll the last expense row is behind the sticky Add expense footer (684–740). | Low | Bottom padding = footer height + 20 above the footer, or accept. |
 | 46 | 07 Meals · Meal detail | Content bottom padding is 120, not 124. With the Stage 3 plate card the last item would sit 16 pt above the tab bar. | Med | Set bottom padding to 124 before Stage 3. |
 | 47 | NavHeader Inline Title (Meal detail, Intent ×3, Spending ×7) | Back and title are one instance, so Back can't stay fixed while the title scrolls. | Med | Add a NavHeader variant, or split out a floating Back GlassButton (needs approval). |
+
+## Stage 1.10 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 42 | **Still open.** Part A worked mechanically, but at rest the fixed Wash fade covers the HomeHeader chip row; all 22 frames reverted. |
+| 43 | **Still open.** Part B's Tall fade covers content starting at y 110; stopped. |
+| 46 | **Still open.** Meal detail padding not changed (Part B stopped). |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 48 | 07 Spending ×7 (from Stage 1.9) | At rest, the Back button and "Spending" title sit under the Wash top fade, about 54% covered. | High | Status-bar-only fade (R9c), or keep the NavHeader fixed above the fade once it has a material background. |
+| 49 | 07 Community · List, Community · Offline (from Stage 1.8) | At rest, the (i) trailing button sits under the Wash top fade, about 54% covered. | Med | Same as #48. |
+| 50 | ScrollEdgeFade | There is no status-bar-only style (opaque 0–44, clear by 54). Every header whose controls start at y 54 conflicts with the current 100 pt fades. | High | Add a `Style=Status` (Wash and Plain colours) and use it wherever a header row starts at y 54. |
