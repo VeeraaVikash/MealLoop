@@ -1659,3 +1659,61 @@ All five go to Home · Afternoon.
    - Skip links on Carousel 1 and 2 → Sign in are also drill-ins.
 2. **Notification launch:** Notifications · Inbox → "Eating dinner here?" → (Dissolve 0.25) Recheck · Home · Recheck.
 3. **Done → Home:** Feedback · Receipt → Done → (Dissolve 0.25) Home · Afternoon.
+
+## Stage 3.5 - Remaining link roles, "Me too" check (page 07) (2026-09-28)
+
+**Snapshot:** `st35_*`, taken before any edit. It includes the full page-07 link dump. Page 03 was read by the 3.2 rule; two reads agree (`9s8v9i`).
+
+**Scope:** transition (and, on one link, navigation) changes on 10 links. No destinations, frames, layers or components changed.
+
+### 3.5.1 Changes (10 links)
+
+| Group | Source · layer | Destination | Old | New |
+|---|---|---|---|---|
+| All set | Onboarding · All set · Button | Home · Afternoon | Move in right 0.3, NAVIGATE | **Dissolve 0.25 s, SWAP** |
+| Fixed back (R1b) | Entry · Under review · Back | Entry history | Dissolve 0.2 | **Move out right 0.3 s ease-out** |
+| Fixed back (R1b) | Pass · Live 1 · Back | Home · Afternoon | Dissolve 0.2 | Move out right 0.3 s |
+| Fixed back (R1b) | Pass · Live 2 · Back | Home · Afternoon | Dissolve 0.2 | Move out right 0.3 s |
+| Fixed back (R1b) | Pass · Live 3 · Back | Home · Afternoon | Dissolve 0.2 | Move out right 0.3 s |
+| Fixed back (R1b) | Pass · Used · Back | Home · Afternoon | Dissolve 0.2 | Move out right 0.3 s |
+| Return to a list | Report · Need more info · Button | Report · My reports | Dissolve 0.2 | **Move out right 0.3 s** |
+| Return to a list | Report · Fixed · Button | Report · My reports | Dissolve 0.2 | Move out right 0.3 s |
+| Return to a list | Report · Fixed · Button | Report · What's wrong | Dissolve 0.2 | Move out right 0.3 s |
+| Return to a list | Report · Fixed · "Didn't try" | Report · My reports | Dissolve 0.2 | Move out right 0.3 s |
+
+**New rule R1c.** A link that moves *up* the hierarchy to a list or parent (not BACK) uses the fixed-back style: Move out right 0.3 s ease-out.
+
+### 3.5.2 "Me too" (Community · Suggestion)
+
+- **Search:** every page, including 00 MoodBoard and 99 Archive, for frames or components named "Suggestion" and for any frame containing "More breakfast options".
+- **Result:** only `Community · Suggestion` exists, once each on 04, 05 and 07, always in the not-supported state (count 112, button "Me too"). There is **no** supported or agreed state (no "You said me too", no 113).
+- **Outcome:** the destination is unchanged (→ Community · List, Dissolve 0.2). It is logged as a **defect** (gap 76).
+
+### 3.5.3 Left unchanged (8, Dissolve 0.2)
+
+- **4 settings → lock-screen previews:**
+  - Notification settings · 3-hour recheck → Recheck · Lock · No answer
+  - Pass → Lock screen previews
+  - Report updates → Lock · Stack
+  - Fix checks → Lock · Fix check
+- **3 Meal detail → answer:** Meals · Meal detail I'm in / Skip / Not sure → Answer Yes / No / Not sure · Tap (gap 77).
+- **1 "Me too"** (defect, gap 76).
+
+**Final unclassified count:** 17 → **8**, of which 7 are deliberate (demo jumps and the pending answer parity) and 1 is a defect.
+
+### 3.5.4 Verification
+
+- **Link count:** 1162 (unchanged; no "Me too" fix was possible).
+- **In-script dump comparison:** exactly **10** transition differences, all on the listed links. The only navigation difference is All set (NAVIGATE → SWAP), which was allowed.
+- **0** differences in trigger, destination, action type or any other field. The script would have thrown and rolled back otherwise.
+
+### 3.5.5 Walks
+
+1. **All set → Home → Back:**
+   - All set → (Dissolve 0.25, SWAP) Home · Afternoon. SWAP replaces All set in the history with Home.
+   - Home · Afternoon has **no BACK action** (0 BACK links; it is a tab root with no back arrow). So there is no Back tap from Home, and onboarding cannot be reached by Back from Home.
+   - Every BACK from a screen drilled into from Home returns to Home, not past it.
+   - **Caveat:** Figma's history still holds the earlier onboarding frames (Welcome … Confirm profile) *below* Home, because those steps are NAVIGATE drill-ins. They can only be reached by a BACK issued *on Home*, which doesn't exist. If a Back control is ever added to Home, the whole onboarding path would need SWAP.
+2. **Entry · Under review → Back:** Move out right 0.3 s → Entry history (fixed, since this frame is entered by a timer).
+3. **Return to a list:** Report · Fixed → Button → (Move out right 0.3 s) Report · My reports.
+4. **"Me too":** Community · Suggestion → Me too → (Dissolve 0.2) Community · List. Unfixed; see the defect.
