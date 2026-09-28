@@ -257,3 +257,23 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 66 | H13 Nutrition | No "Today" entry to H6, as the Stage 3 brief asked. | Low | Add a "Today" row or link on H13 in page 04, then re-copy. |
 | 67 | Other Home states | PlateSummaryCard is placed on Home · After last meal only. | Info | Morning, Afternoon, During meal and the answer/recheck Home frames would need it for consistency. |
 | 68 | H9 / H14 sheets | The Estimate pill and tab bar under the scrim can still receive taps (Figma passes taps through the non-interactive scrim). | Low | Give the scrim a BACK/close interaction in a later pass. |
+
+## Stage 3.1 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 62 | **Fixed.** H6 has "Add food" (header plus → Quick add) and a Day \| Week toggle (→ Weekly view) on 04/05/07. |
+| 63 | **Closed by rule:** goal setup lives only in Settings; H6 gets no goal link. |
+| 64 | **Fixed.** H10b · Option selected (Save enabled → H6b) on 04/05/07. |
+| 65 | **Fixed.** "All nutrients" removed on 04/05. |
+| 66 | **Superseded:** H6 is reached from You → Nutrition and from the gear → H13 → Back; no "Today" row on H13. |
+| 68 | **Fixed.** H9 and H14 have a transparent "Dismiss · tap outside" layer → BACK. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 69 | H6 on 04/05 | The removed "All nutrients" row carried the only design-page link on H6 (→ H7). Pages 04/05 are at 6 links. | Low | If the design pages should keep 7, give the Nutrients card the same Dissolve 0.2 link to H7 on 04/05. |
+| 70 | H6 (all) | With the toggle, the Lunch row is 32/72 pt visible at rest (accepted). | Info | Revisit if the Day view gains more above-the-fold content. |
+| 71 | Page 03 structure read | The NavHeader set's nested-instance count keeps flipping between reads (10/11/12) with no edits. | Info | Exclude nested-instance counts inside component sets from the fingerprint, or compare variant-level signatures only. |
+| 72 | You → Nutrition | The product rule sends tracking-off users to H12. The prototype has no tracking-off You state, so the Nutrition row always opens H6. | Low | Add a conditional on a `trackingOn` variable if the off path must be demoable. |
