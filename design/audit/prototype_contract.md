@@ -380,3 +380,45 @@ Before starting, a snapshot of the per-page fingerprints, per-node signatures an
 **b. Width.**
 - No phone frame on 04, 05, 06 or 07 is narrower than 393 pt.
 - **At 375 pt**, tested with a temporary TabBar instance at 343 pt: pill 273 pt, Search 62 pt, tabs 65.8 pt each. The longest label, "Community", is 63 pt, leaving 1.4 pt on each side. It fits, but only just. At 320 pt it would not fit.
+
+---
+
+## Stage 1.6 - Sign out and artwork (2026-09-28)
+
+Before starting, a snapshot of the per-page fingerprints, node signatures (now including overflow direction and fixed-children count) and all link dumps was stored in root plugin data (`st16_*`; the `st15_*` chunks were cleared). A named version still cannot be saved.
+
+### 1.6.1 Page 07: You scrolls
+
+| Frame | Overflow | Fixed children (the top N layers, no reordering) | Scroll range | Sign out at max scroll |
+|---|---|---|---|---|
+| You | NONE → **VERTICAL** | 5: Status Bar, Nav Header, Scroll edge fade, Tab Bar, Home Indicator | 215 pt | ends at y 727; tab bar top 748, **21 pt clearance** |
+| You · Offline (a States-gallery frame) | NONE → **VERTICAL** | 7: the same 5 + Gallery · Back / Next hotspots | 275 pt | ends at y 727, 21 pt clearance |
+
+**Rule R8.** A scrolling frame keeps its chrome (status bar, nav header, edge fade, tab bar, home indicator, gallery hotspots) as the topmost layers, and marks them fixed with `numberOfFixedChildren`. The scroll range comes from the content frame, including its 124 pt bottom padding.
+
+**Links:** unchanged (You 15, You · Offline 3). Walk checked:
+- You · Row / Sign out → **Sign out** (Dissolve 0.25, reset scroll).
+- Sign out · Cancel → **BACK** → You.
+- Sign out · Alert → Onboarding · Welcome (Dissolve 0.25).
+
+Also working from You: About MealLoop, Privacy & data (and on to Request deletion), Notifications, Feedback history, Help, the 4 tiles, Request correction, tabs and Search. There is **no Nutrition row yet**; it arrives in Stage 3.
+
+**Reachability:** page 07 has **no orphans**; all 228 phone frames are reachable from a flow start. The Sign out screen is reachable only through You · Row / Sign out, and that row can now be reached by scrolling.
+
+**Static sheet and alert frames** (left unchanged, overflow NONE): Request correction (sheet 92–852), Correction · Sent (sheet 432–852), Correction · Failed (sheet 92–852), Sign out (alert 337–516). All four have a full-frame scrim. In every one the You list behind is shown at scroll 0, so the Sign out row (886–942) is **off-frame and not visible**; the sheet doesn't cover it. On the Sign out alert frame this means the row the student tapped isn't visible behind the alert (see open question).
+
+### 1.6.2 Pages 04 and 05: full-scroll You frames
+
+- Resized to the content bottom, so the content's 124 pt bottom padding is no longer clipped:
+  - You (full scroll): 1006 → **1067**.
+  - You · Offline (full scroll): 1066 → **1127**.
+  - Light and Dark (4 frames).
+- Scroll edge fade, Tab Bar and Home Indicator moved down 61 pt to stay at the frame bottom.
+- Sign out now ends 21 pt above the tab bar.
+- These frames still don't scroll (design pages).
+
+### 1.6.3 Ribbon art: report only, nothing built
+
+- `OnboardingArt` (10 variants: Angle Welcome / Angle 1–3 / Verify × Size Large / Small) draws the light ribbon as a **rectangle with an IMAGE fill** (a raster 3D render, hash `3bb6b876…`), shown through the `art-light` variable.
+- Dark shows a placeholder frame ("DARK RIBBON RENDER NEEDED") through `art-dark`.
+- Because it is an image, it **can't be rebuilt as a variable-bound vector without redrawing the artwork**. Per the brief, the step stopped here. The 16 Dark onboarding frames keep the placeholder.

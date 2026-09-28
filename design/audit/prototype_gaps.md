@@ -93,3 +93,18 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 33 | 04/05 You (full scroll), You · Offline (full scroll) | The Sign out row sits behind the tab bar (pre-existing overlap). | Low | Add bottom padding so the last row clears the tab bar in full-scroll frames. |
 | 34 | TabBar at 375 pt | "Community" has only 1.4 pt per side at 375 pt. It would not fit at 320 pt. | Low | Allow tab labels to shrink to 10 pt at compact widths, or hide the labels in a compact variant. |
 | 35 | 05 Onboarding · Welcome | Dark art is still a placeholder ("DARK RIBBON RENDER NEEDED"). | Med | Supply the dark ribbon render (pre-existing). |
+
+## Stage 1.6 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 32 | **Fixed.** Page-07 You and You · Offline scroll with fixed chrome; Sign out is reachable with 21 pt clearance. |
+| 33 | **Fixed.** Full-scroll You frames on 04 and 05 resized to the content bottom; Sign out clears the tab bar by 21 pt. |
+| 35 | **Blocked.** The ribbon art is a raster image, so a Dark version can't be built from variables. It needs a dark render, or a redrawn vector ribbon. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 36 | 07 You, You · Offline (scrolled) | The fixed Nav Header is a transparent Large Title. Scrolled content passes under the "You" title and the status bar; the status-bar text becomes unreadable over the black identity card. | Med | Let the large title scroll away and keep only the status bar fixed (iOS pattern; needs one layer reorder), or add a collapsed inline-title bar with a glass background to NavHeader. |
+| 37 | 07 Sign out (alert frame) | The background shows You at scroll 0, so the Sign out row the student tapped isn't visible behind the alert. | Low | Show the background scrolled to the bottom (shift the content 215 pt in that frame only). |
