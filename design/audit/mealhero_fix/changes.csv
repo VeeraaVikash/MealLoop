@@ -1,0 +1,12 @@
+page,change,node_id,detail
+Light,added Moment note,312:70917,"Moment: Wed 8:00 AM under Meal detail · Answer Yes · Sending (0,5162)"
+Light,added Moment note,312:70920,"Moment: Wed 8:00 AM under Meal detail · Answer Yes · Saved (493,5162)"
+Light,added Moment note,312:70923,"Moment: Wed 8:00 AM under Meal detail · Answer No · Why not (986,5162)"
+Light,added Moment note,312:70926,"Moment: Wed 8:00 AM under Meal detail · Answer Yes · Failed (1972,5162)"
+Dark,added Moment note,312:70929,"Moment: Wed 8:00 AM (0,5162)"
+Dark,added Moment note,312:70932,"Moment: Wed 8:00 AM (493,5162)"
+Dark,added Moment note,312:70935,"Moment: Wed 8:00 AM (986,5162)"
+Dark,added Moment note,312:70938,"Moment: Wed 8:00 AM (1972,5162)"
+03 Components,re-linked properties,77:282,"MealHero: Meal/Menu/Question linked in 9 variants State=Tap|Sending|Failed x Selected=I'm in|Skip|Not sure"
+Light+Dark,property values,"303:22152 303:22364 303:43701 303:43913","Meal detail Sending/Failed heroes: lunch set as Meal/Menu/Question properties"
+99 Archive,property values,"115:36771 115:37409 153:48571 153:48602 172:46920 172:47032 172:74807 172:74827","Archived Intent Sending/Failed heroes: properties set to the dinner text they already showed, so their look is unchanged"
