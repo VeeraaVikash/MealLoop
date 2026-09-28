@@ -193,3 +193,18 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 51 | ScrollEdgeFade Style=Wash | It now has no instances. | Info | Keep it for reference, or remove it in a later clean-up. |
 | 52 | 19 frames (Waste, Feedback, Rewards, Report, Notifications · Offline, Settings · System off, sheets) | They still overflow without scrolling. | Med | Apply R9c by family. |
+
+## Stage 2 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 2 | **Fixed.** H14 About estimates built (04 and 05). |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 53 | H10 Daily goal, H12 First run (04/05) | The last item ends 18 pt above the Save bar at the end of the scroll (padding 120). | Low | Padding 124 when these frames are copied to the prototype (Stage 3). |
+| 54 | H8 Weekly view | Shows a computed average but has no Estimate pill (H8 is outside the H2–H7 / H9 list). | Low | Decide whether H8 gets the pill. |
+| 55 | H11 | Digits remain in portion chips, the date chip and the status bar (not nutrition values). | Info | Confirm that "digit-free" means nutrition values only. |
+| 56 | KcalGauge Goal=Off | The 240 pt readout sits centred in a 353 pt hero card; the split bar is only 200 pt. It reads lighter than the old arc. | Med | Stretch the hero to card width, with a full-width split bar and a larger legend (awaiting direction). |
