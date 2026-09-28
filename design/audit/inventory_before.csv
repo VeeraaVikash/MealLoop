@@ -1,0 +1,935 @@
+page,name,node_id,x,y,w,h,children,instances,text_layers
+Light,"Home · After cutoff",105:11462,1972,1524,393,852,7,34,30
+Light,"Home · Hero unavailable",105:11618,2465,1524,393,852,7,29,26
+Light,"Home · Modules hidden",105:11762,2958,1524,393,852,7,24,22
+Light,"Home · Pass hidden",105:11852,3451,1524,393,852,7,31,28
+Light,"Home · Offline",105:11978,3944,1524,393,852,7,35,31
+Light,"Home · Loading",105:12280,4437,1524,393,852,7,20,8
+Light,"Home · Crowd stale",105:12122,4930,1524,393,852,7,32,27
+Light,"Meals · Menu",109:14000,0,2873,393,852,7,27,39
+Light,"Meals · Dish detail",109:14609,493,2873,393,852,8,20,29
+Light,"Meals · Dish detail — not provided",109:14721,986,2873,393,852,8,19,25
+Light,"Meals · Meal detail",109:14421,1479,2873,393,852,7,29,31
+Light,"Meals · Menu changed",109:14141,1972,2873,393,852,7,28,40
+Light,"Meals · Service ended",109:14522,2465,2873,393,852,7,17,20
+Light,"Meals · Not published",84:2361,2958,2873,393,852,7,20,22
+Light,"Meals · No menu",84:2458,3451,2873,393,852,7,20,22
+Light,"Meals · Loading",84:2551,3944,2873,393,852,7,22,20
+Light,"Meals · Offline",109:14281,4437,2873,393,852,7,29,40
+Light,"Meals · Error",84:2865,4930,2873,393,852,8,21,23
+Light,"Intent · Reason failed",115:37154,1479,4294,393,852,8,35,36
+Light,"Intent · Cutoff passed",115:37476,2465,4294,393,852,7,30,30
+Light,"Intent · Correction requested",115:37620,2958,4294,393,852,7,32,33
+Light,"Intent · No response",115:37767,3451,4294,393,852,7,28,29
+Light,"Entry · QR",85:12571,0,5643,393,852,7,15,11
+Light,"Entry · Scanned",85:12837,493,5643,393,852,8,26,16
+Light,"Entry · Already scanned",85:13108,986,5643,393,852,8,26,16
+Light,"Entry · Expired",85:13379,1479,5643,393,852,8,27,17
+Light,"Entry · Wrong mess",85:13654,1972,5643,393,852,8,26,16
+Light,"Entry · Offline",85:13925,2465,5643,393,852,8,16,9
+Light,"Entry · History",85:14196,2958,5643,393,852,7,29,25
+Light,"Entry · Discrepancy",85:14297,3451,5643,393,852,8,19,19
+Light,"Entry · Discrepancy — sending",85:14368,3944,5643,393,852,8,19,19
+Light,"Entry · Discrepancy — failed",85:14443,4437,5643,393,852,8,21,20
+Light,"Entry · Under review",85:14520,4930,5643,393,852,8,33,26
+Light,"Pass · Available",85:15455,0,7070,393,852,8,17,11
+Light,"Pass · Confirm (holding)",85:15502,493,7070,393,852,9,15,11
+Light,"Pass · Confirm (sending)",85:15575,986,7070,393,852,9,14,11
+Light,"Pass · Confirm (failed)",85:15647,1479,7070,393,852,9,17,12
+Light,"Pass · Live 1",85:15725,1972,7070,393,852,4,6,8
+Light,"Pass · Live 2",85:16000,2465,7070,393,852,4,6,8
+Light,"Pass · Live 3",85:16275,2958,7070,393,852,4,6,8
+Light,"Pass · Live (Reduce Motion)",85:16550,3451,7070,393,852,4,6,8
+Light,"Pass · Used",85:16825,3944,7070,393,852,7,21,14
+Light,"Pass · Not eligible",85:16880,4437,7070,393,852,7,14,8
+Light,"Pass · Expired",85:16927,4930,7070,393,852,7,19,13
+Light,"Pass · Already used",85:16974,5423,7070,393,852,7,19,13
+Light,"Pass · Wrong mess",85:17021,5916,7070,393,852,7,19,13
+Light,"Pass · Unavailable",85:17068,6409,7070,393,852,8,15,9
+Light,"Annotation / Live rotation",85:17180,2192,6718,1379,92,2,0,2
+Light,"Crowd · Detail",112:36389,0,8545,393,852,7,17,31
+Light,"Crowd · Stale",112:36529,493,8545,393,852,7,16,28
+Light,"Crowd · Unavailable",112:36650,986,8545,393,852,7,17,11
+Light,"Crowd · About this estimate",112:36736,1479,8545,393,852,8,17,38
+Light,"Crowd · Loading",85:19163,1972,8545,393,852,7,18,6
+Light,"Feedback · Pick meal",86:5275,0,9966,393,852,7,25,19
+Light,"Feedback · Pick dish",86:5378,493,9966,393,852,7,22,19
+Light,"Feedback · Step 1",113:14215,986,9966,393,852,7,20,15
+Light,"Feedback · Step 2 · Not good",113:14306,1479,9966,393,852,8,29,24
+Light,"Feedback · Sending",113:14412,1972,9966,393,852,8,29,24
+Light,"Feedback · Failed",113:14520,2465,9966,393,852,8,28,23
+Light,"Feedback · Receipt",113:14622,2958,9966,393,852,8,19,22
+Light,"Feedback · History",113:14749,3451,9966,393,852,7,18,20
+Light,"Feedback · Detail",113:14862,3944,9966,393,852,7,21,23
+Light,"Feedback · Recheck",113:14979,4437,9966,393,852,8,22,15
+Light,"Feedback · Recheck thanks",113:15066,4930,9966,393,852,8,17,20
+Light,"Report · What's wrong",107:13701,0,11297,393,852,5,30,17
+Light,"Report · Urgent",107:13846,493,11297,393,852,6,16,13
+Light,"Report · Urgent receipt",107:13967,986,11297,393,852,6,15,19
+Light,"Report · Details",107:14149,1479,11297,393,852,6,19,17
+Light,"Report · Sending",107:14225,1972,11297,393,852,6,19,17
+Light,"Report · Failed",107:14305,2465,11297,393,852,6,21,18
+Light,"Report · Receipt",107:14387,2958,11297,393,852,6,15,18
+Light,"Report · No one on duty",109:14851,3451,11297,393,852,5,31,17
+Light,"Report · My reports",107:14509,3944,11297,393,852,7,28,24
+Light,"Report · Need more info",107:14693,4437,11297,393,852,7,23,21
+Light,"Report · Fixed",107:14810,4930,11297,393,852,7,26,25
+Light,"Community · List",112:13858,0,12646,393,852,7,21,33
+Light,"Community · Detail",112:14417,493,12646,393,852,7,19,18
+Light,"Community · Sending",112:14505,986,12646,393,852,7,20,18
+Light,"Community · Supported",112:14608,1479,12646,393,852,7,20,19
+Light,"Community · Suggestion",112:14712,1972,12646,393,852,7,17,16
+Light,"Community · Empty",112:14257,2465,12646,393,852,8,15,11
+Light,"Community · Hidden",89:7059,2958,12646,393,852,7,14,8
+Light,"Community · Archived",112:14785,3451,12646,393,852,7,16,15
+Light,"Community · Loading",112:14342,3944,12646,393,852,7,16,9
+Light,"Community · Offline",112:14062,4437,12646,393,852,7,23,34
+Light,"Waste · Last week",89:19993,0,14067,393,852,7,23,34
+Light,"Waste · Pending",89:20133,493,14067,393,852,7,17,11
+Light,"Waste · Partial",89:20200,986,14067,393,852,7,24,35
+Light,"Waste · Corrected",89:20356,1479,14067,393,852,7,24,35
+Light,"Waste · Not comparable",89:20500,1972,14067,393,852,7,23,34
+Light,"Waste · No baseline",89:20640,2465,14067,393,852,7,23,34
+Light,"Waste · Unavailable",89:20780,2958,14067,393,852,7,17,10
+Light,"Waste · Dish breakdown",89:20842,3451,14067,393,852,7,22,29
+Light,"Waste · How this is measured",89:20961,3944,14067,393,852,8,24,43
+Light,"Spending · This week",91:7517,0,15416,393,852,8,37,51
+Light,"Spending · This month",91:7713,493,15416,393,852,8,29,39
+Light,"Add expense",91:7869,986,15416,393,852,8,23,23
+Light,"Add expense · Saving",91:8000,1479,15416,393,852,8,23,23
+Light,"Add expense · Failed",91:8133,1972,15416,393,852,8,25,24
+Light,"Spending · Saved",91:8268,2465,15416,393,852,9,39,52
+Light,"Edit expense",91:8460,2958,15416,393,852,8,25,24
+Light,"Delete confirm",91:8601,3451,15416,393,852,10,27,28
+Light,"Deleting",91:8767,3944,15416,393,852,8,25,24
+Light,"Spending · Empty",91:8912,4437,15416,393,852,9,18,10
+Light,"Spending · Loading",91:8993,4930,15416,393,852,7,18,6
+Light,"Spending · Offline",91:9059,5423,15416,393,852,8,39,53
+Light,"Spending · Error",91:9254,5916,15416,393,852,8,17,10
+Light,"Rewards · Coming soon",92:8513,0,16765,393,852,7,16,11
+Light,"Rewards",115:14528,493,16765,393,852,7,29,26
+Light,"Offer · Juice",115:14814,986,16765,393,852,8,29,31
+Light,"Offer · Not enough",115:14988,1479,16765,393,852,8,29,31
+Light,"Offer · Sending",115:15164,1972,16765,393,852,8,29,31
+Light,"Offer · Failed",115:15341,2465,16765,393,852,8,31,32
+Light,"Rewards · Got it",115:15520,2958,16765,393,852,8,17,19
+Light,"Rewards history",115:15619,3451,16765,393,852,7,22,21
+Light,"Rewards · Balance issue",115:15710,3944,16765,393,852,8,16,18
+Light,"Rewards · Loading",92:9456,4437,16765,393,852,7,17,6
+Light,"Rewards · Offline",115:14671,4930,16765,393,852,7,31,27
+Light,"Rewards · Error",92:9618,5423,16765,393,852,8,15,9
+Light,"Notifications · Inbox",93:9180,0,18096,393,852,7,26,24
+Light,"Notifications · Empty",93:9288,493,18096,393,852,8,14,8
+Light,"Reminder prompt",93:9345,986,18096,393,852,8,11,11
+Light,"Notification settings",93:9459,1479,18096,393,852,7,29,21
+Light,"Quiet hours",93:9589,1972,18096,393,852,8,29,24
+Light,"Settings · System off",93:9750,2465,18096,393,852,7,30,23
+Light,"Settings · Failed",93:9920,2958,18096,393,852,7,31,23
+Light,"Lock screen previews",93:10055,3451,18096,393,852,1,9,18
+Light,"Notifications · Loading",93:10103,3944,18096,393,852,7,16,6
+Light,"Notifications · Offline",93:10151,4437,18096,393,852,7,28,25
+Light,"Notifications · Error",93:10263,4930,18096,393,852,8,15,9
+Light,"You",114:14494,0,19535,393,852,7,40,34
+Light,"Request correction",114:14906,493,19535,393,852,8,45,41
+Light,"Correction · Sent",114:15148,986,19535,393,852,8,41,37
+Light,"Correction · Failed",114:15381,1479,19535,393,852,8,47,42
+Light,"Privacy & data",94:11029,1972,19535,393,852,7,19,18
+Light,"Request deletion",94:11140,2465,19535,393,852,7,15,18
+Light,"Entry history",114:15839,2958,19535,393,852,7,23,23
+Light,"Help",94:11356,3451,19535,393,852,7,30,13
+Light,"Sign out",114:15628,3944,19535,393,852,7,36,34
+Light,"You · Loading",94:11785,4437,19535,393,852,7,13,6
+Light,"You · Offline",114:14703,4930,19535,393,852,7,42,35
+Light,"You · Error",94:12111,5423,19535,393,852,8,13,9
+Light,"Home · Morning",106:10991,0,20905,393,852,7,34,30
+Light,"Home · Afternoon",106:11157,493,20905,393,852,7,33,30
+Light,"Home · During meal",106:11297,986,20905,393,852,7,27,24
+Light,"Home · After last meal",106:11434,1479,20905,393,852,7,28,28
+Light,"Home · Rewards soon",106:11564,1972,20905,393,852,7,33,30
+Light,"Answer Yes · Tap",106:11755,0,22146,393,852,7,34,30
+Light,"Answer Yes · Sending",106:11895,493,22146,393,852,7,33,30
+Light,"Answer Yes · Saved",106:12051,986,22146,393,852,8,33,29
+Light,"Answer Yes · Near meal",106:12202,1479,22146,393,852,7,31,28
+Light,"Answer Yes · Failed",106:12352,1972,22146,393,852,7,33,30
+Light,"Answer No · Tap",106:12536,0,23387,393,852,7,34,30
+Light,"Answer No · Sending",106:12676,493,23387,393,852,7,33,30
+Light,"Answer No · Why not",106:12836,986,23387,393,852,8,38,36
+Light,"Answer No · Saved",106:13036,1479,23387,393,852,8,33,29
+Light,"Answer No · Failed",106:13187,1972,23387,393,852,7,33,30
+Light,"Answer Not sure · Tap",106:13371,0,24628,393,852,7,34,30
+Light,"Answer Not sure · Sending",106:13511,493,24628,393,852,7,33,30
+Light,"Answer Not sure · Saved",106:13671,986,24628,393,852,8,33,29
+Light,"Answer Not sure · Failed",106:13823,1479,24628,393,852,7,33,30
+Light,"Recheck · Lock · No answer",106:35032,0,25959,393,852,1,3,6
+Light,"Recheck · Lock · Said yes",106:35056,493,25959,393,852,1,3,6
+Light,"Recheck · Lock · Said no",106:35080,986,25959,393,852,1,3,6
+Light,"Recheck · Home · Recheck",106:35104,1479,25959,393,852,7,28,26
+Light,"Recheck · Home · Recheck yes",106:35245,1972,25959,393,852,7,28,26
+Light,"Recheck · Home · Recheck no",106:35386,2465,25959,393,852,7,28,26
+Light,"Recheck · Inbox",106:35527,2958,25959,393,852,7,18,18
+Light,"Community · Comments",112:14854,0,27308,393,852,9,28,25
+Light,"Feedback · Step 2 · Loved it",113:15159,493,27308,393,852,8,23,19
+Light,"Report · From feedback",113:15246,986,27308,393,852,6,31,17
+Light,"Moment / Moment: Wed 6:30 PM",132:43810,1972,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43813,2465,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43816,2958,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43819,3451,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43822,3944,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43825,4437,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",132:43828,4930,2392,300,62,2,0,2
+Light,"Moment / Moment: Wed 7:00 AM",132:43831,0,21773,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43834,493,21773,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",132:43837,986,21773,300,62,2,0,2
+Light,"Moment / Moment: Wed 10:00 PM",132:43840,1479,21773,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43843,1972,21773,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43846,0,23014,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43849,493,23014,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43852,986,23014,300,62,2,0,2
+Light,"Moment / Moment: Wed 7:00 PM",132:43855,1479,23014,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43858,1972,23014,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43861,0,24255,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43864,493,24255,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43867,986,24255,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43870,1479,24255,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43873,1972,24255,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43876,0,25496,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43879,493,25496,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43882,986,25496,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",132:43885,1479,25496,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:30 PM",132:43888,1479,26827,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:30 PM",132:43891,1972,26827,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:30 PM",132:43894,2465,26827,300,62,2,0,2
+Light,"Onboarding · Welcome",135:15350,0,100,393,852,1,5,5
+Light,"Onboarding · Carousel 1",135:15384,493,100,393,852,1,4,5
+Light,"Onboarding · Carousel 2",135:15444,986,100,393,852,1,4,5
+Light,"Onboarding · Carousel 3",135:15504,1479,100,393,852,1,4,4
+Light,"Onboarding · Sign in",135:15564,1972,100,393,852,1,4,5
+Light,"Onboarding · Verifying",135:15587,2465,100,393,852,1,4,3
+Light,"Onboarding · Confirm profile",135:15614,2958,100,393,852,2,8,10
+Light,"Onboarding · Request correction",135:15688,3451,100,393,852,2,10,10
+Light,"Onboarding · Request correction — sending",135:15755,3944,100,393,852,2,10,10
+Light,"Onboarding · Request correction — failed",135:15825,4437,100,393,852,2,12,11
+Light,"Onboarding · Request sent",135:15898,4930,100,393,852,1,4,4
+Light,"Onboarding · All set",135:15925,5423,100,393,852,1,4,4
+Light,"Onboarding · SRM down",135:15952,5916,100,393,852,1,4,4
+Light,"Onboarding · Session expired",135:15975,6409,100,393,852,1,4,4
+Light,"Onboarding · Not eligible",135:15998,6902,100,393,852,1,4,4
+Light,"Onboarding · Offline",135:16021,7395,100,393,852,1,4,4
+Light,"Home · After cutoff (full scroll)",153:15785,1972,29161,393,985,7,34,30
+Light,"Home · Hero unavailable (full scroll)",153:15801,2465,29161,393,915,7,29,26
+Light,"Home · Pass hidden (full scroll)",153:15817,2958,29161,393,985,7,31,28
+Light,"Home · Offline (full scroll)",153:15832,3451,29161,393,1045,7,35,31
+Light,"Home · Crowd stale (full scroll)",153:15849,3944,29161,393,947,7,32,27
+Light,"Home · Morning (full scroll)",153:15865,4437,29161,393,1014,7,34,30
+Light,"Home · Afternoon (full scroll)",153:15883,4930,29161,393,985,7,33,30
+Light,"Home · After last meal (full scroll)",153:15899,5423,29161,393,966,7,28,28
+Light,"Home · Rewards soon (full scroll)",153:15913,0,30366,393,985,7,33,30
+Light,"Answer Yes · Tap (full scroll)",153:15929,493,30366,393,985,7,34,30
+Light,"Answer Yes · Sending (full scroll)",153:15945,986,30366,393,985,7,33,30
+Light,"Answer Yes · Saved (full scroll)",153:15961,1479,30366,393,907,8,33,29
+Light,"Answer Yes · Near meal (full scroll)",153:15978,1972,30366,393,941,7,31,28
+Light,"Answer Yes · Failed (full scroll)",153:15994,2465,30366,393,1011,7,33,30
+Light,"Answer No · Tap (full scroll)",153:16010,2958,30366,393,985,7,34,30
+Light,"Answer No · Sending (full scroll)",153:16026,3451,30366,393,985,7,33,30
+Light,"Answer No · Saved (full scroll)",153:16042,3944,30366,393,899,8,33,29
+Light,"Answer No · Failed (full scroll)",153:16059,4437,30366,393,1011,7,33,30
+Light,"Answer Not sure · Tap (full scroll)",153:16075,4930,30366,393,985,7,34,30
+Light,"Answer Not sure · Sending (full scroll)",153:16091,5423,30366,393,985,7,33,30
+Light,"Answer Not sure · Saved (full scroll)",153:16107,0,31537,393,899,8,33,29
+Light,"Answer Not sure · Failed (full scroll)",153:16124,493,31537,393,1011,7,33,30
+Light,"Moment / Moment: Wed 4:30 PM",153:16140,0,26827,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:30 PM",153:16143,493,26827,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:30 PM",153:16146,986,26827,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:40 PM",153:16152,2958,26827,300,62,2,0,2
+Light,"Meals · Menu (full scroll)",153:47963,986,31537,393,974,7,27,39
+Light,"Moment / Moment: Wed 12:30 PM",153:47986,0,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",153:47992,493,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",153:47998,986,3741,300,62,2,0,2
+Light,"Meals · Meal detail (full scroll)",153:48001,1479,31537,393,988,7,29,31
+Light,"Moment / Moment: Wed 2:00 PM",153:48021,1479,3741,300,62,2,0,2
+Light,"Meals · Menu changed (full scroll)",153:48024,1972,31537,393,1028,7,28,40
+Light,"Moment / Moment: Wed 12:30 PM",153:48050,1972,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:30 PM",153:48056,2465,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",153:48062,2958,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",153:48068,3451,3741,300,62,2,0,2
+Light,"Meals · Loading (full scroll)",153:48074,2465,31537,393,926,7,22,20
+Light,"Moment / Moment: Wed 12:30 PM",153:48086,3944,3741,300,62,2,0,2
+Light,"Meals · Offline (full scroll)",153:48089,2958,31537,393,1034,7,29,40
+Light,"Moment / Moment: Wed 12:30 PM",153:48113,4437,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:30 PM",153:48132,4930,3741,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:00 AM",153:48596,1479,5162,300,62,2,0,2
+Light,"Intent · Cutoff passed (full scroll)",153:48621,4437,31537,393,992,7,30,30
+Light,"Moment / Moment: Wed 10:00 AM",153:48641,2465,5162,300,62,2,0,2
+Light,"Intent · Correction requested (full scroll)",153:48644,4930,31537,393,1117,7,32,33
+Light,"Moment / Moment: Wed 10:00 AM",153:48664,2958,5162,300,62,2,0,2
+Light,"Intent · No response (full scroll)",153:48667,5423,31537,393,932,7,28,29
+Light,"Moment / Moment: Wed 10:00 AM",153:48686,3451,5162,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:14 PM",153:48689,0,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:14 PM",153:48695,493,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:14 PM",153:48701,986,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:14 PM",153:48707,1479,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:14 PM",153:48713,1972,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:14 PM",153:48719,2465,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:48725,2958,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:48731,3451,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:48737,3944,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:48743,4437,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:48749,4930,6511,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49271,0,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49277,493,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49283,986,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49289,1479,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49292,1972,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49295,2465,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49298,2958,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49301,3451,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49307,3944,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49313,4437,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:15 PM",153:49319,4930,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49325,5423,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49331,5916,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:32 PM",153:49337,6409,7938,300,62,2,0,2
+Light,"Moment / Moment: Wed 1:08 PM",153:49343,0,9413,300,62,2,0,2
+Light,"Moment / Moment: Wed 1:08 PM",153:49349,493,9413,300,62,2,0,2
+Light,"Moment / Moment: Wed 1:08 PM",153:49355,986,9413,300,62,2,0,2
+Light,"Moment / Moment: Wed 1:08 PM",153:49361,1479,9413,300,62,2,0,2
+Light,"Moment / Moment: Wed 1:08 PM",153:49367,1972,9413,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:32 AM",153:49373,0,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:32 AM",153:49379,493,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:32 AM",153:49385,986,10834,300,62,2,0,2
+Light,"Feedback · Step 2 · Not good (full scroll)",153:49391,0,32814,393,920,8,29,24
+Light,"Moment / Moment: Wed 8:32 AM",153:49418,1479,10834,300,62,2,0,2
+Light,"Feedback · Sending (full scroll)",153:49424,493,32814,393,920,8,29,24
+Light,"Moment / Moment: Wed 8:32 AM",153:49451,1972,10834,300,62,2,0,2
+Light,"Feedback · Failed (full scroll)",153:49457,986,32814,393,869,8,28,23
+Light,"Moment / Moment: Wed 8:32 AM",153:49484,2465,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:32 AM",153:49490,2958,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49496,3451,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49502,3944,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:40 AM",153:49508,4437,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:40 AM",153:49514,4930,10834,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49520,0,28176,300,62,2,0,2
+Light,"Moment / Moment: Wed 8:32 AM",153:49526,493,28176,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49532,986,28176,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49735,0,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49741,493,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49747,986,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49753,1479,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49759,1972,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49765,2465,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 12:41 PM",153:49771,2958,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49777,3451,12165,300,62,2,0,2
+Light,"Report · My reports (full scroll)",153:49783,1479,32814,393,880,7,28,24
+Light,"Moment / Moment: Wed 2:00 PM",153:49796,3944,12165,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49802,4437,12165,300,62,2,0,2
+Light,"Report · Fixed (full scroll)",153:49808,1972,32814,393,955,7,26,25
+Light,"Moment / Moment: Wed 2:00 PM",153:49830,4930,12165,300,62,2,0,2
+Light,"Community · List (full scroll)",153:49836,2465,32814,393,1059,7,21,33
+Light,"Moment / Moment: Wed 2:00 PM",153:49848,0,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49854,493,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49860,986,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49866,1479,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49872,1972,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49878,2465,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49884,2958,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49890,3451,13514,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49896,3944,13514,300,62,2,0,2
+Light,"Community · Offline (full scroll)",153:49902,2958,32814,393,1117,7,23,34
+Light,"Moment / Moment: Wed 2:00 PM",153:49915,4437,13514,300,62,2,0,2
+Light,"Waste · Last week (full scroll)",153:49921,3451,32814,393,973,7,23,34
+Light,"Moment / Moment: Wed 2:00 PM",153:49944,0,14935,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:49950,493,14935,300,62,2,0,2
+Light,"Waste · Partial (full scroll)",153:49956,3944,32814,393,1030,7,24,35
+Light,"Moment / Moment: Wed 2:00 PM",153:49982,986,14935,300,62,2,0,2
+Light,"Waste · Corrected (full scroll)",153:49988,4437,32814,393,1051,7,24,35
+Light,"Moment / Moment: Wed 2:00 PM",153:50014,1479,14935,300,62,2,0,2
+Light,"Waste · Not comparable (full scroll)",153:50020,4930,32814,393,1007,7,23,34
+Light,"Moment / Moment: Wed 2:00 PM",153:50043,1972,14935,300,62,2,0,2
+Light,"Waste · No baseline (full scroll)",153:50049,5423,32814,393,986,7,23,34
+Light,"Moment / Moment: Wed 2:00 PM",153:50072,2465,14935,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:50078,2958,14935,300,62,2,0,2
+Light,"Waste · Dish breakdown (full scroll)",153:50084,0,34091,393,941,7,22,29
+Light,"Moment / Moment: Wed 2:00 PM",153:50118,3451,14935,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:50124,3944,14935,300,62,2,0,2
+Light,"Spending · This week (full scroll)",153:51136,493,34091,393,1316,8,37,51
+Light,"Moment / Moment: Wed 2:00 PM",153:51208,0,16284,300,62,2,0,2
+Light,"Spending · This month (full scroll)",153:51214,986,34091,393,1188,8,29,39
+Light,"Moment / Moment: Wed 2:00 PM",153:51270,493,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51276,986,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51282,1479,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51288,1972,16284,300,62,2,0,2
+Light,"Spending · Saved (full scroll)",153:51294,1479,34091,393,1316,9,39,52
+Light,"Moment / Moment: Wed 2:00 PM",153:51367,2465,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51373,2958,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51379,3451,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51385,3944,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51391,4437,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51397,4930,16284,300,62,2,0,2
+Light,"Spending · Offline (full scroll)",153:51403,1972,34091,393,1422,8,39,53
+Light,"Moment / Moment: Wed 2:00 PM",153:51477,5423,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51494,5916,16284,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51500,0,17633,300,62,2,0,2
+Light,"Rewards (full scroll)",153:51506,2465,34091,393,928,7,29,26
+Light,"Moment / Moment: Wed 2:00 PM",153:51528,493,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51534,986,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51540,1479,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51546,1972,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51552,2465,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51558,2958,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51564,3451,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51570,3944,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51576,4437,17633,300,62,2,0,2
+Light,"Rewards · Offline (full scroll)",153:51582,2958,34091,393,988,7,31,27
+Light,"Moment / Moment: Wed 2:00 PM",153:51605,4930,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51622,5423,17633,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:40 PM",153:51628,0,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:40 PM",153:51634,493,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51640,986,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51646,1479,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51652,1972,18964,300,62,2,0,2
+Light,"Settings · System off (full scroll)",153:51658,3451,34091,393,874,7,30,23
+Light,"Moment / Moment: Wed 2:00 PM",153:51683,2465,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51689,2958,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 11:30 AM",153:51692,3451,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:40 PM",153:51698,3944,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:40 PM",153:51704,4437,18964,300,62,2,0,2
+Light,"Moment / Moment: Wed 4:40 PM",153:51721,4930,18964,300,62,2,0,2
+Light,"You (full scroll)",153:51727,3944,34091,393,949,7,40,34
+Light,"Moment / Moment: Wed 2:00 PM",153:51750,0,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51756,493,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51762,986,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51768,1479,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51774,1972,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51780,2465,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51786,2958,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51792,3451,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51798,3944,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51804,4437,20403,300,62,2,0,2
+Light,"You · Offline (full scroll)",153:51810,4437,34091,393,1009,7,42,35
+Light,"Moment / Moment: Wed 2:00 PM",153:51834,4930,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",153:51851,5423,20403,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21866,0,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21869,493,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21872,986,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21876,1479,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21879,1972,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21884,2465,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21887,2958,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21891,3451,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21895,3944,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21899,4437,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21903,4930,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21907,5423,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21911,5916,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21915,6409,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21919,6902,968,300,62,2,0,2
+Light,"Moment / Moment: Wed 2:00 PM",154:21923,7395,968,300,62,2,0,2
+Light,"Recheck · Lock · No answer (expanded)",170:57980,3451,25959,393,852,1,4,9
+Light,"Moment / Moment: Wed 4:30 PM",170:58009,3451,26827,300,62,2,0,2
+Light,"Recheck · Lock · Said yes (expanded)",170:58012,3944,25959,393,852,1,4,8
+Light,"Moment / Moment: Wed 4:30 PM",170:58041,3944,26827,300,62,2,0,2
+Light,"Recheck · Lock · Said no (expanded)",170:58044,4437,25959,393,852,1,4,8
+Light,"Moment / Moment: Wed 4:30 PM",170:58073,4437,26827,300,62,2,0,2
+Light,"Lock · Stack",170:58076,4930,25959,393,852,1,3,7
+Light,"Moment / Moment: Wed 4:30 PM",170:58100,4930,26827,300,62,2,0,2
+Light,"Lock · Saved · I'm in",170:58103,5423,25959,393,852,1,2,3
+Light,"Moment / Moment: Wed 4:31 PM",170:58114,5423,26827,300,62,2,0,2
+Light,"Lock · Saved · Skip",170:58117,5916,25959,393,852,1,2,3
+Light,"Moment / Moment: Wed 4:31 PM",170:58128,5916,26827,300,62,2,0,2
+Light,"Lock · Saved · Not sure",170:58131,6409,25959,393,852,1,2,3
+Light,"Moment / Moment: Wed 4:31 PM",170:58142,6409,26827,300,62,2,0,2
+Light,"Lock · Saved · Still in",170:58145,6902,25959,393,852,1,2,3
+Light,"Moment / Moment: Wed 4:31 PM",170:58156,6902,26827,300,62,2,0,2
+Light,"Lock · Saved · Still skipping",170:58159,7395,25959,393,852,1,2,3
+Light,"Moment / Moment: Wed 4:31 PM",170:58170,7395,26827,300,62,2,0,2
+Light,"Lock · Fix check",170:58173,5423,18096,393,852,1,3,6
+Light,"Moment / Moment: Wed 7:00 AM",170:58194,5423,18964,300,62,2,0,2
+Light,"Lock · Fix check (expanded)",170:58197,5916,18096,393,852,1,4,8
+Light,"Moment / Moment: Wed 7:00 AM",170:58226,5916,18964,300,62,2,0,2
+Light,"Lock · Saved · Yes, better",170:58229,6409,18096,393,852,1,2,3
+Light,"Moment / Moment: Wed 7:01 AM",170:58240,6409,18964,300,62,2,0,2
+Light,"Lock · Saved · Still bad",170:58243,6902,18096,393,852,1,2,3
+Light,"Moment / Moment: Wed 7:01 AM",170:58254,6902,18964,300,62,2,0,2
+Light,"Comments · Large detent",172:24216,1479,27308,393,852,9,28,25
+Light,"Moment / Moment: Wed 2:00 PM",172:24359,1479,28176,300,62,2,0,2
+Light,"Comments · Menu",172:24362,1972,27308,393,852,10,30,26
+Light,"Moment / Moment: Wed 2:00 PM",172:24506,1972,28176,300,62,2,0,2
+Light,"Comments · Typing",172:24509,2465,27308,393,852,10,29,56
+Light,"Moment / Moment: Wed 2:00 PM",172:24711,2465,28176,300,62,2,0,2
+Light,"Comments · Sending",172:24714,2958,27308,393,852,9,27,25
+Light,"Moment / Moment: Wed 2:00 PM",172:24852,2958,28176,300,62,2,0,2
+Light,"Comments · Pending",172:24855,3451,27308,393,852,9,32,28
+Light,"Moment / Moment: Wed 2:00 PM",172:25010,3451,28176,300,62,2,0,2
+Light,"Comments · Failed",172:25013,3944,27308,393,852,9,29,26
+Light,"Moment / Moment: Wed 2:00 PM",172:25156,3944,28176,300,62,2,0,2
+Light,"Comments · Reported",172:25159,4437,27308,393,852,10,30,26
+Light,"Moment / Moment: Wed 2:00 PM",172:25302,4437,28176,300,62,2,0,2
+Light,"Comments · Empty",172:25305,4930,27308,393,852,9,20,19
+Light,"Moment / Moment: Wed 2:00 PM",172:25413,4930,28176,300,62,2,0,2
+Dark,Home · After cutoff,172:46582,1972,1524,393,852,7,34,30
+Dark,Home · Hero unavailable,172:46600,2465,1524,393,852,7,29,26
+Dark,Home · Modules hidden,172:46618,2958,1524,393,852,7,24,22
+Dark,Home · Pass hidden,172:46629,3451,1524,393,852,7,31,28
+Dark,Home · Offline,172:46646,3944,1524,393,852,7,35,31
+Dark,Home · Loading,172:46665,4437,1524,393,852,7,20,8
+Dark,Home · Crowd stale,172:46679,4930,1524,393,852,7,32,27
+Dark,Meals · Menu,172:46698,0,2873,393,852,7,27,39
+Dark,Meals · Dish detail,172:46723,493,2873,393,852,8,20,29
+Dark,Meals · Dish detail — not provided,172:46748,986,2873,393,852,8,19,25
+Dark,Meals · Meal detail,172:46773,1479,2873,393,852,7,29,31
+Dark,Meals · Menu changed,172:46795,1972,2873,393,852,7,28,40
+Dark,Meals · Service ended,172:46823,2465,2873,393,852,7,17,20
+Dark,Meals · Not published,172:46843,2958,2873,393,852,7,20,22
+Dark,Meals · No menu,172:46854,3451,2873,393,852,7,20,22
+Dark,Meals · Loading,172:46865,3944,2873,393,852,7,22,20
+Dark,Meals · Offline,172:46879,4437,2873,393,852,7,29,40
+Dark,Meals · Error,172:46905,4930,2873,393,852,8,21,23
+Dark,Intent · Reason failed,172:46994,1479,4294,393,852,8,35,36
+Dark,Intent · Cutoff passed,172:47050,2465,4294,393,852,7,30,30
+Dark,Intent · Correction requested,172:47072,2958,4294,393,852,7,32,33
+Dark,Intent · No response,172:47094,3451,4294,393,852,7,28,29
+Dark,Entry · QR,172:47116,0,5643,393,852,7,15,11
+Dark,Entry · Scanned,172:47127,493,5643,393,852,8,26,16
+Dark,Entry · Already scanned,172:47148,986,5643,393,852,8,26,16
+Dark,Entry · Expired,172:47169,1479,5643,393,852,8,27,17
+Dark,Entry · Wrong mess,172:47190,1972,5643,393,852,8,26,16
+Dark,Entry · Offline,172:47211,2465,5643,393,852,8,16,9
+Dark,Entry · History,172:47223,2958,5643,393,852,7,29,25
+Dark,Entry · Discrepancy,172:47270,3451,5643,393,852,8,19,19
+Dark,Entry · Discrepancy — sending,172:47290,3944,5643,393,852,8,19,19
+Dark,Entry · Discrepancy — failed,172:47310,4437,5643,393,852,8,21,20
+Dark,Entry · Under review,172:47331,4930,5643,393,852,8,33,26
+Dark,Pass · Available,172:47380,0,7070,393,852,8,17,11
+Dark,Pass · Confirm (holding),172:47393,493,7070,393,852,9,15,11
+Dark,Pass · Confirm (sending),172:47410,986,7070,393,852,9,14,11
+Dark,Pass · Confirm (failed),172:47427,1479,7070,393,852,9,17,12
+Dark,Pass · Live 1,172:47445,1972,7070,393,852,4,6,8
+Dark,Pass · Live 2,172:47453,2465,7070,393,852,4,6,8
+Dark,Pass · Live 3,172:47461,2958,7070,393,852,4,6,8
+Dark,Pass · Live (Reduce Motion),172:47469,3451,7070,393,852,4,6,8
+Dark,Pass · Used,172:47477,3944,7070,393,852,7,21,14
+Dark,Pass · Not eligible,172:47490,4437,7070,393,852,7,14,8
+Dark,Pass · Expired,172:47500,4930,7070,393,852,7,19,13
+Dark,Pass · Already used,172:47513,5423,7070,393,852,7,19,13
+Dark,Pass · Wrong mess,172:47526,5916,7070,393,852,7,19,13
+Dark,Pass · Unavailable,172:47539,6409,7070,393,852,8,15,9
+Dark,Annotation / Live rotation,172:47550,2192,6718,1379,92,2,0,2
+Dark,Crowd · Detail,172:47555,0,8545,393,852,7,17,31
+Dark,Crowd · Stale,172:47570,493,8545,393,852,7,16,28
+Dark,Crowd · Unavailable,172:47584,986,8545,393,852,7,17,11
+Dark,Crowd · About this estimate,172:47598,1479,8545,393,852,8,17,38
+Dark,Crowd · Loading,172:47621,1972,8545,393,852,7,18,6
+Dark,Feedback · Pick meal,172:47635,0,9966,393,852,7,25,19
+Dark,Feedback · Pick dish,172:47654,493,9966,393,852,7,22,19
+Dark,Feedback · Step 1,172:47673,986,9966,393,852,7,20,15
+Dark,Feedback · Step 2 · Not good,172:47692,1479,9966,393,852,8,29,24
+Dark,Feedback · Sending,172:47721,1972,9966,393,852,8,29,24
+Dark,Feedback · Failed,172:47750,2465,9966,393,852,8,28,23
+Dark,Feedback · Receipt,172:47779,2958,9966,393,852,8,19,22
+Dark,Feedback · History,172:47798,3451,9966,393,852,7,18,20
+Dark,Feedback · Detail,172:47812,3944,9966,393,852,7,21,23
+Dark,Feedback · Recheck,172:47833,4437,9966,393,852,8,22,15
+Dark,Feedback · Recheck thanks,172:47853,4930,9966,393,852,8,17,20
+Dark,Report · What's wrong,172:47871,0,11297,393,852,5,30,17
+Dark,Report · Urgent,172:47885,493,11297,393,852,6,16,13
+Dark,Report · Urgent receipt,172:47902,986,11297,393,852,6,15,19
+Dark,Report · Details,172:47919,1479,11297,393,852,6,19,17
+Dark,Report · Sending,172:47936,1972,11297,393,852,6,19,17
+Dark,Report · Failed,172:47953,2465,11297,393,852,6,21,18
+Dark,Report · Receipt,172:47971,2958,11297,393,852,6,15,18
+Dark,Report · No one on duty,172:47988,3451,11297,393,852,5,31,17
+Dark,Report · My reports,172:48004,3944,11297,393,852,7,28,24
+Dark,Report · Need more info,172:48019,4437,11297,393,852,7,23,21
+Dark,Report · Fixed,172:48039,4930,11297,393,852,7,26,25
+Dark,Community · List,172:48064,0,12646,393,852,7,21,33
+Dark,Community · Detail,172:48078,493,12646,393,852,7,19,18
+Dark,Community · Sending,172:48091,986,12646,393,852,7,20,18
+Dark,Community · Supported,172:48104,1479,12646,393,852,7,20,19
+Dark,Community · Suggestion,172:48117,1972,12646,393,852,7,17,16
+Dark,Community · Empty,172:48129,2465,12646,393,852,8,15,11
+Dark,Community · Hidden,172:48140,2958,12646,393,852,7,14,8
+Dark,Community · Archived,172:48150,3451,12646,393,852,7,16,15
+Dark,Community · Loading,172:48164,3944,12646,393,852,7,16,9
+Dark,Community · Offline,172:48177,4437,12646,393,852,7,23,34
+Dark,Waste · Last week,172:48193,0,14067,393,852,7,23,34
+Dark,Waste · Pending,172:48218,493,14067,393,852,7,17,11
+Dark,Waste · Partial,172:48229,986,14067,393,852,7,24,35
+Dark,Waste · Corrected,172:48257,1479,14067,393,852,7,24,35
+Dark,Waste · Not comparable,172:48285,1972,14067,393,852,7,23,34
+Dark,Waste · No baseline,172:48310,2465,14067,393,852,7,23,34
+Dark,Waste · Unavailable,172:48335,2958,14067,393,852,7,17,10
+Dark,Waste · Dish breakdown,172:48346,3451,14067,393,852,7,22,29
+Dark,Waste · How this is measured,172:48382,3944,14067,393,852,8,24,43
+Dark,Moment / Moment: Wed 6:30 PM,172:48440,1972,2392,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48443,2465,2392,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48446,2958,2392,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48449,3451,2392,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48452,3944,2392,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48455,4437,2392,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48458,4930,2392,300,62,2,0,2
+Dark,Onboarding · Welcome,172:48463,0,100,393,852,1,5,7
+Dark,Onboarding · Carousel 1,172:48466,493,100,393,852,1,4,7
+Dark,Onboarding · Carousel 2,172:48469,986,100,393,852,1,4,7
+Dark,Onboarding · Carousel 3,172:48472,1479,100,393,852,1,4,6
+Dark,Onboarding · Sign in,172:48475,1972,100,393,852,1,4,7
+Dark,Onboarding · Verifying,172:48478,2465,100,393,852,1,4,5
+Dark,Onboarding · Confirm profile,172:48481,2958,100,393,852,2,8,12
+Dark,Onboarding · Request correction,172:48485,3451,100,393,852,2,10,12
+Dark,Onboarding · Request correction — sending,172:48495,3944,100,393,852,2,10,12
+Dark,Onboarding · Request correction — failed,172:48505,4437,100,393,852,2,12,13
+Dark,Onboarding · Request sent,172:48516,4930,100,393,852,1,4,6
+Dark,Onboarding · All set,172:48519,5423,100,393,852,1,4,6
+Dark,Onboarding · SRM down,172:48522,5916,100,393,852,1,4,6
+Dark,Onboarding · Session expired,172:48525,6409,100,393,852,1,4,6
+Dark,Onboarding · Not eligible,172:48528,6902,100,393,852,1,4,6
+Dark,Onboarding · Offline,172:48531,7395,100,393,852,1,4,6
+Dark,Moment / Moment: Wed 12:30 PM,172:48533,0,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48536,493,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48539,986,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48542,1479,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48545,1972,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:30 PM,172:48548,2465,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48551,2958,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48554,3451,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48557,3944,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48560,4437,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:48563,4930,3741,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:00 AM,172:48575,1479,5162,300,62,2,0,2
+Dark,Moment / Moment: Wed 10:00 AM,172:48581,2465,5162,300,62,2,0,2
+Dark,Moment / Moment: Wed 10:00 AM,172:48584,2958,5162,300,62,2,0,2
+Dark,Moment / Moment: Wed 10:00 AM,172:48587,3451,5162,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:14 PM,172:48590,0,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:14 PM,172:48593,493,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:14 PM,172:48596,986,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:14 PM,172:48599,1479,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:14 PM,172:48602,1972,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:14 PM,172:48605,2465,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48608,2958,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48611,3451,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48614,3944,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48617,4437,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48620,4930,6511,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48623,0,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48626,493,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48629,986,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48632,1479,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48635,1972,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48638,2465,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48641,2958,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48644,3451,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48647,3944,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48650,4437,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:15 PM,172:48653,4930,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48656,5423,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48659,5916,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:32 PM,172:48662,6409,7938,300,62,2,0,2
+Dark,Moment / Moment: Wed 1:08 PM,172:48665,0,9413,300,62,2,0,2
+Dark,Moment / Moment: Wed 1:08 PM,172:48668,493,9413,300,62,2,0,2
+Dark,Moment / Moment: Wed 1:08 PM,172:48671,986,9413,300,62,2,0,2
+Dark,Moment / Moment: Wed 1:08 PM,172:48674,1479,9413,300,62,2,0,2
+Dark,Moment / Moment: Wed 1:08 PM,172:48677,1972,9413,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48680,0,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48683,493,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48686,986,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48689,1479,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48692,1972,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48695,2465,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:48698,2958,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48701,3451,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48704,3944,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:40 AM,172:48707,4437,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:40 AM,172:48710,4930,10834,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48713,0,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48716,493,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48719,986,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48722,1479,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48725,1972,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48728,2465,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:48731,2958,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48734,3451,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48737,3944,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48740,4437,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48743,4930,12165,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48746,0,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48749,493,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48752,986,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48755,1479,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48758,1972,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48761,2465,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48764,2958,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48767,3451,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48770,3944,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48773,4437,13514,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48776,0,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48779,493,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48782,986,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48785,1479,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48788,1972,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48791,2465,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48794,2958,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48797,3451,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48800,3944,14935,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48803,0,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48806,493,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48809,986,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48812,1479,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48815,1972,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48818,2465,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48821,2958,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48824,3451,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48827,3944,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48830,4437,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48833,4930,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48836,5423,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48839,5916,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48842,6409,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48845,6902,968,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:48848,7395,968,300,62,2,0,2
+Dark,Spending · This week,172:72425,0,15416,393,852,8,37,51
+Dark,Spending · This month,172:72498,493,15416,393,852,8,29,39
+Dark,Add expense,172:72555,986,15416,393,852,8,23,23
+Dark,Add expense · Saving,172:72578,1479,15416,393,852,8,23,23
+Dark,Add expense · Failed,172:72601,1972,15416,393,852,8,25,24
+Dark,Spending · Saved,172:72625,2465,15416,393,852,9,39,52
+Dark,Edit expense,172:72699,2958,15416,393,852,8,25,24
+Dark,Delete confirm,172:72723,3451,15416,393,852,10,27,28
+Dark,Deleting,172:72749,3944,15416,393,852,8,25,24
+Dark,Spending · Empty,172:72773,4437,15416,393,852,9,18,10
+Dark,Spending · Loading,172:72785,4930,15416,393,852,7,18,6
+Dark,Spending · Offline,172:72799,5423,15416,393,852,8,39,53
+Dark,Spending · Error,172:72874,5916,15416,393,852,8,17,10
+Dark,Rewards · Coming soon,172:72886,0,16765,393,852,7,16,11
+Dark,Rewards,172:72900,493,16765,393,852,7,29,26
+Dark,Offer · Juice,172:72924,986,16765,393,852,8,29,31
+Dark,Offer · Not enough,172:72955,1479,16765,393,852,8,29,31
+Dark,Offer · Sending,172:72986,1972,16765,393,852,8,29,31
+Dark,Offer · Failed,172:73017,2465,16765,393,852,8,31,32
+Dark,Rewards · Got it,172:73049,2958,16765,393,852,8,17,19
+Dark,Rewards history,172:73067,3451,16765,393,852,7,22,21
+Dark,Rewards · Balance issue,172:73088,3944,16765,393,852,8,16,18
+Dark,Rewards · Loading,172:73105,4437,16765,393,852,7,17,6
+Dark,Rewards · Offline,172:73119,4930,16765,393,852,7,31,27
+Dark,Rewards · Error,172:73144,5423,16765,393,852,8,15,9
+Dark,Notifications · Inbox,172:73155,0,18096,393,852,7,26,24
+Dark,Notifications · Empty,172:73177,493,18096,393,852,8,14,8
+Dark,Reminder prompt,172:73187,986,18096,393,852,8,11,11
+Dark,Notification settings,172:73201,1479,18096,393,852,7,29,21
+Dark,Quiet hours,172:73225,1972,18096,393,852,8,29,24
+Dark,Settings · System off,172:73254,2465,18096,393,852,7,30,23
+Dark,Settings · Failed,172:73281,2958,18096,393,852,7,31,23
+Dark,Lock screen previews,172:73306,3451,18096,393,852,1,9,18
+Dark,Notifications · Loading,172:73309,3944,18096,393,852,7,16,6
+Dark,Notifications · Offline,172:73322,4437,18096,393,852,7,28,25
+Dark,Notifications · Error,172:73345,4930,18096,393,852,8,15,9
+Dark,You,172:73356,0,19535,393,852,7,40,34
+Dark,Request correction,172:73381,493,19535,393,852,8,45,41
+Dark,Correction · Sent,172:73417,986,19535,393,852,8,41,37
+Dark,Correction · Failed,172:73446,1479,19535,393,852,8,47,42
+Dark,Privacy & data,172:73483,1972,19535,393,852,7,19,18
+Dark,Request deletion,172:73508,2465,19535,393,852,7,15,18
+Dark,Entry history,172:73533,2958,19535,393,852,7,23,23
+Dark,Help,172:73559,3451,19535,393,852,7,30,13
+Dark,Sign out,172:73579,3944,19535,393,852,7,36,34
+Dark,You · Loading,172:73604,4437,19535,393,852,7,13,6
+Dark,You · Offline,172:73616,4930,19535,393,852,7,42,35
+Dark,You · Error,172:73642,5423,19535,393,852,8,13,9
+Dark,Home · Morning,172:73653,0,20905,393,852,7,34,30
+Dark,Home · Afternoon,172:73673,493,20905,393,852,7,33,30
+Dark,Home · During meal,172:73691,986,20905,393,852,7,27,24
+Dark,Home · After last meal,172:73707,1479,20905,393,852,7,28,28
+Dark,Home · Rewards soon,172:73723,1972,20905,393,852,7,33,30
+Dark,Answer Yes · Tap,172:73746,0,22146,393,852,7,34,30
+Dark,Answer Yes · Sending,172:73764,493,22146,393,852,7,33,30
+Dark,Answer Yes · Saved,172:73782,986,22146,393,852,8,33,29
+Dark,Answer Yes · Near meal,172:73801,1479,22146,393,852,7,31,28
+Dark,Answer Yes · Failed,172:73819,1972,22146,393,852,7,33,30
+Dark,Answer No · Tap,172:73842,0,23387,393,852,7,34,30
+Dark,Answer No · Sending,172:73860,493,23387,393,852,7,33,30
+Dark,Answer No · Why not,172:73878,986,23387,393,852,8,38,36
+Dark,Answer No · Saved,172:73909,1479,23387,393,852,8,33,29
+Dark,Answer No · Failed,172:73928,1972,23387,393,852,7,33,30
+Dark,Answer Not sure · Tap,172:73951,0,24628,393,852,7,34,30
+Dark,Answer Not sure · Sending,172:73969,493,24628,393,852,7,33,30
+Dark,Answer Not sure · Saved,172:73987,986,24628,393,852,8,33,29
+Dark,Answer Not sure · Failed,172:74006,1479,24628,393,852,7,33,30
+Dark,Recheck · Lock · No answer,172:74028,0,25959,393,852,1,3,6
+Dark,Recheck · Lock · Said yes,172:74031,493,25959,393,852,1,3,6
+Dark,Recheck · Lock · Said no,172:74034,986,25959,393,852,1,3,6
+Dark,Recheck · Home · Recheck,172:74037,1479,25959,393,852,7,28,26
+Dark,Recheck · Home · Recheck yes,172:74054,1972,25959,393,852,7,28,26
+Dark,Recheck · Home · Recheck no,172:74071,2465,25959,393,852,7,28,26
+Dark,Recheck · Inbox,172:74088,2958,25959,393,852,7,18,18
+Dark,Community · Comments,172:74107,0,27308,393,852,9,28,25
+Dark,Feedback · Step 2 · Loved it,172:74131,493,27308,393,852,8,23,19
+Dark,Report · From feedback,172:74156,986,27308,393,852,6,31,17
+Dark,Moment / Moment: Wed 7:00 AM,172:74170,0,21773,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74173,493,21773,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:30 PM,172:74176,986,21773,300,62,2,0,2
+Dark,Moment / Moment: Wed 10:00 PM,172:74179,1479,21773,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74182,1972,21773,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74185,0,23014,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74188,493,23014,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74191,986,23014,300,62,2,0,2
+Dark,Moment / Moment: Wed 7:00 PM,172:74194,1479,23014,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74197,1972,23014,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74200,0,24255,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74203,493,24255,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74206,986,24255,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74209,1479,24255,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74212,1972,24255,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74215,0,25496,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74218,493,25496,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74221,986,25496,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:74224,1479,25496,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:30 PM,172:74227,1479,26827,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:30 PM,172:74230,1972,26827,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:30 PM,172:74233,2465,26827,300,62,2,0,2
+Dark,Home · After cutoff (full scroll),172:74305,1972,29161,393,985,7,34,30
+Dark,Home · Hero unavailable (full scroll),172:74322,2465,29161,393,915,7,29,26
+Dark,Home · Pass hidden (full scroll),172:74339,2958,29161,393,985,7,31,28
+Dark,Home · Offline (full scroll),172:74355,3451,29161,393,1045,7,35,31
+Dark,Home · Crowd stale (full scroll),172:74373,3944,29161,393,947,7,32,27
+Dark,Home · Morning (full scroll),172:74390,4437,29161,393,1014,7,34,30
+Dark,Home · Afternoon (full scroll),172:74409,4930,29161,393,985,7,33,30
+Dark,Home · After last meal (full scroll),172:74426,5423,29161,393,966,7,28,28
+Dark,Home · Rewards soon (full scroll),172:74441,0,30366,393,985,7,33,30
+Dark,Answer Yes · Tap (full scroll),172:74458,493,30366,393,985,7,34,30
+Dark,Answer Yes · Sending (full scroll),172:74475,986,30366,393,985,7,33,30
+Dark,Answer Yes · Saved (full scroll),172:74492,1479,30366,393,907,8,33,29
+Dark,Answer Yes · Near meal (full scroll),172:74510,1972,30366,393,941,7,31,28
+Dark,Answer Yes · Failed (full scroll),172:74527,2465,30366,393,1011,7,33,30
+Dark,Answer No · Tap (full scroll),172:74544,2958,30366,393,985,7,34,30
+Dark,Answer No · Sending (full scroll),172:74561,3451,30366,393,985,7,33,30
+Dark,Answer No · Saved (full scroll),172:74578,3944,30366,393,899,8,33,29
+Dark,Answer No · Failed (full scroll),172:74596,4437,30366,393,1011,7,33,30
+Dark,Answer Not sure · Tap (full scroll),172:74613,4930,30366,393,985,7,34,30
+Dark,Answer Not sure · Sending (full scroll),172:74630,5423,30366,393,985,7,33,30
+Dark,Answer Not sure · Saved (full scroll),172:74647,0,31537,393,899,8,33,29
+Dark,Answer Not sure · Failed (full scroll),172:74665,493,31537,393,1011,7,33,30
+Dark,Moment / Moment: Wed 4:30 PM,172:74682,0,26827,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:30 PM,172:74685,493,26827,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:30 PM,172:74688,986,26827,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:40 PM,172:74691,2958,26827,300,62,2,0,2
+Dark,Meals · Menu (full scroll),172:74694,986,31537,393,974,7,27,39
+Dark,Meals · Meal detail (full scroll),172:74718,1479,31537,393,988,7,29,31
+Dark,Meals · Menu changed (full scroll),172:74739,1972,31537,393,1028,7,28,40
+Dark,Meals · Loading (full scroll),172:74766,2465,31537,393,926,7,22,20
+Dark,Meals · Offline (full scroll),172:74779,2958,31537,393,1034,7,29,40
+Dark,Intent · Cutoff passed (full scroll),172:74844,4437,31537,393,992,7,30,30
+Dark,Intent · Correction requested (full scroll),172:74865,4930,31537,393,1117,7,32,33
+Dark,Intent · No response (full scroll),172:74886,5423,31537,393,932,7,28,29
+Dark,Feedback · Step 2 · Not good (full scroll),172:74906,0,32814,393,920,8,29,24
+Dark,Feedback · Sending (full scroll),172:74934,493,32814,393,920,8,29,24
+Dark,Feedback · Failed (full scroll),172:74962,986,32814,393,869,8,28,23
+Dark,Moment / Moment: Wed 2:00 PM,172:74990,0,28176,300,62,2,0,2
+Dark,Moment / Moment: Wed 8:32 AM,172:74993,493,28176,300,62,2,0,2
+Dark,Moment / Moment: Wed 12:41 PM,172:74996,986,28176,300,62,2,0,2
+Dark,Report · My reports (full scroll),172:74999,1479,32814,393,880,7,28,24
+Dark,Report · Fixed (full scroll),172:75013,1972,32814,393,955,7,26,25
+Dark,Community · List (full scroll),172:75036,2465,32814,393,1059,7,21,33
+Dark,Community · Offline (full scroll),172:75049,2958,32814,393,1117,7,23,34
+Dark,Waste · Last week (full scroll),172:75063,3451,32814,393,973,7,23,34
+Dark,Waste · Partial (full scroll),172:75087,3944,32814,393,1030,7,24,35
+Dark,Waste · Corrected (full scroll),172:75114,4437,32814,393,1051,7,24,35
+Dark,Waste · Not comparable (full scroll),172:75141,4930,32814,393,1007,7,23,34
+Dark,Waste · No baseline (full scroll),172:75165,5423,32814,393,986,7,23,34
+Dark,Waste · Dish breakdown (full scroll),172:75189,0,34091,393,941,7,22,29
+Dark,Spending · This week (full scroll),172:75224,493,34091,393,1316,8,37,51
+Dark,Moment / Moment: Wed 2:00 PM,172:75297,0,16284,300,62,2,0,2
+Dark,Spending · This month (full scroll),172:75300,986,34091,393,1188,8,29,39
+Dark,Moment / Moment: Wed 2:00 PM,172:75357,493,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75360,986,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75363,1479,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75366,1972,16284,300,62,2,0,2
+Dark,Spending · Saved (full scroll),172:75369,1479,34091,393,1316,9,39,52
+Dark,Moment / Moment: Wed 2:00 PM,172:75443,2465,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75446,2958,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75449,3451,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75452,3944,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75455,4437,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75458,4930,16284,300,62,2,0,2
+Dark,Spending · Offline (full scroll),172:75461,1972,34091,393,1422,8,39,53
+Dark,Moment / Moment: Wed 2:00 PM,172:75536,5423,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75539,5916,16284,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75542,0,17633,300,62,2,0,2
+Dark,Rewards (full scroll),172:75545,2465,34091,393,928,7,29,26
+Dark,Moment / Moment: Wed 2:00 PM,172:75568,493,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75571,986,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75574,1479,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75577,1972,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75580,2465,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75583,2958,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75586,3451,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75589,3944,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75592,4437,17633,300,62,2,0,2
+Dark,Rewards · Offline (full scroll),172:75595,2958,34091,393,988,7,31,27
+Dark,Moment / Moment: Wed 2:00 PM,172:75619,4930,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75622,5423,17633,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:40 PM,172:75625,0,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:40 PM,172:75628,493,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75631,986,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75634,1479,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75637,1972,18964,300,62,2,0,2
+Dark,Settings · System off (full scroll),172:75640,3451,34091,393,874,7,30,23
+Dark,Moment / Moment: Wed 2:00 PM,172:75666,2465,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75669,2958,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 11:30 AM,172:75672,3451,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:40 PM,172:75675,3944,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:40 PM,172:75678,4437,18964,300,62,2,0,2
+Dark,Moment / Moment: Wed 4:40 PM,172:75681,4930,18964,300,62,2,0,2
+Dark,You (full scroll),172:75684,3944,34091,393,949,7,40,34
+Dark,Moment / Moment: Wed 2:00 PM,172:75708,0,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75711,493,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75714,986,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75717,1479,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75720,1972,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75723,2465,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75726,2958,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75729,3451,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75732,3944,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75735,4437,20403,300,62,2,0,2
+Dark,You · Offline (full scroll),172:75738,4437,34091,393,1009,7,42,35
+Dark,Moment / Moment: Wed 2:00 PM,172:75763,4930,20403,300,62,2,0,2
+Dark,Moment / Moment: Wed 2:00 PM,172:75766,5423,20403,300,62,2,0,2
+Dark,Recheck · Lock · No answer (expanded),172:75828,3451,25959,393,852,1,4,9
+Dark,Moment / Moment: Wed 4:30 PM,172:75830,3451,26827,300,62,2,0,2
+Dark,Recheck · Lock · Said yes (expanded),172:75833,3944,25959,393,852,1,4,8
+Dark,Moment / Moment: Wed 4:30 PM,172:75835,3944,26827,300,62,2,0,2
+Dark,Recheck · Lock · Said no (expanded),172:75838,4437,25959,393,852,1,4,8
+Dark,Moment / Moment: Wed 4:30 PM,172:75840,4437,26827,300,62,2,0,2
+Dark,Lock · Stack,172:75843,4930,25959,393,852,1,3,7
+Dark,Moment / Moment: Wed 4:30 PM,172:75845,4930,26827,300,62,2,0,2
+Dark,Lock · Saved · I'm in,172:75848,5423,25959,393,852,1,2,3
+Dark,Moment / Moment: Wed 4:31 PM,172:75850,5423,26827,300,62,2,0,2
+Dark,Lock · Saved · Skip,172:75853,5916,25959,393,852,1,2,3
+Dark,Moment / Moment: Wed 4:31 PM,172:75855,5916,26827,300,62,2,0,2
+Dark,Lock · Saved · Not sure,172:75858,6409,25959,393,852,1,2,3
+Dark,Moment / Moment: Wed 4:31 PM,172:75860,6409,26827,300,62,2,0,2
+Dark,Lock · Saved · Still in,172:75863,6902,25959,393,852,1,2,3
+Dark,Moment / Moment: Wed 4:31 PM,172:75865,6902,26827,300,62,2,0,2
+Dark,Lock · Saved · Still skipping,172:75868,7395,25959,393,852,1,2,3
+Dark,Moment / Moment: Wed 4:31 PM,172:75870,7395,26827,300,62,2,0,2
+Dark,Lock · Fix check,172:75873,5423,18096,393,852,1,3,6
+Dark,Moment / Moment: Wed 7:00 AM,172:75875,5423,18964,300,62,2,0,2
+Dark,Lock · Fix check (expanded),172:75878,5916,18096,393,852,1,4,8
+Dark,Moment / Moment: Wed 7:00 AM,172:75880,5916,18964,300,62,2,0,2
+Dark,"Lock · Saved · Yes, better",172:75883,6409,18096,393,852,1,2,3
+Dark,Moment / Moment: Wed 7:01 AM,172:75885,6409,18964,300,62,2,0,2
+Dark,Lock · Saved · Still bad,172:75888,6902,18096,393,852,1,2,3
+Dark,Moment / Moment: Wed 7:01 AM,172:75890,6902,18964,300,62,2,0,2
+Dark,Comments · Large detent,172:75893,1479,27308,393,852,9,28,25
+Dark,Moment / Moment: Wed 2:00 PM,172:75916,1479,28176,300,62,2,0,2
+Dark,Comments · Menu,172:75919,1972,27308,393,852,10,30,26
+Dark,Moment / Moment: Wed 2:00 PM,172:75943,1972,28176,300,62,2,0,2
+Dark,Comments · Typing,172:75946,2465,27308,393,852,10,29,56
+Dark,Moment / Moment: Wed 2:00 PM,172:75970,2465,28176,300,62,2,0,2
+Dark,Comments · Sending,172:75973,2958,27308,393,852,9,27,25
+Dark,Moment / Moment: Wed 2:00 PM,172:75996,2958,28176,300,62,2,0,2
+Dark,Comments · Pending,172:75999,3451,27308,393,852,9,32,28
+Dark,Moment / Moment: Wed 2:00 PM,172:76024,3451,28176,300,62,2,0,2
+Dark,Comments · Failed,172:76027,3944,27308,393,852,9,29,26
+Dark,Moment / Moment: Wed 2:00 PM,172:76050,3944,28176,300,62,2,0,2
+Dark,Comments · Reported,172:76053,4437,27308,393,852,10,30,26
+Dark,Moment / Moment: Wed 2:00 PM,172:76077,4437,28176,300,62,2,0,2
+Dark,Comments · Empty,172:76080,4930,27308,393,852,9,20,19
+Dark,Moment / Moment: Wed 2:00 PM,172:76096,4930,28176,300,62,2,0,2
