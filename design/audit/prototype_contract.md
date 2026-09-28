@@ -1241,3 +1241,125 @@ The changed area on H6 is the new card, plus the Meals card that moved up 14 pt.
 - **KcalGauge set on page 03** (0, 10572, 2532 × 378) overlaps the MacroRing, MacroBar, DishPortionRow and EstimatePill sets on the canvas.
   - This dates from Stage 2, when the Goal=On variants took the set to about 2208 pt wide. Stage 2.5 widened it further.
   - Instances are unaffected; it is canvas tidiness only. It was not moved here because moving frames is outside this stage.
+
+## Stage 3 - Plate tracker in the prototype (page 07, Light only) (2026-09-28)
+
+**Preconditions** (all passed, read-only):
+- No "≈" in the 16 section-H frames on page 04.
+- KcalGauge Goal=Off shows the composition ring.
+- H8 has the Estimate pill.
+- H10 clears its Save bar by 312 pt (it doesn't scroll); H12 clears it by 22 pt.
+
+**Snapshot and baseline:**
+- A snapshot was stored before any edit (`st3_*`, including the full 1054-row page-07 link dump; `st26_*` cleared).
+- 1× before-renders are in `design/audit/stage3/before/`. They cover H1, H12 and H13 (page 04), the You-list frames (pages 04 and 05), and all 228 page-07 frames (four grids, kept in the working scratchpad).
+- The same capture rendered twice differs by 0 px.
+
+### 3.0 Source rule (applies to all later stages)
+
+- **Page 04 is the source** for the plate-tracker screens.
+- The 18 frames in row **"P · Plate tracker"** on page 07 (y 37740) are **copies**. Frames can't be instanced, so copies do not inherit later fixes.
+- Any change to a tracker screen is made on page 04 first, then re-copied, and the page-07 scroll pattern and links are re-applied.
+- **Dark** stays on page 05 as a design page with no prototype. The prototype is Light only.
+- Copying carried page 04's two "Plate tracker (design page)" flow starts onto the copies. They were replaced by a single start, **"Plate tracker"**, on the H1 copy. Page 07 now has 24 starts.
+
+### 3.1 Copies and scroll pattern
+
+- **Frames copied:** lunch "Meal detail · Answer Yes · Sending" (`303:22149`), lunch "Meal detail · Answer Yes · Saved" (`303:22257`), then H1–H14, H6b and H2b, placed at x = k·493.
+- **H6** was copied in its Stage 2.6 state (with the Nutrients card).
+- **Links stripped:** every copy's design-page links were removed.
+- **Pattern applied to every copy** (the Meal detail / inline-title pattern):
+  - Layer order: Meal wash → Content → **HeaderBackdrop** → **ScrollEdgeFade Style=Status** ("Top edge fade") → Status Bar, Nav Header, fades, bar or sheet layers, Home Indicator.
+  - `numberOfFixedChildren = children − 2`, so only the wash and the content scroll.
+  - `overflowDirection = VERTICAL`, clip on, bottom padding **124**.
+
+| Frame | Before (page-04 source) | After (page-07 copy) | Bar | Scrolls | Last item vs bar |
+|---|---|---|---|---|---|
+| Lunch Sending | no scroll, not fixed | fixed 7 | Tab | yes | 20 |
+| Lunch Saved | no scroll, not fixed | fixed 7 | Tab | yes | 20 |
+| H1 | no scroll, not fixed | fixed 7 | Tab | yes | 20 |
+| H2 / H3 / H4 / H5 / H11 / H2b | no scroll, not fixed | fixed 7 | Save | yes | 22 |
+| H14 (sheet) | no scroll, not fixed | fixed 10 | Save | yes | 22 |
+| H6 | no scroll, not fixed | fixed 7 | Tab | yes | 20 (after removing All nutrients: content 958) |
+| H6b / H7 / H8 | no scroll, not fixed | fixed 7 | Tab | yes | 20 |
+| H9 (sheet) | no scroll, not fixed | fixed 9 | Tab (under scrim) | no | — |
+| H10 | no scroll, not fixed | fixed 6 | Save | no | 312 |
+| H12 | no scroll, not fixed | fixed 6 | Save | yes | 22 |
+| H13 | no scroll, not fixed | fixed 7 | Tab | no | 177 |
+
+**Checks on the copies:**
+- **H4:** the first dish row's chips end at 740 against the Save bar at 750, so **10 pt** (held).
+- **H8:** the pill is at 259, 176, 20 pt in from the right edge of the Average card, level with its eyebrow (held).
+
+### 3.2 Entry cards (measured)
+
+**a. Meal detail (Answer Yes · Saved) → H1**
+- The H1 "Track this meal?" card is **172 pt** tall and sits in place under the hero.
+- On H1 the Crowd row is at 861–915. At the end of the scroll it ends **20 pt** above the tab bar, so it is reachable.
+- The lunch Saved copy scrolls by 3 pt; its Crowd row is visible at rest (ends at 731, tab bar at 748).
+
+**b. PlateSummaryCard** (page 03, `572:21676`, at 1800, 11500)
+- **Card:** 353 × **106**, `hero-bg`, radius 20, padding 16.
+- **Ring:** a 64 pt composition ring (stroke 8, 3 pt gaps, round caps) in lime / `on-hero` / `on-hero-secondary`, sized by 4P / 4C / 9F of 38 / 112 / 29 g.
+- **Text:** "TODAY · ESTIMATE" (ML/Mono Label), "870" (ML/Metric) with "kcal" (ML/Metric Unit), "P 38 g · C 112 g · F 29 g" (ML/Mono Footnote), and a chevron.
+- **No** target, goal arc, knob or over state.
+- **Properties:** `Number` and `Macros` (text).
+- **Tap target:** the whole card, 353 × 106.
+- **Contrast** (same tokens as the hero): Light 18.9 / 9.2:1, Dark 15.2 / 6.7:1.
+- **Placed only** on **Home · After last meal** (`221:62580`), between "At the Mess" and "Follow-up", at 603–709.
+  - It is fully visible above the tab bar at rest.
+  - Content grew from 780 to 898. At the end of the scroll the last item ends **20 pt** above the tab bar.
+  - The frame is reached in the "MealLoop app" flow: Onboarding → All set → Home · Afternoon → (status-bar tap) During meal → After last meal.
+- **Other Home states that would need it** (not changed in this stage): Home · Morning, Home · Afternoon, Home · During meal, and the Home-based answer states (Answer Yes / No / Not sure · Tap, Sending, Saved, Near meal), plus Recheck · Home.
+  - After cutoff, Hero unavailable, Modules hidden, Pass hidden, Offline, Loading, Crowd stale and Rewards soon are gallery frames, so they are left as they are.
+
+### 3.3 Nutrition row
+
+- **Row:** "Row / Nutrition", a SettingsRow Type=Link (a clone of the About row, so still an instance), with icon `chart.bar` and title "Nutrition". It sits above "About MealLoop" with its own separator. Tap target: 351 × 56.
+- **Frames:**
+  - Page 07: You, Request correction, Correction · Sent, Correction · Failed, Sign out, You · Offline.
+  - Pages 04 and 05: the same six, plus You (full scroll) and You · Offline (full scroll).
+- **Full-scroll frames:** they grew by 57 pt (1067 → 1124, 1127 → 1184), and their Tab Bar, Home Indicator and scroll-edge fade moved down 57 pt.
+- **Links:** on page 07, the You and You · Offline rows link to the H13 copy (drill-in). The rows in the four sheet or dialog frames sit under the scrim and have no link.
+- **Sign out clearance:**
+  - Page-07 You and You · Offline: **21 pt** above the tab bar at the end of the scroll.
+  - Full-scroll frames on 04 and 05: 21 pt.
+  - The 852 pt design frames on 04 and 05 do not scroll, and Sign out was already below their fold before this stage.
+
+### 3.4 Links
+
+**+102** on page 07 (1054 → **1156**). The full table is in `design/audit/stage3/new_links.md`. Pages 04 and 05 stay at 7.
+
+- **Variable:** a new collection "Prototype state" with boolean **`seenPlateIntro`** (default false). The plugin could set it.
+  - H1 "Track my plate" is a **conditional** action: if `seenPlateIntro` is true, go to H2. Otherwise set it to true and go to H12.
+  - So H12 appears once per prototype session.
+- **Menu entry:** Meals · Menu "Current meal" (Serving now · Lunch) goes to lunch Sending (drill-in).
+  - Sending → Saved: timer 1.2 s, Smart animate 0.25, matching the other Sending frames.
+  - Saved → H1: timer 0.8 s, Smart animate 0.25. The Track card appears in place.
+- **R1a/R1b:** lunch Saved and H1 are entered by timers, so their Back and H1 "Not now" are **fixed back links (Move out right 0.3 s) to Meals · Menu**, not BACK. BACK there would return to a timer frame and loop.
+- **Substitutes** (the copies have no matching control; recorded as gaps 62–64):
+  - H6 "+" → H9 uses the **Snack row**.
+  - H6 week toggle → H8 uses the **DatePillStrip**.
+  - H6 goal link → H10 has no control on H6; H10 is reached from H13 → Daily goal.
+  - H13 "Today" → H6 has no control on H13; H6 is reached from H4 Done, the Home card and the H6b back link.
+  - H10 "saving a goal" uses the **Steady energy / Active days option rows**, because the Save button is drawn Disabled.
+- **H6 "All nutrients" row:** removed on the page-07 copy once the Nutrients card linked to H7. H6 still ends 20 pt above the tab bar. The page-04/05 H6 still has the row (gap 65).
+- **Checks:**
+  - No orphans: every copy has at least one incoming link.
+  - No dead ends: every copy has a back or close.
+  - Walks a–d trace link by link (see the Stage 3 README).
+
+### 3.5 Pixel and structure checks
+
+- **Page 04 H1, H12, H13:** 0 px differ.
+- **Page 07:** 226 of 228 baseline frames have no pixel above 6 (max 4).
+  - The two that changed are Home · After last meal (the PlateSummaryCard) and Sign out (the Nutrition row is visible behind the dialog).
+  - You, Request correction, Correction · Sent / Failed and You · Offline are unchanged at rest, because the new row is below the fold.
+- **Structure against `st3`:**
+  - Page 07: +20 top-level nodes (row label, 18 copies, offline note); 7 frames changed (Home · After last meal and the six You-list frames).
+  - Pages 04 and 05: 8 You-list frames changed each.
+  - Page 03: +1 (PlateSummaryCard).
+  - Page 03 also reported five sets with different nested instance and text counts: NavHeader, MealHero, IssueCard, IdentityCard and OnboardingPage. A sixth, GlassSheet, showed only on the first comparison.
+  - This is the known page-03 first-read flip: the `st3` snapshot read page 03 once. No script in this stage touched those sets, and two fresh reads agree with each other. From Stage 4 on, the snapshot reads page 03 until two reads agree.
+- **NavHeader and HomeHeader:** not edited.
+- **Fragile spot (from Stage 2.6):** the H8 Estimate pill is an absolute layer over the Average card instance. It was re-checked on the H8 copy and holds.
