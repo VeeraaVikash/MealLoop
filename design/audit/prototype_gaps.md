@@ -308,3 +308,17 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 74 | Onboarding · All set → Home | Drill-in into Home: Home is a tab root, and Back from Home would return into onboarding. | Low | Consider Dissolve 0.25 plus SWAP for this last step (needs approval under R1a). |
 | 75 | Fixed back arrows (5) | Still Dissolve 0.2, not R1b Move out right. | Low | Apply R1b when approved. |
+
+## Stage 3.5 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 74 | **Fixed.** All set → Home is Dissolve 0.25 with SWAP (contract 3.5.5 for the history caveat). |
+| 75 | **Fixed.** The 5 fixed back arrows use R1b (Move out right 0.3 s). |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 76 | Community · Suggestion (04/05/07) | **Defect:** "Me too" opens Community · List instead of showing agreement. No supported state of the Suggestion card exists anywhere in the file (99 Archive included). | **High** | Build "Community · Suggestion · Supported" (count 113, "You said me too" + Undo, like Community · Supported for issues). Link Me too → it (Dissolve 0.25 or Smart animate), and Undo → back. |
+| 77 | Meals · Meal detail (dinner) → answer | I'm in / Skip / Not sure go to Home-area Answer · Tap frames, so the tap changes both screen and tab. Lunch has Meals-area answer frames (Meal detail · Answer Yes · Sending / Saved); dinner has none. | Med | Build dinner-parity Meal detail answer frames (Tap / Sending / Saved for Yes / No / Not sure), then relink. |
