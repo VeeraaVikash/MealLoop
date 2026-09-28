@@ -108,3 +108,18 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 36 | 07 You, You · Offline (scrolled) | The fixed Nav Header is a transparent Large Title. Scrolled content passes under the "You" title and the status bar; the status-bar text becomes unreadable over the black identity card. | Med | Let the large title scroll away and keep only the status bar fixed (iOS pattern; needs one layer reorder), or add a collapsed inline-title bar with a glass background to NavHeader. |
 | 37 | 07 Sign out (alert frame) | The background shows You at scroll 0, so the Sign out row the student tapped isn't visible behind the alert. | Low | Show the background scrolled to the bottom (shift the content 215 pt in that frame only). |
+
+## Stage 1.7 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 36 | **Fixed.** The large title scrolls; a top ScrollEdgeFade keeps the status bar readable (16.1:1). |
+| 37 | **Fixed.** The Sign out alert shows the list scrolled to the bottom, with the Sign out row visible. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 38 | 07 Meals · Menu, Community · List, Meals · Menu changed, Meals · Loading, Meals · Offline, Community · Offline | Content runs under the tab bar or past the frame, and these screens don't scroll, so the last items can't be reached in the prototype. | Med | Apply rule R9 (scroll, large title scrolls, top fade) to each. |
+| 39 | 07 Request correction, Correction · Sent, Correction · Failed | Their You-list container is a fixed 655 pt and clips, so the About and Sign out rows are cut off in the background (the same cause as the alert, fixed there). | Low | Let the list hug its content (background only). |
+| 40 | 07 You (at rest) | The top fade replaces the lime wash tint in the top 63 pt. | Info | Accept, or use a wash-tinted fade variant for screens with a Meal wash. |
