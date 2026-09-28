@@ -1363,3 +1363,125 @@ The changed area on H6 is the new card, plus the Meals card that moved up 14 pt.
   - This is the known page-03 first-read flip: the `st3` snapshot read page 03 once. No script in this stage touched those sets, and two fresh reads agree with each other. From Stage 4 on, the snapshot reads page 03 until two reads agree.
 - **NavHeader and HomeHeader:** not edited.
 - **Fragile spot (from Stage 2.6):** the H8 Estimate pill is an absolute layer over the Average card instance. It was re-checked on the H8 copy and holds.
+
+## Stage 3.1 - Tracker's missing controls (pages 03, 04, 05, 07) (2026-09-28)
+
+**Snapshot and baseline:**
+- A snapshot was stored before any edit (`st31_*`, including the full page-07 link dump).
+- Page 03 was read until two reads agreed (`lis4qm`, three reads over two runs). The first read, `jiwuwv`, was the first-load flip.
+- 1× before-renders are in `design/audit/stage3_1/before/`: H1, H6, H6b, H7, H8, H10, H12 and H13 on pages 04/05, the page-07 copies, and all 246 page-07 frames. The same capture rendered twice differs by 0 px.
+- **Method:** every design edit was applied with the same script to page 04 (source), page 05 (Dark twin) and the page-07 copy. No frame was re-copied.
+- **Equality check after editing:** H6 and H10b have identical content children, visible text and header instance list on all three pages.
+
+### 3.1.1 Page 03: `gearshape` symbol (the only page-03 change)
+
+- **Added** `Name=gearshape` (`583:2`) to the Symbol set (now 55 variants) at 216, 264.
+- **Built as a clone of `plus`,** so it keeps the 24×24 frame, SCALE constraints, no fill, a 1.7 stroke with round caps and joins, and a stroke bound to `ink` (`45:6`). It follows Dark.
+- **Drawing:** an 8-tooth gear (outer radius 8.4, root radius 6.5) plus a 2.7 hub circle. The glyph is 16.8 × 16.8, centred at 3.6, 3.6, the same optical size as `bell` and `clock`.
+- **Structural diff:**
+  - Symbol set: kids 54 → 55.
+  - NavHeader set: its nested-instance count read 10 → 11. This field has also read 10 and 12 on earlier first-load reads (the Stage 3 flip), and no script edited NavHeader.
+  - No other page-03 set differs on a stable read.
+
+### 3.1.2 H6 (goal off) on pages 04, 05 and 07
+
+- **"All nutrients" row removed** on pages 04 and 05 (page 07 had it removed in Stage 3).
+- **Day | Week toggle:**
+  - The same `SegmentedControl` as H8, `Items=2, Selected=1` (Day), labels Day / Week. It is the first content item at y **110–158**, FILL width 353.
+  - The 8 pt gap above the content was **not** used, because the content start (110) is shared by the other inline-title frames.
+- **Header trailing slots** (NavHeader instance properties only; the component is untouched):
+  - `Show Trailing` and `Show Trailing 2` are turned on.
+  - Slot 2, "**Add food**": `plus` icon, 44 × 44, at 281, 58.
+  - Slot 1, "**Nutrition settings**": `gearshape` icon, 44 × 44, at 333, 58.
+  - Both icons are `ink`, not lime.
+  - The icon-to-header contrast, measured on the renders, is **18.3:1** (Light) and **14.7:1** (Dark).
+
+**Heights (content frame):**
+
+| Page | Before | After | Net |
+|---|---|---|---|
+| 04 | 1029 | 1018 | −11 (−71 row, +60 toggle) |
+| 05 | 1029 | 1018 | −11 |
+| 07 copy | 958 | 1018 | +60 (row already gone) |
+
+All three are now the same frame at 1018.
+
+**Layout** (all three pages):
+- Toggle 110–158
+- DatePillStrip 170–234
+- Hero 246–584
+- Nutrients 596–704
+- Meals card 716–1004 (Lunch 716–788)
+- Tab bar 748
+
+**Checks:**
+- **At rest** on the page-07 copy, the hero and the Nutrients card are fully visible above the tab bar. The Lunch row shows its top 32 of 72 pt (accepted).
+- **End of scroll:** the last item ends **20 pt** above the tab bar.
+
+### 3.1.3 H10b · Option selected (pages 04, 05, 07)
+
+- **Frame:** "Settings · Daily goal · option selected", a copy of H10, 852 pt below it (04/05: 4437, 37092; 07: 5423, 38692). Labelled "**H10b · Option selected**".
+- **Changes from H10:**
+  - The "Use a daily goal" row is set to `Toggle On`.
+  - The Options group goes from 50% to 100% opacity.
+  - **Steady energy** shows a `checkmark.circle` icon (selected).
+  - **Save** uses `Style=Primary, State=Default` (enabled).
+- **H10 unchanged:** it keeps the disabled Save (0 px changed on 04/05).
+
+### 3.1.4 Links (page 07 only)
+
+The page-07 link count went from 1156 to **1162** (−6 removed, +12 added). The table is in `design/audit/stage3_1/links.md`.
+
+- **Removed (substitutes and old targets):**
+  - H6 Snack row → Quick add
+  - H6 date strip → Weekly
+  - H10 Steady energy → H6b
+  - H10 Active days → H6b
+  - You → Nutrition → H13
+  - You · Offline → Nutrition → H13
+- **Added:**
+  - H6 **Add food** → H9 (Dissolve 0.25)
+  - H6 **Week** segment → H8 (Dissolve 0.25; the layer names don't match, so no Smart animate)
+  - H6 **Nutrition settings** → H13 (drill-in)
+  - H10 **Steady energy / Active days / Custom** → H10b (Smart animate 0.25, in-frame)
+  - H10b **Save** → H6b (Dissolve 0.25)
+  - H10b **Back** → BACK
+  - You and You · Offline **Nutrition** → H6 (drill-in)
+  - H9 and H14 **Dismiss · tap outside** → BACK
+- **Kept from Stage 3:**
+  - H8 Day segment → BACK (returns to H6)
+  - H13 Back → BACK (returns to H6 when entered from the gear)
+  - H13 Hide numbers → H11 and Daily goal → H10
+  - H6b Back → H6 (fixed MOVE_OUT)
+  - H6 Back → BACK (returns to You when entered from Nutrition)
+- **Sheet hit layers:** "Dismiss · tap outside" is a transparent 393 × 852 frame placed after the Scrim and before the Sheet, so it covers the background screen, its tab bar and Estimate pill. It is fixed with the chrome.
+  - H9 is entered only by tap (Add food).
+  - H14 is entered only by tap (7 Estimate pills).
+  - So BACK cannot land on a timer frame.
+- **No goal link on H6,** as instructed.
+- **Orphans / dead ends:** none. Every copy and H10b has at least one incoming link and a back or close.
+
+### 3.1.5 Pixel checks (no pixel above 6)
+
+- **Pages 04 and 05:** H1, H6b, H7, H8, H10, H12 and H13 have **0 px** changed.
+- **Page 07:** 245 of 246 baseline frames have 0 px changed (max 0). The only changed frame is the H6 copy.
+  - The H9 and H14 copies are unchanged, because the hit layers are transparent.
+  - The H10 and You frames are unchanged, because only their links changed.
+- **Link side effect:** removing "All nutrients" on pages 04/05 also removed its design-page link (H6 All nutrients → H7, Dissolve 0.2). Pages 04 and 05 are now at **6** links each (were 7).
+
+### 3.1.6 Accessibility spec (recorded here because Figma has no accessibility-label field)
+
+| Element | Label | Trait / role |
+|---|---|---|
+| H6 trailing slot 2 (`plus`) | "Add food" | button |
+| H6 trailing slot 1 (`gearshape`) | "Nutrition settings" | button |
+| H6 / H8 Day \| Week | segments "Day", "Week" | segmented control: tab-group semantics; each segment is a button with the *selected* trait on the current one (Day on H6, Week on H8) |
+| H9 / H14 dismiss layer | "Close" | button; not in the reading order after the sheet's own Close |
+
+- **Tap targets:** trailing slots 44 × 44 each; segmented control 353 × 48, each segment 170 × 38 inside a 48 pt row. The row is the hit area; the segment bounds are recorded here as specified in the source file.
+
+### 3.1.7 Product rules (apply to all later stages)
+
+1. **PlateSummaryCard** shows on Home only when the plate tracker is **on** and a plate has been **saved today**.
+2. **You → Nutrition** opens the Day view (H6) when tracking is on. When tracking is **off**, it opens the first-run screen (H12).
+3. **Goal setup lives only in Settings** (Nutrition → Daily goal → H10/H10b). H6 has no goal link.
