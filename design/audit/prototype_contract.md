@@ -422,3 +422,63 @@ Also working from You: About MealLoop, Privacy & data (and on to Request deletio
 - `OnboardingArt` (10 variants: Angle Welcome / Angle 1–3 / Verify × Size Large / Small) draws the light ribbon as a **rectangle with an IMAGE fill** (a raster 3D render, hash `3bb6b876…`), shown through the `art-light` variable.
 - Dark shows a placeholder frame ("DARK RIBBON RENDER NEEDED") through `art-dark`.
 - Because it is an image, it **can't be rebuilt as a variable-bound vector without redrawing the artwork**. Per the brief, the step stopped here. The 16 Dark onboarding frames keep the placeholder.
+
+---
+
+## Stage 1.7 - You screen header and alert background (2026-09-28)
+
+Before starting, a snapshot was stored in root plugin data (`st17_*`, now including layer order and positions; the `st16_*` chunks were cleared). A named version still cannot be saved. Scope: page 07 You, You · Offline, and the Sign out alert frame. The NavHeader component and all other screens are unchanged.
+
+### 1.7.1 Header scrolls, top edge fade (You, You · Offline)
+
+**New layer order (bottom → top):**
+- You: Meal wash, tmp / Content, **Nav Header**, **Top edge fade**, Status Bar, Scroll edge fade, Tab Bar, Home Indicator.
+- You · Offline: the same, plus the Gallery · Back / Next hotspots on top.
+
+**Fixed children** (`numberOfFixedChildren`):
+- You: 5 (Top edge fade, Status Bar, Scroll edge fade, Tab Bar, Home Indicator).
+- You · Offline: 7 (the same 5 plus the two gallery hotspots).
+
+**What scrolls:** the Nav Header ("You" large title row), the Meal wash and the content.
+
+**Top edge fade:**
+- An instance of the same **ScrollEdgeFade** component as the bottom fade (same Light/Dark rectangles and visibility variable), rotated 180° and sized 393×100 at y 0.
+- It is opaque canvas (`#EDEDE8`) from y 0 to 63, which covers the whole status bar, then fades to clear at y 100.
+
+**Contrast (Light):**
+- Status-bar text and icons (`ink`) over the fade: **16.1:1** at every scroll position, including over the black identity card.
+- Without the fade it would be 1.0:1.
+
+**At rest (visible change):** the top 63 pt is now plain canvas instead of the lime Meal-wash tint. The tint shows from about y 63 down.
+
+**Rule R9.** On a scrolling screen, a large title scrolls with the content. Only system chrome stays fixed: status bar, top and bottom edge fades, tab bar, home indicator. A scrolling screen gets a top ScrollEdgeFade (rotated 180°, 100 pt) under the status bar.
+
+### 1.7.2 Sign out alert background
+
+- **Content shift:** Meal wash, the You list and the Nav Header moved up 215 pt, the full scroll range of You.
+- **List container:** it was a fixed 655 pt and clipped, and since Stage 1 it had cut off the About and Sign out rows. It now hugs its content (904 pt).
+- **Top edge fade:** added under the status bar, as on You.
+- **Result:** the Sign out row shows at y 671–727, under the scrim and below the alert (337–516). The alert stays the top layer.
+
+### 1.7.3 Links
+
+- Page 07 is still **1054** links (+0 −0).
+- **You (15, unchanged):**
+  - Identity → Request correction.
+  - Tiles: Spending → Spending · This week; Rewards → Rewards; Attendance → Entry history; Reports → Report · My reports.
+  - Rows: Notifications → Notification settings; Privacy & data → Privacy & data; Feedback history → Feedback · History; Help → Help; About MealLoop → About MealLoop; Sign out → Sign out.
+  - Tabs: Home, Meals, Community. Search → Search · Empty.
+- **You · Offline (3):** About MealLoop, and the two gallery hotspots.
+- **Sign out alert:** Cancel → BACK; Alert → Onboarding · Welcome.
+
+### 1.7.4 Report-only: the fixed-title pattern elsewhere
+
+- **No other screen scrolls** on any page. Only these two frames have overflow set, and neither keeps the title fixed. So no other screen shows the title/content overlap today.
+- **Would need the same fix if made to scroll:** six page-07 screens have a Large-Title Nav Header and content that runs under the tab bar (past y 748) or past the frame:
+  - Meals · Menu (content to 854)
+  - Community · List (939)
+  - Meals · Menu changed (908)
+  - Meals · Loading (783)
+  - Meals · Offline (914)
+  - Community · Offline (997)
+- **Content out of reach:** these don't scroll, so their lowest content can't be reached in the prototype (the same class of issue that Sign out had).
