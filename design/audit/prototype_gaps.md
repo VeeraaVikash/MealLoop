@@ -123,3 +123,20 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 38 | 07 Meals · Menu, Community · List, Meals · Menu changed, Meals · Loading, Meals · Offline, Community · Offline | Content runs under the tab bar or past the frame, and these screens don't scroll, so the last items can't be reached in the prototype. | Med | Apply rule R9 (scroll, large title scrolls, top fade) to each. |
 | 39 | 07 Request correction, Correction · Sent, Correction · Failed | Their You-list container is a fixed 655 pt and clips, so the About and Sign out rows are cut off in the background (the same cause as the alert, fixed there). | Low | Let the list hug its content (background only). |
 | 40 | 07 You (at rest) | The top fade replaces the lime wash tint in the top 63 pt. | Info | Accept, or use a wash-tinted fade variant for screens with a Meal wash. |
+
+## Stage 1.8 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 38 | **Fixed** for the six named frames (R9 + Wash fade). The other 49 swept frames are listed in contract §1.8.6. |
+| 39 | **Fixed.** The three sheet backgrounds hug their lists. |
+| 40 | **Fixed.** The ScrollEdgeFade Style=Wash fade is invisible over the Meal wash at rest. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 41 | 07 Spending · This week / This month / Saved | The Expense / Canteen row, the only way into Edit expense (and then Delete confirm and Deleting), is off-frame. That flow can't be reached in the prototype. | High | Apply R9 scrolling (keeping the Footer fixed), or move the expense list above the fold. |
+| 42 | 07 Home ×3, Answer ×13 | The Impact card and Method (i) are partly or fully under the tab bar. On Home · Morning they're fully hidden. | Med | Apply R9 to the Home family (the header is HomeHeader, not NavHeader). |
+| 43 | 07 Meals · Meal detail | Crowd row hidden under the tab bar; the inline-title header needs a fixed bar with a material background to scroll correctly. | Med | Decide the inline-header scroll pattern, then apply. |
+| 44 | 6 R9 frames | Clearance is 20 pt (You has 21). | Low | Add 1 pt bottom padding to the content frames, or accept 20 pt as the standard. |

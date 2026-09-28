@@ -482,3 +482,102 @@ Before starting, a snapshot was stored in root plugin data (`st17_*`, now includ
   - Meals · Offline (914)
   - Community · Offline (997)
 - **Content out of reach:** these don't scroll, so their lowest content can't be reached in the prototype (the same class of issue that Sign out had).
+
+---
+
+## Stage 1.8 - Scroll reachability and wash fade (2026-09-28)
+
+Before starting, a snapshot was stored in root plugin data (`st18_*`, with layer order and child boxes; the `st17_*` chunks were cleared). A named version still cannot be saved. The NavHeader component is unchanged.
+
+### 1.8.1 Sweep: page-07 frames whose content runs past the visible bottom and that don't scroll (55)
+
+- "Past" means below the tab bar top (748), a sticky Footer, or the frame edge.
+- **Links in the overflow:**
+  - **partly:** under the tab bar, still partly tappable;
+  - **hidden:** fully under the tab bar;
+  - **off-frame:** outside the frame, can't be reached at all.
+- **LT** = large-title Nav Header. All 55 have the Meal wash at the top.
+
+| Family | Frame | Overflow | LT | Links in overflow | Note |
+|---|---|---|---|---|---|
+| Answer No | Tap / Sending / Saved / Failed | +117 / +117 / +36 / +143 | – | Impact, Method (i): partly (Failed: none) | Failed = gallery |
+| Answer Not sure | Tap / Sending / Saved / Failed | +117 / +117 / +59 / +143 | – | Impact, Method (i): partly | Failed = gallery |
+| Answer Yes | Tap / Sending / Saved / Near meal / Failed | +117 / +117 / +36 / +98 / +143 | – | Impact, Method (i): partly | Failed = gallery |
+| Community | **List** | +191 | LT | Curd runs out: partly; **Rice undercooked: hidden** | **fixed** |
+| Community | **Offline** | +249 | LT | none | gallery; **fixed** |
+| Correction | Sent / Failed | +91 past frame | LT | none | sheet background |
+| Feedback | Step 2 · Not good / Sending / Failed | +52 / +52 / +1 past footer | – | Action: partly (Not good) | |
+| Home | Morning / Afternoon / After last meal | +171 / +117 / +98 | – | Morning: Follow-up partly, **Impact + Method (i) hidden**; others partly | |
+| Home | After cutoff / Crowd stale / Hero unavailable / Offline / Pass hidden / Rewards soon | +117 / +79 / +47 / +177 / +117 / +117 | – | none | gallery |
+| Intent | Correction requested / Cutoff passed / No response | +249 / +124 / +64 | – | none | gallery |
+| Meals | **Menu** | +106 | LT | **Meal / Breakfast: hidden** | **fixed** |
+| Meals | **Menu changed / Loading / Offline** | +160 / +35 / +166 | LT | none | gallery; **fixed** |
+| Meals | Meal detail | +120 | – (Inline) | AtMessTile ×2 partly; **Crowd: hidden** | different pattern |
+| Notifications | Offline | +31 | – | none | gallery |
+| Report | My reports / Fixed | +12 / +91 | – | Food smells…: partly (My reports) | |
+| Request correction | Request correction | +91 past frame | LT | none | sheet background |
+| Rewards | Rewards / Offline | +60 / +120 | – | Something wrong…: partly (Rewards) | Offline = gallery |
+| Settings | System off | +6 | – | none | gallery |
+| Spending | This week / This month / Saved / Offline | +448 / +320 / +448 / +554 past footer | – | **Expense / Canteen: off-frame** (week, month, Saved) | Offline = gallery |
+| Waste | Last week / Dish breakdown / Corrected / No baseline / Not comparable / Partial | +105 / +73 / +183 / +118 / +139 / +162 | – | none | 4 gallery |
+| Waste | How this is measured | +1 past frame | – | none | sheet background |
+
+### 1.8.2 Fix set (6 frames, R9)
+
+The six named frames were fixed. **Meals · Meal detail** is the only other frame in the Meals and Community families with overflow. It uses an **Inline-title** header with a Back button, which is a different pattern: making it scroll would scroll the Back button away, and keeping it fixed leaves a transparent bar over the content. It is reported, not fixed.
+
+| Frame | New layer order (bottom → top) | Fixed | Scroll range | Last item at max scroll | Clearance above tab bar |
+|---|---|---|---|---|---|
+| Meals · Menu | Meal wash, content, Nav Header, Top edge fade, Status Bar, Scroll edge fade, Tab Bar, Home Indicator | 5 | 126 | 854 → 728 | 20 pt |
+| Community · List | same | 5 | 211 | 939 → 728 | 20 pt |
+| Meals · Menu changed | same + Gallery · Back / Next | 7 | 180 | 908 → 728 | 20 pt |
+| Meals · Loading | same + gallery | 7 | 55 | 783 → 728 | 20 pt |
+| Meals · Offline | same + gallery | 7 | 186 | 914 → 728 | 20 pt |
+| Community · Offline | same + gallery | 7 | 269 | 997 → 728 | 20 pt |
+
+- **Clearance is 20 pt, not 21.** The content keeps its 124 pt bottom padding, and scroll range comes from the content frame. You reaches 21 pt only because it has a 1 pt gap after its last row. Getting 21 here needs 1 pt more bottom padding in these content frames, which isn't in this stage's allowed changes (see open question).
+- **Links:** unchanged; page 07 is still 1054.
+
+### 1.8.3 ScrollEdgeFade: Wash variant
+
+- **Component set:** ScrollEdgeFade (`457:1097`) is now a set.
+  - `Style=Plain` is the original component (`164:57923`); all 546 instances are still linked and unchanged.
+  - `Style=Wash` (`457:1094`) is new.
+- **Style=Wash colours:** it uses the same Light and Dark rectangles and visibility variables (art-light / art-dark). Its colour follows the Meal wash composite at each height.
+  - Light: `#E9F7B0` at y 0, `#EAF5BC` at y 63, `#EAF4C3` at y 100.
+  - Dark: `#2A3312`, `#252C12`, `#222812`.
+- **Shape:** opaque from y 0 to 63 (behind the whole status bar), then clear by y 100. The wash is `#E9F7B0 → clear` over 300 pt on canvas, so its colour at 100 pt is still a light tint, not pure canvas. The fade matches that colour exactly, so **at rest it's invisible over the wash**.
+- **Used rotated 180°, 393×100 at y 0**, on You, You · Offline, the Sign out alert, and the 6 frames above. That's every frame with a top fade; all of them have the Meal wash. Plain stays as the bottom fade everywhere.
+- **Pages 04 and 05:** no frame there uses a top fade, so nothing changed.
+- **Contrast (Light, status-bar `ink`):** 16.5:1 over the fade at y 0, 16.4:1 at y 54–63, the same over black content because the fade is opaque there. At y 80, below the status bar, the black card behind the fade still gives 5.4:1 against ink.
+
+**Rule R9a.** A top edge fade uses `ScrollEdgeFade / Style=Wash` on screens with a Meal wash, and `Style=Plain` on screens without one.
+
+### 1.8.4 Sheet backgrounds
+
+- **Frames:** Request correction, Correction · Sent, Correction · Failed.
+- **Change:** the background You list container now hugs its content, 655 → 904 pt. It stays at y 163 (scroll at the top), so nothing inside is clipped. The Sign out row is at y 886, below the frame edge, as it would be on the real screen at scroll 0.
+
+### 1.8.5 Walks
+
+1. Home · Afternoon · Tab / Meals → Meals · Menu (Dissolve 0.15).
+2. Scroll 126 pt: **Meal / Breakfast** (last link row) moves 782 → 656 and becomes visible.
+3. Meal / Breakfast → **Meals · Meal detail** (Move in 0.3).
+4. Meals · Menu · Tab / Community → Community · List (Dissolve 0.15).
+5. Scroll 211 pt: **Issue / Rice undercooked on Mondays** moves 767 → 556, ending at 728, and becomes visible.
+6. That issue → **Community · Suggestion** (Move in 0.3).
+7. Community · Suggestion · Back → **BACK**, returning to Community · List.
+
+**Plate-tracker entry:** Meals · Meal detail is reachable **without scrolling**. **Meal / Dinner** (y 670–742) is visible at rest on Meals · Menu. Only Meal / Breakfast needs the scroll. Both open the same Meals · Meal detail frame; Stage 3 specifies the lunch Meal detail.
+
+### 1.8.6 Not fixed (report only), with reason
+
+| Frames | Count | Reason |
+|---|---|---|
+| Meals · Meal detail | 1 | Different pattern: an inline-title header with Back needs a fixed, material bar, not R9. |
+| Request correction, Correction · Sent, Correction · Failed, Waste · How this is measured | 4 | Sheet backgrounds: static by design (scrim). The first three had their lists made to hug (§1.8.4). |
+| Home (9), Answer Yes (5), Answer No (4), Answer Not sure (4), Intent (3) | 25 | Other families (Home layout, no large title); outside this stage's fix set. |
+| Spending This week, This month, Saved, Offline | 4 | Other family (sticky Footer). **Expense / Canteen is off-frame on This week, This month and Saved, and those rows are the only way into Edit expense**, so the Edit / Delete expense flow can't be reached. |
+| Waste (6), Rewards (2), Report (2), Feedback (3), Notifications · Offline, Settings · System off | 15 | Other families; outside this stage's fix set. |
+
+Total: 55 swept, 6 fixed, 49 reported.
