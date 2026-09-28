@@ -239,3 +239,21 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 60 | H6 Day view (04/05) | Two entries open H7: the new Nutrients card (Stage 3 link) and the "All nutrients" row. | Low | **Stage 3:** remove the "All nutrients" row once the Nutrients card links to H7. |
 | 61 | Page 03 canvas | The KcalGauge set (2532 pt wide) overlaps the MacroRing, MacroBar, DishPortionRow and EstimatePill sets. It dates from Stage 2. | Low | Move the neighbouring sets (or wrap KcalGauge onto two rows) in a tidy-up stage. |
 | 59 | H8 Weekly view | (Re-stated.) The Estimate pill is an absolute layer over the Average card instance: a fragile spot. | Low | Add an Estimate-pill slot to the Average component, or re-check the pill's position on every H8 edit. |
+
+## Stage 3 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 60 | **Fixed on the page-07 copy:** H6 "All nutrients" row removed once the Nutrients card linked to H7. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 62 | H6 (04 source) | No "+" control and no week toggle. The prototype uses the Snack row (→ Quick add) and the DatePillStrip (→ Weekly view) as substitutes. | Med | Add a "+" button (Quick add) and a Day/Week segment on H6 in page 04, then re-copy. |
+| 63 | H6 (04 source) | No goal link to H10. The goal is reachable only via You → Nutrition → Daily goal. | Low | Add an "Add a daily goal" link row on H6 if the goal should be reachable from the Day view. |
+| 64 | H10 Daily goal | The Save button is drawn Disabled (goal toggle off), so the prototype saves by tapping an option row. There is no goal-on H10 state. | Med | Add an H10 state with the toggle on and an option selected, where Save is enabled and goes to H6b. |
+| 65 | H6 on pages 04/05 | Still shows the "All nutrients" row. The page-07 copy no longer does (source rule). | Low | Remove it on page 04/05 in the next tracker stage, then re-copy. |
+| 66 | H13 Nutrition | No "Today" entry to H6, as the Stage 3 brief asked. | Low | Add a "Today" row or link on H13 in page 04, then re-copy. |
+| 67 | Other Home states | PlateSummaryCard is placed on Home · After last meal only. | Info | Morning, Afternoon, During meal and the answer/recheck Home frames would need it for consistency. |
+| 68 | H9 / H14 sheets | The Estimate pill and tab bar under the scrim can still receive taps (Figma passes taps through the non-interactive scrim). | Low | Give the scrim a BACK/close interaction in a later pass. |
