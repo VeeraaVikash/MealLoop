@@ -1161,3 +1161,83 @@ Evidence: `design/audit/stage2_5/`
 - `before/` and `after/`: 1× frames.
 - `pair_light_H2|H6|H7.png` and `pair_dark_H2|H6.png`: before and after side by side.
 - `stopped/`: the first attempt.
+
+## Stage 2.6 - H6 Nutrients card (pages 03, 04, 05) (2026-09-28)
+
+A snapshot was stored before any change (`st26_*`; the `st25_*` chunks were cleared). This snapshot also records overflow, fixed-children count and child order per node.
+
+1× before-renders of H1, H6, H7, H12 and H6b (page 04 Light, page 05 Dark) are in `design/audit/stage2_6/before/`. The same capture rendered twice differs by 0 px. The pass rule is **no pixel above 6**.
+
+**Scope:** a new NutrientsCard component on page 03, which replaces the Macro rings card on H6 (pages 04 and 05). Nothing else changed.
+
+### 2.6.1 NutrientsCard (page 03, `561:27699`, at 1400, 11500)
+
+- **Card:** 353 pt wide, 108 pt tall (height hugs), radius 20, `surface` fill, padding 16, item spacing 12. It uses the same card shell as the removed Macro rings card.
+- **Header row:** "Nutrients" (ML/Body Semibold, `ink`) and a right chevron (`chevron.right`, 24 pt). The chevron's stroke is bound to `ink-secondary`, and it is vertically centred on the title.
+- **Stats row:** three equal columns (101.7 pt each, 8 pt gaps): Fibre, Sugar, Sodium.
+  - Each column has the value with its unit (ML/Mono Body, `ink`) above the label (ML/Footnote, `ink-secondary`).
+  - The values are text properties `Fibre` / `Sugar` / `Sodium`, defaulting to the H7 values.
+
+| Stat | H6 card | H7 row | Width / column | Lines |
+|---|---|---|---|---|
+| Fibre | 12 g | 12 g | 36 / 101.7 | 1 |
+| Sugar | 21 g | 21 g | 36 / 101.7 | 1 |
+| Sodium | 1,446 mg | 1,446 mg | 72 / 101.7 | 1 (comma kept; the style was not reduced) |
+
+- **Numbers:** whole numbers, with no "≈" anywhere.
+- **Tap target:** the whole card, 353×108 (≥ 44). The link to H7 is added in Stage 3.
+- **Colours:** variables only, so Dark comes from the Dark mode.
+
+| Mode | ink on surface | ink-secondary on surface |
+|---|---|---|
+| Light (#111111 / #5c5c58 on #ffffff) | 18.9:1 | 6.7:1 |
+| Dark (#f2f2ec / #a3a39c on #161616) | 16.1:1 | 7.1:1 |
+
+  Both pass AA; the chevron is ≥ 3:1 as a graphic.
+
+### 2.6.2 H6 (pages 04 and 05)
+
+- The `Macro rings` card (no links) was replaced by a `Nutrients` instance set to FILL.
+- The hero, Estimate pill, DatePillStrip, Meals card and "All nutrients" row are unchanged.
+- **Height:** Content went from 1043 to **1029** pt (−14; the card is 108 instead of 122).
+- **Layout:**
+  - DatePillStrip 110–174
+  - Hero 186–524
+  - Nutrients 536–644
+  - Meals card 656–944 (Lunch 656–728, Snack 728–800, …)
+  - All nutrients 956–1015
+  - Tab bar at 748
+- **Visible above the tab bar at rest:** the date strip, the full hero (ring and legend), the full Nutrients card, and the whole Lunch row. The Snack row starts at 728 under the scroll-edge fade.
+- **End of scroll:** the last item is 20 pt above the tab bar (padding 124, R9b).
+- **H6b, H7 and all other frames are untouched.** H6b keeps its rings with progress arcs.
+
+### 2.6.3 Checks
+
+- **Structural diff against `st26`:**
+  - Page 03: +1 (`NutrientsCard`), 0 changed, 0 removed.
+  - Pages 04 and 05: 1 changed each (H6 `327:23368` / `329:71921`), 0 added, 0 removed.
+  - Page 07: 0 / 0 / 0.
+- **Links:** 04 = 7, 05 = 7, 07 = 1054, with 0 added and 0 removed on each.
+- **Pixel diffs** (1×, paired renders, no pixel above 6):
+
+| Frame | Light | Dark |
+|---|---|---|
+| H1 | 0 px | 0 px |
+| H6b | 0 px | 0 px |
+| H7 | 0 px | 0 px |
+| H12 | 0 px | 0 px |
+| H6, rows 0–535 (status bar, nav, date strip, hero) | 0 px | 0 px |
+| H6, tab bar and home indicator (748–852) | 0 above 6 | 0 above 6 |
+| H6, changed area | y 552–726 | y 552–731 |
+
+The changed area on H6 is the new card, plus the Meals card that moved up 14 pt. Compared at the shifted position (after 656–688 against before 670–702), the Meals card differs only in 239 px (Light) / 260 px (Dark), max 47 / 50. Those are the rounded corners over the fixed background wash, which is not shifted.
+
+### 2.6.4 Fragile spots (keep in mind for Stage 3 and later)
+
+- **H8 Estimate pill** (pages 04 and 05) is an **absolute layer over a component instance** (the "Average" card). It sits in the scrolling Content at x 259, y 66 and is not part of the card.
+  - If the Average card's padding, height or eyebrow position changes, or the card is swapped, the pill will not follow.
+  - Re-check its position whenever H8 or that component is edited.
+  - A cleaner fix would be an Estimate-pill slot inside the Average component.
+- **KcalGauge set on page 03** (0, 10572, 2532 × 378) overlaps the MacroRing, MacroBar, DishPortionRow and EstimatePill sets on the canvas.
+  - This dates from Stage 2, when the Goal=On variants took the set to about 2208 pt wide. Stage 2.5 widened it further.
+  - Instances are unaffected; it is canvas tidiness only. It was not moved here because moving frames is outside this stage.
