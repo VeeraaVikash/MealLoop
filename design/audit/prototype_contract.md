@@ -305,3 +305,78 @@ The 5 frames were entered by an automatic advance, so BACK looped. Each Back is 
 - **Walk (page 07):**
   - Home · Afternoon → Search (Dissolve 0.15) → S1 field → S2 (Smart animate) → Sambar → S3 (Move in) → Back (reverses to S2) → Tab Meals → Meals · Menu (Dissolve 0.15).
 - **Content clearance:** all S frames and About end at or above y 602, and the tab bar top is at 748. The tab bar's footprint is unchanged, so no existing frame needed a clearance fix.
+
+---
+
+## Stage 1.5 - Shell follow-ups (2026-09-28)
+
+Before starting, a snapshot of the per-page fingerprints, per-node signatures and all link dumps was stored in root plugin data (`st15_*`; the `st1_*` chunks were cleared). A named version still cannot be saved.
+
+### 1.5.1 Logo in Dark
+
+- **Change:** the Logo component (`140:1479`, both Type=Mark and Type=Lockup) had its mark tile fill changed from hard-coded `#FFFFFF` to the `surface` variable.
+  - Light: `surface` = `#FFFFFF`, so Light looks identical.
+  - Dark: `surface` = `#161616`, with the ink strokes turning light, so the mark is visible.
+- **Coverage:** all 267 Logo instances now resolve to `surface`; none overrides the tile.
+- **Where Logo renders** (besides AppWordmark and HomeHeader, which already used `surface`):
+  - Onboarding · Welcome (Lockup) on 04, 05 and 07.
+  - LockScreen and LockNotification: Recheck · Lock · No answer / Said yes / Said no, with their expanded versions; Lock · Stack; Lock · Fix check (+ expanded); Lock screen previews ×4. All on 04, 05 and 07 where present.
+  - NotificationRow: Notifications · Inbox ×5 and Notifications · Offline ×5 on 04, 05 and 07; Recheck · Inbox ×3 on 04, 05 and 07.
+  - OnboardingPage (component), and the usage boards on page 03.
+- **Checked by screenshot in both modes:** Welcome, a lock screen and Notifications · Inbox (see `stage1_5/`).
+- **Not part of this change:** the Welcome Dark art still shows the existing "DARK RIBBON RENDER NEEDED" placeholder.
+
+### 1.5.2 Tappable chips
+
+- The MetaChip variant `Surface=On light` is used by 90 non-interactive labels, so it was left unchanged.
+- **New variant `Surface=Tappable`:**
+  - Same fill and text as On light, plus a 1 pt `ink-secondary` outline (inside, excluded from layout).
+  - 30 pt tall.
+  - Outline against the canvas: 5.7:1 Light, 7.4:1 Dark.
+  - Place with 14 pt spacing for a 44 pt tap area.
+- **Swapped to Tappable:** the S1 and S4 suggestion chips on 04, 05 and 07 (24 instances). Their labels are unchanged.
+- **Rule:** use `Surface=Tappable` for any chip the student can tap. On light and On dark stay for labels.
+
+### 1.5.3 Search selected state
+
+- **TabSearchButton State=Selected:**
+  - The highlight fill is the same as a selected tab's (the same `tab-selected` paint, 54 pt tall, radius 27).
+  - The glyph is the new Symbol `magnifyingglass.bold`: ring 2.4 pt, handle 3 pt, against 1.7 / 2.2 pt for the default.
+- **Two non-colour cues** mark the selected state: the highlight shape and the heavier glyph. This mirrors the tabs' filled icon.
+- Checked in Light and Dark (`stage1_5/tabbar_selected_search_and_chips_light_dark.png`).
+
+### 1.5.4 Gallery Search links
+
+- **Removed:** 62 Search → S1 links from the States-gallery frames, whose tabs are not wired.
+- **Kept:** 70 Search links on frames whose tabs work. S1's own button stays unlinked (self).
+- Page 07 links: 1116 → 1054.
+- **Rule:** the Search button is wired only where the tab items are wired.
+
+### 1.5.5 Page-07 Search frames: source and demo hotspot
+
+- **Source:** S1–S5 and About on page 07 are **clones** (independent copies), not instances. Figma can't instance a frame, and these frames aren't components. The source is **page 04** (Light), built in Stage 1. Page 05 holds Dark clones of the same page-04 frames with the Dark variable mode.
+- **Keeping them in sync:** any later change to a Search frame must be made on 04 and repeated on 05 and 07. Shared parts come from components (SearchField, SearchResultRow, MetaChip, TabBar), so fixes made in those components reach all three pages automatically.
+- **Status-bar hotspot (demo only):**
+  - On page 07, the Status Bar instance of **Search · Empty (S1)** links to **Search · Offline (S5)**, and S5's Status Bar links back to S1. Smart animate 0.25 s EASE_OUT.
+  - This follows the existing Home demo, where the status bar cycles the time of day. It simulates losing and regaining the connection; it isn't a real app control.
+  - Testers reach S5 only this way.
+
+### 1.5.6 Report-only findings (nothing changed)
+
+**a. You-based frames and Sign out, after the About row.** The Sign out row is at y 886–942 (You · Offline: 946–1002). Frame overflow is NONE (these frames don't scroll).
+
+| Page | Frame (852 pt) | Sign out |
+|---|---|---|
+| 04, 05, 07 | You | **Clipped**, below the frame bottom (852) |
+| 04, 05, 07 | You · Offline | **Clipped** (946–1002) |
+| 04, 05, 07 | Request correction, Correction · Sent, Correction · Failed, Sign out | Clipped, under a sheet or alert (background only) |
+| 04, 05 | You (full scroll) 1006, You · Offline (full scroll) 1066 | Inside the frame, but behind the tab bar (it overlapped the tab bar before Stage 1 too) |
+
+**Prototype impact:** page 07 · You · Row / Sign out is the **only** way into the Sign out flow, and it now lies entirely outside the 852 pt viewport (before: 829–885, partly visible). The Sign out flow is therefore **unreachable** in the prototype. Suggested fix, not applied:
+- set You and You · Offline on page 07 to vertical scrolling;
+- keep the Status Bar, Nav Header, edge fade, Tab Bar and Home Indicator fixed;
+- or move About into the Account group.
+
+**b. Width.**
+- No phone frame on 04, 05, 06 or 07 is narrower than 393 pt.
+- **At 375 pt**, tested with a temporary TabBar instance at 343 pt: pill 273 pt, Search 62 pt, tabs 65.8 pt each. The longest label, "Community", is 63 pt, leaving 1.4 pt on each side. It fits, but only just. At 320 pt it would not fit.
