@@ -225,3 +225,17 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 57 | H4 Your plate · saved | The two-line chip row ("Planned · counts after Entry QR") leaves only 10 pt between the first row's chips and the Save bar at rest. | Low | Put both chips on one line, or shorten the planned-state chip, if the fit gets tighter. |
 | 58 | H6 Day view | The legend (P/C/F grams and %) and the Macro rings card (P/C/F/Fibre grams) repeat the same grams. Kept as instructed. | Info | Revisit if H6 gets a goal-off Macro rings variant without P/C/F. |
 | 59 | H8 Weekly view | The Estimate pill is an absolute layer over the Average card instance. | Low | Re-check the pill's position if the card's padding or height changes. |
+
+## Stage 2.6 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 58 | **Fixed on H6.** The Macro rings card is replaced by the Nutrients card, so P/C/F grams now show only in the hero legend. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 60 | H6 Day view (04/05) | Two entries open H7: the new Nutrients card (Stage 3 link) and the "All nutrients" row. | Low | **Stage 3:** remove the "All nutrients" row once the Nutrients card links to H7. |
+| 61 | Page 03 canvas | The KcalGauge set (2532 pt wide) overlaps the MacroRing, MacroBar, DishPortionRow and EstimatePill sets. It dates from Stage 2. | Low | Move the neighbouring sets (or wrap KcalGauge onto two rows) in a tidy-up stage. |
+| 59 | H8 Weekly view | (Re-stated.) The Estimate pill is an absolute layer over the Average card instance: a fragile spot. | Low | Add an Estimate-pill slot to the Average component, or re-check the pill's position on every H8 edit. |
