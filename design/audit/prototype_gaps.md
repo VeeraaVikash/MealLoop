@@ -140,3 +140,20 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 42 | 07 Home ×3, Answer ×13 | The Impact card and Method (i) are partly or fully under the tab bar. On Home · Morning they're fully hidden. | Med | Apply R9 to the Home family (the header is HomeHeader, not NavHeader). |
 | 43 | 07 Meals · Meal detail | Crowd row hidden under the tab bar; the inline-title header needs a fixed bar with a material background to scroll correctly. | Med | Decide the inline-header scroll pattern, then apply. |
 | 44 | 6 R9 frames | Clearance is 20 pt (You has 21). | Low | Add 1 pt bottom padding to the content frames, or accept 20 pt as the standard. |
+
+## Stage 1.9 update (2026-09-28)
+
+| # | Status |
+|---|---|
+| 41 | **Fixed.** Spending family scrolls (R9); the Expense row, Edit expense and the Delete flow are reachable. |
+| 42 | **Blocked.** Home family not changed; the family rule stopped it because of Meal detail and Intent (§1.9.2). |
+| 43 | **Blocked.** Meal detail's Back is inside the NavHeader instance. |
+| 44 | **Closed.** Rule R9b: at least 20 pt. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 45 | 07 Spending · This week, This month, Saved, Offline | At max scroll the last expense row is behind the sticky Add expense footer (684–740). | Low | Bottom padding = footer height + 20 above the footer, or accept. |
+| 46 | 07 Meals · Meal detail | Content bottom padding is 120, not 124. With the Stage 3 plate card the last item would sit 16 pt above the tab bar. | Med | Set bottom padding to 124 before Stage 3. |
+| 47 | NavHeader Inline Title (Meal detail, Intent ×3, Spending ×7) | Back and title are one instance, so Back can't stay fixed while the title scrolls. | Med | Add a NavHeader variant, or split out a floating Back GlassButton (needs approval). |

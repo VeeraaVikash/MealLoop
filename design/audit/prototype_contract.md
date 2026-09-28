@@ -581,3 +581,94 @@ The six named frames were fixed. **Meals · Meal detail** is the only other fram
 | Waste (6), Rewards (2), Report (2), Feedback (3), Notifications · Offline, Settings · System off | 15 | Other families; outside this stage's fix set. |
 
 Total: 55 swept, 6 fixed, 49 reported.
+
+---
+
+## Stage 1.9 - Reachability for the tracker path (2026-09-28)
+
+Before starting, a snapshot was stored in root plugin data (`st19_*`; the `st18_*` chunks were cleared). A named version still cannot be saved. Scope: page 07. The NavHeader and HomeHeader components are unchanged.
+
+### 1.9.0 Clearance rule (amends R9 and §1.8.2)
+
+**R9b.** On a scrolling screen, at maximum scroll **the last item ends at least 20 pt above the tab bar** (y ≤ 728 with the tab bar at 748). Earlier frames keep their padding: You and You · Offline have 21 pt; the six Stage 1.8 frames have 20 pt. Both meet the rule.
+
+### 1.9.1 Spending family: R9 applied (7 frames)
+
+- **Change on each frame:**
+  - The Status Bar moved above the scrolling layers.
+  - A `ScrollEdgeFade / Style=Wash` top fade (rotated 180°, 393×100) went in under it.
+  - Overflow was set to VERTICAL.
+  - Fixed children: Top edge fade, Status Bar, Scroll edge fade, Tab Bar, **Footer** (Add expense), Home Indicator, and Toast / gallery hotspots where present.
+- **What scrolls:** the Meal wash, the content, the Nav Header (Inline Title with Back; you didn't list it as fixed for this family), and the EmptyState / Error state overlays.
+
+| Frame | Fixed | Scroll range | Last item at max scroll | Linked expense row at max scroll |
+|---|---|---|---|---|
+| Spending · This week | 6 | 404 | 1132 → 728 (20 pt) | Canteen 876 → **472–535** |
+| Spending · This month | 6 | 276 | 1004 → 728 | Canteen 876 → **600–663** |
+| Spending · Saved | 7 (+Toast) | 404 | 1132 → 728 | Canteen 876 → **472–535** |
+| Spending · Offline | 8 (+gallery) | 510 | 1238 → 728 | none (gallery state) |
+| Spending · Loading | 7 | 0 | 516 (fits) | – |
+| Spending · Empty | 8 | 0 | 176 (fits) | – |
+| Spending · Error | 7 | 0 | 176 (fits) | – |
+
+**Caveat:** the sticky Footer (Add expense) sits at 684–740. At max scroll the last expense row (the second Canteen, 1068–1124 → 664–720) ends 20 pt above the tab bar, meeting R9b, but it is **behind the footer**. The linked row is fully visible.
+
+### 1.9.2 Home / Answer / Intent / Meal detail family: stopped, not applied
+
+**Why:** Meals · Meal detail needs "floating Back stays fixed while the title scrolls". Its Back button is **not a separate layer**. It sits inside the same Nav Header instance as the "Dinner" title (NavHeader Type=Inline Title, Show Back = true). Splitting Back from the title would mean detaching the instance, adding a layer, or editing the NavHeader component. None of these is allowed (only scroll settings and layer order). The three **Intent** frames (Cutoff passed, Correction requested, No response) use the same Inline Title with a built-in Back.
+
+**The rule applied:** the brief defines Home, Answer, Intent and Meal detail as one family ("apply R9 to the whole family the same way"). Because some frames can't take the treatment, **no frame in the family was changed**. There was nothing to revert, because the check happened before any edit.
+
+**Frames in the stopped family (32 non-sheet, 26 of them overflowing):**
+- Home: Morning, Afternoon, During meal, After last meal, After cutoff, Hero unavailable, Modules hidden, Pass hidden, Offline, Loading, Crowd stale, Rewards soon.
+- Recheck · Home: Recheck, Recheck yes, Recheck no.
+- Answer Yes: Tap, Sending, Saved, Near meal, Failed.
+- Answer No: Tap, Sending, Saved, Failed.
+- Answer Not sure: Tap, Sending, Saved, Failed.
+- Intent: Cutoff passed, Correction requested, No response.
+- Meals · Meal detail.
+- Sheet backgrounds, excluded: Answer No · Why not, Intent · Reason failed.
+
+**Result:** step 3 isn't done.
+- Home · Morning: Impact (782–919) and its (i) (797, which links to Waste · How this is measured) stay under the tab bar.
+- Meal detail: Crowd (814–868, which links to Crowd · Detail) stays under the tab bar.
+
+**HomeHeader frames alone would work.** Their header is one HomeHeader instance with no Back button, so it can scroll whole.
+
+### 1.9.3 Links
+
+- Page 07 is still **1054** (+0 −0).
+- **Spending walk:**
+  1. You · Tile / SPENDING → Spending · This week (Move in 0.3).
+  2. Scroll 404 pt; Expense / Canteen is at 472.
+  3. Expense / Canteen → **Edit expense** (Dissolve 0.25).
+  4. Edit expense · Back / Close → BACK, returning to Spending.
+- **Delete flow:**
+  - Edit expense · Delete → Delete confirm.
+  - Delete confirm · Delete → Deleting. Cancel → Edit expense; Back / Close → BACK.
+  - Deleting → (timeout) Spending · This week. Save → Spending · Saved.
+- **Home · Morning walk and Meal detail walk:** blocked (§1.9.2).
+
+### 1.9.4 Stage 3 readiness (report only; no cards added)
+
+| Frame | Content | Last item | Scroll range if R9 were applied | With the new card | Last item at max scroll | Clearance |
+|---|---|---|---|---|---|---|
+| Home · After cutoff | y 190, 799 pt, bottom padding 124, gap 12 | Home / Impact ends 865 | 137 | +120 pt card → content 931, range 269 | 728 | **20 pt: meets R9b** |
+| Meals · Meal detail | y 110, 878 pt, bottom padding **120**, gap 12 | Crowd ends 868 | 136 | +200 pt card → content 1090, range 348 | 732 | **16 pt: fails R9b** (needs bottom padding 124) |
+
+**Scrolling is required.** Both frames don't scroll today, so without R9 neither a new card nor the current last item can be reached.
+
+### 1.9.5 Remaining overflowing frames outside this stage (report only)
+
+| Family | Frames | Count |
+|---|---|---|
+| Waste | Last week, Dish breakdown, Corrected, No baseline, Not comparable, Partial | 6 |
+| Feedback | Step 2 · Not good, Sending, Failed | 3 |
+| Rewards | Rewards, Rewards · Offline | 2 |
+| Report | My reports, Fixed | 2 |
+| Notifications | Offline | 1 |
+| Settings | System off | 1 |
+| Sheet backgrounds | Request correction, Correction · Sent, Correction · Failed, Waste · How this is measured | 4 |
+| Stopped family (§1.9.2) | Home 9, Answer 13, Intent 3, Meal detail 1 (overflowing) | 26 |
+
+Total still overflowing: 45 (out of the 55 swept in 1.8, minus 6 fixed in 1.8 and 4 fixed here that overflowed: Spending This week, This month, Saved, Offline).
