@@ -213,3 +213,95 @@ Buttons labelled Done, Close (as text) or Home stay fixed links, as instructed.
 
 - Pages 04 and 05: "Flow 1", "Flow 2" (Light) and "Flow 2", "Flow 3" (Dark) → "Plate tracker (design page)". Two per page, at H1 (Meal detail · Track this meal?) and H12 (Plate tracker · First run). The names are identical, as instructed.
 - Page 07's 23 flows are unchanged.
+
+---
+
+## Stage 1 - App shell (2026-09-28)
+
+Before starting, a snapshot of the per-page fingerprints and a full page-07 link dump were stored in root shared plugin data (`mealloop` / `st1_*`). A named version still cannot be saved (the API has no `saveVersionHistoryAsync`).
+
+### 1.0 Trap fix (replaces the 5 looping BACK links)
+
+The 5 frames were entered by an automatic advance, so BACK looped. Each Back is now a fixed link to the parent screen in the flow map, with the transition for its role:
+
+| Source · layer | Old action | New destination | Transition |
+|---|---|---|---|
+| Community · Supported · Back | BACK (looped via Community · Sending) | Community · List | Move out to right 0.3 s EASE_OUT. Supported is a state of Community · Detail, whose parent is the List. |
+| Comments · Pending · Back | BACK (looped via Comments · Sending) | Community · Detail | Dissolve 0.25 s (sheet close) |
+| Community · Comments · Back | BACK (could reopen Comments · Reported) | Community · Detail | Dissolve 0.25 s (sheet close) |
+| Spending · This week · Back | BACK (looped via Deleting) | You | Move out to right 0.3 s |
+| Spending · Saved · Back | BACK (looped via Add expense · Saving) | You | Move out to right 0.3 s |
+
+**Rule R1b.** A fixed back link uses MOVE_OUT (direction RIGHT) 0.3 s EASE_OUT, the mirror of the drill-in. A fixed sheet close uses Dissolve 0.25 s.
+
+### 1.1 Components (page 03)
+
+| Component | What | Notes |
+|---|---|---|
+| **AppWordmark** (new) | Plate loop mark (logo option A) plus "MealLoop". Size=Header: 24 pt mark, 15 pt semibold, 100×24. Size=Large: 44 pt mark, 28 pt bold, 191×44. | All colours are variables, so it works in Light and Dark (see *Usage / AppWordmark*). The mark tile is bound to `surface`, because the Logo component's tile is hard-coded white and disappears in Dark. |
+| **HomeHeader** (updated) | Wordmark added top-left in the existing 44 pt chip row. It is absolutely positioned, so the header stays 128 pt. | **The hero moves 0 pt.** All 154 instances were checked; the gap to the points chip is at least 8 pt in every one (the tightest is the Soon state). |
+| **TabBar 74:236** (updated) | Each variant is now a transparent row: glass **Pill** (Home, Meals, Community, You) + 8 pt gap + round **Search** button (TabSearchButton, 62 pt). Pill 289 pt, tabs 70 pt ("Community" label 63 pt). New variant `State=Expanded, Selected=Search`. Minimized variants also get the button (136×64). | Outer size unchanged at 361×62, so no frame needed a clearance fix. The tab links (per-instance overrides) all survived; this was verified inside the change. |
+| **TabSearchButton** (new) | State=Default/Selected. Same glass fill, effects and edge stroke as the pill. Selected uses the `tab-selected` highlight. | |
+| **Symbol / magnifyingglass** (new) | Added to the Symbol set, filled with `ink`. | |
+| **SearchField** (new) | State=Empty/Typing/Offline, 353×44. The Query text property carries the scope and query text. Typing has a 44×44 Clear hit frame. | |
+| **SearchResultRow** (new) | Kind=Menu (Diet Veg/Non-veg), Community, Help. Properties Title, Meta and Kcal. Menu rows use the DishRow diet mark and show kcal in mono. | |
+
+### 1.2 Screens
+
+- **Sign in** (04, 05, 07): AppWordmark Large at (20, 66). It isn't added to Carousel 1–3, Verifying or All set.
+- **About MealLoop** (new; 04, 05, 07): wordmark, version, tagline, Privacy policy, Terms of use, and a sample-data note.
+- **"About MealLoop" row** (SettingsRow Link, info.circle) after Help in every You-based frame: You, You · Offline, Request correction, Correction · Sent, Correction · Failed and Sign out, on 04, 05 and 07.
+  - The two full-scroll frames on 04 and 05 grew by 57 pt. Tab bar, home indicator and edge fade moved down 57 pt with them.
+- **Search S1–S5** (new; section "S · Search and About" at y 37400 on 04 and 05; row "S · Search and About" at y 36520 on 07):
+
+  | Slot | Frame | Contents |
+  |---|---|---|
+  | S1 | Search · Empty | Recent searches, device-only note, Clear history, suggestions |
+  | S2 | Search · Typing | "sambar", with results grouped into Menu, Community and Help |
+  | S3 | Search · Menu result | Sambar: Veg, served day, "Also on", kcal in mono, "Open in menu" |
+  | S4 | Search · No results | "biryani" |
+  | S5 | Search · Offline | Offline banner, recent searches still available |
+
+  - On the design pages every frame has a Moment note and the Sample note. Search frames use TabBar `Selected=Search`.
+
+### 1.3 Prototype additions (page 07 only; 940 → 1116 links, +176)
+
+| Link | Count | Transition (role) |
+|---|---|---|
+| Search button → S1 on every tab bar except S1's own (self-link) | 132 | Dissolve 0.15 (tab) |
+| Tab links on the 6 new frames (same destinations as §0.4) | 24 | Dissolve 0.15 |
+| S1 field → S2; S1 recent "sambar" → S2; S1 recent "biryani" → S4 | 3 | Smart animate 0.25 (state; layer names match) |
+| S1 status bar ↔ S5 (demo hotspot, as on Home) | 2 | Smart animate 0.25 |
+| S2 Clear → S1; S4 Clear → S1 | 2 | Smart animate 0.25 |
+| S2 Sambar ×2 → S3; S2 community → Community · Detail; S2 help → Help | 4 | Move in from right 0.3 (drill-in) |
+| S3 "Open in menu" → Meals · Menu | 1 | Dissolve 0.15 (cross-tab jump, same as a tab switch) |
+| Back on S1–S5 and About | 6 | BACK. Safe: every entry is a click, no timeouts. |
+| You and You · Offline "About MealLoop" row → About | 2 | Move in from right 0.3 |
+
+- **Plus** the 5 trap-fix replacements (§1.0). Removed: 5 BACK. Added: 5 fixed.
+- **Component-level Search link isn't possible.** A reaction on the TabBar main component would be inherited by the instances on 02, 04, 05, 06 and 99 as cross-page links, which the brief forbids. So the Search link is set on each of the 132 page-07 instances, the same way the existing tab links are.
+- **Tab destinations:** identical wherever they exist (Home · Afternoon, Meals · Menu, Community · List, You; 70 tab bars). The 62 States-gallery frames have never had tab links. That is unchanged, but their Search button now links to S1 as instructed.
+
+### 1.4 Checks
+
+- **Tab bar instances on the updated component:**
+
+  | Page | Instances |
+  |---|---|
+  | 04 | 194 (188 + 6 new) |
+  | 05 | 194 |
+  | 06 | 6 |
+  | 07 | 133 (127 + 6) |
+  | 02 | 8 |
+  | 99 Archive | 26 (inherited) |
+  | 03 usage | 1 |
+
+  None are detached, hand-built or resized.
+- **44 pt targets:**
+  - Search button 62; field 44; result rows 63; recent rows 56; nav back 44; Clear 44×44 (after the fix).
+  - Suggestion chips are 30 pt visually, with 14 pt spacing, which gives a 44 pt hit area.
+- **Contrast (WCAG):** search icon 18.4:1 Light / 16.1:1 Dark; field placeholder 6.0 / 6.0; section labels 5.7 / 7.4; meta and kcal 6.7 / 7.1; Veg label 5.5 / 10.5.
+  - The button edge against the canvas is 1.1:1, the same as the existing pill; the drop shadow and edge stroke define it.
+- **Walk (page 07):**
+  - Home · Afternoon → Search (Dissolve 0.15) → S1 field → S2 (Smart animate) → Sambar → S3 (Move in) → Back (reverses to S2) → Tab Meals → Meals · Menu (Dissolve 0.15).
+- **Content clearance:** all S frames and About end at or above y 602, and the tab bar top is at 748. The tab bar's footprint is unchanged, so no existing frame needed a clearance fix.
