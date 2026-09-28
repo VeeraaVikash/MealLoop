@@ -934,3 +934,96 @@ The Home, Answer, Intent, Meal detail and Spending families no longer overflow.
 - **Inline title with Back:** the NavHeader stays fixed, with **`HeaderBackdrop`** (0 to header bottom, hard edge, wash-tracked) and the Status fade behind it. Content scrolls beneath the backdrop.
 - **Clearance:** the last item ends at least 20 pt above the tab bar (R9b), or at least 20 pt above a sticky footer when there is one.
 - **Invisible at rest:** every top-edge treatment must pass a pixel test against the untouched frame, at the renderer's noise level.
+
+---
+
+## Stage 2 - Tracker content (section H, pages 04 and 05) (2026-09-28)
+
+Before starting, a snapshot was stored in root plugin data (`st2_*`; the `st111_*` chunks were cleared). Page 03 read `44dov5` on the first pass, then `182o0p1` twice; the stable value was stored. A named version still cannot be saved.
+
+**Scope:** section H on pages 04 and 05, plus the tracker components on page 03 and two notes in section D. Nothing on page 07 changed.
+
+### 2.1 Data table (each dish rounded first; totals are sums of the displayed values)
+
+| Dish (1×) | kcal | P g | C g | F g | Fibre | Sugar | Sodium mg | 4P+4C+9F | Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| Sambar | 110 | 5 | 14 | 4 | 4 | 3 | 420 | 112 | 1.8% |
+| Rice | 180 | 4 | 40 | 0 | 2 | 0 | 4 | 176 | 2.3% |
+| Rice 1.5× | 270 | 6 | 60 | 0 | 3 | 0 | 6 | 264 | 2.3% |
+| Beetroot poriyal | **90** (was 95) | 2 | 10 | 5 | 3 | 7 | 280 | 93 | 3.2% |
+| Chicken curry | **250** (was 245) | 22 | 8 | 14 | 1 | 3 | 560 | 246 | 1.6% |
+| Snack, medium | 150 | 3 | 20 | 6 | 1 | 8 | 180 | 146 | 2.7% |
+
+- **Halfway cases:** 95 and 245 both sit exactly between two tens.
+  - For Beetroot, 90 passes the 4P+4C+9F check on the displayed grams (100 would be 7.5% off).
+  - Chicken curry rounds up to 250 (1.6% off).
+- **Snack sizes:** small 90 kcal and large 250 kcal; macros are shown for medium only.
+
+**Screen totals (checked on the displayed values on both pages):**
+
+| Screen | kcal = sum of rows | P | C | F | Fibre | 4P+4C+9F | Δ |
+|---|---|---|---|---|---|---|---|
+| H2 Your plate (1×), H14 background, H2b | 110+180+90+250 = **630** | 33 | 72 | 23 | 10 | 627 | 0.5% |
+| H3, H4, H5, H11 (rice 1.5×) | 110+270+90+250 = **720** | 35 | 92 | 23 | 11 | 715 | 0.7% |
+| H6 Day, H6b, H9 background | 720 + 150 = **870** | 38 | 112 | 29 | 12 | 861 | 1.0% |
+| H7 Nutrients | 870 | 38 | 112 | 29 | 12 | 861 | 1.0% |
+| H8 Week average | 1,870 | 58 | 240 | 68 | 22 | 1,804 | 3.5% |
+
+- **H7 also shows:** sugar 21 g, and sodium **1,446 mg**, the sum of the rounded dishes (420 + 6 + 280 + 560 + 180). It was shown as ≈ 1,450.
+- **H8 average:** the six full days are 1.8k, 2.0k, 1.6k, 2.1k, 1.7k and 2.0k (avg 1,867, displayed as 1,870). Today is 0.9k (870).
+- **"≈":** none remain on either page, including hidden layers. There were 100 per page.
+
+### 2.2 Components (page 03)
+
+- **KcalGauge** (hero), with a new variant property `Goal`:
+  - `Goal=Off` (default, used everywhere): a big mono number, "kcal", a caption ("this plate" / "today"), a **thin P/C/F split bar** and a gram legend. The bar is 200×6: Protein lime, Carbs `on-hero`, Fat `on-hero-secondary`, with widths set by each macro's share of kcal (4P / 4C / 9F). Plus the Estimate pill. **No arc, no goal.**
+  - `Goal=On`: the arc plus "of 2,000 a day", with the Estimate pill in the arc's bottom gap. Used only on H6b.
+  - `Value=Hidden`: "Numbers hidden / Portions only". No pill and no digits.
+- **MacroRing:** grams inside the ring, name below.
+  - `Goal=Off` (default): no progress arc, no target line.
+  - `Goal=On`: progress arc plus a target line ("12 g left"). Used only on H6b.
+- **DishPortionRow** (now a set):
+  - `Detail=Compact` (default): name, veg mark, kcal, slider and chips (190 pt).
+  - `Detail=Expanded`: adds the P/C/F bar and grams (216 pt). Shown on H2b.
+- **EstimatePill** (new): "Estimate" plus an info icon.
+  - The visual chip is 28 pt; the tap target is 94×44.
+  - `On dark` (hero): `hero-pill` fill with `on-lime` label and icon, dark in both modes.
+  - `On light`: `surface` fill, a 1 pt `ink-secondary` outline and an `ink` label.
+- **A lesson re-learned:** cloning a variant drops its text-property bindings. They were re-bound on every clone (KcalGauge On, MacroRing On, DishPortionRow Expanded) and checked.
+
+### 2.3 Frames
+
+- **Updated (pages 04 and 05):** H2–H5, H6, H7 (the Estimate pill replaces the "Estimates only" chip), H8, H9, H10, H11. H1, H12 and H13 had no edits.
+- **Estimate pill:** on H2, H3, H4, H5, H6, H7, H9 (and on H14's background and on H2b / H6b). **Not** on H11.
+- **H11 (numbers hidden):** no nutrition digits. The only digits it shows were already there before this stage: the portion multipliers (0×–2×), the date chip "Wed 14 Aug" and the status-bar time.
+- **H10 Daily goal:**
+  - The "Use a daily goal" toggle stays **off**, so the goal is opt-in.
+  - The options (Steady energy 2,000, Active days 2,400, Custom) sit under "If you turn it on"; none is preselected or marked as suggested.
+  - "≈" removed.
+- **Bottom padding:** H2–H5 and H11 went from 120 to **124**, so the portion chips end at 728 at the end of the scroll, 22 pt above the sticky Save bar (750).
+- **New frames** (Light at x 6409 / 6902 / 7395, y 36020; Dark clones on 05 via the Dark variable mode):
+  - **H14 · About estimates** (`Your plate · About estimates`): a Medium sheet over H2 with a Close button. Its body says exactly: "Portions are standard servings. Actual plates vary, so values are estimates, not medical advice."
+  - **H6b · Day view, goal on** (`You · Daily breakdown · goal on`): the Goal=On hero ("870 of 2,000 a day") and rings with "12 g / 163 g / 41 g / 16 g left". This is the result of opting in on H10.
+  - **H2b · Per-dish macros** (`Your plate · per-dish macros`): H2 with the four rows set to Detail=Expanded.
+  - Each has a label, a Moment note and a Sample note.
+  - The clones carried 3 design-page links from H2 and H6. They were removed; pages 04 and 05 are back to 7 links each.
+- **Motion notes** (3 per page): rewritten for the new hero (number roll-up and split-bar growth; no gauge sweep).
+- **Section D notes** (both pages, y 5290):
+  - Note at x 0: "Skip and Not sure on Meal detail reuse the same hero card as Home; only the meal name and clock differ."
+  - Open decision at x 493: "Not sure follow-up time for lunch is unset (dinner uses 4:30 PM). Confirm with mentor."
+
+### 2.4 Diff and pixel checks
+
+- **Diff against the snapshot:**
+  - Page 03: KcalGauge and MacroRing changed; DishPortionRow re-wrapped as a set; EstimatePill added.
+  - Pages 04 and 05: 11 frames and 3 motion notes changed; 14 nodes added per page (3 frames with labels and notes, and 2 D notes).
+  - Links: 04 and 05 are at 7 (+0 after the clone-link removal); page 07 is at 1054 (+0 −0).
+- **Page 07 unchanged, pixel-verified** (paired renders, 1×, compared with the Stage 1.11 renders):
+
+| Frame | Noise floor (two copies rendered now) | Now vs Stage 1.11 | Pixels above 15 |
+|---|---|---|---|
+| Home · Morning | 36,628 px, max 4 | 10 px, max 15 | 0 |
+| Spending · This week | 26,960 px, max 15 | 26,510 px, max 15 | 0 |
+| Meals · Meal detail | 22,466 px, max 15 | 22,223 px, max 15 | 0 |
+
+- **H1, H12, H13 (no edits):** the structural diff shows no change. A pixel comparison isn't available, because no before-render of these frames was taken at the start of this stage. From Stage 3 on, before-renders are taken at the start of every stage.
