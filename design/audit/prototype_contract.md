@@ -672,3 +672,85 @@ Before starting, a snapshot was stored in root plugin data (`st19_*`; the `st18_
 | Stopped family (§1.9.2) | Home 9, Answer 13, Intent 3, Meal detail 1 (overflowing) | 26 |
 
 Total still overflowing: 45 (out of the 55 swept in 1.8, minus 6 fixed in 1.8 and 4 fixed here that overflowed: Spending This week, This month, Saved, Offline).
+
+---
+
+## Stage 1.10 - Header patterns and tracker-path reachability (2026-09-28)
+
+Before starting, a snapshot was stored in root plugin data (`st110_*`; the `st19_*` chunks were cleared). Page 03 read `gxy1sk` on the first pass and `x9xc34` on the second and third (the known lazy-load flip); the stable value was stored. A named version still cannot be saved. The NavHeader and HomeHeader components are unchanged.
+
+**Outcome: both parts stopped under their own stop rules and were reverted. Final diff against the snapshot is empty on every page; page 07 is still 1054 links (+0 −0).**
+
+### 1.10.A Home and Answer: applied, then reverted
+
+**HomeHeader frames on page 07:** 29 in total.
+- **In scope (22):**
+  - Home: Morning, Afternoon, After last meal, After cutoff, Crowd stale, Hero unavailable, Offline, Pass hidden, Rewards soon (9).
+  - Answer Yes: Tap, Sending, Saved, Near meal, Failed.
+  - Answer No: Tap, Sending, Saved, Failed.
+  - Answer Not sure: Tap, Sending, Saved, Failed (13 Answer in total).
+- **Not touched (7):** Home · During meal, Home · Modules hidden, Home · Loading, Recheck · Home · Recheck / Recheck yes / Recheck no, and the Answer No · Why not sheet.
+
+**What was applied:** on all 22, Home Header moved into the scrolling layers, a Wash top fade was added, overflow set to VERTICAL, and the chrome fixed. The mechanics worked: links stayed at 1054, and every frame ended its last item exactly 20 pt above the tab bar. Home · Morning had a 191 pt range, with Impact at 591–728 and its (i) at 606.
+
+**Why it was reverted:** at rest, the HomeHeader's top row (wordmark, points chip, message and bell buttons, y 54–98) sits under the fixed Wash top fade. The fade is opaque down to y 63 and fades out by y 100, so the row is washed out, about 54% covered at its centre. The screenshot compares Home · Morning and Answer Yes · Tap with the untouched Home · During meal. Every Part A frame has this row, so no frame can take the treatment without a visible defect. Per the stop rule, **all 22 were reverted** (the fade removed, Home Header returned to its original layer position, overflow NONE, fixed 0).
+
+**Why no allowed change could fix it:** a fade that ends at the status bar (y 54) would be a new ScrollEdgeFade style, which wasn't in Part A's allowed changes.
+
+### 1.10.B Inline-title screens: stopped at the at-rest check, reverted
+
+**Style tested:** ScrollEdgeFade `Style=Tall` (393×142), built exactly as specified:
+- opaque to the header's bottom edge (y 102), fading to transparent by y 142;
+- colour tracking the wash: Light `#E9F7B0` / `#EAF4C3` / `#EBF2CB`; Dark `#2A3312` / `#222712` / `#1E2312`.
+
+It was tried **only on temporary copies**.
+
+**Result:** on all 11 frames, the first content item starts at **y 110**, 8 pt below the header, so it sits under the fade from 110 to 142 (80% opacity at the content's top edge).
+- The top of the black Meal Hero card on Meal detail and the 3 Intent frames visibly washes out at rest.
+- The PrivacyBanner, OfflineBanner or Skeleton on the 7 Spending frames does the same.
+
+The frames are Meals · Meal detail; Intent · Cutoff passed, Correction requested, No response; and Spending · This week, This month, Saved, Offline, Loading, Empty, Error. Per the stop rule, **Part B stopped**:
+- the Tall style was removed (it had no instances);
+- no frame was changed;
+- the bottom-padding changes (Meal detail 124, Spending footer clearance) weren't made.
+
+### 1.10.C Defects from earlier stages found by this check (not fixed; outside this stage's allowed changes)
+
+| Frames | Stage | What sits under the Wash top fade at rest | Coverage at centre (y 80) |
+|---|---|---|---|
+| Community · List, Community · Offline | 1.8 | NavHeader trailing (i) button | 54% |
+| Spending · This week, This month, Saved, Offline, Loading, Empty, Error | 1.9 | NavHeader Back button and "Spending" title | 54% |
+
+Not affected: You, You · Offline, Meals · Menu, Menu changed, Loading, Offline (their large-title top row is empty). The Sign out alert shows the list scrolled, so content under the fade there is intended.
+
+**Rule R9c (proposed, needs approval).** Any header control or text that starts at y 54 or lower must not sit under a top fade at rest. Either:
+- use a status-bar-only fade (opaque 0–44, clear by 54);
+- or keep the header row fixed above the fade (needs a header with its own material background for content scrolling beneath).
+
+### 1.10.D Checks
+
+- **Links:** 1054 (+0 −0); all unchanged.
+- **Walks:**
+  - **Home · Morning → scroll → Impact (i):** not possible. Home · Morning doesn't scroll (Part A reverted); Impact (782–919) and its (i) (797) stay under the tab bar.
+  - **Meals → Meal detail → scroll → Crowd → Back:** not possible. Meal detail doesn't scroll (Part B stopped); Crowd (814–868) stays under the tab bar.
+  - **Spending → scroll → Canteen → Edit expense → Back → Back:** works, as in Stage 1.9. Spending scrolls 404 pt; Canteen is at 472; Canteen → Edit expense. Edit expense · Back → BACK, returning to Spending. Spending · Back → You (fixed link from Stage 1, Move out right). Caveat: at rest the Spending Back button is 54% covered by the fade (§1.10.C).
+- **Readiness (unchanged from 1.9; no cards added):**
+
+| Frame | Card | Scroll range if R9 applied | Last item at max scroll | Clearance |
+|---|---|---|---|---|
+| Home · After cutoff | +120 pt | 137 → 269 | 728 | **20 pt, meets R9b** (needs the frame to scroll, currently blocked) |
+| Meals · Meal detail | +200 pt | 136 → 348 | 732 | **16 pt, fails R9b** (padding still 120; Part B stopped) |
+
+- **Remaining overflowing frames:**
+
+| Group | Count |
+|---|---|
+| Home / Answer / Intent / Meal detail (not fixed this stage) | 26 |
+| Waste | 6 |
+| Feedback | 3 |
+| Rewards | 2 |
+| Report | 2 |
+| Notifications · Offline | 1 |
+| Settings · System off | 1 |
+| Sheet backgrounds | 4 |
+| **Total** | **45** |
