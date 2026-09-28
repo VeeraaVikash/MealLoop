@@ -1,0 +1,14 @@
+page,change,node_id,name,x,y
+Light,added frame,303:22149,Meal detail · Answer Yes · Sending,0,4294
+Light,added frame,303:22257,Meal detail · Answer Yes · Saved,493,4294
+Light,added frame,303:22468,Meal detail · Answer No · Why not,986,4294
+Light,added frame,303:22361,Meal detail · Answer Yes · Failed,1972,4294
+Dark,added frame,303:43698,Meal detail · Answer Yes · Sending,0,4294
+Dark,added frame,303:43806,Meal detail · Answer Yes · Saved,493,4294
+Dark,added frame,303:44017,Meal detail · Answer No · Why not,986,4294
+Dark,added frame,303:43910,Meal detail · Answer Yes · Failed,1972,4294
+Dark,added note,303:44331,Open decision / How reasons are used and how long they are kept,986,5285
+Light,deleted chip,82:8151,All data is sample,0,2464
+Light,deleted chip,82:8159,All data is sample,493,2464
+Light,deleted chip,82:8164,All data is sample,986,2464
+Light,deleted chip,82:8169,All data is sample,1479,2464
