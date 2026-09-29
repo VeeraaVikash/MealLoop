@@ -1763,8 +1763,8 @@ The rendered spot-checks agree (strongest text ≥ 15.6:1 in Dark).
   - Content height stays **898** (the row is 106, the same as the old card).
   - Both tiles are fully visible at rest: they end at 709, 39 pt above the tab bar at 748.
   - End-of-scroll clearance: **20 pt**.
-- **Home · After last meal · Nothing logged** (`611:41024`, at 1972, 1140): a copy of the above with both tiles in the **Empty** state. It has the same heights and clearances.
-  - It is a new flow starting point, **"Home · Nothing logged"** (page 07 now has 25 starts).
+- **Home · After last meal · Trackers empty** (`611:41024`, at 1972, 1140): a copy of the above with both tiles in the **Empty** state. It has the same heights and clearances.
+  - It is a new flow starting point, **"Home · Trackers empty"** (page 07 now has 25 starts).
   - The copy keeps Home's other links (tabs, header, passes, follow-up, impact).
 - **Product rule:** this state appears when the plate tracker is on but no plate has been saved today, and no expense has been added this week. For example, a first day after turning the tracker on, or a new week before the first expense. The two tiles are independent: each shows Empty from its own data.
 - **Not added here** (same list as Stage 3): Home · Morning / Afternoon / During meal, the Home answer states (Answer Yes / No / Not sure · Tap, Sending, Saved, Near meal) and the three Recheck Homes. Page 05 has no cards (Dark renders were temporary).
@@ -1789,3 +1789,17 @@ Pages 04 and 05 stay at 7.
 - **Pixel check (no pixel above 6):** 246 of 247 baseline page-07 frames are unchanged (max 0). Only Home · After last meal changed.
 - **Structure:** page 03 gained the two sets (the old `PlateSummaryCard` node now sits inside `TodaysPlateCard`). Pages 04 and 05 are unchanged. Page 07 has one frame changed and one frame added.
 - **Screenshots:** `design/audit/stage3_6/` has Home populated and empty, Light and Dark. The Dark renders are temporary clones with Dark variable modes and were deleted.
+
+### 3.6.5 Stage 3.6 follow-ups (2026-09-29)
+
+1. **Spending on Home is opt-in (build item, from gap 78).**
+   - `SpendingSummaryCard` on Home is **hidden by default**. It shows only after the student turns on **"Show spending on Home"** in Settings.
+   - Spending stays private ("Only you can see this"), and Home can be seen by others over the student's shoulder.
+   - **When hidden:** the Today's plate tile takes the full row, so Home uses `TodaysPlateCard` `Size=Full`.
+   - **Not built in this stage.** The prototype frames show the opted-in state.
+   - **Open design work for the build:** the toggle's place in Settings (Privacy & data or the Spending screen), its copy, and the Home layout when only the plate tile shows.
+2. **Rename.**
+   - "Home · After last meal · Nothing logged" is now **"Home · After last meal · Trackers empty"** (page 07, `611:41024`). Its flow start "Home · Nothing logged" is now **"Home · Trackers empty"**. The source notes above were updated.
+   - This is a **daily / weekly empty state** of the trackers: no plate saved today, and no expense this week. It is **not a first-run screen**.
+   - All other Home modules (passes, feedback follow-up, impact, community entry points) are correctly left in.
+3. **Scope.** The dashboard cards are **not** extended to other Home states in this stage. Morning, Afternoon, During meal, the Home answer screens and the Recheck Homes stay without cards until a later stage.
