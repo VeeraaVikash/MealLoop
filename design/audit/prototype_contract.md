@@ -2102,3 +2102,47 @@ The snapshot `st41` was taken first.
   - the two frames, their labels, Moment notes and sample chips, which swapped x positions;
   - MS-B2's content (button → tag).
 - Links: 7 / 7 / 1181.
+
+## Mess Staff — Stage A.5: one confirmation on MS-B2 (2026-09-29)
+
+- On MS-B2, the lime **"Checked" tag** now sits directly under the masked `•••0238` field. The FormField helper line "Checked" is hidden (`Show Helper` off) and the empty footer was removed. There is one confirmation signal, not two.
+- **Diff vs `st42`:** only MS-B2 changed. Links: 7 / 7 / 1181.
+- Render: `design/audit/mess_staff_a5/`.
+
+## Mess Staff — Stage C: kitchen staff & supervisor, before service (2026-09-29)
+
+The snapshot `st43` was taken first. The new section, **"MS-C · Kitchen staff & supervisor · before service"**, is on page 09 at y 2300. The frames are at y 2400, x = k·493. It is Light only, with the same labels, Moment notes (Wed 10:30–10:50 AM) and "All data is sample" chips as MS-A/B.
+
+**Existing components used (nothing new on page 03):**
+- StatusBar, HomeIndicator, StaffTopBar (Shift "Lunch · 12–2 PM · Kitchen supervisor"), Button.
+- ReasonPicker (as the single-select mess option), SegmentedControl (Breakfast / Lunch / Dinner).
+- MetaChip Mono light + clock (freshness), BentoTile.
+- ResultCard (flags and override results), FormField.
+- MealSectionHeader, InfoRow, SpecialPassTile.
+
+| Frame | Id | Content |
+|---|---|---|
+| MS-C1 · Shift and mess select | `756:558` | There is no top bar yet: "Start your shift" and the role line. Mess: ReasonPicker Selected "Main Mess · Block A" and Default "North Mess · Block C". Shift: SegmentedControl with Lunch selected. Fact: "Lunch service 12–2 PM · prep from 9 AM". Footer: Start shift. |
+| MS-C2 · Demand dashboard | `756:596` | Black hero in the TodaysPlateCard ring language. The ring is 88 pt: lime = said yes (356), `on-hero` = not sure (56), a hollow `on-hero-secondary` track = no answer yet. Eyebrow "EXPECTED · LUNCH", Metric "860 students", mono line "412 intents so far · 48%". Freshness chip "Updated 10:42 AM". Bento halves: Said yes 356 / Not sure 56. Bento full: "LAST 4 WEDNESDAYS 812 avg · Expected is 6% higher". Footer: See prep plan. |
+| MS-C3 · Prep recommendation | `756:669` | "Prep for 860" and the freshness chip. A surface dish list, each row with a name, **one reason line** and a mono quantity: Rice 95 kg, Sambar 42 L, Chapati 1,700, Curd 60 L, Chicken biryani 30 kg. The **low-confidence flag** is a ResultCard `Duplicate` (grey ring + clock): "Low confidence · Paneer butter masala · 38 kg · New dish · no past weeks to compare". Footer: Adjust a quantity / Menu and special meal. |
+| MS-C4 · Override edit | `756:739` | Dish title "Sambar" and "Suggested 42 L · lower than usual". FormField Filled "New quantity 50 L" (helper "Change of +19%"). FormField Focused "Reason (required)". Rule line: "Over 20% needs food head approval first". Footer: Save change / Cancel. |
+| MS-C4a · Override saved | `756:780` | ResultCard **Success** (lime check): "In effect now · Sambar · 42 → 50 L · Food head notified · 10:47 AM". Under "KITCHEN SEES", the row reads **50 L** with "Override · staff event after lunch". |
+| MS-C4b · Override awaiting approval | `756:820` | ResultCard **Duplicate** (grey ring + clock): "Awaiting approval · Sambar · 42 → 60 L · Cook 42 L until the food head approves". Under "KITCHEN SEES", the row still reads **42 L**, with "60 L waiting for approval". Footer: Back to prep plan / Withdraw request. |
+| MS-C5 · Menu and special meal | `756:864` | Read-only. MealSectionHeader "Lunch 12–2 PM · Upcoming". InfoRow list: Rice 95 kg, Sambar 50 L, Paneer butter masala 38 kg, Chapati 1,700, Curd 60 L. "Wednesday special": SpecialPassTile Available (Chicken biryani · Wed 12–2 PM), then InfoRows "Special passes 214" and "Biryani to cook 30 kg". |
+
+**How 4a and 4b differ at a glance:** they differ in three separate ways.
+1. Lime check vs grey clock ring.
+2. The tag says "In effect now" vs "Awaiting approval".
+3. The "Kitchen sees" row shows the **new** quantity vs the **old** quantity.
+
+**Local compositions, not components** (candidates for 03 once approved):
+- the demand ring hero;
+- the dish row (name + reason + mono quantity);
+- the "Kitchen sees" block.
+
+**The 20% threshold is a placeholder** until the approval rule is decided.
+
+**Diff vs `st43`:**
+- Only page 09 changed, with +29 nodes, all at y ≥ 2290: 1 section, 7 frames, 7 labels, 7 Moment notes and 7 sample chips.
+- No other page changed. Links: 7 / 7 / 1181.
+- There are no unbound colours, and the 3 ResultCard instances have 0 overrides.
