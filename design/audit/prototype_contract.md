@@ -1803,3 +1803,88 @@ Pages 04 and 05 stay at 7.
    - This is a **daily / weekly empty state** of the trackers: no plate saved today, and no expense this week. It is **not a first-run screen**.
    - All other Home modules (passes, feedback follow-up, impact, community entry points) are correctly left in.
 3. **Scope.** The dashboard cards are **not** extended to other Home states in this stage. Morning, Afternoon, During meal, the Home answer screens and the Recheck Homes stay without cards until a later stage.
+
+## Mess Staff — Stage A (2026-09-29)
+
+A new staff-facing page, **"09 Mess Staff"** (`732:2`), sits between 08 Voice & Patterns and 99 Archive. It is Light only and uses Lab tokens. It has no prototype links yet, and nothing was copied to pages 04, 05 or 07.
+
+### A.1 Rules for staff screens
+
+- These are single-purpose screens. There is **no tab bar**.
+- Each screen has a minimal top bar with the mess name, the shift and role, and an **End shift** action. End shift also signs the staff member out of the phone.
+- A running count is pinned under the top bar on every screen.
+- **The two counts are never merged:**
+  - The Entry QR scanner counts entries ("Entries this shift").
+  - The Special pass desk counts redemptions ("Special passes redeemed").
+- Colour:
+  - Lime is still the only accent. It is used for the viewfinder brackets, the "+1" delta pill and the Available tag.
+  - Success, warning and urgent result cards use the existing semantic tokens (`success` / `warning` / `urgent` and their `-tint` tokens). No new colours were added.
+- Contrast (Light):
+
+  | Pair | Ratio |
+  |---|---|
+  | `ink` on all tints | 16.4–17.2 |
+  | `ink-secondary` on tints | 5.8–6.1 |
+  | `on-hero-secondary` on `hero-bg` | 9.2 |
+  | `surface` icon on `success` / `warning` / `urgent` circles | 5.5 / 5.4 / 6.5 |
+
+  All pairs pass AA.
+
+### A.2 Local components (on page 09, "Staff components" frame, y −1200)
+
+| Component | Id | Props | Notes |
+|---|---|---|---|
+| StaffTopBar | `ids.top` | Mess, Shift | 393×56. Left: mess + shift/role. Right: Button Text "End shift". |
+| ShiftCounter | `ids.cnt` | Count, Label, Sub, Show delta, Delta | 353×72, `hero-bg`. Metric count; lime "+1" pill when a scan or redemption was just counted. |
+| Viewfinder | `ids.vf` | Hint | 353×300, `hero-bg`, lime corner brackets. The live camera fills the black area. |
+
+Ids are stored in plugin data `mealloop/ms_ids`. These components stay on page 09 until staff screens move to page 03, which is an open question.
+
+Reused from page 03:
+- StatusBar, HomeIndicator
+- Button (Primary / Secondary / Text)
+- StatusTag (Scanned, Already scanned, Wrong mess, Offline, Available, Used, Already used, Expired)
+- OfflineBanner, Alert, FormField (Focused)
+- SpecialPassTile (Available, Used, Not today)
+- Symbol set (qrcode, checkmark, clock, xmark, wifi.slash)
+
+### A.3 Frames
+
+**Row 1, Entry QR scanner** (y 0, x = k·493):
+
+| Frame | Id | Shows |
+|---|---|---|
+| Entry scanner · Ready | `732:26` | Counter 142, viewfinder, "Tap to scan" (qrcode icon). Scans also start on their own. |
+| Entry scanner · Success | `732:65` | Counter 143 +1. Green card: Scanned, name, SRM ID, meal + mess, "Entered 12:14 PM · counted once". |
+| Entry scanner · Duplicate | `732:109` | Counter 143, "Not counted again". Warning card: Already scanned, first-scan time, where to send disputes. |
+| Entry scanner · Invalid | `732:153` | Counter 143, "Not counted". Urgent card: Wrong mess / Not enrolled here, where the student is enrolled. |
+| Entry scanner · Offline | `732:197` | OfflineBanner. Counter 144 +1, "1 waiting to sync". Quiet card: "Saved · will sync". Duplicates and wrong-mess codes are checked on sync. |
+| Entry scanner · End shift | `732:246` | Alert "End lunch shift?" with the count and the pending sync. |
+
+**Row 2, Special pass desk** (y 1060):
+
+| Frame | Id | Shows |
+|---|---|---|
+| Pass desk · Verify | `734:171` | Two numbered paths: **1** Scan the pass QR (viewfinder), an "or" divider, then **2** Type the SRM ID (field + Check). |
+| Pass desk · Manual entry | `734:225` | FormField Focused "SRM ID" with helper text. "Check ID" and "Scan QR instead". |
+| Pass desk · Valid | `734:271` | Green card: Available, name, ID, SpecialPassTile Available. "Redeem pass" and Cancel. |
+| Pass desk · Redeemed | `734:328` | Counter 13 +1. Card: Used, redeemed time, "Entry QR count isn't changed by this". |
+| Pass desk · Already redeemed | `734:381` | Warning card: Already used, the redeemed time and desk. Don't serve again. |
+| Pass desk · Invalid | `734:433` | Urgent card: Expired (other reasons listed: not eligible, wrong mess, no pass). SpecialPassTile Not today. |
+| Pass desk · Offline | `734:486` | OfflineBanner. Quiet card: "Can't verify offline". Redemption is blocked offline, and the desk says to try again. |
+| Pass desk · Redemption log | `734:533` | Counter 13. "Redeemed this shift" list (time, name, SRM ID, Used), "+ 7 earlier", and a note that entries are never added here. |
+| Pass desk · End shift | `734:624` | Alert "End special pass desk?" with 13 redeemed; the staff member is signed out. |
+
+### A.4 Product rules shown (for the build)
+
+- An entry is **counted once per student per meal**. A duplicate scan shows the first scan time and is not counted again.
+- An offline **entry** scan is saved on the phone and counted at once. Duplicates and wrong-mess codes are checked on sync.
+- An offline **pass redemption** is **blocked**. A pass can be redeemed only once, so it needs a live check. This was chosen to avoid double redemption and is an open question.
+- Manual SRM ID entry follows the same pass rules as a QR scan.
+
+### A.5 Checks
+
+- **Diff vs `st37`:** pages 00–08 and 99 are unchanged (page 03 compared by the Stage 3.2 rule). The only new page is 09 Mess Staff.
+- **Link counts:** 04 is 7, 05 is 7, 07 is 1181. Page 09 has 0 links.
+- **Tokens:** no unbound solid fills or strokes on page 09 outside instances.
+- **Screenshots:** in `design/audit/mess_staff_a/`. The temporary captures were deleted.
