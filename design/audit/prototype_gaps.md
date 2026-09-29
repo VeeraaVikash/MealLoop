@@ -335,3 +335,11 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 78 | Home dashboard | The Spending tile is visible to anyone looking over the student's shoulder on Home, while Spending itself is labelled "Only you can see this". | Low | **Build item (decided):** hidden by default; opt in via "Show spending on Home" in Settings. When hidden, Today's plate uses the full-width card. Toggle not built yet (contract 3.6.5). |
 | 79 | Home · After last meal · Trackers empty | Its copied links go to the same destinations as the populated Home (for example the "You said the sambar…" follow-up). | Info | **Closed:** this is a daily/weekly empty state, not first-run, so the other modules correctly stay (contract 3.6.5). |
+
+## Mess Staff — Stage A
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 80 | Pass desk · Offline | Offline redemption is blocked, which can stall a queue when the mess Wi-Fi drops. | Medium | Decide: keep it blocked (safe), or queue with a per-device lock plus conflict review on sync. |
+| 81 | 09 Mess Staff | The staff components (StaffTopBar, ShiftCounter, Viewfinder) are local to page 09, not page 03. | Low | Move them to 03 Components once the staff designs are approved. |
+| 82 | 09 Mess Staff | No prototype links or flow starts for staff screens. | Low | Add a staff flow in a later stage (page 07 or its own prototype page). |
