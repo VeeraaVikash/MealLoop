@@ -322,3 +322,16 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 76 | Community · Suggestion (04/05/07) | **Defect:** "Me too" opens Community · List instead of showing agreement. No supported state of the Suggestion card exists anywhere in the file (99 Archive included). | **High** | Build "Community · Suggestion · Supported" (count 113, "You said me too" + Undo, like Community · Supported for issues). Link Me too → it (Dissolve 0.25 or Smart animate), and Undo → back. |
 | 77 | Meals · Meal detail (dinner) → answer | I'm in / Skip / Not sure go to Home-area Answer · Tap frames, so the tap changes both screen and tab. Lunch has Meals-area answer frames (Meal detail · Answer Yes · Sending / Saved); dinner has none. | Med | Build dinner-parity Meal detail answer frames (Tap / Sending / Saved for Yes / No / Not sure), then relink. |
+
+## Stage 3.6 update (2026-09-29)
+
+| # | Status |
+|---|---|
+| 67 | **Partly done.** Home · After last meal has the two-up dashboard (Today's plate + Spending); a "Nothing logged" variant frame was added. The other Home states are still without cards. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 78 | Home dashboard | The Spending tile is visible to anyone looking over the student's shoulder on Home, while Spending itself is labelled "Only you can see this". | Low | Add a Settings toggle "Show spending on Home" (default on or off: product decision). |
+| 79 | Home · Nothing logged | Its copied links go to the same destinations as the populated Home (for example "You said the sambar…" follow-up), which may not fit a first-day state. | Info | Review which modules show on a first day. |

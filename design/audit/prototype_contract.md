@@ -1717,3 +1717,75 @@ All five go to Home · Afternoon.
 2. **Entry · Under review → Back:** Move out right 0.3 s → Entry history (fixed, since this frame is entered by a timer).
 3. **Return to a list:** Report · Fixed → Button → (Move out right 0.3 s) Report · My reports.
 4. **"Me too":** Community · Suggestion → Me too → (Dissolve 0.2) Community · List. Unfixed; see the defect.
+
+## Stage 3.6 - Home dashboard cards (pages 03, 07) (2026-09-29)
+
+**Snapshot:** `st36_*`, taken before any edit. It includes the full page-07 link dump. Page 03 was read by the 3.2 rule; two reads agree (`9s8v9i`). All 247 page-07 frames were rendered as the pixel baseline.
+
+### 3.6.0 Step 0: lunch hero check (report only, nothing changed)
+
+- **Lunch "Answer Yes · Saved" and H1 on pages 04, 05 and the page-07 copy:** all six use the `MealHero` instance `State=In` at y 110–267, directly above the Track card (y 279). It reads "Lunch · 12–2 PM · I'm in · You're in for lunch · Change till 9 AM · Change".
+- **Dinner "Answer Yes · Saved" (page 07):** uses the same `State=In` variant.
+- **The question form** ("You in for lunch? I'm in / Skip / Not sure") is the Sending/Tap state, as it is for dinner.
+- No frame was missing its hero, and nothing was restored.
+
+### 3.6.1 Components (page 03)
+
+- **`TodaysPlateCard`** (set `611:40968`; this is the former `PlateSummaryCard`, renamed and combined as variants, so existing instances keep working):
+  - `Size=Full, State=Populated`: the original 353 × 106 card (ring + P/C/F).
+  - `Size=Compact, State=Populated` (170 × 106, `hero-bg`):
+    - "Today's plate" (ML/Footnote, `on-hero-secondary`) and a chevron.
+    - A 36 pt P/C/F composition ring (lime / `on-hero` / `on-hero-secondary`), plus "870" (ML/Metric, `on-hero`) and "kcal".
+    - No legend.
+  - `Size=Compact, State=Empty` (170 × 106, `surface`): "Today's plate", then "Nothing logged yet" (ML/Secondary Medium, `ink`), then "+ Log a meal" (`plus` symbol + ML/Tag, `ink`).
+- **`SpendingSummaryCard`** (set `611:40992`, at 2640, 11500):
+  - `Size=Compact, State=Populated` (`surface`):
+    - "Spending · week" and a chevron.
+    - "₹1,240" (ML/Metric, `ink`; text property `Amount`).
+    - A 7-bar mini chart from Spending · This week (Mon–Sun 180 / 0 / 320 / 90 / 240 / 410 / 0). Wed (today) is `ink`, the others `ink-secondary`, and zero days are shown at 35%.
+  - `Size=Compact, State=Empty`: "This week's spending", then "Nothing logged yet", then "+ Add expense".
+- **Lime:** used only in the plate ring, where it stays the sole accent.
+- **Tap target:** the whole tile, 171 × 106, in every state (≥ 44).
+- **Contrast (token pairs, both modes AA):**
+
+| Pair | Light | Dark |
+|---|---|---|
+| `ink` on `surface` | 18.9:1 | 16.1:1 |
+| `ink-secondary` on `surface` | 6.7:1 | 7.1:1 |
+| `on-hero` on `hero-bg` | 18.9:1 | 15.2:1 |
+| `on-hero-secondary` on `hero-bg` | 9.2:1 | 6.7:1 |
+
+The rendered spot-checks agree (strongest text ≥ 15.6:1 in Dark).
+
+### 3.6.2 Frames (page 07)
+
+- **Home · After last meal** (`221:62580`): the full-width "Home / Plate summary" was replaced by **"Home / Dashboard"**, a horizontal row, 12 pt gap, holding the two compact **Populated** tiles at **603–709**.
+  - Content height stays **898** (the row is 106, the same as the old card).
+  - Both tiles are fully visible at rest: they end at 709, 39 pt above the tab bar at 748.
+  - End-of-scroll clearance: **20 pt**.
+- **Home · After last meal · Nothing logged** (`611:41024`, at 1972, 1140): a copy of the above with both tiles in the **Empty** state. It has the same heights and clearances.
+  - It is a new flow starting point, **"Home · Nothing logged"** (page 07 now has 25 starts).
+  - The copy keeps Home's other links (tabs, header, passes, follow-up, impact).
+- **Product rule:** this state appears when the plate tracker is on but no plate has been saved today, and no expense has been added this week. For example, a first day after turning the tracker on, or a new week before the first expense. The two tiles are independent: each shows Empty from its own data.
+- **Not added here** (same list as Stage 3): Home · Morning / Afternoon / During meal, the Home answer states (Answer Yes / No / Not sure · Tap, Sending, Saved, Near meal) and the three Recheck Homes. Page 05 has no cards (Dark renders were temporary).
+
+### 3.6.3 Links
+
+The page-07 link count went from 1162 to **1181** (+19).
+
+| Change | Links |
+|---|---|
+| Home · After last meal: old Plate summary → H6 removed | −1 |
+| Today's plate (Populated) → You · Daily breakdown (H6), drill-in 0.3 | +1 |
+| Spending (Populated) → Spending · This week, drill-in 0.3 | +1 |
+| New frame: 16 links copied from Home | +16 |
+| New frame: Today's plate (Empty) → You · Quick add (H9), Dissolve 0.25 (sheet) | +1 |
+| New frame: Spending (Empty) → Add expense (sheet), Dissolve 0.25 | +1 |
+
+Pages 04 and 05 stay at 7.
+
+### 3.6.4 Checks
+
+- **Pixel check (no pixel above 6):** 246 of 247 baseline page-07 frames are unchanged (max 0). Only Home · After last meal changed.
+- **Structure:** page 03 gained the two sets (the old `PlateSummaryCard` node now sits inside `TodaysPlateCard`). Pages 04 and 05 are unchanged. Page 07 has one frame changed and one frame added.
+- **Screenshots:** `design/audit/stage3_6/` has Home populated and empty, Light and Dark. The Dark renders are temporary clones with Dark variable modes and were deleted.
