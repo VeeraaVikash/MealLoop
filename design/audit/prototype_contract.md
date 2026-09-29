@@ -2171,3 +2171,31 @@ The snapshot `st44` was taken first. MS-C5 stays read-only, with no edit control
 - **"Not sure" at half weight** stays the default, but it must be **stated on screen**: C2 gets an info tap in the EstimatePill pattern that explains the weighting.
 - **Withdraw request** stays on C4b. A **rejected override (4c)** is not built; it is logged as gap 83.
 - **Promote to page 03** (demand ring hero, dish row, "Kitchen sees" block, the Adjusted/Checked tag) happens **after** the Stage C review, once the whole section is approved.
+
+## Mess Staff — Stage C.2: ResultCard rename, C2 weighting info, C4 draft limits (2026-09-29)
+
+The snapshot `st45` was taken first, including a deep snapshot of every page-09 frame.
+
+1. **ResultCard states renamed** on page 03 (`744:84111`): `Duplicate` is now **Hold**, `Invalid` is now **Stop**, and Success and Offline are unchanged. The variant node ids are unchanged, so all **12 instances** on page 09 still resolve:
+
+   | State | Count | Used for |
+   |---|---|---|
+   | Success | 4 | Scanned, Available, Redeemed, In effect now |
+   | Hold | 4 | Already scanned, Already redeemed, Low confidence, Awaiting approval |
+   | Stop | 2 | Not enrolled here, Expired |
+   | Offline | 2 | Saved offline, Offline |
+
+   Each instance has 0 overrides, none are detached, and the deep check shows no geometry or text change in those 12 frames. The component description was updated. Earlier contract sections that say `Duplicate` / `Invalid` now mean **Hold** / **Stop**.
+2. **MS-C2:** an info row under the Said yes / Not sure tiles. It is an **EstimatePill** (On light; the same tap target as H14 "About estimates") plus one line: "Not sure counts as half toward the expected number".
+3. **MS-C4:** the placeholder rule was replaced by an "Approval limits" block:
+   - eyebrow "NEEDS APPROVAL · WHICHEVER FIRST" with a neutral **"Draft limit"** tag (`fill-quiet` / `ink`);
+   - "Increase: over +20% or +10 kg/L, +200 pcs";
+   - "Cut: over −10% or −5 kg/L, −100 pcs".
+
+   These are working numbers until the food head confirms them.
+
+**Diff vs `st45`:**
+- Page 09: only MS-C2 and MS-C4 changed (top level and deep).
+- Page 03: the top level is unchanged. Only the variant names inside the ResultCard set changed.
+- Links: 7 / 7 / 1181.
+- Renders are in `design/audit/mess_staff_c2/`.
