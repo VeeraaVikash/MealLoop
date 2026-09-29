@@ -2211,3 +2211,42 @@ The snapshot `st46` was taken first, including a node-level snapshot of every pa
 - The header "NEEDS APPROVAL · WHICHEVER FIRST" and the "Draft limit" tag are unchanged.
 - **Diff vs `st46`:** the node-level diff shows only the two text layers changed, with the same position and size (each 353×18, one line). No other frame or page changed. Links: 7 / 7 / 1181.
 - Stage C is now clean. The next step is the full 7-frame read-through, then promoting the shared pieces to page 03.
+
+## Mess Staff — Stage C.4: audit and promotion to page 03 (2026-09-29)
+
+The snapshot `st47` was taken first.
+
+### Part 1: audit of the 7 MS-C frames
+
+| Check | Result |
+|---|---|
+| One fact per line | Pass on all 7 frames |
+| ResultCard states Success / Hold / Stop / Offline only | Pass. C3 is Hold "Low confidence", C4a is Success "In effect now", C4b is Hold "Awaiting approval". No "Duplicate" or "Invalid" text or layer names. |
+| Black hero where established | Pass: C2 demand card, C4a/b result cards, C5 summary |
+| Masked identity | N/A: no student identity appears in MS-C |
+| Terminology | **Failed first, then fixed.** C4a's "Kitchen sees" row had no "Adjusted" tag while C5 had one for the same in-effect override. The tag was added to C4a. |
+| Label, Moment note and sample chip | Pass on all 7 frames |
+
+**Wording rule (all frames):**
+- The reason line is "Override · <reason>".
+- The **"Adjusted"** tag appears only when an override **is in effect** (C4a, C5).
+- There is **no tag** while a change is awaiting approval (C4b). Its row keeps the old quantity and reads "<new> waiting for approval".
+
+### Part 2: components promoted to page 03 (shared-UI column, y 12700)
+
+| Component | Id | Properties | Used in |
+|---|---|---|---|
+| **DemandRingCard** | `764:84405` | Eyebrow, Number, Unit, Line | C2 (1) |
+| **DishRow** (set) | `764:84422` | `Divider` = Off / On; Name, Reason, Quantity; Show reason; Show adjusted | C3 (5), C5 (5), plus the rows inside KitchenSeesBlock |
+| **KitchenSeesBlock** | `764:84423` | Eyebrow, Show second row. Row 1 and Row 2 are exposed DishRow instances. | C4a, C4b ("KITCHEN SEES"), C5 ("WEDNESDAY SPECIAL", 2 rows) |
+
+- **DemandRingCard:** the ring arcs are sample geometry.
+- **DishRow:** 321 wide and FILL in cards, padding 10. The lime "Adjusted" tag is inside it.
+- **Not a pure move:** the local frames were replaced by linked instances. C2, C3, C4a, C4b and C5 changed their layers but not their content.
+  - C4a/b rows went from padding 12 to 10, to match C3/C5.
+  - Instance overrides are only sizing and the exposed row properties, with no style overrides.
+- **Diff vs `st47`:**
+  - Page 03: +3 components.
+  - Page 09: C2, C3, C4a, C4b and C5 changed; C1 and C4 are untouched.
+  - No other page changed. Links: 7 / 7 / 1181.
+- Render: `design/audit/mess_staff_c4/ms_c_row.png`.
