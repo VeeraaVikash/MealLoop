@@ -2259,3 +2259,36 @@ The snapshot `st48` was taken first.
 - The DishRow `Reason` default on page 03 was updated to the same string, so the sample value matches.
 - It now fits on one line (192×18) next to the "Adjusted" tag in both frames. The row height went from 82/83 to 64/65, so the content below moves up by 18.
 - **Diff vs `st48`:** node-level, only C4a and C5 changed: the text, plus the resulting row, card and content height and y-shifts. The page-03 top level is unchanged. No other frame or page changed. Links: 7 / 7 / 1181.
+
+## Mess Staff — Stage C decisions (recorded 2026-09-29, no Figma change)
+
+- **"Change of +19%" on C4 keeps its sign.** It is a live computed difference, not a policy limit, so the sign shows direction at a glance. The policy limit lines stay unsigned.
+- **Verb split, used in every MS-C and MS-D frame:**
+  - **"Adjust"** is the action a person takes (button: "Adjust a quantity").
+  - **"Override"** is the record the food head sees (reason lines and history rows: "Override · …").
+  - **"Adjusted"** is the lime tag, shown only while a change is in effect.
+
+## Mess Staff — Stage D: kitchen staff & supervisor, after service (2026-09-29)
+
+**Precondition:** C4a and C5 show "Override · staff event" on one line (18 pt) with the Adjusted tag visible. Pass.
+
+The snapshot `st49` was taken first (pages, page-09 frames and the page-03 staff components). The section **"MS-D · Kitchen staff & supervisor · after service"** is at y 3500, and the frames are at y 3600, x = k·493. It is Light only, with a label, Moment note (Wed 12:35–12:55 PM) and sample chip on every frame.
+
+**Reused components:** DemandRingCard, DishRow, KitchenSeesBlock, ResultCard, FormField (Focused / Locked), MetaChip, StaffTopBar and Button. **No new components were added.**
+
+| Frame | Id | Content |
+|---|---|---|
+| MS-D1 · Waste entry (staff) | `770:868` | DemandRingCard "LUNCH · TODAY · 3 of 5 dishes logged · Plate waste not entered yet". The ring shows 60% (lime arc set per instance; the "not sure" arc is hidden). **DishRow** per dish: the reason line is the read-only "Prepared X · served Y", and the quantity is the typed **unserved** value, or "— unit" when not logged yet. Hint: "Tap a dish to enter what was left unserved". **One** FormField, "Plate waste · whole meal 18 kg". There is no per-dish plate waste. Footer: Save waste log. |
+| MS-D1a · Waste entry saved | `770:948` | ResultCard **Success**: "Saved · Lunch waste · Waste logged · 12:40 PM". KitchenSeesBlock "LOGGED": Plate waste · Whole meal · 18 kg; Unserved · All 5 dishes · 10 kg · 9 L · 60 pcs. Footer: Open shift history (goes to D4). |
+| MS-D2 · Feedback summary | `770:999` | "Repeated complaints" and "Updated 12:45 PM". DishRows sorted by count: Sambar · Too salty · 6 reports; Rice · Undercooked in the second batch · 4; Paneer butter masala · Too oily · 3; Curd · Sour · 2. Lines: "Grouped by dish · names never shown" and "Tap a dish to log what changed". **No student identity**, not even masked. |
+| MS-D3 · Corrective-action log | `770:1057` | KitchenSeesBlock "COMPLAINT": Sambar · Too salty · 6 reports. FormField Focused "What changed (required)". FormField Locked "Approved by · Ravi · •••4417" (filled from sign-in). Footer: Save action / Cancel. |
+| MS-D3a · Corrective action saved | `770:1117` | ResultCard **Success**: "Saved · Sambar · salt cut by a third · Logged · approved by Ravi · •••4417". MetaChip (calendar): "Next served Fri lunch · recheck then". |
+| MS-D4 · Shift history | `770:1155` | "Shift history" and a "Read-only" chip (lock). Rows, newest first: the ResultCard icon head (Success lime check / Hold grey ring + clock), one action line, and one mono line with time · masked name. Entries: Corrective action · Sambar salt cut; Waste logged · lunch; **Override pending · Curd 60 → 45 L (Hold)**; Override · Sambar 42 → 50 L. No edit controls. |
+
+**Not a component yet:** the D4 history row is a local composition. It is a ResultCard icon head at 32 pt with two text lines. It is flagged as a DishRow/ResultCard gap, a possible `HistoryRow` for page 03 after review.
+
+**Diff vs `st49`:**
+- Page 09: +25 nodes, all at y ≥ 3490 (1 section, 6 frames, 6 labels, 6 Moment notes, 6 sample chips). Every existing page-09 frame is unchanged (deep check).
+- Page 03: the top level and all 7 staff components are unchanged.
+- Links: 7 / 7 / 1181.
+- Render: `design/audit/mess_staff_d/ms_d_row.png`.
