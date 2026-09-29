@@ -1888,3 +1888,74 @@ Reused from page 03:
 - **Link counts:** 04 is 7, 05 is 7, 07 is 1181. Page 09 has 0 links.
 - **Tokens:** no unbound solid fills or strokes on page 09 outside instances.
 - **Screenshots:** in `design/audit/mess_staff_a/`. The temporary captures were deleted.
+
+## Mess Staff — Stage A.1: status colours, identity display, component move (2026-09-29)
+
+The snapshot `st38` (all pages, plus a deep text and geometry snapshot of page 09) was taken before any edit.
+
+**Not a component yet:** there is no `ResultCard` component. The result states on page 09 are auto-layout frames named "Result", one per frame. This stage changed only their colours.
+
+### A1.1 Status colours
+
+Every state now uses tokens from the Waste screen's family: `surface`, `fill-quiet`, `ink`, `ink-secondary`, `chart-hatch-line` and `lime`. No `success`, `warning` or `urgent` token (or their `-tint` versions) is used on page 09 any more. No variables were added.
+
+The card fill is `surface` in every state. Only the icon circle and the tag differ:
+
+| State (entry / pass) | Icon circle | Icon | Tag |
+|---|---|---|---|
+| Success: Scanned / Available, Redeemed | `lime` (was `success`) | `on-lime` | lime tag, the same style as StatusTag Available |
+| Duplicate / Already redeemed | `ink-secondary` (was `warning`) | `surface` | `fill-quiet` + `ink` |
+| Invalid / Expired | `ink` (was `urgent`) | `surface` | `fill-quiet` + `ink` |
+| Offline (both) | `chart-hatch-line` (was `ink`) | `ink` | `fill-quiet` + `ink` (unchanged) |
+
+- The three entry-scanner StatusTags (Scanned, Already scanned, Wrong mess) keep their words. Their colours are **instance overrides** on page 09. The StatusTag component on page 03 is unchanged, and so are the student screens.
+- Contrast:
+
+  | Pair | Ratio |
+  |---|---|
+  | `surface` icon on `ink-secondary` | 6.7 |
+  | `ink` icon on `chart-hatch-line` | 10.0 |
+  | `on-lime` on `lime` | 15.0 |
+  | `surface` on `ink` | 18.9 |
+
+  All pass AA.
+- Card sizes are unchanged (for example Success 353×210 and Already redeemed 353×362).
+- The before/after swatches are in `design/audit/mess_staff_a1/`.
+
+### A1.2 Identity display (privacy)
+
+Staff screens show **the first name and the last 4 digits of the SRM ID only**:
+- On one line, the format is `Aarav · ...0238`.
+- Where the name is the card title (Success, Valid) or a list row (Redemption log), the name is the first name only ("Aarav") and the line under it is `...0238`.
+
+Changed frames:
+- Entry scanner: Success, Duplicate, Invalid, Offline.
+- Pass desk: Valid, Redeemed, Already redeemed, Invalid, and all 6 rows of the Redemption log.
+
+Text layers that were named after the old full names were renamed to "Identity". The only full ID left is the value the staff member types into the SRM ID field on Pass desk · Manual entry. That is input, not a display.
+
+### A1.3 Components moved to 03 Components
+
+**StaffTopBar**, **ShiftCounter** and **Viewfinder** moved from page 09 to page 03. They sit in the shared-UI column (x 0), below AppWordmark, at y 12030 and x 0 / 433 / 826. The ids are unchanged, and the empty "Staff components" frame on page 09 was removed.
+
+Instance counts on page 09 are the same before and after, and none are detached:
+
+| Component | Instances |
+|---|---|
+| StaffTopBar | 15 |
+| ShiftCounter | 15 |
+| Viewfinder | 4 |
+
+### A1.4 Diff vs `st38`
+
+- Pages 00–02, 04–08 and 99 are unchanged.
+- Links are unchanged: 7 / 7 / 1181.
+- Page 03 has 3 added nodes (the moved components) and nothing else changed.
+- Page 09:
+  - 9 frames changed: colour and text only. Every frame's direct-child geometry is identical to `st38`.
+  - 1 node removed: the empty "Staff components" frame.
+- Text changes: 22, all identity strings.
+
+### A1.5 Not done: earlier request
+
+The earlier request (black hero result cards, MS-A/MS-B renames, Moment notes and sample chips, a `ResultCard` component set, count-chip styling) was **not applied**. The later request limited the diff to colour, identity and the component move.
