@@ -1959,3 +1959,105 @@ Instance counts on page 09 are the same before and after, and none are detached:
 ### A1.5 Not done: earlier request
 
 The earlier request (black hero result cards, MS-A/MS-B renames, Moment notes and sample chips, a `ResultCard` component set, count-chip styling) was **not applied**. The later request limited the diff to colour, identity and the component move.
+
+## Mess Staff — Stage A.2: black ResultCard, one-line facts, naming, notes (2026-09-29)
+
+The snapshot `st39` (all pages, plus a deep snapshot of page 09) was taken first.
+
+### A2.1 ResultCard (page 03, `744:84111`)
+
+ResultCard is a component set at page 03, x 0, y 12400, in the shared-UI column under the staff components.
+
+- **Variants:** `State` = Success / Duplicate / Invalid / Offline.
+- **Text properties:** `Tag`, `Title`, `Fact`.
+- **Card, same in every state:**
+  - Fill `hero-bg` (#111111), radius 24, padding 20, gap 8, 353 wide.
+  - A 48 pt icon circle and a pill tag on one line.
+  - Title: Section style, `on-hero`.
+  - Fact: Body style, `on-hero-secondary`.
+- **Only the icon circle and the tag change by state:**
+
+| State | Icon circle | Glyph | Tag | Used for |
+|---|---|---|---|---|
+| Success | `lime` fill | checkmark, `on-lime` | `lime` / `on-lime` | Scanned, Available, Redeemed |
+| Duplicate | `ink-secondary` fill | clock, `surface` | `ink-secondary` / `on-hero` | Already scanned, Already redeemed |
+| Invalid | `surface` fill | xmark, `ink` | `surface` / `ink` | Not enrolled here, Expired |
+| Offline | outline 1.5 `on-hero-secondary` | wifi.slash, `on-hero-secondary` | outline / `on-hero-secondary` | Saved offline, Offline |
+
+**Contrast on black (text):**
+
+| Text | Ratio |
+|---|---|
+| Title | 18.9 |
+| Fact | 9.2 |
+| Tag text: Success | 15.0 |
+| Tag text: Duplicate | 6.7 |
+| Tag text: Invalid | 18.9 |
+| Tag text: Offline | 9.2 |
+
+**Glyphs:** 15.0 / 6.7 / 18.9 / 9.2. All pass AA.
+
+**Note:** the Duplicate circle (`ink-secondary`) is only 2.8:1 against the card. The meaning is carried by its white glyph (6.7:1) and the tag text.
+
+**Instances:** all 9 result cards on page 09 are instances (Success 3, Duplicate 2, Invalid 2, Offline 2). They set only `State`, `Tag`, `Title` and `Fact`, and have **no overrides**. The per-frame "Result" frames and their StatusTag colour overrides are gone.
+
+**Pass tile:** on MS-B3, B3b, B4 and B5, the SpecialPassTile now sits **below** the card on the canvas, not inside it, because the card has only the four slots.
+
+### A2.2 One fact line per card
+
+| Frame | Tag | Title | Fact |
+|---|---|---|---|
+| MS-A2 | Scanned | Aarav · •••0238 | Lunch · 12:14 PM |
+| MS-A3 | Already scanned | Aarav · •••0238 | Recorded at 12:14 PM |
+| MS-A4 | Not enrolled here | Priya · •••0771 | Enrolled at North Mess · Block C |
+| MS-A5 | Saved offline | Rahul · •••0452 | Checks run when it syncs |
+| MS-B3 | Available | Aarav · •••0238 | Valid for lunch · Main Mess |
+| MS-B3b | Redeemed | Aarav · •••0238 | Redeemed 12:32 PM · just now |
+| MS-B4 | Already redeemed | Aarav · •••0238 | Redeemed 12:32 PM · this desk |
+| MS-B5 | Expired | Rahul · •••0452 | Pass was for Tue 12–2 PM |
+| MS-B6 | Offline | Can’t verify offline | Redeeming needs a connection |
+
+- **Other trims:**
+  - MS-A1 tip: "Scans start when a code is in view".
+  - MS-A6 alert: "144 entries · 1 still syncing".
+  - MS-B2 note: "For when the QR won’t scan".
+  - MS-B7 footer: "Special-pass redemptions only".
+  - MS-B8 alert: "13 redeemed · you’ll be signed out".
+- **No text on page 09 has more than one sentence.** Separators use "·", the file's convention, where the brief wrote "-".
+- **Fix:** MS-B8's viewfinder hint said "Point at the student's Entry QR". It now uses the pass-desk hint.
+
+### A2.3 Identity masking
+
+- Every masked ID uses `•••` plus the last 4 digits, for example `Aarav · •••0238`. The Redemption log rows show the first name, with `•••0238` below it.
+- **MS-B2 ID fallback** now shows the moment **after Check succeeds**: the field is Filled with `•••0238` and the helper reads "Checked". No full SRM ID is displayed anywhere on page 09.
+
+### A2.4 Counter "+1"
+
+The ShiftCounter delta is now an instance of **CreditsChip** (`State=Points`, the Home points chip), with text "+1" and the star layer hidden.
+- **Shape:** `glass-fill` with a `glass-highlight` border, 44 tall, radius 22, Mono Body in `ink`.
+- **Position:** right-aligned and vertically centred, as on Home.
+- **Contrast:** 13.7 on the counter.
+- **Property change:** the old `Delta` text property was removed from ShiftCounter. `Show delta` still toggles the chip.
+
+### A2.5 Naming, notes and layout
+
+- **Sections:** "MS-A · Entry QR scanner" and "MS-B · Special pass desk", in the file's section text style, 100 above each row.
+- **Frames:**
+  - MS-A1 · Scanning, A2 · Scanned, A3 · Duplicate, A4 · Invalid, A5 · Offline, A6 · End shift confirm.
+  - MS-B1 · Scan the pass, B2 · ID fallback, B3 · Valid — available, **B3b · Redeemed** (the extra success state; B-row numbering kept to the list), B4 · Already redeemed, B5 · Invalid / expired, B6 · Offline, B7 · Redemption log, B8 · End shift confirm.
+- Each frame now has:
+  - a label 36 above it;
+  - a Moment note 16 below it ("Moment: Wed 12:13 PM" … "2:05 PM", cloned from the page-04 pattern);
+  - a SampleNote "All data is sample" 88 below it.
+- The MS-B row moved from y 1060 to **y 1200** to make room for the notes.
+
+### A2.6 Diff vs `st39`
+
+- Pages 00–02, 04–08 and 99 are unchanged.
+- Links: 7 / 7 / 1181 (page 09 has 0).
+- **Page 03:**
+  - +1 node: ResultCard.
+  - ShiftCounter changed (the delta chip).
+- **Page 09:**
+  - 17 nodes changed: 15 frames (cards, copy, names, row-B position) and 2 section titles.
+  - +45 nodes: 15 labels, 15 Moment notes and 15 sample chips.
