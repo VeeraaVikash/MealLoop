@@ -2250,3 +2250,12 @@ The snapshot `st47` was taken first.
   - Page 09: C2, C3, C4a, C4b and C5 changed; C1 and C4 are untouched.
   - No other page changed. Links: 7 / 7 / 1181.
 - Render: `design/audit/mess_staff_c4/ms_c_row.png`.
+
+## Mess Staff — Stage C.5: shorter override reason (2026-09-29)
+
+The snapshot `st48` was taken first.
+
+- The Sambar reason **"Override · staff event after lunch"** is now **"Override · staff event"** on the two instances that show it: C4a (KitchenSeesBlock Row 1) and C5 (the Adjusted Sambar DishRow).
+- The DishRow `Reason` default on page 03 was updated to the same string, so the sample value matches.
+- It now fits on one line (192×18) next to the "Adjusted" tag in both frames. The row height went from 82/83 to 64/65, so the content below moves up by 18.
+- **Diff vs `st48`:** node-level, only C4a and C5 changed: the text, plus the resulting row, card and content height and y-shifts. The page-03 top level is unchanged. No other frame or page changed. Links: 7 / 7 / 1181.
