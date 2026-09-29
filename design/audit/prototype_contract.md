@@ -2089,3 +2089,16 @@ The snapshot `st40` was taken first.
 - black hero cards with status shown only by icon and tag, reusing ResultCard where a result is shown;
 - masked identities;
 - the MS-style naming, labels, Moment notes and sample chips from the start.
+
+## Mess Staff — Stage A.4: B2 order and the "Checked" signal (2026-09-29)
+
+The snapshot `st41` was taken first.
+
+1. **Canvas order now matches the real sequence.** **MS-B2b · Typing the SRM ID** sits in the left slot (x 493) and **MS-B2 · ID fallback** (after Check) is on its right (x 986). Their labels, Moment notes and sample chips moved with them. The frame names are unchanged.
+2. **MS-B2's footer** is now a small **lime "Checked" tag** instead of the disabled button. It is a copy of the ResultCard Success tag: `lime` fill, `on-lime` Tag-style text, pill radius, padding 4/10. It sits left-aligned in the footer slot. It is a confirmation signal, not a control.
+
+**Diff vs `st41`:**
+- Only page 09 changed, 8 nodes:
+  - the two frames, their labels, Moment notes and sample chips, which swapped x positions;
+  - MS-B2's content (button → tag).
+- Links: 7 / 7 / 1181.
