@@ -343,3 +343,4 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 80 | Pass desk · Offline | Offline redemption is blocked, which can stall a queue when the mess Wi-Fi drops. | Medium | Decide: keep it blocked (safe), or queue with a per-device lock plus conflict review on sync. |
 | 81 | 09 Mess Staff | The staff components (StaffTopBar, ShiftCounter, Viewfinder) are local to page 09, not page 03. | Low | Move them to 03 Components once the staff designs are approved. |
 | 82 | 09 Mess Staff | No prototype links or flow starts for staff screens. | Low | Add a staff flow in a later stage (page 07 or its own prototype page). |
+| 83 | MS-C4 override | There is no state for a food head **rejecting** a large override (what the supervisor sees, and what the kitchen cooks). | Medium | Build MS-C4c "Override rejected" (ResultCard Stop: "Not approved · cook 42 L", with the reason from the food head). Deferred by decision. |
