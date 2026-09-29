@@ -327,7 +327,7 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 
 | # | Status |
 |---|---|
-| 67 | **Partly done.** Home · After last meal has the two-up dashboard (Today's plate + Spending); a "Nothing logged" variant frame was added. The other Home states are still without cards. |
+| 67 | **Partly done.** Home · After last meal has the two-up dashboard (Today's plate + Spending); a "Trackers empty" variant frame was added. The other Home states are still without cards. |
 
 ### New findings
 
