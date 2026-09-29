@@ -2061,3 +2061,31 @@ The ShiftCounter delta is now an instance of **CreditsChip** (`State=Points`, th
 - **Page 09:**
   - 17 nodes changed: 15 frames (cards, copy, names, row-B position) and 2 section titles.
   - +45 nodes: 15 labels, 15 Moment notes and 15 sample chips.
+
+## Mess Staff — Stage A.3: review follow-ups (2026-09-29)
+
+The snapshot `st40` was taken first.
+
+1. **MS-B3b · Redeemed is kept** as a distinct moment: right after redemption, before the next scan.
+2. **New frame: MS-B2b · Typing the SRM ID** (placed right after MS-B2).
+   - It shows FormField Focused with the full `RA2411003010238` visible. Nothing is confirmed yet, so nothing is masked. The helper reads "15 characters, starts with RA".
+   - Its footer is **Check ID** and "Scan QR instead".
+   - **MS-B2 · ID fallback** is now purely the after-Check moment. The field shows `•••0238` with the helper "Checked", and the footer is a single **disabled "Checked" button with a checkmark**. The leftover "Check ID" and "Scan QR instead" were removed.
+   - Everything to the right of MS-B2 on row B moved +493: MS-B3 to B8 with their labels, Moment notes and sample chips.
+3. **ResultCard `State=Duplicate`** now has a 1.5 `on-hero-secondary` ring on the icon circle (inside stroke), the same treatment as the Offline outline. The ring is 9.2:1 against the card, which replaces the 2.8:1 edge.
+4. The star stays hidden on the counter's "+1" chip (no rewards signal on staff screens).
+5. **The pass tile stays outside ResultCard**, as page composition below the card. **ResultCard stays at exactly 4 slots** (icon, tag, title, fact). Do not add slots for context-specific extras.
+
+**Diff vs `st40`:**
+- Only page 09 changed:
+  - +4 nodes: MS-B2b and its label, Moment note and sample chip.
+  - 28 nodes moved x+493 only.
+  - MS-B2 changed its content only (the footer).
+- The ResultCard ring is inside the component set, so page 03's top level is unchanged.
+- Links: 7 / 7 / 1181.
+
+**Carry forward to Stage B** (kitchen staff and supervisor):
+- one fact per line;
+- black hero cards with status shown only by icon and tag, reusing ResultCard where a result is shown;
+- masked identities;
+- the MS-style naming, labels, Moment notes and sample chips from the start.
