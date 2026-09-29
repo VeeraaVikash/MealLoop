@@ -2199,3 +2199,15 @@ The snapshot `st45` was taken first, including a deep snapshot of every page-09 
 - Page 03: the top level is unchanged. Only the variant names inside the ResultCard set changed.
 - Links: 7 / 7 / 1181.
 - Renders are in `design/audit/mess_staff_c2/`.
+
+## Mess Staff — Stage C.3: C4 limit wording (2026-09-29)
+
+The snapshot `st46` was taken first, including a node-level snapshot of every page-09 frame.
+
+- The MS-C4 limit lines now read:
+  - **"Increase: over 20% or 10 kg/L or 200 pcs"**
+  - **"Cut: over 10% or 5 kg/L or 100 pcs"**
+- The +/− signs were dropped, because "Increase" and "Cut" already carry the direction, and the minus rendered close to a hyphen in mono. "or" is the only joining word.
+- The header "NEEDS APPROVAL · WHICHEVER FIRST" and the "Draft limit" tag are unchanged.
+- **Diff vs `st46`:** the node-level diff shows only the two text layers changed, with the same position and size (each 353×18, one line). No other frame or page changed. Links: 7 / 7 / 1181.
+- Stage C is now clean. The next step is the full 7-frame read-through, then promoting the shared pieces to page 03.
