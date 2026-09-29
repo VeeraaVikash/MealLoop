@@ -2146,3 +2146,28 @@ The snapshot `st43` was taken first. The new section, **"MS-C · Kitchen staff &
 - Only page 09 changed, with +29 nodes, all at y ≥ 2290: 1 section, 7 frames, 7 labels, 7 Moment notes and 7 sample chips.
 - No other page changed. Links: 7 / 7 / 1181.
 - There are no unbound colours, and the 3 ResultCard instances have 0 overrides.
+
+## Mess Staff — Stage C.1: MS-C5 hierarchy and override traceability (2026-09-29)
+
+The snapshot `st44` was taken first. MS-C5 stays read-only, with no edit controls.
+
+1. **Summary hero** at the top of the dish list. It is a black card in the same family as C2 and C4a/b: eyebrow "LUNCH · TODAY", Metric "5 dishes", and the mono line "1 adjusted today" in **lime**. The line uses `on-hero-secondary` when the count is 0.
+2. **Dish rows** use the C3 dish row (name, optional reason, mono quantity) instead of InfoRow. **Sambar** carries the reason "Override · staff event after lunch", the same wording as C4a's "Kitchen sees" row, plus a lime **"Adjusted"** tag next to "50 L". The tag is a copy of the ResultCard Success tag. Dishes that were not adjusted show only their name and quantity.
+3. **Wednesday special** is now **one block** in the "Kitchen sees" pattern: the mono eyebrow "WEDNESDAY SPECIAL" over one surface card with two dish rows. "Chicken biryani · Special pass · Wed 12–2 PM · 30 kg" and "Special passes · Redeemed at the pass desk · 214". The separate SpecialPassTile, heading and stats card were removed.
+
+**Diff vs `st44`:** only MS-C5 changed. The deep check confirms the other six MS-C frames are unchanged. Links: 7 / 7 / 1181. The before/after renders are in `design/audit/mess_staff_c1/`.
+
+### Decisions from the Stage C review (recorded here; Figma not yet changed)
+
+- **Approval threshold for an override:** approval triggers on **whichever comes first**, a percentage or a fixed per-unit amount. **Cuts get a tighter limit than increases**, because a shortage (empty plates) is a worse failure than a surplus. The working numbers, subject to the food head's confirmation:
+
+  | Change | Needs approval over |
+  |---|---|
+  | Increase | +20%, or +10 kg / +10 L / +200 pcs |
+  | Cut | −10%, or −5 kg / −5 L / −100 pcs |
+
+- **ResultCard states** will be renamed **Success / Hold / Stop / Offline** (from Success / Duplicate / Invalid / Offline).
+- **Kitchen staff** use the same screens as the supervisor, read-only by permission. "Adjust a quantity" and every override entry point are hidden for them. There is no separate frame set and no role split in C1.
+- **"Not sure" at half weight** stays the default, but it must be **stated on screen**: C2 gets an info tap in the EstimatePill pattern that explains the weighting.
+- **Withdraw request** stays on C4b. A **rejected override (4c)** is not built; it is logged as gap 83.
+- **Promote to page 03** (demand ring hero, dish row, "Kitchen sees" block, the Adjusted/Checked tag) happens **after** the Stage C review, once the whole section is approved.
