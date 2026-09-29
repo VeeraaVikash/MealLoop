@@ -334,4 +334,4 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | # | Frame(s) | Issue | Severity | Suggested fix |
 |---|---|---|---|---|
 | 78 | Home dashboard | The Spending tile is visible to anyone looking over the student's shoulder on Home, while Spending itself is labelled "Only you can see this". | Low | **Build item (decided):** hidden by default; opt in via "Show spending on Home" in Settings. When hidden, Today's plate uses the full-width card. Toggle not built yet (contract 3.6.5). |
-| 79 | Home · Nothing logged | Its copied links go to the same destinations as the populated Home (for example "You said the sambar…" follow-up), which may not fit a first-day state. | Info | Review which modules show on a first day. |
+| 79 | Home · After last meal · Trackers empty | Its copied links go to the same destinations as the populated Home (for example the "You said the sambar…" follow-up). | Info | **Closed:** this is a daily/weekly empty state, not first-run, so the other modules correctly stay (contract 3.6.5). |
