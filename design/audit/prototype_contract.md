@@ -3237,3 +3237,23 @@ The snapshot `st73` was taken first. There was no Figma change: the diff vs `st7
 
    Correct set: Admin · Today (AD-1a), Admin · Issues (AD-3a), Admin · Insights (AD-4a Success).
 2. **Offline trend row claims an all-mess figure (gap 107).** AD-4a Offline's Trends row reads "Waste down 13% since 8 Jul · 3 messes". The 13% is the 4-mess series (742 → 642); a 3-mess figure isn't shown anywhere.
+
+## AD-5 precondition fixes: flow starts, offline trend row (2026-09-30)
+
+The snapshot `st74` was taken first. It now also records each page's flow starting points.
+
+1. **Flow starts (gap 106 closed).**
+   - Removed "Flow 1" (AD-2a) and the four copied "Admin · Issues" starts (AD-4a Empty, AD-4a Offline, AD-4c, AD-4d).
+   - Page 10 now has exactly **3**: **Admin · Today** → AD-1a, **Admin · Issues** → AD-3a, **Admin · Insights** → AD-4a Success.
+   - Other pages' flow starts are unchanged: 00 Before 4, 04 2, 05 2, 07 25.
+2. **AD-4a Offline Trends row (gap 107 closed):** "Waste down 13% since 8 Jul · 3 messes" → **"Trend needs all 4 messes"**.
+
+**Diff vs `st74`:**
+- Page 10: only AD-4a Offline changed (row text), and flow starts −5 / +0.
+- Links unchanged; all other pages unchanged.
+- Renders: `admin_ad5/flow_starts_before_after.png` (API readout) and `admin_ad5/ad4a_offline_trend_fixed.png`.
+
+**Rule D1: duplicate hygiene.** Figma copies a frame's prototype flow start onto its duplicate.
+- **After duplicating any frame** (clone, duplicate-and-modify, or TMP capture copies left in the file), immediately check the page's `flowStartingPoints` and **remove any start that points at the duplicate** before continuing. The only exception is a new, intended flow start, added explicitly by name.
+- This check is part of **every** duplicate-and-modify step, not only the end-of-stage review.
+- Each stage diff now also compares flow starting points per page (added / removed).
