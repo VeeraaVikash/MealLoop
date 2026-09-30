@@ -3502,3 +3502,165 @@ The snapshot `st78` was taken first; it matched `st77` on every page. The brief 
   - Every other page unchanged, links included. `st79` stored.
 - **Nested blind spot:** the diff can't see nested changes, so these were confirmed by render (`admin_diet/after/`, the before/after composites) and by a full link audit of every AD-5 / AD-6 frame.
 - **Tools:** `tools/densitytool.js`, `tools/diethelp.js`, `tools/sheethelp.js` (also stored in `mealloop/*` plugin data).
+
+## Admin AD-5 / AD-6 · Coupons, hub visuals, vote hero, fill floor (2026-09-30)
+
+**Baseline:** snapshot `st80`, taken before any edit, matched `st79` on all 13 pages (links 7 / 7 / 1192 / 127, the same flow starts). `st81` is stored after the stage.
+
+**Renders:** `www.figma.com` is blocked by this session's network policy, so the screenshot URLs could not be downloaded. The renders were saved through the base64 screenshot path instead (same renderer, 1×). They are in `admin_coupons/before/` and `admin_coupons/after/`. The composites `admin_coupons/<screen>_before_after.png` show Success, Empty and Offline, before and after, for the hub, Rewards, Voting, Passes and Surplus.
+
+### Decisions applied (from the brief)
+
+- Scope-sheet selections use navigation **SWAP** (R1a approved; gap 118 closed).
+- **AD-5b** keeps all seven nutrition fields. It shows Energy, Protein, Carbs and Fat, and puts Fibre, Sugar and Sodium behind a "More nutrients" row.
+- **AD-5c2:** the duplicate stack moves behind a "Look the same · 3" row. Detail screens (AD-6d2) may exceed the three-row rule.
+- Proposals keep the separate "Review · Egg curry" button.
+- The admin tab bar is wired in the linking stage, not here (gap 119 stays open). Gap 110 is not part of this stage.
+
+### New rule: fill floor
+
+Added to `design_intent.md` as rules 9–12:
+- On every non-Empty screen, content at rest reaches at least 75% of the way down to the tab bar: the lowest content item ends at y 561 or lower on the screen, with the tab bar top at 748.
+- The floor is reached by enlarging the hero number or the data visual, never by adding blocks.
+- Empty and Offline states centre their message vertically.
+- **Reading used (to confirm):** an Offline state that still shows cached data counts as non-Empty and meets the floor, with its banner at the top. An Offline state with no data is a message and is centred.
+- The tool is `tools/filltool.js` (also stored as `mealloop/filltool`). The before/after table is in `admin_coupons/fill_floor.md`.
+
+### Components (page 03, all at y 14100)
+
+| Component | Id | What | Status |
+|---|---|---|---|
+| **CouponCard** | set `993:1881`: `State=Live` `993:1851`, `State=Awaiting` `993:1866` | A 353 × 80 ticket. Body (Name, one Fact line, exposed StatusPill `Tag`) and stub (Points in ML/Metric, "pts" in ML/Mono Footnote), joined by a dashed perforation (`border`, 1.5, dash 4/4). The notches are **boolean SUBTRACT cutouts** (card rectangle minus two 18 pt circles at the perforation x), so the canvas shows through. Live: `surface` fill, lime Success tag. Awaiting: no fill, dashed `ink-secondary` outline (5/4), grey type, Hold tag "Awaiting SRM". | **New, flagged** (named by the brief) |
+| **NeedsYouCard** | `993:1882` | `hero-bg`, 353 wide. Number (ML/Hero Metric) and Label (ML/Hero Unit), then three equal outline chips (icon plus one word). Properties: Number, Label, Chip 1–3, Icon 1–3 (instance swap). | Promoted (gap 123, part) |
+| **DemandRingCard** | set `995:1946`: `Size=Default` `764:84405` (the original component), `Size=Large` `995:1947` | Large: a 176 pt closed ring centred, the Number (ML/Hero Metric) and Unit inside, the Eyebrow above and the Line below. Same property names and arc layer names, so a variant swap keeps overrides. | **New variant, flagged** |
+| **PrepCard** | set `995:1957`: `Size=Default` `814:87226` (the original component), `Size=Hero` `995:1958` | Hero: `hero-bg`, 333 wide. Status, Name, then a 112 pt P/C/F composition ring (lime / on-hero / on-hero-secondary, the KcalGauge language; arcs set per instance) beside the Quantity in ML/Hero Metric with a new **Unit** property, then Fact. | **New variant, flagged** |
+
+- **Combining existing components into sets:** the property keys change (for example `Number#764:1` → `Number#995:1`), but every existing instance kept its values. This was tested on a throwaway component first. Instance counts: DemandRingCard Default 5, Large 4; PrepCard Default 29, Hero 15.
+- **Canvas moves (page 03 only):** the two sets moved from (0, 12700) and (456, 13584) into free canvas, because the new variants would have overlapped their neighbours.
+- **BentoTile `Size=Square` and `Size=Wide`** (added in the content-diet stage) now have **0 instances**. The hub tiles replaced them. They are kept; see gap 127.
+
+### Local compositions (flagged, candidates for page 03 after review)
+
+- **Metric tile** (hub): a `surface` card with radius 20. Wide is 353 × 132; Square is 172 × 172. Each has one mini visual, a big number (ML/Metric) with a unit (ML/Metric Unit), and a small label (ML/Mono Label), and nothing else.
+  - **Passes:** 88 pt ring, `ink` arc on a `border` track.
+  - **Rewards:** half-circle budget arc.
+  - **Voting:** for/against bar made of two ChartBar instances (Expected / Off target, corner radius 0) in a clipped 140 × 10 bar.
+  - **Menu:** 5 dots, 4 filled and 1 hollow for Curd (nutrition missing).
+  - **Surplus:** 3 step dots.
+  - **People:** lock badge, no link.
+  - The tiles are local because a data bar cannot be resized inside an instance (AD-4.2).
+- **Hero · Vote** (AD-5c Success and Offline, AD-5d):
+  - `hero-bg`, padding 24.
+  - StatusPill Hold tag, then "76%" (ML/Hero Metric) with "for".
+  - A 305 × 10 bar of ChartBar Donated (lime) 229 pt and Left on plates 74 pt: 1,204 / 1,592 of 303 pt, rounded.
+  - "1,204 for · 388 against", then the dish, then "Advice only · you decide" (5c only), then Button Secondary "Decide" (5c only).
+- **Number row** inside AD-6d's `Hero · Pickup` ("4" ML/Hero Metric plus "dishes"). The ResultCard stays at 4 slots (A.3); its title is now "Lunch surplus".
+
+### Screens (page 10)
+
+**AD-6c Rewards**
+- **Success and Offline:** the budget ring (unchanged: ₹2,370 of ₹5,000 · 63 juices · 12 ice creams; Offline ₹2,310 · 61 juices), then a **vertical** stack of four coupons (8 pt gap):
+
+  | Coupon | Tag | Fact | Points |
+  |---|---|---|---|
+  | Juice | Live | ₹30 each · 57 left (Offline: 59 left) | 50 |
+  | Ice cream | Live | ₹40 each | 80 |
+  | Biryani plate | "Launches Fri" | ₹120 each · 0 claimed | 200 |
+  | Fruit bowl | Awaiting SRM | Not shown to students yet | 60 |
+
+- All four fit at rest (the last ends at y 718 / 722), so there is no "See all" and no scroll.
+- The old "Fruit bowl" and "Offers · 2 live" rows were removed with their links.
+- The Rules pill and the Rules sheet are unchanged. Empty: EmptyState centred.
+
+**AD-6c2 Offers (Success, Offline)**
+- Moved to **99 Archive** at (8800, 100) and (9293, 100), with their label, Moment note and sample chip.
+- Renamed "Retired · …". Their 2 BACK links were removed, so the archive has 0 links. No link points at them.
+
+**AD-5-0 Manage hub**
+- **Success:** the NeedsYouCard ("3 · need you"; chips Vote → AD-5d, Pass → AD-6b, Pickup → AD-6d, drill-in 0.3), then metric tiles in the same bento sizes. Passes (wide) 196 of 214; Menu 5 dishes; Voting 76% for; Rewards (wide) ₹2,370 of ₹5,000; Surplus 4 dishes (2 done, pickup current); People Locked.
+- **Empty:** no card. Voting shows "0 to decide" with an empty track; Surplus shows "0 dishes" with all steps hollow.
+- **Offline:** banner, then 188 of 214, ₹2,310, Surplus with step 1 done and step 2 current.
+- Tile links are unchanged in destination.
+
+**AD-5c Menu voting**
+- **Success:** Rules pill, Hero · Vote with Decide → AD-5d (the link moved from the card to the button), "Vote in progress", "New proposals · 3".
+- **Offline:** banner, then the hero with Decide **disabled** and no link. The old Offline card → AD-5d link is removed, because deciding needs a connection.
+
+**AD-5d:** Hero · Vote with the tag "Closed Tue 13 Aug" and no button replaces the ResultCard. Evidence and Decision are unchanged.
+
+**AD-6a Passes (Success, Offline):** the hero instance is swapped to DemandRingCard `Size=Large`. Arc: 196/214 (Success) and 188/214 (Offline).
+
+**AD-6d Surplus (Success, Offline):** the hero has the big "4 dishes". The dots and caption are unchanged.
+
+**AD-5a Menu (Success, Offline)**
+- The five dish cards are PrepCard `Size=Hero`. Quantity and Unit come from the old "110 kcal" strings.
+- Rings use 4P / 4C / 9F of the Stage 2.1 values. Curd shows the track only (nutrition missing).
+- The swipe clip is 260 tall.
+
+**AD-5b (Edit, Add, Offline)**
+- Field rows 3–4 are replaced by a destination row "More nutrients". Reason: "Fibre 4 g · sugar 3 g · sodium 420 mg" on Edit and Offline, "Not filled yet" on Add.
+- The removed field instances moved into the new sheets.
+
+**AD-5c2 Proposals**
+- **Success and Offline:** the three proposals are full-width PrepCards (Default): pill, name, students (ML/Metric) and the criteria fact.
+  - Pongal on Tuesdays · Meets criteria · 47 students · 290 kcal · veg
+  - Egg curry on Mondays · Needs review · 64 students · 18% over budget
+  - Fried chicken daily · Doesn't qualify · 51 students · No vote · 38 g fat a serving
+- **Success only:** the Actions group ("Open vote · Pongal", "Review · Egg curry" → Needs review sheet) is unchanged. The duplicate stack is replaced by the row **"Look the same · 3"** → Look the same sheet.
+
+**New sheets** (H14 pattern via `sheethelp`; each with a label, Moment note and sample chip)
+
+| Sheet | Id | Position | Content |
+|---|---|---|---|
+| AD-5c2 · Look the same sheet | `1005:4562` | (8381, 4800) | Wallet stack and "Merge 3 into one" |
+| AD-5b · More nutrients sheet | `1005:4734` | (8874, 4800) | Fibre 4, Sugar 3, Sodium 420 |
+| AD-5b · More nutrients sheet (Add) | `1005:4865` | (9367, 4800) | Blank fields |
+
+**Empty states centred** (rule 10): 5a, 5c, 5c2, 6a, 6c and 6d. The EmptyState centre is within 0–1 pt of the middle of the free band. This was done with the content column's top padding or gap only; no node was added.
+
+**Sheet backgrounds refreshed:** the backgrounds of 8 existing sheets were re-cloned from their current screens, with links stripped, so the dimmed screen behind matches. The 8 sheets are AD-5a scope, 5b rules, 5c rules, 5c2 Needs review, 6a scope, 6a rules, 6c rules and 6d scope. Their Close, Dismiss and scope-row links are unchanged.
+
+### Links (page 10: 127 → 132; +29, −24)
+
+- **Re-wired, same destination and transition (18):**
+  - 15 hub tiles across the three states (the tiles are new nodes).
+  - 3 Needs-you rows → 3 chips.
+- **New (11):**
+  - 3 × "More nutrients" (Edit and Offline → Edit sheet, Add → Add sheet; Dissolve 0.25).
+  - "Look the same · 3" → sheet (Dissolve 0.25).
+  - 6 sheet Close / Dismiss → BACK.
+  - AD-5c Decide → AD-5d (drill-in; it replaces the card link).
+- **Removed (6):**
+  - AD-5c Success card (moved to Decide).
+  - AD-5c Offline card (Decide disabled).
+  - Rewards "Fruit bowl" and "Offers" → AD-6c2.
+  - AD-6c2 Success / Offline Back.
+- The Fruit bowl coupon has **no link**: its row's only destination was the archived Offers screen. It has no chevron, so rule 8 holds.
+- Flow starts are unchanged: Admin · Today, Issues, Insights, Manage.
+  - **D1:** Figma auto-created "Flow 1" on hub Offline when the tile links were added; it was removed straight away.
+  - Every script that added links re-checked the page's starts.
+
+### Checks
+
+- **Fill floor:** 16 misses before (18 with the archived Offers screens), 0 after. See `admin_coupons/fill_floor.md`.
+- **R9b:** every scrolling frame ends its last item at y 728 at max scroll (hub 297 / 94 / 154, 5c2 182 / 50). Rewards fits without scrolling (718 / 722).
+- **Numbers** (scripted text check):
+  - 196 of 214: hub Success and Empty, 6a Success.
+  - 188 of 214: hub Offline, 6a Offline.
+  - ₹2,370 of ₹5,000 with 63 juices and 57 left: hub, 6c Success.
+  - ₹2,310 with 61 juices and 59 left: hub Offline, 6c Offline.
+  - 4 dishes: hub, 6d Success and Offline. 7 kg · 4 L · 3 kg · 60 pcs: 6d2 Success and Offline.
+  - 76% and 1,204 / 388: hub, 5c, 5d.
+  - All agree.
+- **Diff vs `st80`:**
+  - Page 10: +12 nodes (3 sheets, 9 annotations); −8 (AD-6c2 and its annotations, moved to Archive); 25 frames changed.
+  - Nested-only changes don't show in the frame signature: the AD-6a hero swap, the six Empty centrings and the AD-6c Empty padding. They were confirmed by render and by the fill tool.
+  - Page 03: +CouponCard, +NeedsYouCard. DemandRingCard and PrepCard are now sets (new top-level ids; the old component ids live on as the Default variants). Advisory nested counts only otherwise (§3.2.0).
+  - 99 Archive: +8 nodes, 0 links.
+  - Pages 00–02, 04–09: unchanged, links included (7 / 7 / 1192, page 09 0).
+
+### Logged, not built
+
+- Student coupon wallet: buy with points, show a QR (gap 124).
+- Mess-staff coupon redeem, reusing the pass desk (gap 125).
+- Per-student purchase limits, undecided (gap 126).

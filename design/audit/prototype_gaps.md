@@ -385,3 +385,28 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 121 | AD-6c | The brief asked for "Offers · 3 live", but the sample data has 2 live offers (Juice, Ice cream) and Fruit bowl awaiting SRM. The row reads "Offers · 2 live". | Info | Confirm the wording, or make Fruit bowl live. |
 | 122 | AD-5b, AD-5c2, AD-6d2 | Over the content-diet target: AD-5b 21–22 text layers (7 required fields); AD-5c2 Success 17 (proposals and duplicate stack on one screen); AD-6d2 20 (4 dishes and 4 steps; rule 4 vs a "see all" detail). | Medium | Decide: split the 5b form into two steps; move the duplicate stack behind a "Look the same · 3" row; allow detail screens to exceed rule 4. |
 | 123 | Page 10 · local compositions | The Needs-you card, the Pickup hero (ResultCard plus progress dots) and the Header-controls row are local compositions, used several times. | Low | Promote to page 03 after review (like the MS-C promotions). |
+
+## Admin coupons, hub visuals, fill floor update (2026-09-30)
+
+| # | Status |
+|---|---|
+| 118 | **Closed.** SWAP for scope-sheet selections is approved (R1a). |
+| 119 | **Still open.** The admin tab bar is wired in the linking stage, by decision. |
+| 121 | **Superseded.** AD-6c2 Offers is archived. Rewards shows all four offers as coupons (2 Live, 1 "Launches Fri", 1 Awaiting SRM). |
+| 122 | **Decided and applied.** AD-5b: Fibre, Sugar and Sodium sit behind "More nutrients" (17–19 text layers, down from 21–22). AD-5c2: the duplicate stack sits behind "Look the same · 3" (sheet). AD-6d2 may exceed the three-row rule. |
+| 123 | **Partly done.** The Needs-you card is promoted as **NeedsYouCard** (redesigned: one number and three icon chips). The Pickup hero wrapper and the Header-controls row are still local. |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 124 | Student side | **Logged, not built:** a student coupon wallet (buy a coupon with points, show a QR at the counter). | – | Design it when the rewards pilot is approved. |
+| 125 | 09 Mess Staff | **Logged, not built:** a mess-staff coupon redeem screen, reusing the pass desk (MS-B scan / ID fallback / redeemed / already redeemed). | – | Build it with gap 124. |
+| 126 | AD-6c / student wallet | **Logged, undecided:** purchase limits per student (for example one Biryani plate a week). | – | Needs an owner (SRM or the food head). |
+| 127 | 03 · BentoTile | `Size=Square` and `Size=Wide` (added in the content-diet stage) have 0 instances after the hub moved to metric tiles. | Low | Keep them for future text tiles, or remove them in a clean-up stage (needs approval). |
+| 128 | AD-1b, AD-3a, AD-4a, AD-4d, AD-5a | The brief says "No horizontal scroll anywhere" (Rewards). Horizontal scrolling remains elsewhere: the prep, feedback and dish swipe rows (AD-1b, AD-3a, AD-5a) and the chip rows (AD-4a ×3, AD-4d). | Med | Confirm whether the rule is admin-wide. If so, convert those rows to vertical stacks or a "See all" in a later stage. |
+| 129 | Page 10 · local compositions | Metric tiles (6 visuals), Hero · Vote (5c and 5d) and the AD-6d Number row are local compositions. | Low | Promote them after review. The tiles' data bars can't live inside an instance (AD-4.2), so a tile component would take the number and label while the bar stays screen-level. |
+| 130 | AD-6c Fruit bowl coupon | The Fruit bowl row's only link went to AD-6c2, which is now archived, so the Awaiting coupon has no link (it has no chevron). | Info | If an "Awaiting SRM" detail is wanted, build it and link the coupon. |
+| 131 | AD-5c Offline | With Decide disabled, Offline no longer opens AD-5d (the old card did). | Info | Accept (deciding needs a connection), or add an AD-5d Offline state. |
+| 132 | Rules 9–11 (fill floor) | Reading to confirm: an Offline state with cached data meets the 75% floor (banner at the top); only message-only Offline states are centred. | Low | Confirm the reading. |
+| 133 | AD-6c Biryani plate | The two coupon states have no "scheduled" state. Biryani plate uses the Live state with the tag "Launches Fri", and its fact is "₹120 each · 0 claimed". | Low | Confirm, or add `State=Scheduled` to CouponCard. |

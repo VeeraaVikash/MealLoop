@@ -21,6 +21,15 @@ Written down on 2026-09-30 from the owner's notes in the design chat and the con
 7. Reuse first. New components only when a brief names them; flag anything else.
 8. Every Back returns where it came from. No dead chevrons.
 
+## RULES · fill floor (admin, from the 2026-09-30 coupons brief)
+
+Content diet has a ceiling (3 blocks) and now a floor.
+
+9. On every non-Empty screen, content at rest reaches at least 75% of the way down to the tab bar: the lowest content item ends at y 561 or lower (the tab bar top is at y 748). Reach it by enlarging the hero number or the data visual, never by adding blocks.
+10. Empty and Offline states centre their message vertically. They must not sit at the top with dead space below.
+11. Reading used from 2026-09-30, to confirm: an Offline state that still shows cached data (banner plus hero) counts as non-Empty and meets rule 9, with its banner at the top. An Offline state with no data is a message and follows rule 10.
+12. Measured by `tools/filltool.js` (fill = lowest content item at rest ÷ 748; an Empty card is centred when its centre is within 8 pt of the middle of the free band between whatever sits above it and y 748).
+
 ## Product decisions
 
 - 3 logins: student, mess staff, admin. Mess staff = permission bundles (scanner, pass checker, kitchen, supervisor). Admin = 4 tabs by intent: Today / Issues / Insights / Manage.
