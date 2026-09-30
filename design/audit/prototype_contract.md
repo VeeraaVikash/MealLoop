@@ -2640,3 +2640,23 @@ The snapshot `st57` was taken first. Only the visual treatment changed; the cont
 **Decisions:**
 - AD-1b stays read-only. Approval oversight, if ever needed, goes into AD-3 Issues as an escalation queue.
 - Other mess badges stay unlinked (samples), and no second mess-detail screen is built.
+
+## Admin AD-1.2: LiveDial component (2026-09-30)
+
+The snapshot `st58` was taken first.
+
+1. **`LiveDial`** (page 03, `ids.liveDial`) was promoted from the AD-1a dial.
+   - **Text properties:** `Eyebrow`, `Number`, `Unit`, `Max`, `Line`.
+   - **Parts:** a 240° sweep with the gap at the bottom; a hollow `on-hero-secondary` track; a `lime` "Served so far" arc; a lime **needle**; an `on-hero` hub; the number and unit centred in an auto-layout "Readout"; and "0" and Max centred at the arc ends.
+   - The needle is a **thin wedge arc** (±1.2°) rather than a rotated line. Instances cannot override rotation, but they can override `arcData`.
+   - **Per use:** angle a = 150° + share × 240°. Set the "Served so far" arc end to a, and the "Needle" arc to a ± 1.2°.
+2. **AD-1a** now uses a LiveDial instance with the same numbers (2,418 served, 2,960 max, 82%).
+3. **AD-1b:** the closed DemandRingCard became a LiveDial: "MAIN MESS · LUNCH · LIVE · **712** served · max 860 · Serving now · updated 1:40 PM" (83%).
+   - The card is 134 pt taller (262 vs 128), so the content below moved down. The frame now scrolls 42 pt, and the last item ends 20 pt above the tab bar at max scroll.
+   - Both frames now share the identical dial treatment.
+
+**Diff vs `st58`:**
+- Page 03: +LiveDial.
+- Page 10: only AD-1a and AD-1b changed, and the page-10 link list is identical.
+- No other page changed. Links: 7 / 7 / 1192.
+- Render: `admin_ad1/ad1_livedial_shared.png`.
