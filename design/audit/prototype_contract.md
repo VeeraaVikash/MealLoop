@@ -3186,3 +3186,22 @@ The snapshot `st72` was taken first.
 - Page 10: only AD-4a Success and Offline changed.
 - No link changes; all other pages unchanged.
 - Close-up with measured widths: `admin_ad4/ad4_3_wastebar_before_after.png`.
+
+## Roadmap update (after AD-4)
+
+| Stage | Status |
+|---|---|
+| AD-1, AD-2, AD-3, AD-4 | Done |
+| AD-5–7 (Manage) | Next |
+| Admin state-coverage backfill (AD-1–3) | Deferred |
+| Student track leftovers | Paused |
+| Stitch all three roles into one prototype | Waiting |
+
+**Student-track resumption list (add to the paused items above):**
+- Link cleanup: the 8 unclassified links + gap 92.
+- The 13 overflow frames.
+- Stage 4 verification.
+- Cosmetic cleanup.
+- **New (gap 105):** the student Waste screen's "Per meal, by week" chart (`WeekBars`) draws its bars at the component's fixed default heights. Figma ignores size overrides inside instances. The current sample values happen to match, but any other data would draw wrong heights. Fix as in AD-4: build data bars from `ChartBar` instances (or a detached chart), sized from the values, and verify the rendered heights against the data.
+
+**Batched presentation-mode checks before the review:** gap 96 (Back scroll position), gap 97 (fixed wash during a real scroll), and the AD-4 horizontal chip scroll (gap 104).
