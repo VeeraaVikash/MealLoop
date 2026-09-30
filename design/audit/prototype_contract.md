@@ -4261,6 +4261,21 @@ The overnight brief restated the AD-4 content pass with different specifics. As 
 
   - **Links:** 223 → 221 (−2: the Prep accuracy tiles). **Flow starts:** identical.
 
+### AD-5c2 Proposals (Vote open) (2026-10-01, overnight Stage 2, closes gap 152)
+
+- **New frame `1096:94066` "AD-5c2 · Proposals (Vote open)":** a clone of Proposals (Success).
+  - Pongal's status icon becomes an hourglass (lime), meaning the vote is open.
+  - Its button is `Style=Secondary, State=Disabled` with the label "Vote open · ends Fri 2:18 PM" (the same label layer, so still 12 texts).
+  - Fill is 84% and there are 3 blocks.
+- **Links:**
+  - The confirm sheet's "Open vote" button now goes to this frame with **SWAP**, Dissolve 0.25 (it was BACK). This extends R1a (SWAP, used so far for scope selections from sheets) to a confirm sheet's result. Recorded here at the brief's request.
+  - The frame's **Back** is a fixed link to AD-5c Menu voting (Move out right 0.3, the R1b/R1c pattern already used by Person · changed), because the SWAP replaces the sheet and plain BACK would land on the stale Success state.
+  - Review → Needs review sheet and Look the same → its sheet are kept. The disabled button has no link.
+- **Grid:** AD-5 row slot 15 (x 7095). AD-5d moved to slot 16 (x 7568) with its label, Moment note and chip. The new frame's annotations are cloned from Proposals (Success) at the same offsets (Moment: Wed 2:18 PM).
+- **Diff vs `st103` (snapshot `st104`):**
+  - Page 10: +4 nodes; AD-5d and its 3 annotations changed x only.
+  - Links 221 → 224 (+4 −1). Flow starts: identical.
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**
