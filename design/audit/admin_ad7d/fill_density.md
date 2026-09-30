@@ -46,3 +46,21 @@ Each item was asked for in the brief. Nothing was cut to reach 12; the options a
 Every JetBrains Mono range on the AD-7d screens and sheets was scanned, and each holds only digits, times, masked IDs, the arrow, or a unit inside a hero number (ML/Hero Unit). No name or sentence is set in mono.
 
 Two numbers still use Inter, because they belong to shared components: "See all · 6" (SettingsRow) and the banner's "2:12 PM". Rule 13 limits where mono can be used; it doesn't require every number to be mono.
+
+## Pass 2 (snapshot `st87` vs `st86`)
+
+Same tools and method.
+
+| Screen | Fill before → after | Texts before → after | Blocks |
+|---|---|---|---|
+| Success | 97% → 98% (y 734) | 13 → **12** | 3 |
+| Empty | centred (+1) → centred (+1) | 3 → 3 | 1 |
+| Offline | 96% → 98% (y 730) | 13 → **12** | 3 |
+| All activity | 77% → 76% (y 572) | 13 → **11** | 1 |
+| Entry sheets | – | 5 → 5 each | – |
+
+**How each count came down:**
+- **Success and Offline:** "1 pending" was removed. "now" is a ring around the newest dot, not a text layer.
+- **All activity:** the time column shows each hour once (1 PM, 12 PM, 11 AM, 10 AM), so it has 4 labels instead of 6 times.
+
+**Fill:** All activity stays above the floor under the 80 pt cap because the base gap went from 24 to 32 pt. The capped 12:40 PM row carries the break marker.

@@ -3900,6 +3900,48 @@ IDs, times and numbers in these lines are ML/Mono Body. The CHANGE / REASON / NO
   - **Every other page:** unchanged, links included (04 / 05 / 07: 7 / 7 / 1192; page `44:2`: 139).
 - **Renders:** `admin_ad7d/before/`, `admin_ad7d/after/` and `admin_ad7d/before_after.png`.
 
+### AD-7d pass 2 (2026-09-30)
+
+**Brief:** remove "1 pending"; All activity must be at 12 text layers or fewer; mark "now" at the first dot; cap rail gaps at 80 pt with a break marker; the curd sheet has no reason line.
+
+**Decisions by the owner** (asked before building, because the literal item 2 would have broken the pass's own checks):
+- **All activity → hour markers**, not "2 rows + See all". Taken literally, item 2 would have caused four problems:
+  - See all would have had no target.
+  - The Waste, Curd and Sambar override sheets would have been orphaned.
+  - Fill would have dropped to about 47%.
+  - The capped gap would have been hidden.
+- **"now" is a non-text marker.** A "now" text layer would have kept Success and Offline at 13.
+
+**Changes:**
+- **Hero (Success, Offline):** "1 pending" removed and the dots kept, newest first.
+  - A 24 pt ring ("Now · halo on the newest dot", 1.5 pt on-hero-secondary) is centred on the first dot. It has no text.
+  - The ring is absolutely positioned, so the strip stays 14 pt tall and the hero is 122 pt tall (was 129).
+- **AuditRow `1028:1887`:** two new booleans.
+  - `Show time` (default on) hides the time text while keeping the column width.
+  - `Show break` (default off) shows "Break": two short slanted ink-secondary strokes (1.5 pt, 12 × 8). A second rail line ("Line · after break") follows it, so the break sits mid-gap.
+- **Rail spacing** (the gap below each row, all three screens): min(32 + 1 pt per minute, 80). The last row is 24.
+  - Where the cap applies, `Show break` is on. Today that is only the 12:40 PM row on All activity (95 minutes, so 80 pt plus the break).
+  - The base went from 24 to 32 so that All activity stays above the floor under the cap.
+- **All activity:** hour markers in the time column (1 PM, 12 PM, 11 AM, 10 AM). The 12:41 and 12:40 rows hide their time. All 6 rows and their links stay. There are still no pills.
+- **Curd sheet `1021:7257`:** the reason line was removed. Three ML/Secondary lines remain: "Asked by Ravi · •••4417 · 11:05 AM", "Food head notified · they decide", "Kitchen cooks **60** L until approved". The missing reason is logged as gap 147.
+- **Sheet backgrounds:** refreshed from the new screens, and the background links stripped again.
+
+**Checks:**
+
+| Screen | Fill | Texts | Blocks |
+|---|---|---|---|
+| Success | 98% (See all ends at y 734) | 12 | 3 |
+| Empty | centred (+1), unchanged | 3 | 1 |
+| Offline | 98% (y 730) | 12 | 3 |
+| All activity | 76% (y 572) | 11 | 1 |
+| Entry sheets | – | 5 each | – |
+
+- **Diff vs `st86` (snapshot `st87`):**
+  - **Page 10:** 331 nodes, +0 / −0 nodes. Ten frames changed: Success, Offline, All activity, the type sheet and six entry sheets. Links: 214, +0 / −0. Flow starts: still exactly Admin · Today, Issues, Insights and Manage.
+  - **Page 03:** reads as unchanged, because the snapshot tool signs top-level nodes only; the AuditRow edit is nested (gap 149).
+  - **Every other page:** unchanged, links included.
+- **Renders:** `admin_ad7d/pass2/before/`, `admin_ad7d/pass2/after/` and `admin_ad7d/before_after_pass2.png`.
+
 ## Planned stage: Final audit (FA) (recorded 2026-09-30, not started)
 
 **When:** after AD-7 (people, permissions, audit log), the student-track resume (link cleanup, overflow frames, Stage 4 verification, cosmetic clean-up, gap 110) and the linking stage (the role-select entry and the admin tab bar, gap 119).

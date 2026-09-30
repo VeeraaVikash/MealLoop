@@ -435,5 +435,21 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 142 | AD-7d Success, Offline, All activity | 13 text layers each (the target is 12). Every item was asked for in the brief: two exception pills and "1 pending" on Success and Offline; the nav title plus 6 times and 6 titles on All activity. | Low | Pick one: drop "1 pending" (the hollow dot shows it), show 2 rows on Success and Offline, or use hour markers on All activity. |
 | 143 | AD-7d hero | The dots run newest first, matching the list, so dots 1–3 are the visible rows. The brief said "time order", and oldest first is the usual reading. | Info | Confirm, or flip the order. |
 | 144 | AD-7d rail | Rows are spaced by time (24 pt plus 1 pt per minute). On All activity this makes the 12:40 PM row 140 pt tall, for the 95 minutes before 11:05 AM. | Low | Confirm, or switch to even spacing (about 80 pt pitch on All activity to keep the floor). |
-| 145 | AD-7d curd entry | The curd row's Hold pill is never visible at rest: Success and Offline show only the 3 newest rows, and All activity has no pills. The curd sheet has no reason line because no reason was ever recorded. | Info | Record a reason at the source (MS-D4) if one should exist. |
+| 145 | AD-7d curd entry | The curd row's Hold pill is never visible at rest: Success and Offline show only the 3 newest rows, and All activity has no pills. (The missing reason is now gap 147.) | Info | None; the hollow node marks it as pending. |
 | 146 | AuditRow `1028:1887` | New component, not named in the brief. Flagged under rule 7. | Low | Review; merge into TimelineStep as a `Time` variant if preferred. |
+
+## Admin AD-7d pass 2 update (2026-09-30)
+
+### Resolved
+
+- **142** (13 text layers): Success 12, Offline 12, All activity 11. "1 pending" was removed; All activity uses hour markers (owner's choice); "now" is a non-text marker.
+- **143** (dot order): newest first, confirmed by the owner.
+- **144** (rail spacing): gaps are capped at 80 pt, with a break marker where the cap applies.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 147 | AD-7d curd entry (`1021:7257`), MS-D4, AD-1b | **Missing reason.** The curd change (60 → 45 L, awaiting the food head) has no recorded reason anywhere it appears, so its sheet has no reason line. Overrides need a mandatory reason (product decisions), but it is not stated whether an approval request needs one too. | Low | Owner to decide: (a) approval requests also need a reason, so add one at the source (MS-D4 request, AD-1b) and show it on the sheet; or (b) requests don't need one, so keep the sheet as it is. |
+| 148 | AD-7d All activity | The hour markers show each hour once (1 PM, 12 PM, 11 AM, 10 AM), so rows 3 and 4 (12:41, 12:40) have no time label. Exact times are in each sheet and on the Success and Offline rows. | Info | None. |
+| 149 | Snapshot tool | `snaptool` signs top-level nodes only, so the AuditRow change on page 03 (two new properties, break marker) reads as unchanged. | Info | Extend the signature to count all descendants if nested changes should show. |
