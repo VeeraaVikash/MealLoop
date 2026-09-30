@@ -3942,6 +3942,74 @@ IDs, times and numbers in these lines are ML/Mono Body. The CHANGE / REASON / NO
   - **Every other page:** unchanged, links included.
 - **Renders:** `admin_ad7d/pass2/before/`, `admin_ad7d/pass2/after/` and `admin_ad7d/before_after_pass2.png`.
 
+## Admin AD-5c2 redesign · Proposals as one ranked card (2026-09-30)
+
+**Brief:**
+- Replace the three tall proposal cards with one black card of ranked bars. The data and links stay the same.
+- Show status with an icon plus a bar style, never colour alone. Mono is for numbers only.
+- Targets: 3 blocks, 12 texts or fewer, and fill of 75% or more.
+
+**Order:** the brief asked for this after, or inside, the Trends and Forecast chart pass, because it reuses ChartBar's Pill variant.
+- That pass has not run, and ChartBar had no Pill variant.
+- The owner chose to add the Pill kinds now, in this pass, for the chart pass to reuse.
+
+### ChartBar (page 03): new kinds
+
+Three kinds, each radius 4, 120 × 8 by default, with the instance width resized to the data:
+
+| Kind | Id | Look |
+|---|---|---|
+| Pill | `1057:1857` | on-hero fill (white, for dark cards) |
+| Pill lime | `1057:1858` | lime fill |
+| Pill ghost | `1057:1859` | no fill; dashed on-hero-secondary outline, 1.5 pt, dash 4/3, inside |
+
+The existing kinds and instances are untouched. The set description now documents the Pill kinds.
+
+### Screen
+
+- **Card "3 proposals":**
+  - Black (hero-bg), radius 24, padding 20.
+  - The title is ML/Section, Inter only (no mono).
+  - Rows are ranked by students.
+
+  | Rank | Row | Icon | Bar | Status |
+  |---|---|---|---|---|
+  | 1 | Egg curry on Mondays · **64** students | clock (white) | Pill, 285 pt | Needs review |
+  | 2 | Fried chicken daily · **51** students | xmark (on-hero-secondary) | Pill ghost, 227 pt | Doesn't qualify |
+  | 3 | Pongal on Tuesdays · **47** students | checkmark (lime) | Pill lime, 209 pt | Meets criteria |
+
+- **Row type:**
+  - The name is ML/Secondary Medium.
+  - The count is ML/Secondary, with only the number in ML/Mono Body.
+- **Bars:**
+  - Bars start under the name, on an 18 + 10 pt icon indent.
+  - Width = 285 × students ÷ 64.
+- **Status:** each status is shown three ways: icon shape, bar style (solid, dashed ghost, lime) and colour. There is no status text, and colour is never the only cue.
+- **Note under the card:** "Fried chicken · no vote · **38** g fat a serving". It sits in one group with the card, so the card and note count as one block.
+- **Below the note:** the two buttons, unchanged ("Open vote · Pongal on Tuesdays", and "Review · Egg curry on Mondays" → Needs review sheet), then "Look the same · 3" → its sheet. Links are unchanged.
+- **Where the facts went:**
+  - "18% over budget" is in the Needs review sheet, which the Review button opens. It was already there.
+  - "38 g fat a serving" is in the note, which is Fried chicken's only home, because it has no action or sheet.
+  - "290 kcal · veg" left AD-5c2. It is still on AD-5d, the Pongal vote result. "Open vote" has no link and no sheet, so it cannot carry the fact without changing the button (gap 150).
+- **Offline:** the banner, the same card and note (saved data), and the two buttons in `State=Disabled` with no links. There is no Look the same row, as before. The Empty screen is unchanged.
+- **Sheet backgrounds:** the Needs review and Look the same sheets now show the new Success screen, with background links stripped.
+
+### Checks
+
+| Screen | Fill | Blocks | Texts |
+|---|---|---|---|
+| Success | 85% (y 634) | 3 | 12 |
+| Offline | 84% (y 630) | 3 | 12 |
+| Empty | centred (+1) | 1 | 3 |
+
+- **Bars:** every bar is within 0.3 pt of its data width (see `admin_5c2/fill_density.md`).
+- **Diff vs `st90` (snapshot `st91`):**
+  - **Page 10:** the two Proposals screens and their two sheets changed. 334 nodes, +0 / −0.
+  - **Links:** 214, identical, including the Review → Needs review sheet link (Dissolve 0.25). **Flow starts:** identical.
+  - **Page 03:** ChartBar gained 3 kinds.
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `admin_5c2/before/`, `admin_5c2/after/` and `admin_5c2/before_after.png`.
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**

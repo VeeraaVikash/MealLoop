@@ -453,3 +453,12 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 147 | AD-7d curd entry (`1021:7257`), MS-D4, AD-1b | **Missing reason.** The curd change (60 → 45 L, awaiting the food head) has no recorded reason anywhere it appears, so its sheet has no reason line. Overrides need a mandatory reason (product decisions), but it is not stated whether an approval request needs one too. | Low | Owner to decide: (a) approval requests also need a reason, so add one at the source (MS-D4 request, AD-1b) and show it on the sheet; or (b) requests don't need one, so keep the sheet as it is. |
 | 148 | AD-7d All activity | The hour markers show each hour once (1 PM, 12 PM, 11 AM, 10 AM), so rows 3 and 4 (12:41, 12:40) have no time label. Exact times are in each sheet and on the Success and Offline rows. | Info | None. |
 | 149 | Snapshot tool | `snaptool` signs top-level nodes only, so the AuditRow change on page 03 (two new properties, break marker) reads as unchanged. | Info | Extend the signature to count all descendants if nested changes should show. |
+
+## Admin AD-5c2 redesign update (2026-09-30)
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 150 | AD-5c2 Success, AD-5d | "290 kcal · veg" (Pongal) left the proposal rows. It still appears on AD-5d (the vote result), but "Open vote · Pongal on Tuesdays" has no link or sheet to carry it, and the brief kept the button unchanged. | Low | Link Open vote to AD-5d or a confirm sheet that shows the fact, or accept that it lives on AD-5d only. |
+| 151 | ChartBar (page 03) | The Pill kinds (Pill, Pill lime, Pill ghost) were defined in this pass, ahead of the Trends and Forecast chart pass that was meant to introduce them. | Info | The chart pass should reuse these kinds, or rename them in one place. The instances on AD-5c2 follow any change to the component. |
