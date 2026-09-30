@@ -523,3 +523,16 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 162 | AD-4b · Forecast vs actual | **No incoming link.** Its last entry point, the Prep accuracy tile, is locked by the overnight brief, so AD-4b is now a design state that can't be reached. | Medium | Unlock the Prep accuracy tile and link it to AD-4b, or link AD-4b from AD-4e. |
 | 163 | AD-4a (all states), AD-4e Offline | **Hidden, not deleted, to meet the 12-text rule:** the AD-4a nav subtitle "Wed 14 Aug · Waste"; the AD-4a row of three locked tiles (Turnout, Prep accuracy, Dishes); the AD-4a Offline Reports number "5 ready"; the AD-4e Offline "Also reported: sambar too salty · 6 reports" note. | Low | Unhide any of them if the owner accepts going over 12 texts. |
+
+## Overnight run, Stage 2 (2026-10-01)
+
+### Resolved
+
+- **152** (Proposals didn't show the vote as open): the new "AD-5c2 · Proposals (Vote open)" frame shows it, and the confirm sheet SWAPs to it.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 164 | AD-5c2 Proposals (Vote open) | A second fixed Back (to Menu voting), following R1b/R1c. With the SWAP, plain BACK would return to the stale Success state. | Info | None. Recorded as a deliberate exception. |
+| 165 | AD-5c Menu voting, AD-5c2 Success | Only the Vote open frame knows the vote is open. Menu voting and Proposals (Success) still show Pongal as not yet opened if reached another way. | Low | Add vote-open states on AD-5c if the review needs a consistent flow. |
