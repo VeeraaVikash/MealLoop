@@ -2866,3 +2866,41 @@ All five Today frames (AD-1a, AD-1b, AD-2a, AD-2b, AD-2c) were rendered at rest 
 **Live-run checks, batched for one presentation-mode pass before the review:**
 - **Gap 96:** does Back return AD-1a to its earlier scroll position?
 - **Gap 97 (remainder):** does a scrolling frame's own fill (the wash) stay still during a real scroll gesture?
+
+## Admin AD-3 · Issues (2026-09-30)
+
+The baseline is `st65` (see the AD-3 precondition). The section "AD-3 · Issues" is on page 10 at y 2300, with frames at y 2400, x = 0 / 493 / 986 / 1479. It is Light only, with a label, Moment note (Wed 1:50–1:53 PM) and sample chip on every frame.
+
+**Reused, nothing new on page 03:** NavHeader, AdminTabBar (Selected = Issues), MetaChip, ListRow (+ StatusPill), ResultCard, FormField (Filled / Default), Button, the MS-D4 history-row composition (cloned from page 09), the MS-D3a recheck MetaChip, HeaderBackdrop, ScrollEdgeFade, and the fixed-wash frame fill.
+
+| Frame | Id | Content |
+|---|---|---|
+| AD-3a · Issues — Overview | `ids.admin.ad3[0]` | Large title "Issues" / "Wed 14 Aug · 10 open". Filters: All messes · Open · This week. Three groups, urgent first: **SOS · SAFETY · 1 OPEN**: Chicken biryani · Foreign object · Main Mess · Stop "Safety report". **FEEDBACK · MAIN MESS · 4 OPEN** (MS-D2 data): Sambar · Too salty · 6 reports · Hold "Recheck Fri"; Rice · Undercooked in batch 2 · 4 reports · Hold "Open"; Paneer butter masala · Too oily · 3 reports · Open; Curd · Sour · 2 reports · Open. **COMMUNITY · STUDENT REPORTS · 5 OPEN** (student Community data): Long wait at counter 3 · 64 · Seen; Sambar too watery at dinner · 38 · Working on it; Curd runs out by 8:45 PM · 21 · Sent; Rice undercooked on Mondays · 17 · Need more info; More breakfast options · Suggestion · 112 · Seen; Drinking water too warm · North Mess · fixed today · **Success "Fixed"** (the resolved item shown briefly). Scroll range 384. |
+| AD-3b · Issue detail — Safety report | `[1]` | ResultCard **Stop** "Safety report · Chicken biryani · Main Mess · Foreign object reported · 1 report", the same facts as AD-1b. REPORT card: What · Found something · 1 photo; When · Wed 14 Aug · 1:12 PM · lunch; Where · Main Mess · Block A · counter 2; Reported by · Student · •••2231 (masked, kept for follow-up per gap 87); Open for · 38 min. OWNER: FormField Filled "Assigned to · Ravi · •••4417 · Kitchen supervisor · Sees it in the safety queue". Button Secondary **Escalate**. RESOLUTION LOG · NEWEST FIRST (MS-D4 rows): Assigned to Ravi · 1:25 PM · Admin · •••0912; Batch set aside · biryani 30 kg · 1:20 PM · Ravi · •••4417; Report received (Hold icon) · 1:12 PM · Student · •••2231. Primary **Add to log**. Range 420. |
+| AD-3c · Issue detail — Dish feedback | `[2]` | ResultCard **Hold** "Recheck Fri · Sambar · Main Mess · Too salty · 6 reports". CORRECTIVE ACTION · FROM KITCHEN: ResultCard **Success** "Logged 12:52 PM · Sambar · salt cut by a third · Logged · approved by Ravi · •••4417" (the MS-D3a entry, read-only; admin doesn't re-log it). The MS-D3a MetaChip "Next served Fri lunch · recheck then". REPORTS: Too salty · Grouped by dish · names never shown · 6. Primary **Confirm action**. No scroll. |
+| AD-3d · Community moderation | `[3]` | LOOK THE SAME · 3 REPORTS: Long wait at counter 3 · 64 students · Seen; Counter 3 queue too slow · 12 · Sent; Waited 20 min for plates · 5 · Sent. Secondary **Merge 3 into one**. OPEN · WHAT STUDENTS SEE (owner in the reason line, student-visible step in the pill): Sambar too watery at dinner · Food head · Working on it; Rice undercooked on Mondays · Food head · Need more info; More breakfast options · Mess committee · Seen; Curd runs out by 8:45 PM · No owner yet · **Sent** (outline pill). FormField Default "Owner · Curd runs out by 8:45 PM · Choose a person · Students see "Seen" once assigned". Range 139. |
+
+**Consistency checks:**
+- **Biryani:** the facts match AD-1a (Main badge Stop), AD-1b (PrepCard "Foreign object reported · 1 report", Stop "Safety report") and AD-3b.
+- **Sambar:** the complaint (6 reports) and the action (salt cut by a third, Ravi, 12:52 PM, recheck Fri lunch) match MS-D2 / D3 / D3a / D4.
+- **Community counts and steps** match the student Community · List. Sambar shows 38, the count before the student's own "Me too".
+- **Row copy:** every SOS and feedback row is one line. Two student-written community titles wrap to two lines and are kept verbatim.
+
+**Links (page 10, +11):**
+- AD-3a biryani → AD-3b; Sambar → AD-3c; all 6 community rows → AD-3d (Move in, 0.3).
+- AD-3b / AD-3c / AD-3d Back → BACK.
+- Flow start "Admin · Issues" (AD-3a).
+- Page 10 also has a pre-existing flow start named "Flow 1", left as is.
+
+**Diff vs `st65`:**
+- Page 10: +17 nodes (1 section, 4 frames, 4 labels, 4 Moment notes, 4 sample chips) and +11 links, all in AD-3.
+- No existing frame changed. Every other page is unchanged, with links at 7 / 7 / 1192.
+- Renders:
+  - `admin_ad3/ad3_section.png`: top row at rest; bottom row at full scroll. Column 5 is a TMP-only alternative, not in the file.
+  - `admin_ad3/ad3a_squint_current_vs_alt.png`
+
+**Two-second test (open decision):**
+- In AD-3a as built, the SOS row differs from the feedback rows only by the pill's shade (Stop `ink` vs Hold `ink-secondary`). The pills have the same shape and size, and the rows are the same height.
+- Blurred (the "squint" render), the biryani row doesn't stand out from the Sambar row.
+- The alternative renders the SOS item as the **black ResultCard Stop**, the same card that opens AD-3b and appears on AD-1b. It reads as urgent without the tag text.
+- The alternative is **not applied**; awaiting a decision.
