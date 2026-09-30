@@ -2747,3 +2747,41 @@ South was a second mismatch, found by the re-check.
 - Renders:
   - `admin_ad2/ad2_2_ad1a_rest_mid_max.png` (at rest, 66 pt, and max scroll at 88 pt)
   - `admin_ad2/ad2_2_badge_strip.png`
+
+## Status fade investigation (report only, no Figma change)
+
+The snapshot `st62` was taken first. The diff vs `st62` after cleanup shows no change on any page.
+
+**Symptom:** at full scroll, the `ScrollEdgeFade / Style=Status` band (y 0–42) shows as a pale lime strip.
+
+**Cause:**
+- The fade itself is correct. What sits behind it moves.
+- The **Meal wash** (`MealWash`, `#E9F7B0` → clear over 300 pt) is a *scrolling* layer (R9: "the Meal wash scrolls"). The fade is a *fixed*, opaque band tinted to the wash's top colour.
+- After a scroll of s pt, the wash behind the band is the paler colour it has at y s, or bare canvas once s passes 300. So the band no longer matches.
+
+**Scope:** 90 frames use the Status fade (04: 5, 05: 5, 07: 75, 10: 5). All use the same MealWash; no frame uses the fade without the wash. Page 09 has none.
+
+**Options tested** on temporary copies of Meals · Menu (range 126) and AD-1a (range 88). The step is the largest RGB channel difference between the band (y 36) and the background just below it (y 46), measured in the frame margin:
+
+| Option | Meals · Menu, rest / max | AD-1a, rest / max | Verdict |
+|---|---|---|---|
+| Current (lime fade, scrolling wash) | 2 / **26** | 2 / **20** | Invisible at rest, band at scroll |
+| Neutral scrim (canvas `#EDEDE8`, opaque) | **48** / 24 | **48** / 30 | Grey band at rest, and still a band at scroll |
+| **Fixed wash** (wash moved to the frame's own fill; fade unchanged) | 2 / 2 | 2 / 2 | **Invisible at both** |
+
+- A semi-transparent or blurred scrim was rejected on paper. The fade has to stay opaque behind the status text to keep the 16.5:1 contrast, because black cards scroll under it.
+- Render: `status_fade/fade_options_comparison.png`. Columns, left to right: current rest, current max, scrim rest, scrim max, fixed-wash rest, fixed-wash max. Rows: Meals · Menu, AD-1a.
+
+**Proposed fix (awaiting approval):**
+- **The wash stops scrolling.** This reverses the R9 note "the Meal wash scrolls".
+- On each of the 90 frames, remove the `Meal wash` instance and add a gradient fill to the frame itself, over the canvas fill. The frame background stays still while content scrolls.
+- The gradient stops bind to two new colour tokens:
+  - `wash/top`: Light `#E9F7B0`, Dark `#2A3312`
+  - `wash/clear`: the same colours at alpha 0
+
+  This keeps page 05 (Dark mode) correct. Binding a colour variable to a gradient stop was tested and works.
+- The fade component (`486:2`) is **not** changed, so no other screen's fade changes.
+- **Cost:**
+  - 90 frames lose the MealWash component link.
+  - MealWash stays on page 03 for frames that don't scroll.
+- **To confirm:** that Figma's player keeps a scrolling frame's own fill still. Check once in presentation mode after the change.
