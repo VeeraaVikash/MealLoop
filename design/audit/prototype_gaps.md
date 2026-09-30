@@ -193,6 +193,7 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 51 | ScrollEdgeFade Style=Wash | It now has no instances. | Info | Keep it for reference, or remove it in a later clean-up. |
 | 52 | 19 frames (Waste, Feedback, Rewards, Report, Notifications · Offline, Settings · System off, sheets) | They still overflow without scrolling. | Med | Apply R9c by family. |
+| 52 | **Updated (Waste scroll fix, 2026-09-30):** the 6 overflowing Waste frames now scroll (R9 + R9c inline-title pattern), so the list is **13**: Feedback 3, Rewards 2, Report 2, Notifications · Offline 1, Settings · System off 1, sheet backgrounds 4. **Waste · How this is measured** stays in the sheet-backgrounds group, because the sheet pattern is not covered by R9. |
 
 ## Stage 2 update (2026-09-28)
 
@@ -349,3 +350,4 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 86 | MS-D1a | **Partly resolved (D.1):** unserved is shown per dish in its own unit, with no mixed total; only plate waste is one number. Was: the unserved total mixes units (kg · L · pcs), because dishes are cooked in different units. | Low | Decide whether unserved is always weighed in kg (a single total) or reported per unit. |
 | 87 | MS-D2 | **Decided, not built:** D2 stays names-free. A **Safety** tag on the dish row (DishRow `Show safety`) marks safety complaints and routes to a separate **food-head safety queue that keeps student identity**, not visible to kitchen staff. Was: "No identity shown" has no path for safety reports (foreign object, illness) that need follow-up with a specific student. | Medium | Keep D2 aggregate-only; route safety reports to a separate food-head queue with identity, outside kitchen staff view (decision needed). |
 | 88 | MS-E-empty | DishRow has no Disabled state; the pre-shift destination cards are dimmed with card opacity 0.45. | Low | Add DishRow `State=Disabled` (secondary text, no chevron) if the pattern is approved. |
+| 89 | Waste · Partial (page 07) | Pre-existing: in the "131 kg unserved last week" legend, "Left on plates not measured" is clipped at the card edge (visible at rest before this fix too). | Low | Cosmetic cleanup step: shorten to "Left on plates · not measured" or let the legend wrap. |

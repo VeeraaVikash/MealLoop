@@ -2402,3 +2402,43 @@ Student-side leftovers come first, then Admin, then stitching all three tracks i
 6. Cosmetic cleanup
 
 **Why links come before overflow:** the link cleanup and the overflow fixes touch the same frames' scroll and layout structure. Wiring first gives a clean baseline for the layout work, which avoids the Stage 1.9–1.11 tangle.
+
+## Student 1: Waste scroll fix (2026-09-30)
+
+The snapshot `st53` was taken first (all pages, plus every page's reaction list).
+
+**Scope:** the 8 Waste frames on **page 07**: Last week, Dish breakdown, Pending, Partial, Corrected, Not comparable, No baseline, Unavailable.
+- Pages 04 and 05 already have "(full scroll)" copies and were not touched.
+- **Waste · How this is measured** is a sheet background (the sheet pattern). It stays in gap 52.
+
+**Treatment:** the same as the Spending family after Stage 1.11, which is the R9 inline-title pattern with R9c.
+- **Layer order (bottom → top):** Meal wash, Waste / Content, **Header backdrop** (HeaderBackdrop, 0–102), **Top edge fade** (ScrollEdgeFade / Style=Status, rotated), Nav Header, Status Bar, Scroll edge fade, Tab Bar, Home Indicator, [Gallery · Back / Next].
+- The new layers were cloned from Spending · This week.
+- `overflowDirection = VERTICAL`.
+- **Fixed children:** 7, or 9 on the gallery-state frames (plus the two hotspots).
+- **What scrolls:** the Meal wash and the content, including the Last meal / Last week / Last month switch.
+
+| Frame | Scroll range | Last item at max scroll | Clearance above tab bar |
+|---|---|---|---|
+| Last week | 125 | 728 | 20 pt (R9b) |
+| Dish breakdown | 93 | 728 | 20 pt |
+| Partial | 182 | 728 | 20 pt |
+| Corrected | 203 | 728 | 20 pt |
+| Not comparable | 159 | 728 | 20 pt |
+| No baseline | 138 | 728 | 20 pt |
+| Pending | 0 (fits) | 368 | – |
+| Unavailable | 0 (fits) | 230 | – |
+
+Pending and Unavailable got the same structure so the whole family behaves alike, as Spending did with Loading, Empty and Error.
+
+**Checks:**
+- **Invisible at rest (R9c):** a pixel diff of all 8 frames against the before render shows a **max difference of 2, and 0 pixels above 6**.
+- **Max scroll:** rendered by shifting the scrolling layers by each frame's range. The content passes under the fixed header backdrop with a hard edge, and the last card ends 20 pt above the tab bar.
+- **Links:** the page-07 reaction list is **identical** to `st53` (1183 actions, 1181 reactions). Pages 04 and 05 still have 7.
+- **Structure:** only the 8 Waste frames changed on page 07 (288 nodes, as before). No other page changed.
+
+**Logs:**
+- **Gap 52 was updated:** Waste is removed, and **13** overflowing frames remain for the overflow step.
+- **Gap 89 was logged:** a pre-existing clipped legend on Waste · Partial, left for cosmetic cleanup.
+
+**Renders** (`design/audit/student_waste_scroll/`): `at_rest_before.png`, `at_rest_after.png`, `max_scroll_after.png`.
