@@ -3419,3 +3419,86 @@ The baseline is `st76` (with the AD-5.1 change on top). The section "AD-6 · Man
 **Open (need owners; sample values until then):** the pass window and the reissue policy (SRM); the rewards budget, prices and stock (SRM); the surplus partner, the dairy exclusion and the pickup deadline (food head); the Fruit bowl offer.
 
 **File hygiene (report only):** root plugin data holds 14.9 MB, of which 13.8 MB is 338 old snapshot chunks from `st37` to `st75`. Earlier sections say those chunks were cleared, but they were not. Nothing was deleted; clearing them (keeping `st75` as the last old-format baseline) needs approval.
+
+## Admin AD-5 / AD-6 · Content diet and Manage hub (2026-09-30)
+
+The snapshot `st78` was taken first; it matched `st77` on every page. The brief asked to read `design/audit/design_intent.md` and its RULES block. The file did not exist, locally or on the remote. It was created from the owner's design-intent notes plus this brief's content-diet standard, which is its RULES section. Please confirm it or supply the intended RULES block.
+
+**The standard (now in `design_intent.md` → RULES):**
+- at most 3 blocks above the fold (hero, one thing that needs the admin, one row that goes deeper);
+- rules behind a Rules pill that opens a sheet with at most 3 one-line rules;
+- one scope pill instead of four-chip mess rows;
+- lists of at most 3 rows plus "See all";
+- one big number;
+- at most 12 text layers at rest.
+
+### Components (page 03)
+
+| Component | Id | What |
+|---|---|---|
+| **BentoTile** (extended, flagged) | `100:1142` | An existing set (Half / Full, used by MS-C2). Rather than a second set with the same name, it gains **Size=Square** (172 × 172) and **Size=Wide** (353 × 132), both Kind=Text. They have an icon badge top-left (36 pt, `fill-quiet`), label and value grouped at the bottom, and a value in ML/Section 22 that wraps. New properties: **Icon** (instance swap, default fork.knife) and **Show lock** (default off; replaces the chevron). The Half / Full variants are untouched: MS-C2 was checked by render. The set grew to 1370 × 288, so its "Usage / BentoTile" board moved from x 12408 to **13000** (canvas only). |
+| **ScopeSheet** (new) | `967:1838` | The MS-C1 row pattern: four ReasonPicker rows (Main Mess · Block A, North Mess · Block C, South Mess · Block B, Annexe), with one row set to Selected per use. **Show meal** adds the Breakfast / Lunch / Dinner control. |
+| **RulesSheet** (new) | `967:1862` | At most three one-line rules: Rule 1–3 (text), Icon 1–3 (swap), Show rule 3. |
+
+**Local compositions (not components; flagged as candidates):**
+- the hub's black "Needs you" card (eyebrow plus three 44 pt rows with chevrons);
+- the Surplus "Hero · Pickup" wrapper: ResultCard (still 4 slots, A.3) plus a 3-dot progress row and caption, inside one `hero-bg` card;
+- the "Header controls" row (scope pill = MetaChip Tappable with fork.knife; Rules pill = EstimatePill On light, label "Rules");
+- the "Evidence" / "Decision" / "Actions" / "Duplicates" groups.
+
+### Screens (page 10)
+
+- **AD-5-0 · Manage hub** (Success / Empty / Offline; x −1479 / −986 / −493, y 4800). Closes gap 114.
+  - Large title "Manage", no Back (tab root).
+  - Black **Needs you · 3** card: "Vote · Idli sambar on Sundays" → AD-5d; "Pass · Karan · reissue asked" → AD-6b; "Surplus · pickup by 3:00 PM" → AD-6d.
+  - Bento: **Passes** (wide) 196 of 214; **Menu** 5 dishes; **Voting** 1 to decide; **Rewards** (wide) ₹2,370 of ₹5,000; **Surplus** Awaiting pickup; **People** Locked (lock, no chevron, no link, until AD-7).
+  - Empty: no card, since nothing needs the admin (Voting 0 to decide, Surplus None today). Offline: banner plus cached tiles (188 of 214, ₹2,310, Not confirmed).
+  - Flow start **Admin · Manage** now points here.
+- **AD-5a Menu:** Back (→ hub) and a header **+** (Add dish → 5b Add, as H6 Add food). Scope pill "Main Mess · Lunch" → scope sheet with mess and meal. Dish cards widened to 333 pt (8 pt peek). **One** Wednesday tile (next week's removed). Voting row "Voting · 1 to decide". The eyebrows, the meal control and the Add dish button are gone from the surface. Empty: pill and EmptyState. Offline: banner and cards; the pill becomes a non-tappable label and there is no +.
+- **AD-5b Edit / Add / Offline:** Rules pill → sheet (per serving, IFCT 2017, the 5% energy check). The PER SERVING eyebrow, the source chip and Cancel are removed (Back remains). Fields are grouped into three blocks: Dish, Nutrition, Save.
+- **AD-5c Voting:** Rules pill → sheet (a vote never changes the menu; 48 h; Needs review opens with a logged reason).
+  - Hero ResultCard Hold "Vote closed · Idli sambar on Sundays · **Advice only · you decide**" → AD-5d.
+  - "Vote in progress · Masala dosa at breakfast · 2 d 6 h" (no chevron).
+  - "New proposals · 3" → **AD-5c2**.
+  - Empty: EmptyState. Offline: banner and hero.
+- **AD-5c2 Proposals** (new; Success / Empty / Offline; x 6409 / 6902 / 7395):
+  - The three-row criteria list is unchanged (the Stop row reads "No vote · 38 g fat a serving").
+  - **Actions** group: "Open vote · Pongal on Tuesdays" and **"Review · Egg curry on Mondays"** → **Needs review sheet**: required reason ("Logged · the food head can see it") and Open vote Disabled until a reason is entered, using the AD-5d decline pattern. Closes gap 111.
+  - **Duplicates** group: Wallet stack and Merge.
+  - Offline: banner and list.
+  - A chevron on the Needs-review row wrapped its title, so the review is a button, not a row tap.
+- **AD-5d:** ResultCard "Closed Tue 13 Aug · Idli sambar on Sundays · 1,204 for · 388 against · 76% for". **Evidence:** the criteria chip. **Decision:** Approve, reason, Decline. The advice sentence and the eyebrow are removed; the rule is in the AD-5c sheet and hero.
+- **AD-6a Passes:** scope pill "Main Mess" → scope sheet; Rules pill → sheet (one pass, window, "A reissue is for the next special · logged"). Hero ring 196 of 214, then the Karan exception card. The rule chips, eyebrows and subtitle are removed. Empty: pill "North Mess" and EmptyState. Offline: label pill, banner and hero (188).
+- **AD-6b:** ResultCard. **Evidence:** "Biryani pass · expired unused 2:00 PM" and the desk-log chip. **Decision:** Reissue, reason, Decline.
+- **AD-6c Rewards:** Rules pill → sheet (+5 answer before the cutoff; +2 rate a dish or answer a recheck; absences never cost points). Hero is the budget ring only. **Needs:** "Fruit bowl · 60 pts · Waiting for SRM sign-off" (Hold) → AD-6c2. Row **"Offers · 2 live"** → AD-6c2. The sample data has 2 live offers and 1 awaiting; the brief said "3 live".
+- **AD-6c2 Offers** (new; Success / Offline): the three offer cards at 333 pt with an 8 pt peek, and dots.
+- **AD-6d Surplus:** scope pill.
+  - Hero: ResultCard "Awaiting pickup · Lunch surplus · **4 dishes** · Partner NGO · by 3:00 PM", then dots (done, done, current) and "2 of 3 steps · pickup next". No kg total.
+  - One primary, **Log pickup**; row **"See dishes and steps"** → **AD-6d2**. Does not scroll (content ends at 700).
+  - Offline: label pill, banner and hero (1 of 3 · waiting for the partner).
+- **AD-6d2 Pickup detail** (new; Success / Offline): the four dishes (7 kg, 4 L, 3 kg, 60 pcs), "Curd kept back · dairy", and the full 4-step handover.
+- **Sheets** (8, H14 pattern: background, Scrim, Dismiss → BACK, GlassSheet Medium with Close → BACK, Sheet Content, Home Indicator):
+  - AD-5a scope (mess and meal); AD-5b rules; AD-5c rules; AD-5c2 Needs review;
+  - AD-6a scope; AD-6a rules; AD-6c rules; AD-6d scope.
+  - Background links under the scrim were cleared.
+
+### Links (page 10: 71 → 127; +69, −13)
+
+- Transition roles as §0.5.1: drill-in Move in 0.3; sheet open Dissolve 0.25; Back / Close / Dismiss BACK.
+- **Scope-sheet selections use navigation SWAP** (Dissolve 0.25): Main Mess → the Success screen, Annexe / North / South → the Empty screen. The closed sheet leaves history, so Back returns to the screen the admin came from. R1a asks for approval before SWAP is used; please confirm. Rows with no destination frame are unlinked samples.
+- **Removed (intended):** the old chip-row links (5a S/E, 6a S/E, 6d S/E); Add dish and Add first dish (now the header +); the three 5b Cancel links; the 5a Offline Voting row and the 6a Offline Karan row (Offline states were simplified).
+- Every Back returns where it came from: 5a gained Back; the new screens and sheets use BACK. No dead chevrons: People has no chevron; the Offline scope pills are non-tappable labels.
+- **Flow starts (D1):** Admin · Today, Admin · Issues, Admin · Insights, **Admin · Manage → hub**. The stopgaps Admin · Rewards and Admin · Surplus were removed, since the hub now gives them an entry.
+
+### Checks
+
+- **Density:** `admin_diet/density.md`. The 20 existing frames went from 345 to 182 text layers.
+  - Target met everywhere except AD-5b (7 required fields), AD-5c2 Success (17; the list and duplicate stack must share the screen) and AD-6d2 (20; the detail holds 4 dishes and 4 steps, and rule 4 conflicts with it being the "see all").
+- **R9b:** every scrolling frame's last item ends at y 728, 20 pt above the tab bar (hub 294, 5b 36 / 96, 5c2 8, 6d2 19 / 79). AD-6d does not scroll.
+- **Numbers:** 196 / 214 (6a, hub), 188 / 214 Offline (6a, hub), ₹2,370 / ₹5,000 (6c, hub), ₹2,310 Offline (6c, hub), and 7 kg · 4 L · 3 kg · 60 pcs (6d2, the MS-D1 values) agree on every screen that shows them. Surplus shows "4 dishes", never a mixed-unit total.
+- **Diff vs `st78`:**
+  - Page 10: +72 nodes (18 frames, 54 labels / notes / chips); the 20 redesigned frames changed; nothing removed.
+  - Page 03: +ScopeSheet, +RulesSheet; BentoTile set changed (w 778 → 1370, 4 → 6 variants); Usage / BentoTile moved.
+  - Every other page unchanged, links included. `st79` stored.
+- **Nested blind spot:** the diff can't see nested changes, so these were confirmed by render (`admin_diet/after/`, the before/after composites) and by a full link audit of every AD-5 / AD-6 frame.
+- **Tools:** `tools/densitytool.js`, `tools/diethelp.js`, `tools/sheethelp.js` (also stored in `mealloop/*` plugin data).
