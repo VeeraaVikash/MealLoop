@@ -3318,6 +3318,42 @@ The section "AD-5 · Manage, part 1" is on page 10 at y 4700, with frames at y 4
 - Renders: `admin_ad5/ad5_menu_and_dish.png`, `admin_ad5/ad5_voting_and_decision.png`. They were taken before the vote-window chip was reworded from "closes Fri 16 Aug, 8:00 PM"; 48 h from now would be Fri 2:18 PM.
 
 **Open questions:**
-- **Criteria check: hard gate or soft warning?** As built it's a soft signal, so all three tags remain actionable. Recommendation below and in the gaps file.
+- **Criteria check: hard gate or soft warning?** As built it's a soft signal, so all three tags remain actionable. Recommendation below and in the gaps file. **Decided in AD-5.1:** hard gate for Stop, soft gate with a logged override for Hold.
 - **Curd has no nutrition data.** It's served but invisible to the tracker, so it needs an IFCT value.
 - **Past votes chip:** not built (sample).
+
+## Admin AD-5.1 · Criteria gates decided (gap 108) (2026-09-30)
+
+The snapshot `st76` was taken first (all pages, links, flow starts).
+
+**Snapshot method from `st76` on:**
+- The tool is stored in root shared plugin data as `mealloop/snaptool` and in the repo as `design/audit/tools/snaptool.js`. Call it once per page, in parallel; it stores chunks as `<stage>_<pageId>_<i>` and diffs against any earlier `st76+` snapshot.
+- Node signature: `id|type|name|x|y|w|h|kids|instances|texts|textHash|fills|modes|overflow|fixed|childIds`. Link signature: one line per action, with trigger, timeout, destination, navigation, transition and reset-scroll. Flow starts per page.
+- Hashes are djb2 / base36, so they are **not comparable** with `st75` and earlier. `st76` was checked against `st75` on the hash-free fields (type, name, geometry, child / instance / text counts, overflow, fixed children), on links in the old format, and on flow starts. Every page matched, except that page 10 differed by exactly AD-5's 41 nodes, 21 links and the "Admin · Manage" start.
+- Format note: `st75` stored the page-07 H1 "Track" conditional as its inner actions; `st76` records it as one `CONDITIONAL` action. Page 07 has 1,192 reactions in both.
+- Page 03 keeps the Stage 3.2 rule: instance count, text count and text hash are advisory there.
+
+**Decision (final):**
+- **Doesn't qualify (Stop) is a hard gate.** The proposal fails a nutrition or safety limit. It can't go to a vote, and the failing reason is shown.
+- **Needs review (Hold) is a soft gate.** Budget or feasibility. The admin can open the vote after reviewing; opening it takes a reason, and the override is logged.
+- **Meets criteria (Success)** can be opened directly.
+- A vote still never changes the menu by itself (AD-5d).
+
+**AD-5c Success and Offline:**
+1. **Fried chicken daily (Stop):** the reason line "51 students · 38 g fat a serving" is now **"No vote · 38 g fat a serving"**. It stays one line (18 pt), and the row stays 65 pt.
+2. **New rule chip** directly under the proposals card: a clone of the existing rule chip (MetaChip `Surface=On light`), icon `square.and.pencil`, **"Needs review opens with a logged reason"** (302 × 30). Content order: proposals card → rule chip → Open vote → "Vote runs 48 h from when you open it".
+3. **Egg curry on Mondays (Hold)** is unchanged: "64 students · 18% over budget".
+- **Scroll:** Success 438 → **480**, Offline 498 → **540**. At max scroll "Merge 3 into one" ends at y 728, 20 pt above the tab bar (R9b).
+- **At rest** both frames are pixel-identical to before (max 2 levels, 0 pixels above 6): the proposal rows sit under the tab bar at rest.
+- **Not built:** the review step that opens a vote for a Hold proposal. AD-5c states the rule, but there is no control for it yet (gap 111).
+
+**Diff vs `st76`:**
+- Page 10: only AD-5c Success and Offline changed (instances +2 and texts +1 each: the chip and its icon). Links 53 (+0 −0); flow starts unchanged (4).
+- Pages 04, 05, 07 and 09 unchanged. Page 03: stable fields unchanged; one set's nested counts flipped (advisory, §3.2.0).
+- D1: every temporary render clone was removed in the same script, and the page-10 flow starts were compared before and after (unchanged).
+- Renders: `admin_ad5_1/before/` and `admin_ad5_1/after/` (Success and Offline, at rest and at max scroll).
+
+### Gap 110 decision (recorded 2026-09-30)
+
+- **The Main Mess prep list is the canonical Wednesday lunch:** Rice, Sambar, Paneer butter masala, Chapati, Curd, with Chicken biryani as the Wednesday special (special pass).
+- The student-side alignment is a **data-integrity fix**, so it is the one student-track item that proceeds despite the pause. Its scope is in `design/audit/gap110_student_menu_inventory.md`. **No student frame changes until that scope is approved.**
