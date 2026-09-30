@@ -3357,3 +3357,65 @@ The snapshot `st76` was taken first (all pages, links, flow starts).
 
 - **The Main Mess prep list is the canonical Wednesday lunch:** Rice, Sambar, Paneer butter masala, Chapati, Curd, with Chicken biryani as the Wednesday special (special pass).
 - The student-side alignment is a **data-integrity fix**, so it is the one student-track item that proceeds despite the pause. Its scope is in `design/audit/gap110_student_menu_inventory.md`. **No student frame changes until that scope is approved.**
+
+## Admin AD-6 · Manage, part 2: special passes, rewards, surplus (2026-09-30)
+
+The baseline is `st76` (with the AD-5.1 change on top). The section "AD-6 · Manage, part 2" is on page 10 at y 5900, with frames at y 6000, x = 0 … 4437 (step 493). It is Light only, with a label, Moment note (Wed 2:25–2:30 PM) and sample chip on every frame. The tab bar is Selected = Manage.
+
+**No new components.** Reused:
+- chrome and scroll setup from AD-5c (Large Title + Back, Status fade, fixed wash) and AD-5d (Inline Title, HeaderBackdrop);
+- DemandRingCard as a **closed ring** for completed periods (lime arc set per instance, "Not sure" arc hidden, as on MS-D1);
+- ResultCard, PrepCard swipe row + page dots, ListRow (Stacked and Inline), StatusPill;
+- TimelineStep card (from AD-3b), MetaChip rule chips (AD-5c pattern), EmptyState, OfflineBanner, FormField, Button;
+- the AD-5a mess chip row and the AD-5c period chip row.
+
+**Data, checked against the other roles:**
+- **Passes:** Chicken biryani, 214 passes, window 12–2 PM (AD-5a, MS-C5, student Pass screens). At 2:25 PM, 196 were used and 18 expired unused. The Offline state shows the 1:58 PM sync (188 used). The exception ties to MS-B6: the pass desk was offline from 12:40 PM (gap 80).
+- **Rewards:** offers and earning rules are the student Rewards screen's (Juice 50 pts, Ice cream 80 pts; +5 answer before the cutoff, +2 rate a dish, +2 answer a recheck). The pilot budget is sample data: ₹5,000 for August = 120 juices × ₹30 + 35 ice creams × ₹40. Used: 63 × ₹30 + 12 × ₹40 = **₹2,370** (57 and 23 left). Offline at 1:58 PM: 61 juices, ₹2,310.
+- **Surplus:** the offered quantities are MS-D1's calculated unserved amounts (Rice 7 kg, Sambar 4 L, Paneer butter masala 3 kg, Chapati 60 pcs); Curd (5 L) is kept back. Donated food is never counted as waste (Waste screen, AD-4).
+
+| Frame | State | Content |
+|---|---|---|
+| AD-6a · Special passes | **Success** | Large title "Passes" + Back, "Wed 14 Aug · Special pass". Mess chips (Main Mess selected). Hero DemandRingCard "BIRYANI · CLOSED 2 PM · **196** of 214 used · 18 expired unused" (ring 91.6%). **NEEDS YOUR DECISION · 1**: one ListRow card "Karan · •••0733 · Desk offline · 12:41 PM" with Hold "Reissue asked" and a chevron. **RULES · SET BY SRM**: three rule chips: "One pass per student · single use" (lock), "Window 12–2 PM · SRM to confirm" (clock), "Reissues need a reason · logged" (square.and.pencil). No scroll. |
+| AD-6a | **Empty** | Chip **North**. EmptyState (ticket) "No special pass this week · North Mess has no special on the menu. Passes are issued when SRM sets one." |
+| AD-6a | **Offline** | OfflineBanner "Offline · counts from 1:58 PM". Hero "BIRYANI · AT 1:58 PM · **188** of 214 used · Open till 2:00 PM". Decision row and rules as in Success. |
+| AD-6b · Pass exception → reissue decision | — | The AD-5d pattern. Inline "Pass exception" + Back. ResultCard Hold "Needs your decision · Karan · •••0733 · Turned away 12:41 PM · desk offline". "Chicken biryani · Wed 12–2 PM · not used". Chip (wifi.slash) "Desk log · offline from 12:40 PM". "The pass expired unused at 2:00 PM. A reissue is for the next special." YOUR DECISION: Primary "Reissue for Wed 21 Aug"; FormField "Reason to decline (required)" · "Karan sees this reason"; Secondary "Decline" **Disabled** until a reason is entered. |
+| AD-6c · Rewards | **Success** | Large title "Rewards" + Back, "August · Pilot". Chips **August** · July. Hero DemandRingCard "PILOT BUDGET · AUGUST · **₹2,370** of ₹5,000 · 63 juices · 12 ice creams" (ring 47.4%). **OFFERS · 3**: PrepCard swipe row: Juice 50 pts "₹30 each · 57 left in August" (Success "Live"); Ice cream 80 pts "₹40 each · 23 left in August" (Success "Live"); Fruit bowl 60 pts "Not shown to students yet" (Hold "Awaiting SRM"). **HOW STUDENTS EARN**: three inline ListRows with mono quantities. Rule chip (lock.shield) "Absences never cost points". Range 74. |
+| AD-6c | **Empty** | "No pilot yet". EmptyState (gift) "No rewards pilot yet · Students see "Rewards are coming soon" until SRM approves a budget and offers." This matches the student Rewards · Coming soon. |
+| AD-6c | **Offline** | OfflineBanner "Offline · counts from 1:58 PM"; hero ₹2,310 · 61 juices; Juice "59 left". Range 134. |
+| AD-6d · Surplus | **Success** | Large title "Surplus" + Back, "Wed 14 Aug · Lunch". Mess chips. Hero ResultCard **Hold** "Awaiting pickup · Lunch surplus · Main Mess · Partner NGO · pickup by 3:00 PM". **OFFERED · 4 DISHES**: inline ListRows (Rice 7 kg, Sambar 4 L, Paneer butter masala 3 kg, Chapati 60 pcs). Chip (info.circle) "Curd kept back · dairy". **HANDOVER**: TimelineStep card: Done "Offered · 2:10 PM" (Ravi · •••4417 · kitchen supervisor); Done "Accepted · 2:14 PM" (Partner NGO · van on the way); Current "Pickup · by 3:00 PM" (Weighed at the gate); Upcoming "Counted as donated" (Not waste · shows in Insights). Primary "Log pickup". Range 297. |
+| AD-6d | **Empty** | Chip **South**. EmptyState (leaf) "No surplus logged yet · South Mess hasn't logged lunch waste. Surplus shows once the kitchen counts what was served." |
+| AD-6d | **Offline** | OfflineBanner "Offline · handover status from 2:12 PM". Hero Hold "Offered · … · Partner NGO · not confirmed yet". Step 2 is Current "Waiting for the partner · Offer sent 2:10 PM"; Pickup is Upcoming; "Log pickup" **Disabled**. Range 357. |
+
+**Checks:**
+- **R9b:** every scrolling frame (AD-6c Success / Offline, AD-6d Success / Offline) ends its last item at y 728, 20 pt above the tab bar, at max scroll. The others fit without scrolling: last item at 614 / 435 / 674 / 657 / 393 / 456.
+- **One hero per screen:** one black card each (ring, ResultCard, or the AD-5d decision card). Status is shown by pill and icon only, with no full-card status fills; lime appears only in the ring arcs, "Live" pills and the Current timeline dot.
+- Renders: `admin_ad6/ad6_section_rest.png` (all 10 at rest), `admin_ad6/ad6_rest_vs_max_scroll.png` (Rewards and Surplus, rest vs max scroll), and `admin_ad6/frames/` (one PNG per frame).
+
+**Links (+18; page 10: 53 → 71):**
+
+| From | Links |
+|---|---|
+| AD-5a Success | Special · Chicken biryani → AD-6a Success (Move in, 0.3) |
+| AD-6a Success | Chip North → Empty (Dissolve 0.25); Row · Karan → AD-6b (Move in 0.3); Back → BACK |
+| AD-6a Empty | Chip Main Mess → Success (Dissolve 0.25); Back → BACK |
+| AD-6a Offline | Row · Karan → AD-6b; Back → BACK |
+| AD-6b | Back → BACK; "Reissue for Wed 21 Aug" → BACK |
+| AD-6c × 3 | Back → BACK |
+| AD-6d Success / Empty | Chip South → Empty; Chip Main Mess → Success (Dissolve 0.25) |
+| AD-6d × 3 | Back → BACK |
+
+- The transition objects were copied from AD-5a (drill-in, chip) and AD-5c (BACK).
+- **Flow starts:** +2, **Admin · Rewards** → AD-6c Success and **Admin · Surplus** → AD-6d Success. Page 10 now has 6: Today, Issues, Insights, Manage, Rewards, Surplus.
+- **Entry points:** Passes is reached in-app from AD-5a's Wednesday special tile. Rewards and Surplus have **no in-app entry yet** (flow starts only; their Back does nothing at the start of a flow). See gap 114.
+
+**Rule D1 amended again (nested clones):** cloning a *nested* element (here the AD-5a chip row) carries its reactions too; the Annexe chip arrived still linked to AD-5a Empty. And a reaction removed from a cloned frame can survive on a nested instance layer (the NavHeader Back). **After any clone, strip reactions on every descendant, re-wire, and check the page's link list in the stage diff.** The first AD-6 diff caught 6 stray Annexe links and 4 doubled Back actions; both were fixed before this record.
+
+**Diff vs `st76`:**
+- Page 10: +41 nodes (1 section, 10 frames, 10 labels, 10 Moment notes, 10 sample chips), all at y ≥ 5900. Changed: AD-5c Success and Offline (AD-5.1). The AD-5a link sits on a nested layer, so AD-5a's frame signature is unchanged. Links +18 / −0; flow starts +2 / −0.
+- Pages 00–09 and 99: unchanged (page 03 stable fields equal; one advisory nested-count flip, §3.2.0).
+- `st77` stored for all 13 pages as the next baseline.
+
+**Open (need owners; sample values until then):** the pass window and the reissue policy (SRM); the rewards budget, prices and stock (SRM); the surplus partner, the dairy exclusion and the pickup deadline (food head); the Fruit bowl offer.
+
+**File hygiene (report only):** root plugin data holds 14.9 MB, of which 13.8 MB is 338 old snapshot chunks from `st37` to `st75`. Earlier sections say those chunks were cleared, but they were not. Nothing was deleted; clearing them (keeping `st75` as the last old-format baseline) needs approval.
