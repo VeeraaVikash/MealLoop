@@ -3159,3 +3159,30 @@ The snapshot `st71` was taken first.
 - Page 10: AD-4b and AD-4c changed. The AD-4a hero type change is nested and not visible to the signature; it's verified in renders.
 - Links unchanged; page 10 stays at 32. All other pages unchanged.
 - Close-ups: `admin_ad4/ad4_2_hero_before_after.png`, `ad4_2_rows_before_after.png`, `ad4_2_trends_chart_before_after.png`, `ad4_2_forecast_chart_before_after.png`.
+
+## Admin AD-4.3 · Data-driven waste bar (2026-09-30)
+
+The snapshot `st72` was taken first.
+
+**Change:**
+- **ChartBar** gains three segment kinds (radius 0): **Never served** `on-hero`, **Left on plates** `on-hero-secondary`, **Donated** `lime`.
+- **WasteBar `State=Measured` is now the legend only.** Its fixed-width bar was removed. `State=Empty` (no-data track) is unchanged.
+- In AD-4a **Success** and **Offline**, each hero has a screen-level **"Share bar"** row: 313 × 10, clipped, radius 5, 2 pt gaps, holding three ChartBar segment instances.
+- Each segment **instance** is resized to 309 × value / total, rounded to whole points by largest remainder (the total stays 309). Whole points avoid the anti-aliased seam that fractional x positions produced (seen at x 292.76 in a first pass).
+- Hero side effect: the bar-to-legend gap is now the hero's 8 pt (was 10 inside WasteBar), so the hero is 2 pt shorter.
+
+**Verification (expected from values vs node width vs rendered pixels, measured on the bar's centre row):**
+
+| State | Values (kg) | Expected (pt) | Set (pt) | Rendered (px) | Max error |
+|---|---|---|---|---|---|
+| Success | 389 / 253 / 45 | 174.97 / 113.79 / 20.24 | 175 / 114 / 20 | 175 / 114 / 20 | 0.24 |
+| Offline | 331 / 215 / 39 | 174.84 / 113.56 / 20.60 | 175 / 113 / 21 | 175 / 113 / 21 | 0.56 |
+
+- The old fixed 175 / 114 / 20 was already within 0.6 pt, because both samples split about 57 / 37 / 6. The widths now **follow the data**: Offline correctly becomes 175 / 113 / 21.
+- Empty: no segments (WasteBar Empty, unchanged). AD-4b and AD-4c are untouched.
+
+**Diff vs `st72`:**
+- Page 03: WasteBar and ChartBar changed.
+- Page 10: only AD-4a Success and Offline changed.
+- No link changes; all other pages unchanged.
+- Close-up with measured widths: `admin_ad4/ad4_3_wastebar_before_after.png`.
