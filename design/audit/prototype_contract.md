@@ -4118,6 +4118,116 @@ The existing kinds and instances are untouched. The set description now document
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `admin_charts/before/`, `admin_charts/after/` and `admin_charts/before_after.png`.
 
+## Admin AD-4 Insights content pass (2026-09-30)
+
+**Brief:**
+- Pair waste with shortages on the Insights index, and add a bento of five tiles.
+- Add a meal drilldown (AD-4e) of possible causes, never written as "caused by".
+- Record the analytics rules.
+- Content diet and fill floor apply. Reuse first; flag anything new.
+
+**Owner's decisions (asked before building):**
+- AD-4a keeps the full spec (19 texts).
+- The scope pills carry the old chip links.
+- The turnout groups are Came / On leave / Didn't come.
+- AD-4e shows 3 cause bars plus a "too salty" note (12 texts).
+
+### Analytics rules (also in `design_intent.md`, rules 14–19)
+
+- **Two year controls, never merged:** student year (cohort) and academic year (time). An academic-year comparison shows "Needs a full year of data" until a full year exists.
+- **Small groups:** any student-year group under 10 students is hidden, with "Too few to show" in its place.
+- **Turnout:** not a funnel. It shows three groups: **Came**, **On leave**, **Didn't come**. Scan failures and ID fallbacks are shown beside low counts.
+- **No wait-time minutes anywhere.**
+- **Private trackers:** admin analytics never include the private calorie or spending trackers.
+- **Pass scans** stay separate from entrance attendance.
+
+### 0 · AD-4c Trends
+
+- **Delta chip:** now reads "−13% since 8 Jul · all messes", still in one text layer, so the screen stays at 12 texts. This closes gap 154.
+- **Layout:** the chip no longer fits beside "642 kg", so it now sits under the number.
+- **Bar layers:** each is named with its value ("Bar · 742 kg" … "Bar · not measured (drawn at the median, 699 kg)").
+- **Unchanged:** bar heights and line points.
+
+### 1 · AD-4a Insights (Success `877:983`, Empty `877:1329`, Offline `877:1553`)
+
+- **Nav:** "Insights" with the subtitle "Wed 14 Aug · Waste", unchanged.
+- **Scope pills** (a "Header controls" row, MetaChip Tappable with icons): "All messes" (fork.knife, no link) and a period pill with a calendar icon.
+  - Success and Offline show "Last week", which links to Empty.
+  - Empty shows "This week", which links to Success.
+  - These replace the five-chip row; the targets and Dissolve 0.25 are unchanged.
+- **Hero** (black): the paired success measure, in two columns with a divider.
+  - "**642** kg / wasted", with ↓ (lime) "−38 kg / vs last week".
+  - "**6** / shortage alerts", with — "No change / vs last week".
+  - Each delta carries its own arrow, sign and words, so a move in opposite directions (for example ↓ waste and ↑ alerts) still reads correctly. Colour is never the only cue, and lower is better for both measures.
+  - On Offline: "546 kg" and "5 shortage alerts", each with a wifi.slash icon and "Annexe missing".
+- **Bento:** five tiles, each with one mini visual, one number (ML/Metric) and one label (Inter, ML/Footnote). Row 1 is 104 / 125 / 104 pt wide; row 2 is two 171.5 pt tiles.
+
+  | Tile | Visual | Number | Link |
+  |---|---|---|---|
+  | Turnout | Came / On leave / Didn't come bar (44 / 3 / 5 pt) | 84% (Offline: —) | **Locked** (lock icon, no link), gap 155 |
+  | Prep accuracy | 3 meal dots (2 on target, 1 hollow) | 2 of 3 | → AD-4b (Move in 0.3), see below |
+  | Dishes | 4 ranked bars (6 / 4 / 3 / 2 reports) | 4 flagged | **Locked**, gap 156 |
+  | Trends | mini pills (742 / 718 / — / 680 / 642 / —, latest lime) | −13% (Offline: "Needs all 4", all pills ghost) | → AD-4c |
+  | Reports | 5 report outlines | 5 ready | → AD-4d |
+
+- **Prep accuracy is not locked.** The brief said it had no screen, but AD-4b (Forecast vs actual) is that screen. It was reached only from AD-4a's "Main" badge, which this redesign removes. Locking the tile would have orphaned AD-4b, so the tile carries that link instead. Its "2 of 3" is AD-4b's figure (Main Mess, Tue 13 Aug), which is narrower than the index scope (gap 157).
+- **Look-closer row:** "Wed 14 Aug lunch · look closer", a destination row (ListRow Stacked with Show reason off), linking to AD-4e (Move in 0.3). On Offline it goes to AD-4e Offline.
+- **Removed:**
+  - the five-chip row;
+  - the old hero (share bar and legend with 389 / 253 / 45 kg; gap 158);
+  - the per-mess g-per-meal badges (still on AD-4d);
+  - the Trends and Reports rows (their links are now on the tiles).
+- **Empty:**
+  - The two pills, then an EmptyState centred in the free band (offset +1): "Nothing logged this week yet" / "Waste and shortage alerts show after the first meal is logged."
+  - Its action "See last week" links to Success; the link moved into the EmptyState's own button.
+
+### 2 · AD-4e Meal drilldown (new: Success `1085:7071`, Offline `1085:94067`)
+
+- **Build:** a clone of AD-4b's inline-nav skeleton. The nav reads "Wed 14 Aug" with Back → BACK, which returns to AD-4a.
+- **Hero (black):** "Lunch · Main Mess", then "**18** kg / left on plates" beside "**1** / shortage alert".
+- **Card "Possible causes, not proven"** (Proposals card style, black): three rows ranked by how far each factor was off plan. Each row has an icon, a line, a number and a white Pill bar (14 pt), with width = 285 × value ÷ 19.05.
+  - Sambar raised 42 → 50 L · +19%
+  - 712 came of 860 expected · −17%
+  - 18 of 214 passes unused · 8%
+- **Note under the card:** "Also reported: sambar too salty · **6** reports". The words "caused by" appear nowhere.
+- **Offline:** an OfflineBanner "Offline · saved at 2:05 PM" and the same saved content.
+- **Page 10 grid:** AD-4 row slots 6 and 7 (x 2838 and 3311, y 3276), each with a label, a Moment note (Wed 2:09 PM) and a sample chip. These are cloned from AD-4d's at the same offsets. No flow start was copied.
+
+### Sample data (new, logged)
+
+- **Shortage alerts:** 6 last week (5–11 Aug, all messes) and 6 the week before, so the count is flat. Offline (3 of 4 messes) shows 5.
+  - "Shortage alert" means a dish flagged running out or at risk, as on AD-2c.
+- **Turnout, last week, all messes and meals:** came 84%, on leave 6%, didn't come 10% (locked tile).
+
+Every other number traces to an existing screen; see the source table in `admin_ad4_content/fill_density.md`.
+
+### Reuse
+
+- **Reused:** ChartBar Pill, Pill lime and Pill ghost (with fill and stroke overrides on white tiles), ChartBar segment kinds, MetaChip, EmptyState, OfflineBanner, ListRow, Symbol, NavHeader.
+- **Flagged — BentoTile not reused (gap 159):** its label is mono caps words (against rule 13), and it has no slot for a mini visual. The tiles follow the Manage hub's local bento pattern instead (radius 20, surface fill, 14 pt padding, visual on top, text below), with Inter labels.
+- **Not needed:** StatusPill, ScopeSheet and RulesSheet. There is no status column, and the pills keep direct links, as decided.
+
+### Checks
+
+| Screen | Fill | Blocks | Texts |
+|---|---|---|---|
+| AD-4a Success | 95% | 3 | 19 |
+| AD-4a Empty | centred (+1) | 1 | 7 |
+| AD-4a Offline | 92% | 3 | 19 |
+| AD-4c | 90% | 1 | 12 |
+| AD-4e Success | 77% | 2 | 12 |
+| AD-4e Offline | 85% | 3 | 13 |
+
+- **Links:** 219 → 223.
+  - 10 were moved to new source layers with the same targets and transitions: the period pills ×3, Prep accuracy / Trends / Reports tiles ×2, and Empty's "See last week", which moved into the EmptyState.
+  - 4 are new: the look-closer rows ×2 and AD-4e Back ×2.
+  - No target lost a link.
+- **Flow starts:** identical.
+- **Diff vs `st98` (snapshot `st99`):**
+  - **Page 10:** 346 nodes (+8: the two AD-4e frames and their six annotations). Changed: AD-4a ×3 and AD-4c.
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `admin_ad4_content/before/`, `admin_ad4_content/after/` and `admin_ad4_content/before_after.png`.
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**

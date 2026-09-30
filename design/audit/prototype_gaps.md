@@ -487,3 +487,21 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 153 | AD-4c Trends, AD-4b Forecast | **Some numbers are now shown only as bar heights.** Trends prints 642 and −100 kg; the week values 742, 718 and 680 are no longer printed. Forecast prints only Dinner's 123 and 15%; the Breakfast and Lunch counts (610 / 596, 860 / 838) and Dinner's 820 / 697 are no longer printed. | Low | Add tap-to-reveal values on the pills, or a VoiceOver label per bar with its value, and check that a reviewer doesn't need the printed numbers. |
 | 154 | AD-4c Trends | The nav subtitle "All messes · Waste" is hidden to stay within 12 texts, so the screen no longer says the trend covers all 4 messes. AD-4a's "Trend needs all 4 messes" relies on that scope. | Low | Put the scope in the delta chip ("−13% since 8 Jul · all messes"), or drop the callout and bring the subtitle back. |
+
+## Admin AD-4 Insights content pass update (2026-09-30)
+
+### Resolved
+
+- **154** (Trends scope hidden): the delta chip now reads "−13% since 8 Jul · all messes".
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 155 | AD-4a · Turnout tile | **Locked: no screen yet.** It shows sample last-week turnout (84% came, 6% on leave, 10% didn't come). | Low | Build a Turnout screen with the three groups (rule 16), showing scan failures and ID fallbacks beside low counts and keeping pass scans out (rule 19). |
+| 156 | AD-4a · Dishes tile | **Locked: no screen yet.** Its "4 flagged" and bars (6 / 4 / 3 / 2) are AD-3a's open Main Mess dish feedback. | Low | Build a Dishes screen (per-dish waste and feedback), or link the tile to AD-3a if that's enough. |
+| 157 | AD-4a · Prep accuracy tile → AD-4b | The brief listed Prep accuracy as having no screen. AD-4b is that screen and would have been orphaned, so the tile links to it. The tile's "2 of 3" is AD-4b's single-mess, single-day figure (Main Mess, Tue 13 Aug), under an index scoped to "All messes · Last week". | Low | Give AD-4b an all-mess, last-week view to match the index, or label the tile with its scope. |
+| 158 | AD-4a | The waste breakdown (never served 389 · left on plates 253 · donated 45 kg) left the index and is not shown on any other admin screen. | Low | Show it on a Waste detail screen or on AD-4d. |
+| 159 | AD-4a bento | BentoTile was not reused: its label is mono caps words (against rule 13) and it has no slot for a mini visual. The tiles follow the Manage hub's local bento pattern. | Low | Update BentoTile (Inter label and a visual slot), then swap both the hub and AD-4a tiles to it. |
+| 160 | AD-4a Success, AD-4a Offline, AD-4e Offline | Over the 12-text target: AD-4a has 19 (full spec, owner's choice), and AD-4e Offline has 13 (the banner). | Info | Accepted for now. |
+| 161 | AD-4e | "Rice 7 kg unserved" was left out of the causes: it is an outcome, offered as surplus (AD-6d). "Too salty · 6 reports" has no plan to compare against, so it is a note, not a bar. | Info | None, unless a shared metric (for example kg possibly linked) is defined. |

@@ -183,3 +183,4 @@ A position-only stage: every node was moved by id; no content, size, link, flow-
   - The new sheet "AD-5c2 · Open vote sheet" (`1062:6997`) takes AD-5 sheets slot 5 at 2365, 5460.
   - "AD-5c2 · Needs review sheet" moved 2365 → 2838 and "AD-5c2 · Look the same sheet" moved 2838 → 3311, each with its label, Moment note and chip at unchanged offsets.
   - The AD-5 sheets row now holds 8 sheets.
+- **2026-09-30, AD-4 content pass:** the new frames "AD-4e · Meal drilldown (Success)" (`1085:7071`) and "(Offline)" (`1085:94067`) take AD-4 row slots 6 and 7 at 2838, 3276 and 3311, 3276, each with a label, Moment note and chip at the standard offsets. No other frame moved.
