@@ -2370,3 +2370,22 @@ The section **"MS-E · Shift home"** is on page 09 at y 4700, with frames at y 4
 - Page 03: all 7 staff components are unchanged.
 - Links: 7 / 7 / 1181.
 - Render: `design/audit/mess_staff_e/ms_e_shift_home.png`.
+
+## Mess Staff — Stage E.1: review decisions and chip removal (2026-09-30)
+
+The snapshot `st52` was taken first.
+
+**Decisions (final, do not re-ask):**
+1. **Kitchen staff and supervisor share one layout, gated by permission.** Supervisor-only information goes inside an existing card's fact line (for example "1 waiting for food head"), never in a new card. This is the same principle as MS-C and the D2 Safety tag.
+2. **Destination cards stay white.** This mirrors student Home: one black hero, then white cards. There is no new black card component. A lime accent on Demand's fact was offered as optional polish and **not built**.
+3. **The "Now hh:mm" chip was removed** from both MS-E frames, because the status bar already shows the time. The status strip is now just MealSectionHeader: meal, window and state tag.
+4. **"End shift" goes straight to the confirm dialog**, as MS-A6 and MS-B8 do. There is no pre-check screen, because MS-E's cards already show pending and unsynced state.
+5. **Gap 88** (DishRow has no disabled look) stays logged. The opacity fade is an acceptable placeholder.
+
+**Diff vs `st52`:**
+- Only MS-E · Shift home and MS-E-empty · Before shift starts changed: the "Current time" chip was removed, and the cards moved up 38.
+- The visible deep check confirms every other page-09 frame is unchanged. No other page changed.
+- Links: 7 / 7 / 1181.
+- Render: `design/audit/mess_staff_e1/`.
+
+**Mess staff track A–E is complete.**
