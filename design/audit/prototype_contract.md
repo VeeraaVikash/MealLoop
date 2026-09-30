@@ -2950,3 +2950,38 @@ Instances: 29.
 - Renders:
   - `admin_ad3/ad3_1_corrections.png`: AD-3a rest / max; AD-3b rest / 357 / max; AD-3d max.
   - `admin_ad3/statuspill_states.png`
+
+## Admin AD-3.2 · Category chips, PrepCards for dish feedback, duplicate stack (2026-09-30)
+
+The snapshot `st67` was taken first.
+
+1. **AD-3a category chips.**
+   - The three grey-caps group labels were removed.
+   - The top chip row (AD-1a filter-chip pattern, MetaChip) is now the category switch: **All · 10** (selected) · SOS · 1 · Feedback · 4 · Community · 5.
+   - The scope moved into the subtitle: "Wed 14 Aug · All messes · This week".
+   - To fit 353 pt: gap 6, chip side padding 8 (instance overrides, AD-3a only). The row is 340 pt.
+   - The chips are unlinked; there are no per-category frames yet (samples).
+   - **Flagged, new: `MetaChip Surface=Selected`** (page 03): `ink` fill, `surface` label and icon, no stroke. MetaChip had no selected state; "On dark" is for chips on black cards and read as blank on the canvas. Label and icon property references were re-linked after cloning. No existing MetaChip instance changed.
+2. **PrepCards for dish feedback.**
+   - AD-3a: the four feedback rows are now **PrepCards** in AD-1b's swipe row (clipped, 4 page dots).
+
+     | Dish | Quantity | Fact | Status |
+     |---|---|---|---|
+     | Sambar | 6 reports | Too salty · Main Mess | Hold "Recheck Fri" |
+     | Rice | 4 reports | Undercooked in batch 2 · Main Mess | Open |
+     | Paneer butter masala | 3 reports | Too oily · Main Mess | Open |
+     | Curd | 2 reports | Sour · Main Mess | Open |
+
+   - The Sambar card → AD-3c (the link moved from the old row).
+   - AD-3c: the "Report summary" ListRow card is now a full-width PrepCard (Sambar · 6 reports · Too salty · names never shown · Recheck Fri). AD-3c now scrolls 56.
+3. **AD-3d duplicate stack.**
+   - The three look-alike reports are a stack: front card "Long wait at counter 3 · 64 students · Seen" at full width.
+   - Two cards behind it peek **10 pt** below, each inset 8 pt a side, with an `outline` stroke so the edges read.
+   - "Merge 3 into one" sits under the stack. The open-issues list is unchanged.
+
+**Diff vs `st67`:**
+- Page 03: MetaChip only (+1 variant).
+- Page 10: AD-3a, AD-3c and AD-3d.
+- Links: −1 (Row · Sambar) +1 (Card · Sambar), same destination. Page 10 stays at 19.
+- All other pages unchanged: 7 / 7 / 1192.
+- Render: `admin_ad3/ad3_2_patterns.png` (AD-3a rest / max, AD-3c rest / max, AD-3d rest / max).
