@@ -2389,3 +2389,16 @@ The snapshot `st52` was taken first.
 - Render: `design/audit/mess_staff_e1/`.
 
 **Mess staff track A–E is complete.**
+
+## Roadmap after mess staff (decided 2026-09-30)
+
+Student-side leftovers come first, then Admin, then stitching all three tracks into one prototype. Admin moves first only if the next review is framed around the multi-role app.
+
+1. Waste scroll fix
+2. Attendance redesign
+3. Link cleanup: the 8 unclassified links in §3.5.3 (4 settings → lock previews, 3 dinner Meal detail → answer (gap 77), 1 "Me too" defect (gap 76))
+4. Overflowing frames (gap 52 family; recount at the start of this step)
+5. Stage 4 end-to-end verification
+6. Cosmetic cleanup
+
+**Why links come before overflow:** the link cleanup and the overflow fixes touch the same frames' scroll and layout structure. Wiring first gives a clean baseline for the layout work, which avoids the Stage 1.9–1.11 tangle.
