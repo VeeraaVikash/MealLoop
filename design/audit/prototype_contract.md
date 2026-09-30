@@ -2845,3 +2845,24 @@ These are the exact colours of the MealWash gradient stops.
 - Pages 00–03, 06, 08, 09 and 99 are unchanged. Links are unchanged: 7 / 7 / 1192 / 8.
 
 **Still to confirm:** in presentation mode, a scrolling frame's own fill stays fixed. The renders simulate scroll by moving the non-fixed children.
+
+## AD-3 precondition · Today tab after the fixed-wash change
+
+The snapshot `st64` was taken first.
+
+All five Today frames (AD-1a, AD-1b, AD-2a, AD-2b, AD-2c) were rendered at rest and at full scroll: `admin_ad3/precondition_today_tab.png`.
+
+| Frame | Scroll range | Status edge, rest / max | Backdrop edge, rest / max | Last item at max | Background |
+|---|---|---|---|---|---|
+| AD-1a | 88 | 2 / 2 | — | 728 | 2 fills, both stops bound |
+| AD-1b | 42 | 2 / 2 | 4 / 4 | 728 | as above |
+| AD-2a | 0 (content fits) | 2 / 2 | 4 / 4 | 568 | as above |
+| AD-2b | 0 | 2 / 2 | 4 / 4 | 488 | as above |
+| AD-2c | 0 | 2 / 2 | 4 / 4 | 405 | as above |
+
+- **Result:** pass. There is no seam or band on any frame. AD-2a, AD-2b and AD-2c don't scroll, so for them "full scroll" is the same image as rest, and a scroll seam can't occur.
+- The diff vs `st64` after cleanup shows no change on any page. **`st65` was stored as the AD-3 baseline.**
+
+**Live-run checks, batched for one presentation-mode pass before the review:**
+- **Gap 96:** does Back return AD-1a to its earlier scroll position?
+- **Gap 97 (remainder):** does a scrolling frame's own fill (the wash) stay still during a real scroll gesture?
