@@ -2327,3 +2327,46 @@ They were needed for item 3 without building a local row.
 - Page 09: only D1, D1a, D2 and D3 changed. The visible-layer deep check confirms every other MS-A/B/C/D frame is unchanged, including D3a, D4 and every other DishRow instance.
 - Page 03: the top level is unchanged. Only the DishRow set gained the two hidden, off-by-default layers and properties.
 - Links: 7 / 7 / 1181.
+
+## Mess Staff — Stage E: shift home (2026-09-30)
+
+The snapshot `st51` was taken first (pages, page-09 visible deep snapshot, page-03 staff components).
+
+The section **"MS-E · Shift home"** is on page 09 at y 4700, with frames at y 4800. It is a **single landing screen, not a tab bar**. Light only, with a label, Moment note and sample chip on each frame. **No new components**, and no prototype links (page 09 still has 0).
+
+**Layout:**
+- **Top bar:** StaffTopBar.
+- **Status strip:**
+  - MealSectionHeader "Lunch · 12–2 PM" with the existing state pill: **Upcoming**, **Serving now** (the brief's "In service") or **Served** (the brief's "Wrapped up").
+  - MetaChip (Mono light, clock) "Now 12:30 PM".
+- **Destinations:** five separate white cards (radius 20). Each is one DishRow with the label in Name, **one live fact** in Reason, an empty Quantity and `Show chevron` on. The Feedback card uses `Show safety` when a Safety row exists. Each card's layer name records its target flow.
+
+| Card | Opens | Live fact (MS-E, 12:30 PM, supervisor) |
+|---|---|---|
+| Demand | MS-C2 | "412 intents so far" |
+| Prep & override | MS-C3 | "1 needs approval" (the pending Curd override, a Hold). Otherwise "All dishes on track". |
+| Waste entry | MS-D1 | "Not started yet". After logging: "5 of 5 dishes counted". |
+| Feedback | MS-D2 | "1 safety report" plus the Safety tag. The safety count takes priority over the plain count. |
+| Shift history | MS-D4 | "11:05 AM · Override pending · Curd" (the latest action) |
+
+| Frame | Id | State |
+|---|---|---|
+| MS-E · Shift home | `775:84867` | Supervisor, Serving now, the live facts above |
+| MS-E-empty · Before shift starts | `775:84959` | **Kitchen staff**, Upcoming, "Now 11:40 AM". Every card is dimmed (card opacity 0.45), has no chevron and reads **"Starts at 12:00 PM"**. |
+
+**Role scoping** (same permission logic as MS-C; no duplicated frames):
+- For kitchen staff, the Prep card is labelled **"Prep plan"** and opens C3 read-only, with "Adjust a quantity" and every override entry point hidden.
+- Supervisors see **"Prep & override"**.
+- The empty frame shows the kitchen-staff label.
+
+**Flow intent (not wired):**
+- MS-A/B sign-in and C1 shift select land on MS-E.
+- "End shift" returns to MS-E before confirming.
+
+**Flagged:** DishRow has no Disabled state, so the pre-shift dimming is card opacity. That would be a DishRow `State=Disabled` variant if approved.
+
+**Diff vs `st51`:**
+- Page 09: +9 nodes (1 section, 2 frames, 2 labels, 2 Moment notes, 2 sample chips). Every existing page-09 frame is unchanged (visible deep check).
+- Page 03: all 7 staff components are unchanged.
+- Links: 7 / 7 / 1181.
+- Render: `design/audit/mess_staff_e/ms_e_shift_home.png`.
