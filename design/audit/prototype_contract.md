@@ -2904,3 +2904,49 @@ The baseline is `st65` (see the AD-3 precondition). The section "AD-3 · Issues"
 - Blurred (the "squint" render), the biryani row doesn't stand out from the Sambar row.
 - The alternative renders the SOS item as the **black ResultCard Stop**, the same card that opens AD-3b and appears on AD-1b. It reads as urgent without the tag text.
 - The alternative is **not applied**; awaiting a decision.
+
+## Admin AD-3.1 · SOS card, escalation, closing, chevrons, Sent pill (2026-09-30)
+
+The snapshot `st66` was taken first.
+
+1. **SOS as a Stop card (AD-3a).** The SOS group is now the **ResultCard Stop** "Safety report · Chicken biryani · Main Mess · Foreign object reported · 1 report", the same component and facts as AD-1b and AD-3b. It replaces the row, and the card links to AD-3b. Gap 101 is closed.
+2. **Escalation: food head, two paths (AD-3b).**
+   - The button is now **"Escalate to food head"** (manual).
+   - Under it is a MetaChip (clock) **"Auto-escalates to food head at 1:55 PM"**. The rule: the report auto-escalates to the food head when unresolved **30 min after it was received**.
+   - To keep the timeline honest at the 1:51 PM moment (not yet escalated), the report time moved from 1:12 to **1:25 PM**:
+     - When: Wed 14 Aug · 1:25 PM · lunch
+     - Open for: 26 min
+     - Log: Report received 1:25 · Batch set aside 1:30 · Assigned to Ravi 1:32
+
+     These times appear only on AD-3b. AD-1a (1:40) and AD-1b (1:41) already show the report, so the new time is consistent with them.
+3. **Closing an SOS is an explicit flow (AD-3b).** Section "TO CLOSE · ASSIGNED STAFF ONLY", a card of **TimelineStep** instances (reused):
+   1. **Current:** Ravi marks it resolved · Assigned staff only · not admin
+   2. **Upcoming:** Reporter notified · Student · •••2231 · in the app
+   3. **Upcoming:** Resolved · Only after the reporter is notified
+
+   Admin has **no close control**. The admin's actions are Escalate and Add to log.
+4. **Chevrons removed** on Rice, Paneer butter masala and Curd (AD-3a). They were never linked, so no link changed. Gap 99 was rewritten as a future item (below).
+5. **Student "Sent" gets its own pill.**
+   - New **StatusPill `State=Sent`** (page 03): `fill-quiet` fill, `ink` label, no outline. It matches the student StatusTag "Sent", so both roles show "Sent" the same way.
+   - It is distinct from **Offline** (outline, `ink-secondary`), which keeps its meaning: lost connection / missing data.
+   - Used on "Curd runs out by 8:45 PM" in AD-3a (was Hold) and AD-3d (was Offline). Gap 100 is closed.
+   - The variant's Label binding was re-linked after cloning.
+
+**StatusPill states now:**
+- Success (lime)
+- Hold (ink-secondary)
+- Stop (ink)
+- Offline (outline)
+- **Sent (fill-quiet)**
+
+Instances: 29.
+
+**Diff vs `st66`:**
+- Page 03: StatusPill only (+1 variant).
+- Page 10: AD-3a and AD-3b changed, and AD-3d's pill switched state (not visible to the frame signature, which tracks text and structure).
+- Links: −1 (the SOS row) +1 (the SOS card, same destination). Page 10 stays at 19.
+- All other pages unchanged: 7 / 7 / 1192.
+- AD-3a range 468; AD-3b range 714.
+- Renders:
+  - `admin_ad3/ad3_1_corrections.png`: AD-3a rest / max; AD-3b rest / 357 / max; AD-3d max.
+  - `admin_ad3/statuspill_states.png`
