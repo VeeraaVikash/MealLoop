@@ -3257,3 +3257,67 @@ The snapshot `st74` was taken first. It now also records each page's flow starti
 - **After duplicating any frame** (clone, duplicate-and-modify, or TMP capture copies left in the file), immediately check the page's `flowStartingPoints` and **remove any start that points at the duplicate** before continuing. The only exception is a new, intended flow start, added explicitly by name.
 - This check is part of **every** duplicate-and-modify step, not only the end-of-stage review.
 - Each stage diff now also compares flow starting points per page (added / removed).
+
+## Admin AD-5 · Manage, part 1: menu & nutrition, voting (2026-09-30)
+
+**Precondition re-run: PASS.**
+- 13/13 AD-4 links resolve.
+- Flow starts are exactly Admin · Today / Issues / Insights.
+- 642 / 546 / −38 / −100 / 71 g agree on every screen that shows them.
+- The Offline trend row reads "Trend needs all 4 messes".
+- Render: `admin_ad5/precondition_rerun_insights.png`.
+
+**Baseline:** `st75` (signatures + links + flow starts).
+
+The section "AD-5 · Manage, part 1" is on page 10 at y 4700, with frames at y 4800, x = 0 … 4437 (step 493). It is Light only, with a label, Moment note (Wed 2:15–2:19 PM) and sample chip on every frame. The tab bar is Selected = Manage.
+
+**Components reused (no new component):** PrepCard (swipe row + dots, from AD-1b), SpecialPassTile, SegmentedControl (3 and 2 items), EmptyState, OfflineBanner, FormField (Filled / Default), Button (incl. Disabled), MetaChip, ResultCard, ListRow + StatusPill, the AD-3d Wallet duplicate stack, the AD-1a destination row, and the filter-chip rows.
+
+**Nutrition data shape (verified against H7 "You · Nutrients detail", page 04):**
+- H7 shows Energy kcal · Protein g · Carbs g · Fat g · Fibre g · Sugar g · Sodium mg.
+- AD-5b's fields are exactly **Energy · kcal, Protein · g, Carbs · g, Fat · g, Fibre · g, Sugar · g, Sodium · mg**, per serving.
+- The Sambar values are the Stage 2.1 table's: 110 / 5 / 14 / 4 / 4 / 3 / 420.
+- The AD-5b check chip repeats the Stage 2 rule: "4P + 4C + 9F = 112 · within 5% of 110".
+
+| Frame | State | Content |
+|---|---|---|
+| AD-5a · Menu & nutrition | **Success** | Large title "Menu"; mess chips (Main Mess selected); SegmentedControl Breakfast / **Lunch** / Dinner. "LUNCH · 5 DISHES · PER SERVING": PrepCard swipe row. Sambar 110 kcal · Veg · P 5 · C 14 · F 4 · Fibre 4 g; Rice 180; Beetroot poriyal 90; Chicken curry 250 · Non-veg (all Success "In tracker"); **Curd · — kcal · Hold "Nutrition missing"** (not in the tracker table, so students can't count it). "WEDNESDAY SPECIAL · SPECIAL PASS": SpecialPassTile Available "Chicken biryani · Wed 14 Aug · 12–2 PM · 214 passes"; Not today "Paneer tikka · Wed 21 Aug". Secondary "Add dish". Destination row "Menu voting · 1 result needs your decision". Range 122. |
+| AD-5a | **Empty** | Chip **Annexe**. EmptyState (fork.knife) "No dishes added yet · Annexe has no lunch menu. Students there have nothing to plan or track." Primary "Add first dish". |
+| AD-5a | **Offline** | OfflineBanner "Offline · showing the menu saved at 12:10 PM"; same content; "Add dish" Disabled. |
+| AD-5b · Edit dish — Sambar | Success | Inline "Edit dish" + Back. Dish name; Veg / Non-veg; "PER SERVING · SAME FIELDS STUDENTS SEE"; 7 fields in a 2-column grid; the check chip; Primary "Save dish"; Text "Cancel". |
+| AD-5b · Add dish | Empty | Blank fields ("—", "e.g. Masala dosa"); chip "Source: IFCT 2017 · one standard serving"; Save **Disabled** until filled. |
+| AD-5b · Edit dish | Offline | OfflineBanner "Offline · changes save when you reconnect"; Save Disabled. |
+| AD-5c · Menu voting | **Success** | Large title + Back, chips This week / Past votes. **NEEDS YOUR DECISION**: ResultCard Hold "Vote closed · decide · Idli sambar on Sundays · 1,204 for · 388 against" + chip (lock) **"A vote never changes the menu by itself"**. **VOTING NOW**: "Masala dosa at breakfast · Closes Fri 16 Aug · 8:00 PM · 2 d 6 h". **NEW PROPOSALS · CRITERIA CHECK**: Pongal on Tuesdays · 47 students · 290 kcal · veg · Success "Meets criteria"; Egg curry on Mondays · 64 · 18% over budget · Hold "Needs review"; Fried chicken daily · 51 · 38 g fat a serving · Stop "Doesn't qualify". Primary "Open vote · Pongal on Tuesdays" + chip (clock) "Vote runs 48 h from when you open it". **LOOK THE SAME · 3 PROPOSALS**: Wallet stack (More paneer dishes 9 · Paneer for dinner 18 · Paneer tikka on Fridays 42) + "Merge 3 into one". Range 438. |
+| AD-5c | **Empty** | EmptyState (hand.raised) "No proposals this week · Students propose dishes from Community. New ones land here with a criteria check." |
+| AD-5c | **Offline** | OfflineBanner "Offline · votes can't open or close until you reconnect"; "Open vote" and "Merge" Disabled. |
+| AD-5d · Vote result → final decision | — | ResultCard Hold "Needs your decision · Idli sambar on Sundays · Vote closed Tue 13 Aug · 8:00 PM". Tally (one line): "1,204 for · 388 against · 76% for". Chip "Meets criteria · 290 kcal · veg · within budget". "The vote is advice. The menu changes only when you approve." YOUR DECISION: Primary "Approve · add to Sunday breakfast"; FormField "Reason to decline (required)" · "Students see this reason" (MS-C4 reason pattern); Secondary "Decline" **Disabled** until a reason is entered. |
+
+**ListRow use (flagged, deliberate):**
+- ListRow + StatusPill carries the proposals list (a flat list of short text items, each with a pass / review / fail tag) and the single "Voting now" row.
+- Dishes use PrepCard; the decision uses a ResultCard; duplicates use the Wallet stack.
+
+**Links (+21):**
+
+| From | Links |
+|---|---|
+| 5a Success | Sambar card → 5b Edit; Add dish → 5b Add; Menu voting → 5c; chip Annexe → 5a Empty (Dissolve) |
+| 5a Empty | chip Main Mess → 5a Success; Add first dish → 5b Add |
+| 5a Offline | Menu voting → 5c |
+| 5b | Back and Cancel → BACK; Edit Save → BACK |
+| 5c Success / Offline | decision card → 5d |
+| 5c ×3, 5d | Back |
+| 5d | Approve → 5a Success |
+
+- Flow start **"Admin · Manage"** → 5a Success.
+
+**Rule D1 amended:** Figma also **auto-creates** a flow start ("Flow N") when a link is added from a top-level frame that isn't in a flow yet. That's where AD-2a's "Flow 1" came from, and it recurred here on AD-5a Success. After wiring links, reset the page's flow starts to the approved list.
+
+**Diff vs `st75`:**
+- Page 10: +41 nodes, all at y ≥ 4700 (1 section, 10 frames, 10 labels, 10 Moment notes, 10 sample chips); +21 links, all inside AD-5; flow starts +1 (Admin · Manage), −0. No existing frame changed.
+- All other pages unchanged. Links on page 10: 53.
+- Renders: `admin_ad5/ad5_menu_and_dish.png`, `admin_ad5/ad5_voting_and_decision.png`. They were taken before the vote-window chip was reworded from "closes Fri 16 Aug, 8:00 PM"; 48 h from now would be Fri 2:18 PM.
+
+**Open questions:**
+- **Criteria check: hard gate or soft warning?** As built it's a soft signal, so all three tags remain actionable. Recommendation below and in the gaps file.
+- **Curd has no nutrition data.** It's served but invisible to the tracker, so it needs an IFCT value.
+- **Past votes chip:** not built (sample).
