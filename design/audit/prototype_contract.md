@@ -3011,3 +3011,59 @@ The snapshot `st68` was taken first.
   - only the stack's three card positions and widths, and the stack height, changed;
   - text and links are unchanged on every page.
 - Renders: `admin_ad3/ad3_3_stack_before.png`, `admin_ad3/ad3_3_stack_after.png` (rest and max scroll).
+
+## Admin AD-4 · Insights (2026-09-30)
+
+The snapshot `st69` was taken first. The section "AD-4 · Insights" is on page 10 at y 3500, with frames at y 3600, x = 0 / 493 / 986 / 1479 / 1972 / 2465. It is Light only, with a label, Moment note (Wed 2:05–2:08 PM) and sample chip on every frame. The tab bar is Selected = Insights.
+
+**Patterns used:**
+- The AD-3a chip row (MetaChip Tappable + Selected) for period, mess, grouping and type switching. Rows wider than 353 pt run to the screen edge and clip (a scrolling chip row).
+- A black hero in the admin card family (`hero-bg`, `on-hero`, `on-hero-secondary`, the LiveDial eyebrow style), **static**: no LiveDial, since Insights is retrospective.
+- MessBadge (cloned AD-1a strip) with new data.
+- **WeekBars** (the student "Per meal, by week" component) reused as an instance with value and bar-height overrides.
+- The AD-1a entry-card pattern (ListRow in a white card) for Trends and Reports.
+- ListRow + quantity for the report list only (AD-4d).
+
+**Flagged local compositions (not on page 03 yet):**
+- `Share bar · on dark`: three segments. Never served `on-hero` · Left on plates `on-hero-secondary` · Donated `lime`, with a vertical legend.
+  - The student ShareBar has no dark surface and no Donated segment.
+  - It diverges from the student bar on purpose: Left on plates is grey here, **not hatched**, because hatching means "not measured" in WeekBars.
+- `Expected vs served` paired bars (AD-4b): the WeekBars bar style (radius 8, mono values above, mono axis).
+  - Expected is `chart-past`, on target is `chart-current` + `lime-outline`, off target is `ink-secondary`.
+
+| Frame | Id | Content |
+|---|---|---|
+| AD-4a · Insights — Waste (Success) | `ids.admin.ad4[0]` | Large title "Insights" / "Wed 14 Aug · Waste". Chips: All messes · This week · **Last week** · This month · This year. Hero "ALL MESSES · LAST WEEK · 5–11 AUG · **642** kg wasted"; bar + legend: Never served 389 · Left on plates 253 · Donated · not waste 45; "38 kg less than the week before". "WASTE PER MEAL · BY MESS · TARGET 65 G" strip: Main 71 g (Hold, over target), North 64 g, South 58 g, Annexe 49 g (Success). Ring = g / 100 g. Entry cards: Trends · Waste down 13% since 8 Jul; Reports · 5 ready for last week. Range 72. |
+| AD-4a · Insights — Waste (Empty) | `[1]` | Chip **This week**. Hero "ALL MESSES · THIS WEEK · 12–18 AUG · — kg wasted", empty track, "No waste logged yet for this period". No badge strip. Secondary "See last week". This matches the student chart, where the 12 Aug week is "not measured yet". |
+| AD-4a · Insights — Waste (Offline) | `[2]` | As Success, but the hero reads "3 OF 4 MESSES · … · **546** kg" (331 / 215 / 39) with "Not comparable · Annexe has not reported" (wifi.slash). The Annexe badge is **Offline "—"**, with no arc (the AD-1a Annexe treatment). |
+| AD-4b · Forecast vs actual — Main Mess | `[3]` | Inline "Main Mess" + Back. "Tue 13 Aug · 2 of 3 meals on target". Chart card: Breakfast 610 / 596 (on target), Lunch 860 / 838 (on target), Dinner 820 / 697 (off target); key. Facts, one per line: Breakfast · 14 fewer · within 5%; Lunch · 22 fewer · within 5%; Dinner · 123 fewer · **15% below forecast** (AD-2c wording); Dinner cause · not logged. |
+| AD-4c · Trends | `[4]` | Large title + Back. Chips **By week** · By month · By year. Summary "Waste down 13% since 8 Jul". WeekBars "Kg wasted, by week": 742 · 718 · — · 680 · **642 (lime, last complete week)** · —. Both "—" weeks match the student chart's not-measured weeks (22 Jul, 12 Aug). |
+| AD-4d · Reports & exports | `[5]` | Large title + Back, "Last week · 5–11 Aug". Chips **Weekly** · Monthly · Mess-wise · Dish-wise · Year-wise. Rows with a preview stat: All messes · 4 messes · 642 kg; Main Mess · 71 g per meal · 212 kg; North · 64 g · 176 kg; South · 58 g · 158 kg; Annexe · 49 g · 96 kg. Primary "Export 5 reports · CSV", Secondary "Export as PDF". |
+
+**Data checks:**
+- Main Mess 131 + 81 = 212 kg, donated 18 kg, 71 g per meal: the student Waste · Last week figures.
+- Cross-mess sums: 389 / 253 / 45 / 642.
+- Offline sums without Annexe: 331 / 215 / 39 / 546.
+- Trends: 680 → 642 = −38 kg; 742 → 642 = −13%.
+- AD-4b dinner: 697 / 820 = −15%.
+
+**Links (+13):**
+
+| From | Links |
+|---|---|
+| Success and Offline | Main badge → AD-4b; Trends → AD-4c; Reports → AD-4d (Move in 0.3); chip "This week" → Empty (Dissolve 0.25) |
+| Empty | chip "Last week" and "See last week" → Success (Dissolve 0.25) |
+| AD-4b / AD-4c / AD-4d | Back → BACK |
+
+- Flow start "Admin · Insights".
+- The other badges, the other chips and the export buttons are unlinked (samples).
+
+**Diff vs `st69`:**
+- Page 10: +25 nodes, all AD-4 (1 section, 6 frames, 6 labels, 6 Moment notes, 6 sample chips); +13 links, all within AD-4. No existing frame changed.
+- Page 03 is unchanged, with no new components. All other pages are unchanged: 7 / 7 / 1192.
+- Renders: `admin_ad4/ad4_section.png` and `admin_ad4/badge_confusion_compare.png`.
+
+**Open (badge confusion):**
+- AD-4a's waste strip and AD-1a's turnout strip share the ring, the arc range (49–91%) and the status glyphs. Only the unit ("%" vs "g") and a grey caption differ.
+- Main reads **Stop** on AD-1a (safety report, worst open issue) and **Hold** on AD-4a (over the waste target).
+- Recommended: a stronger distinguisher than a label (see the gaps file, gap 102).
