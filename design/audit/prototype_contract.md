@@ -3665,6 +3665,133 @@ Added to `design_intent.md` as rules 9–12:
 - Mess-staff coupon redeem, reusing the pass desk (gap 125).
 - Per-student purchase limits, undecided (gap 126).
 
+## Admin AD-7 · People, access and audit (2026-09-30)
+
+**Baseline:** snapshot `st82`, taken before any edit, matched `st81` on all 13 pages. `st83` is stored after the stage. Renders (1×, base64 screenshot path, since `www.figma.com` is blocked) are in `admin_ad7/`, with the composite `admin_ad7/ad7_section.png`.
+
+**Roles and sample:**
+- 38 people: kitchen staff 14, attendance scanners 8, special-pass checkers 6, supervisors 6 (mess-side, one mess each), food heads 2 and admins 2 (admin-side).
+- Staff identity uses the masked format: Ravi · •••4417 (supervisor, existing), Meena · •••2291 (kitchen staff, existing, MS-D4), Admin · •••0912 (existing, AD-3b). **New sample:** Suresh · •••3306 (pass checker, North Mess) and Lakshmi · •••7182 (new kitchen staff, Main Mess).
+- Students appear only as masked IDs inside incident entries: •••2231 (the biryani report) and •••0733 (the pass-desk incident).
+
+### Components
+
+- **ScopeSheet** (`967:1838`, flagged): a new boolean **Show all messes** (default off) adds an "All messes" row above the four messes. The 3 existing instances are unchanged (232 / 232 / 288 pt).
+- **Nothing else new on page 03.**
+- **Reused:** ScopeSheet, RulesSheet, GlassSheet (Medium, and Large for the type sheet), StatusPill, ChartBar, ResultCard and the AD-5d / AD-6b decision pattern (cloned from AD-6b), MetaChip (Tappable, On light, On dark), SettingsRow Toggle On/Off, ReasonPicker, FormField, Button, EmptyState, OfflineBanner, and the destination row.
+- **NeedsYouCard and PrepCard were considered and not used:**
+  - A second black NeedsYouCard would compete with the People hero (FA-2b).
+  - Person rows need a role tag plus four permission cells, which PrepCard doesn't carry.
+
+### Local compositions (flagged, candidates for page 03 after review)
+
+- **Role-bar hero** (AD-7a):
+  - `hero-bg`, with "38" (ML/Hero Metric) and "people".
+  - A 313 × 12 bar of 6 ChartBar segments, widths from the data by largest remainder, 2 pt gaps: 111 / 64 / 48 / 48 / 16 / 16. Kinds: Donated (lime), Never served, Left on plates, Off target, Donated at 40%, and an outline segment for Admins.
+  - A two-column legend (each column is one 3-line text layer beside 3 swatches).
+  - "See all people" at the foot.
+- **Mini role bar** (hub People tile): the same 6 segments on white, 48 / 27 / 21 / 20 / 7 / 7 of 140. Kinds: Expected, Off target, Left on plates, then the same three at 50%.
+- **Permissions matrix** (staff list):
+  - A white card with a header row of 4 icons (Supervisor `person.crop.circle`, Kitchen `fork.knife`, Scanner `qrcode`, Pass checker `ticket`).
+  - Person rows: name with masked ID; role tag (MetaChip On light) with the mess; 4 dot cells; chevron.
+  - Dots: filled `ink` = has the permission; hollow `border` = doesn't; **lime with an ink outline = requested** (lime marks the thing that needs the admin).
+- **Activity hero** (audit log): "6 entries today" and an hourly ChartBar histogram (10 AM 1 · 11 AM 1 · 12 PM 3 · 1 PM 1 lime (latest) · 2 PM none), with one axis line.
+- **Audit row:** a 36 pt icon badge (type icon), the action, a mono "time · actor" line and a chevron.
+
+### Screens (page 10, section "AD-7 · People, access and audit", frames at y 7200, sheets at y 8400)
+
+| Frame | Id | Content |
+|---|---|---|
+| AD-7a · People (Success) | `1015:6573` | Large title and Back. Scope pill "All messes" → scope sheet. Role-bar hero, whose "See all people" → staff list. Needs row "2 access requests · Suresh · Lakshmi" (Hold "To decide") → AD-7c Suresh. Row "Audit log" → AD-7d. |
+| AD-7a · People (Empty) | `1015:6715` | Pill "Annexe", then EmptyState "No staff added yet", centred (offset 0). Reached from the scope sheet (Annexe, SWAP). |
+| AD-7a · People (Offline) | `1015:6857` | Label pill, banner "Offline · people saved at 2:12 PM", hero, and Audit log (→ AD-7d Offline). No requests row, because deciding needs a connection. |
+| AD-7b · Staff list (Success) | `1015:6999` | Scope pill (→ AD-7b scope sheet) and the permissions matrix (Ravi → Person; Suresh → AD-7c Suresh; Lakshmi → AD-7c Lakshmi), then "See all · 38" → Staff by role. |
+| AD-7b · Staff list (Offline) | `1015:7141` | Label pill, banner and matrix (Ravi → Person Offline, Suresh → AD-7c Offline). Lakshmi's row has no chevron (no offline request screen). No "See all", to stay within 12 text layers. |
+| AD-7b · Staff by role | `1015:7283` | Six role rows, "Kitchen staff · 14" and so on, each with a ChartBar share-of-38 bar (321 × 12). No chevrons: per-role lists are not built. |
+| AD-7b · Person — Ravi (Success) | `1015:7377` | Rules pill → rules sheet. Hero: role tag, "Ravi · •••4417", "Main Mess · permissions apply here only". Four toggles (Supervisor on, Kitchen staff on, Attendance scanner off, Special-pass checker off). **Save changes disabled.** "Remove access" → remove sheet. |
+| AD-7b · Person — Ravi · changed | `1015:7471` | Attendance scanner on, the required reason field filled ("Covers the North Mess scanner desk"), and **Save changes enabled** → staff list. Remove access is hidden while an edit is open. |
+| AD-7b · Person — Ravi (Offline) | `1015:7565` | Banner "Offline · editing needs a connection", hero, toggles dimmed to 50% (disabled), no buttons. |
+| AD-7c · Access request — Suresh | `1015:7659` | AD-6b pattern: ResultCard Hold "Needs your decision · Suresh · •••3306 · Asks for scanner rights · North Mess". Evidence: "Now a pass checker · North Mess" and the chip "Scanner rights · North Mess only". Decision: "Approve · add scanner rights" (→ BACK), reason (required; "Suresh sees this reason"), Decline disabled. |
+| AD-7c · Access request — Lakshmi | `1015:7753` | "Lakshmi · •••7182 · New kitchen staff · Main Mess", "No MealLoop access yet", chip "Kitchen staff · Main Mess only", "Approve · give kitchen access". |
+| AD-7c · Access request (Offline) | `1015:7847` | Banner "Offline · decisions need a connection", request card, and the decision block with Approve and the field disabled. No evidence block (3 blocks). |
+| AD-7d · Audit log (Success) | `1015:7941` | Type pill "All types" → type sheet, activity hero, the 3 newest rows (each → its entry sheet), "See all · 6" → All activity. |
+| AD-7d · Audit log (Empty) | `1015:8083` | EmptyState "No activity yet", centred (offset 1). |
+| AD-7d · Audit log (Offline) | `1015:8225` | Label pill, banner "Offline · log saved at 2:12 PM", hero, 3 rows (read-only, still open their sheets). |
+| AD-7d · All activity | `1015:8367` | Inline title and Back, the hero, and all 6 rows. |
+
+**Sheets:**
+
+| Sheet | Id | Content |
+|---|---|---|
+| AD-7a · Scope sheet | `1021:5906` | "Show people for", ScopeSheet with All messes. All messes → AD-7a (SWAP); Annexe → AD-7a Empty (SWAP); Main, North and South are unlinked samples. |
+| AD-7b · Scope sheet | `1021:6063` | All messes → staff list (SWAP). |
+| AD-7b · Rules sheet | `1021:6257` | Nobody edits their own permissions · The last admin can't be removed · Every change or removal needs a reason · logged. |
+| AD-7b · Remove access sheet | `1021:6400` | "Ravi · •••4417 · Main Mess", "Reason to remove (required)", "Logged · the food head can see it", and Remove access disabled until a reason is given. |
+| AD-7d · Type sheet | `1021:6537` | Large detent: All types (selected → BACK), Approvals, Overrides, Edits, Corrections, Incidents. The filtered views are unlinked samples. |
+| AD-7d · Entry — … (six sheets) | `1021:6692` … `1021:7408` | One per entry; the facts are in the table below. |
+
+### Audit-log facts (each traced to the screen it comes from)
+
+| Row (newest first) | Type | Sheet facts | Source |
+|---|---|---|---|
+| Biryani report assigned · 1:32 PM · Admin · •••0912 | Incidents | Open → assigned to Ravi · •••4417; Foreign object reported · 1 report; notified Ravi · safety queue; reported by Student · •••2231 · 1:25 PM | AD-3b resolution log and report card |
+| Sambar fix · salt cut · 12:52 PM · Ravi · •••4417 | Corrections | Too salty → salt cut by a third; 6 reports · too salty; approved by Ravi · 12:52 PM; notified Admin · Issues · recheck Fri lunch | MS-D3a, MS-D4, AD-3c |
+| Pass desk offline · 12:41 PM · Main Mess desk | Incidents | Pass unused → reissue asked; desk offline from 12:40 PM; notified Admin · needs your decision; student •••0733 · turned away 12:41 PM | AD-6b |
+| Waste logged · lunch · 12:40 PM · Meena · •••2291 | Edits | Plate waste → 18 kg · weighed; logged by Meena; unserved calculated from served counts | MS-D1a, MS-D4 |
+| Curd 60 → 45 L · pending · 11:05 AM · Ravi · •••4417 | Approvals | 60 L → 45 L · awaiting approval; until then the kitchen cooks 60 L; notified the food head (decides) | MS-D4, MS-E, AD-1b |
+| Sambar 42 → 50 L · 10:47 AM · Ravi · •••4417 | Overrides | 42 L → 50 L; staff event; food head notified 10:47 AM | MS-C4a, MS-D4 |
+
+**Deviations from the brief, to keep facts matching screens:**
+- **Biryani time:** the brief said "assigned to Ravi, 1:25 PM", but AD-3b shows the report received at 1:25 PM and assigned at **1:32 PM** by Admin · •••0912. The row uses 1:32; the sheet shows the 1:25 report.
+- **Karan:** the brief's "Karan pass" row shows a student name, which the no-students rule forbids. It is logged as the pass-desk **incident**, with the student as •••0733 only.
+
+### Hub
+
+The locked People tile is replaced on all three hub states by a metric tile: the mini role bar, "38 people", label "People". It links to AD-7a (Success and Empty hubs) and AD-7a Offline (Offline hub). "3 need you" is unchanged; access requests appear inside People, not on the hub.
+
+### Links (page 10: 132 → 214; +82, −0)
+
+- **Hub:** 3 (People tiles, newly linked).
+- **AD-7a:**
+  - Success: 5 (Back, scope, See all, requests, audit).
+  - Empty: 2 (Back, scope).
+  - Offline: 3 (Back, See all, audit).
+- **Staff list:** Success 6 (Back, scope, 3 people, See all); Offline 3 (Back, 2 people).
+- **Staff by role:** 1 (Back).
+- **Person:**
+  - Rest: 4 (Back, Rules, scanner toggle → changed, Remove access).
+  - Changed: 4 (Back → staff list, fixed; Rules; scanner toggle → rest; Save → staff list).
+  - Offline: 2 (Back, Rules).
+- **AD-7c:** Suresh 2 and Lakshmi 2 (Back, Approve → BACK); Offline 1 (Back).
+- **AD-7d:**
+  - Success: 6 (Back, type, 3 rows, See all).
+  - Empty: 1.
+  - Offline: 4 (Back, 3 rows).
+  - All activity: 7 (Back, 6 rows).
+- **Sheets:** 26 (Close and Dismiss ×11, 3 scope selections, 1 type selection).
+- **Transitions:**
+  - drill-in Move in 0.3;
+  - sheet open Dissolve 0.25;
+  - scope selections Dissolve 0.25 with **SWAP** (approved);
+  - Person state change Dissolve 0.25;
+  - Person-changed Back and Save are fixed Move out right 0.3 to the staff list (R1b / R1c). This is the only fixed Back: the changed state is a state of the same screen, so BACK would land on the unchanged state instead of the list.
+- **Flow starts:** still exactly Admin · Today, Issues, Insights and Manage. D1: Figma auto-created "Flow 1" and "Flow 2" when links were added to AD-7a; both were removed in the same script, and every later script re-checked.
+
+### Checks
+
+- **Fill, density and blocks:** all 16 AD-7 screens meet the floor (76–98%), and both Empty states are centred (offsets 0 and 1). See the table in `admin_ad7/fill_density.md`.
+  - Every screen has at most 3 blocks.
+  - Every screen has at most 12 text layers, except **AD-7d · All activity (16)**, the "see all" detail.
+  - The legends on AD-7a are two 3-line text layers, so they count as 2 layers but show 6 visible items.
+- **Back:** every Back is BACK, except the Person-changed fixed link above.
+  - No AD-7 frame is entered by a timer.
+  - Every sheet closes with BACK.
+  - The link-graph audit found every screen reachable except **AD-7d Empty**, which is a design state like AD-6c Empty, AD-5c2 Empty and the hub Empty (gap 134).
+- **Diff vs `st82`:**
+  - Page 10: +109 nodes (the section, 16 screens, 11 sheets, 81 labels / Moment notes / sample chips); changed: the three hub frames only.
+  - Page 03: ScopeSheet only (one hidden row plus the property; advisory nested counts otherwise).
+  - Pages 00–02, 04–09 and 99: unchanged, links included (7 / 7 / 1192 / 0).
+
 ## Planned stage: Final audit (FA) (recorded 2026-09-30, not started)
 
 **When:** after AD-7 (people, permissions, audit log), the student-track resume (link cleanup, overflow frames, Stage 4 verification, cosmetic clean-up, gap 110) and the linking stage (the role-select entry and the admin tab bar, gap 119).
@@ -3701,8 +3828,11 @@ Added to `design_intent.md` as rules 9–12:
 Proposed thresholds, to be adjusted after the first run:
 
 - **a.** Flag any card taller than 25% of the screen (213 pt of 852) that is not the hero.
-- **b.** Flag any screen where two cards carry the same visual weight. Proposed test: the same fill family (black hero vs white card) and a height within 15% of each other, or two ML/Hero Metric numbers.
+- **b.** Flag any screen where two cards carry the same visual weight. Proposed test: the same fill family (black hero vs white card) and a height within 15% of each other, or two hero-size numbers.
+  - The test compares **distinct cards only**. Siblings in one list, stack or swipe row (for example the Rewards coupons, the AD-5c2 proposal cards, a PrepCard swipe row, a Wallet stack) are never compared with each other.
+  - A **hero-size number** means the 52 pt hero style (`ML/Hero Metric`, the HeroNumber scale). The 22–30 pt tile and card numbers (`ML/Section`, `ML/Metric`) don't count.
 - **c.** Flag any card whose height comes from padding rather than content. Proposed test: vertical padding plus empty space is more than 40% of the card height, or more than 24 pt of empty space below the last child.
+  - The test **skips Empty-state message cards** (EmptyState instances), whose padding is intended.
 
 | Page | Screen | Card | Height | Share of screen | Rule (a / b / c) | Note |
 |---|---|---|---|---|---|---|

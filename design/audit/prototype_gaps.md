@@ -410,3 +410,18 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 131 | AD-5c Offline | With Decide disabled, Offline no longer opens AD-5d (the old card did). | Info | Accept (deciding needs a connection), or add an AD-5d Offline state. |
 | 132 | Rules 9–11 (fill floor) | Reading to confirm: an Offline state with cached data meets the 75% floor (banner at the top); only message-only Offline states are centred. | Low | Confirm the reading. |
 | 133 | AD-6c Biryani plate | The two coupon states have no "scheduled" state. Biryani plate uses the Live state with the tag "Launches Fri", and its fact is "₹120 each · 0 claimed". | Low | Confirm, or add `State=Scheduled` to CouponCard. |
+
+## Admin AD-7 update (2026-09-30)
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 134 | AD-6c Empty, AD-5c2 Empty, hub Empty, AD-7d Empty | These Empty states have no incoming link; they are design states only. | Low | Wire them in the linking stage (for example a first-run or new-pilot entry), or keep them as gallery states. |
+| 135 | AD-7a, AD-7b, AD-7c | New sample identities: Suresh · •••3306 and Lakshmi · •••7182 (the brief gave names only). | Info | Keep as sample data. |
+| 136 | AD-7d | The brief listed the biryani assignment at 1:25 PM. AD-3b shows the report received at 1:25 PM and assigned at 1:32 PM; the log uses 1:32. | Info | None, unless AD-3b's times change. |
+| 137 | AD-7d vs AD-6b | The audit log never shows a student name ("Karan"), only •••0733 inside the pass-desk incident. AD-6b still shows "Karan · •••0733" to the admin on the decision screen. | Low | Decide whether admin decision screens also drop student first names (AD-6b), for consistency with the no-students rule. |
+| 138 | AD-7b | "See all · 38" opens a by-role summary (6 rows), not a list of all 38 people; per-role lists are not built. | Low | Build a scrolling directory (or per-role lists) if it is needed for the review. |
+| 139 | AD-7d type sheet, AD-7a/7b scope sheets | Only "All types" / "All messes" / "Annexe" are linked; other rows are unlinked samples (as gap 120). All-activity rows 1–3 open sheets drawn over AD-7d, not All activity. | Info | Demo limitation. |
+| 140 | Page 10 · local compositions | Role-bar hero, mini role bar, permissions matrix, activity hero and audit row are local. | Low | Promote after review. The data bars stay screen-level (AD-4.2). |
+| 141 | AD-7b Person | A permission change is shown for Ravi only (scanner on). The "last admin" and "own permissions" rules are stated in the Rules sheet but have no blocked-state screen. | Low | Add a blocked state (for example the admin opening their own permissions) if it is needed. |
