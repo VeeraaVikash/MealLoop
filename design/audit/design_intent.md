@@ -34,6 +34,19 @@ Content diet has a ceiling (3 blocks) and now a floor.
 
 13. A log is a timeline. Rows are quiet unless they are exceptions. Mono is for numbers, times and IDs only.
 
+## RULES · analytics (admin, from the 2026-09-30 AD-4 content brief)
+
+14. There are two year controls, and they are never merged:
+    - **Student year** is the cohort (1st year, 2nd year and so on).
+    - **Academic year** is time, compared across years.
+
+    An academic-year comparison shows "Needs a full year of data" until a full year exists.
+15. Hide any student-year group with fewer than 10 students, and show "Too few to show" in its place.
+16. Turnout is not a funnel. Show it as three groups: **Came**, **On leave** and **Didn't come**. Show scan failures and ID fallbacks beside low counts.
+17. No wait-time minutes anywhere.
+18. Admin analytics never include the private calorie or spending trackers.
+19. Pass scans stay separate from entrance attendance.
+
 ## Product decisions
 
 - 3 logins: student, mess staff, admin. Mess staff = permission bundles (scanner, pass checker, kitchen, supervisor). Admin = 4 tabs by intent: Today / Issues / Insights / Manage.
