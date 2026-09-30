@@ -2292,3 +2292,38 @@ The snapshot `st49` was taken first (pages, page-09 frames and the page-03 staff
 - Page 03: the top level and all 7 staff components are unchanged.
 - Links: 7 / 7 / 1181.
 - Render: `design/audit/mess_staff_d/ms_d_row.png`.
+
+## Mess Staff — Stage D.1: calculated unserved, D2 chevrons + Safety, D3 label (2026-09-30)
+
+The snapshot `st50` was taken first (pages, plus a visible-layer deep snapshot of every page-09 frame).
+
+**Data-model decision:**
+- **Unserved = prepared − served.** It is calculated as soon as served is logged, and never typed.
+- **Plate waste** is the only measured value staff enter, as one number for the whole meal. This matches the student Waste screen: measured unserved by dish plus total plate waste per meal, where unserved is the derived number.
+
+1. **MS-D1:**
+   - Every DishRow is read-only: the reason is "Prepared X · served Y", and the quantity is the **calculated unserved** in the dish's own unit (Rice 7 kg, Sambar 4 L, Paneer 3 kg, Chapati 60 pcs, Curd 5 L).
+   - The new eyebrow reads "UNSERVED BY DISH · CALCULATED". The hint "Tap a dish to enter what was left unserved" was removed.
+   - The DemandRingCard now reads "5 of 5 dishes counted · Plate waste not entered yet", with a full ring, because all served counts are in.
+   - "Plate waste · whole meal" is unchanged. **Gap 84 is closed.**
+2. **MS-D1a:**
+   - KitchenSeesBlock "LOGGED" shows only **Plate waste · Whole meal · weighed · 18 kg**.
+   - Under "UNSERVED BY DISH · CALCULATED", DishRows show each dish's unserved amount in its own unit. There is no mixed-unit total. **Gap 86 is partly resolved.**
+   - The footer "Open shift history" goes to **MS-D4** (there is no D5). Page 09 has no prototype links yet, so this is the button's target by spec.
+3. **MS-D2:**
+   - Every row has a **chevron** (opens D3), and the hint "Tap a dish to log what changed" was removed.
+   - A **Safety** row comes first: "Chicken biryani · Foreign object found · 1 report", with an ink "Safety" tag.
+   - The Rice reason was shortened to "Undercooked in batch 2" so it fits on one line beside the chevron.
+   - The Safety tag routes to the food-head safety queue (**gap 87**, not built).
+4. **MS-D3:** the "From SRM" chip is hidden on the locked **Approved by** field. The masked name "Ravi · •••4417" stands alone, and the helper "Filled from your sign-in" stays as the one source fact.
+
+**Page 03, DishRow:** two booleans were added, both **off by default**:
+- **Show chevron** (Symbol chevron.right, `ink-secondary`, 20 pt, at the end of the row);
+- **Show safety** (an ink pill with the `surface` text "Safety", before the quantity).
+
+They were needed for item 3 without building a local row.
+
+**Diff vs `st50`:**
+- Page 09: only D1, D1a, D2 and D3 changed. The visible-layer deep check confirms every other MS-A/B/C/D frame is unchanged, including D3a, D4 and every other DishRow instance.
+- Page 03: the top level is unchanged. Only the DishRow set gained the two hidden, off-by-default layers and properties.
+- Links: 7 / 7 / 1181.
