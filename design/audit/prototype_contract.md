@@ -2985,3 +2985,29 @@ The snapshot `st67` was taken first.
 - Links: −1 (Row · Sambar) +1 (Card · Sambar), same destination. Page 10 stays at 19.
 - All other pages unchanged: 7 / 7 / 1192.
 - Render: `admin_ad3/ad3_2_patterns.png` (AD-3a rest / max, AD-3c rest / max, AD-3d rest / max).
+
+## Admin AD-3.3 · Wallet-style duplicate stack (2026-09-30)
+
+The snapshot `st68` was taken first.
+
+**AD-3d "Duplicate stack":**
+- Restacked Wallet-style. The back cards now peek **above** the front card, so each title shows.
+- Back to front:
+
+  | Card | Position | Size |
+  |---|---|---|
+  | Waited 20 min for plates | x 16, y 0 | 321 wide |
+  | Counter 3 queue too slow | x 8, y 42 | 337 wide |
+  | Long wait at counter 3 (front, full) | x 0, y 84 | 353 × 72 |
+
+- **Peek is 42 pt, not 34.** The card title spans 15–39 pt from the card top, so 34 pt would clip it. The two back titles end at 39 and 81, clear of the next card (42, 84).
+- **Height:** the stack is 92 → **156 pt** (+64).
+  - AD-3d scroll range goes 29 → **93**.
+  - At max scroll the last item ("Students see "Seen" once assigned") ends at **y 728**: 20 pt above the tab bar (R9b). Fixed children are still 7, overflow vertical.
+
+**Diff vs `st68`:**
+- No top-level signature change on any page. The frame signature doesn't capture nested layer positions.
+- Verified directly:
+  - only the stack's three card positions and widths, and the stack height, changed;
+  - text and links are unchanged on every page.
+- Renders: `admin_ad3/ad3_3_stack_before.png`, `admin_ad3/ad3_3_stack_after.png` (rest and max scroll).
