@@ -2660,3 +2660,36 @@ The snapshot `st58` was taken first.
 - Page 10: only AD-1a and AD-1b changed, and the page-10 link list is identical.
 - No other page changed. Links: 7 / 7 / 1192.
 - Render: `admin_ad1/ad1_livedial_shared.png`.
+
+## Admin AD-2: Today — crowd and shortages (2026-09-30)
+
+The snapshot `st59` was taken first.
+
+The section **"AD-2 · Today — Crowd & shortages"** is on page 10 at y 1100, with frames at y 1200. It is Light only, with labels, Moment notes (Wed 1:42 / 1:43 / 1:45 PM) and sample chips.
+
+**Crowd vocabulary decision:**
+- Crowd uses the **existing student crowd vocabulary**: **Quiet / Getting busy / Packed**, plus **Stale ("Old data · hh:mm") / Unavailable / Closed**. It comes from CrowdDial, CrowdRow and CrowdLegend, the same words students already see.
+- It does **not** reuse Success / Hold / Stop. That would drift their meaning.
+- It does **not** introduce a new Quiet / Busy / Packed set either. That would fork the words students already see.
+- As on the student side, no wait minutes are shown, and every reading carries its freshness.
+
+**New component (flagged): `CrowdBadge`** (page 03, `ids.crowdBadge`):
+- An exposed **CrowdDial Compact** (the student tick dial), with the `Name`, `Level` and `Updated` texts.
+- It is the crowd counterpart of MessBadge: MessBadge carries Success/Hold/Stop glyphs, which must not stand for crowd levels.
+
+| Frame | Content |
+|---|---|
+| **AD-2a · Crowd — All messes** | Inline "Crowd". **LiveDial** "NORTH MESS · BUSIEST NOW · **410** inside · max 480 seats · Packed · updated 2 min ago" (85%). "MESSES · CROWD NOW" strip of 4 CrowdBadges: Main *Getting busy · 3 min ago*; North *Packed · 2 min ago*; South *Quiet · 1 min ago*; Annexe *Old data · 12:10 PM* (Stale dial, no ticks). The North badge links to AD-2b. |
+| **AD-2b · Crowd — Mess detail** | Inline "North Mess" with Back. LiveDial "NORTH MESS · CROWD · LIVE · 410 inside / 480 seats". CrowdLegend (On light, **Packed**). One trend fact: "Busier than last Wednesday at 1:40 PM". Freshness chip: "Updated 2 min ago via Entry QR". Read-only. |
+| **AD-2c · Shortage alerts** | Inline "Shortages". "AT RISK · LUNCH · 4 DISHES", then ListRows with status: Rice · North Mess · 60 still due · **Stop "Running out"** · 12 kg; Curd · North Mess · 15% below forecast · **Hold "At risk"** · 38 L; Chapati · South Mess · 8% below forecast · **Hold "At risk"** · 140; Paneer butter masala · Main Mess · new dish · **Hold "Low data"** · 38 kg (the MS-C low-confidence flag). Read-only, with no actions. |
+
+**Links (page 10):**
+- North badge → AD-2b (Move in, 0.3).
+- AD-2b Back → BACK.
+- The Back buttons on AD-2a and AD-2c are **unlinked**. There is no entry point from AD-1a yet, and adding one would change AD-1a.
+
+**Diff vs `st59`:**
+- Page 03: +CrowdBadge.
+- Page 10: +13 nodes (1 section, 3 frames, 3 labels, 3 Moment notes, 3 sample chips) and +2 links. AD-1 is unchanged.
+- No other page changed. Links: 7 / 7 / 1192.
+- Render: `admin_ad2/ad2_section.png`.
