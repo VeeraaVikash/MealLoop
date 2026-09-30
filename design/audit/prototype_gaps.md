@@ -425,3 +425,15 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 139 | AD-7d type sheet, AD-7a/7b scope sheets | Only "All types" / "All messes" / "Annexe" are linked; other rows are unlinked samples (as gap 120). All-activity rows 1–3 open sheets drawn over AD-7d, not All activity. | Info | Demo limitation. |
 | 140 | Page 10 · local compositions | Role-bar hero, mini role bar, permissions matrix, activity hero and audit row are local. | Low | Promote after review. The data bars stay screen-level (AD-4.2). |
 | 141 | AD-7b Person | A permission change is shown for Ravi only (scanner on). The "last admin" and "own permissions" rules are stated in the Rules sheet but have no blocked-state screen. | Low | Add a blocked state (for example the admin opening their own permissions) if it is needed. |
+
+## Admin AD-7d redesign update (2026-09-30)
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 142 | AD-7d Success, Offline, All activity | 13 text layers each (the target is 12). Every item was asked for in the brief: two exception pills and "1 pending" on Success and Offline; the nav title plus 6 times and 6 titles on All activity. | Low | Pick one: drop "1 pending" (the hollow dot shows it), show 2 rows on Success and Offline, or use hour markers on All activity. |
+| 143 | AD-7d hero | The dots run newest first, matching the list, so dots 1–3 are the visible rows. The brief said "time order", and oldest first is the usual reading. | Info | Confirm, or flip the order. |
+| 144 | AD-7d rail | Rows are spaced by time (24 pt plus 1 pt per minute). On All activity this makes the 12:40 PM row 140 pt tall, for the 95 minutes before 11:05 AM. | Low | Confirm, or switch to even spacing (about 80 pt pitch on All activity to keep the floor). |
+| 145 | AD-7d curd entry | The curd row's Hold pill is never visible at rest: Success and Offline show only the 3 newest rows, and All activity has no pills. The curd sheet has no reason line because no reason was ever recorded. | Info | Record a reason at the source (MS-D4) if one should exist. |
+| 146 | AuditRow `1028:1887` | New component, not named in the brief. Flagged under rule 7. | Low | Review; merge into TimelineStep as a `Time` variant if preferred. |

@@ -3695,8 +3695,8 @@ Added to `design_intent.md` as rules 9–12:
   - A white card with a header row of 4 icons (Supervisor `person.crop.circle`, Kitchen `fork.knife`, Scanner `qrcode`, Pass checker `ticket`).
   - Person rows: name with masked ID; role tag (MetaChip On light) with the mess; 4 dot cells; chevron.
   - Dots: filled `ink` = has the permission; hollow `border` = doesn't; **lime with an ink outline = requested** (lime marks the thing that needs the admin).
-- **Activity hero** (audit log): "6 entries today" and an hourly ChartBar histogram (10 AM 1 · 11 AM 1 · 12 PM 3 · 1 PM 1 lime (latest) · 2 PM none), with one axis line.
-- **Audit row:** a 36 pt icon badge (type icon), the action, a mono "time · actor" line and a chevron.
+- **Activity hero** (audit log): "6 entries today" and an hourly ChartBar histogram (10 AM 1 · 11 AM 1 · 12 PM 3 · 1 PM 1 lime (latest) · 2 PM none), with one axis line. *Superseded by the AD-7d redesign below: one dot per entry.*
+- **Audit row:** a 36 pt icon badge (type icon), the action, a mono "time · actor" line and a chevron. *Superseded by the AD-7d redesign below: AuditRow on a time rail.*
 
 ### Screens (page 10, section "AD-7 · People, access and audit", frames at y 7200, sheets at y 8400)
 
@@ -3717,7 +3717,7 @@ Added to `design_intent.md` as rules 9–12:
 | AD-7d · Audit log (Success) | `1015:7941` | Type pill "All types" → type sheet, activity hero, the 3 newest rows (each → its entry sheet), "See all · 6" → All activity. |
 | AD-7d · Audit log (Empty) | `1015:8083` | EmptyState "No activity yet", centred (offset 1). |
 | AD-7d · Audit log (Offline) | `1015:8225` | Label pill, banner "Offline · log saved at 2:12 PM", hero, 3 rows (read-only, still open their sheets). |
-| AD-7d · All activity | `1015:8367` | Inline title and Back, the hero, and all 6 rows. |
+| AD-7d · All activity | `1015:8367` | Inline title and Back, the hero, and all 6 rows. *Since the AD-7d redesign: no hero; the rail with times and titles only.* |
 
 **Sheets:**
 
@@ -3791,6 +3791,114 @@ The locked People tile is replaced on all three hub states by a metric tile: the
   - Page 10: +109 nodes (the section, 16 screens, 11 sheets, 81 labels / Moment notes / sample chips); changed: the three hub frames only.
   - Page 03: ScopeSheet only (one hidden row plus the property; advisory nested counts otherwise).
   - Pages 00–02, 04–09 and 99: unchanged, links included (7 / 7 / 1192 / 0).
+
+## Admin AD-7d redesign · The audit log as a timeline (2026-09-30)
+
+**Brief:** redesign AD-7d (Success, Empty, Offline, All activity, and the six entry sheets). The data, facts and links stay the same, and so do the fill floor and the content diet. The new rule 13 in `design_intent.md` reads: "A log is a timeline. Rows are quiet unless they are exceptions. Mono is for numbers, times and IDs only."
+
+This section replaces the AD-7 activity hero, the audit row and the entry-sheet layout described above. The facts table above still applies.
+
+### New component (flagged): AuditRow `1028:1887`
+
+- **Where:** page 03 at (0, 14600), with variants `State=Done / Pending / Incident`.
+- **Why it is new:** TimelineStep (`81:872`) has no time column, so a small new row was built rather than force-fitting it. It reuses TimelineStep's rail styles: a 2 pt `border` line and a 12 pt node.
+- **Layout (321 wide, gap 12):**
+  - Time column (64 wide): ML/Mono Footnote, ink-secondary.
+  - Rail (16 wide, fills the row height): the node, then a line that grows to the row bottom.
+  - Body: the title (ML/Secondary Medium, Inter Medium 15, ink) and an exposed StatusPill.
+- **Properties:** `Time`, `Title`, `Show pill`, `Show line`, `State`.
+- **Nodes:**
+  - Done: lime with a lime-outline stroke.
+  - Pending: hollow, ink-secondary 1.5 pt stroke.
+  - Incident: solid ink.
+- **Spacing:** the gap between rows is set by the Body's bottom padding: 24 pt plus 1 pt per minute to the next older entry. The space on the rail shows time; the longest gap is the 95-minute quiet morning on All activity. The last row in a list has no line.
+
+### Hero (Success and Offline)
+
+- "**6** entries today": the 6 in ML/Hero Metric on-hero, the rest in ML/Card Heading on-hero-secondary.
+- One strip on the next line:
+  - Left: 6 dots (14 pt) joined by 16 × 2 links at 50% on-hero-secondary.
+  - Right: "**1** pending", ML/Secondary with the 1 in ML/Mono Body. Putting it on the dots' line keeps See all above the tab bar.
+- **Dot order: newest first** (left = newest), the same order as the list. Dots 1–3 are the three rows below; dots 4–6 are the entries behind See all. The brief said "time order"; this is reverse time order, chosen so the dots map one to one onto the rows as you read them. It can be flipped.
+- **Dot colours:** lime = done, hollow = pending, white = incident.
+  - In the list, an incident node is solid ink instead, because white is invisible on the white card.
+  - Done and pending look the same in both places.
+
+### Rows (row frames kept with the same ids and names, so every link is unchanged)
+
+| Time | Title | State | Pill (Success / Offline only) | Actor (now in the sheet) |
+|---|---|---|---|---|
+| 1:32 PM | Biryani report assigned | Incident | Stop "Safety" | Admin · •••0912 |
+| 12:52 PM | Sambar salt cut | Done | – | Ravi · •••4417 |
+| 12:41 PM | Pass turned away | Incident | Offline "Desk offline" | Main Mess desk |
+| 12:40 PM | Lunch waste logged | Done | – | Meena · •••2291 |
+| 11:05 AM | Curd cut to **45** L | Pending | Hold "Pending" | Ravi · •••4417 |
+| 10:47 AM | Sambar raised to **50** L | Done | – | Ravi · •••4417 |
+
+- **Routine rows have no pill.**
+- **Where the pills show:** only Success and Offline show pills, and they list only the 3 newest rows. The curd row's Hold pill is set but is not visible at rest, because All activity shows times and titles only. Its hollow node still marks it as pending.
+- **Chevrons:** there are none. The whole row is the tap target, and each row still opens its sheet.
+- **Mono:** only the times and the digits in titles ("45", "50") are mono. Units stay in Inter.
+
+### Screens
+
+| Frame | Id | Content (at rest) |
+|---|---|---|
+| AD-7d · Audit log (Success) | `1015:7941` | Type pill, hero (234–363), rail card with the 3 newest rows (375–661), See all · 6 (673–725). |
+| AD-7d · Audit log (Empty) | `1015:8083` | Unchanged: EmptyState "No activity yet", centred (+1). |
+| AD-7d · Audit log (Offline) | `1015:8225` | Type pill, banner, hero (294–423), rail card with 3 rows (435–721). |
+| AD-7d · All activity | `1015:8367` | Inline title and Back. No hero. A rail of 6 rows with times and titles only (110–579). |
+
+### Entry sheets (GlassSheet Medium; the title is the subject)
+
+Each sheet leads with the change as a big line:
+- A number uses ML/Hero Metric. The old value and the arrow are ink-secondary, and the arrow and unit use ML/Hero Unit.
+- Words use ML/Large Title.
+
+Below the big line are at most 3 lines:
+- the reason (ML/Body, ink);
+- who and when (ML/Secondary, ink-secondary);
+- one more fact (ML/Secondary, ink-secondary).
+
+IDs, times and numbers in these lines are ML/Mono Body. The CHANGE / REASON / NOTIFIED caps labels are gone.
+
+| Sheet | Id | Title | Big line | Lines |
+|---|---|---|---|---|
+| Biryani | `1021:6692` | Biryani · safety queue | Assigned to Ravi | Foreign object · 1 report at 1:25 PM / Admin · •••0912 · 1:32 PM / Reported by •••2231 · Ravi •••4417 notified |
+| Sambar fix | `1021:6831` | Sambar fix | Salt cut by a third | 6 reports said too salty / Approved by Ravi · •••4417 · 12:52 PM / Admin notified in Issues · recheck Friday lunch |
+| Pass desk | `1021:6970` | Pass desk offline | Reissue asked | Desk offline from 12:40 PM · pass unused / Main Mess desk · 12:41 PM / Student •••0733 turned away · you decide |
+| Waste | `1021:7109` | Lunch waste | 18 kg | Plate waste, weighed / Logged by Meena · •••2291 · 12:40 PM / Unserved is calculated from served counts |
+| Curd | `1021:7257` | Curd · pending | 60 → 45 L | Kitchen cooks 60 L until approved / Asked by Ravi · •••4417 · 11:05 AM / Food head notified · they decide |
+| Sambar override | `1021:7408` | Sambar override | 42 → 50 L | Staff event / Ravi · •••4417 · 10:47 AM / Kitchen supervisor · food head notified |
+
+**Fact mapping:** every fact in the facts table above is still present; a few were reworded to fit the 3-line limit.
+- The row actor has moved into the "who and when" line.
+- "Safety queue" has moved into the Biryani title.
+- "Awaiting approval" and "until then" have become "until approved".
+- "Needs your decision" has become "you decide".
+- **Curd has no recorded reason** (none was ever given), so its first line is its status. No reason was invented.
+
+**Backgrounds:** refreshed from the redesigned screens.
+- The Biryani, Sambar fix and Pass desk sheets and the type sheet use Success.
+- The Waste, Curd and Sambar override sheets use All activity.
+- Every link in the background layers was stripped, including the nav Back inside the background.
+
+### Checks
+
+- **Fill:** Success 97%, Offline 96%, All activity 77%. Empty is still centred (+1). See `admin_ad7d/fill_density.md`.
+- **Density:** Success 13, Offline 13, All activity 13 (was 16); sheets 5 each (were 7 to 9).
+  - The three 13s each come from items the brief asked for: two exception pills and the "1 pending" subline on Success and Offline, and the nav title plus 6 × 2 on All activity.
+  - Options to reach 12:
+    - drop the "1 pending" subline (the hollow dot already shows it);
+    - show 2 rows on Success and Offline;
+    - use hour markers on All activity.
+  - Not applied; waiting for a decision (gap 142).
+- **Mono audit:** no name or sentence is set in mono. "See all · 6" and the banner time are Inter, set by their shared components.
+- **Diff vs `st84` (snapshot `st85`):**
+  - **Page 10:** 331 nodes, +0 / −0 nodes. Ten frames changed: Success, Offline, All activity, the type sheet and the six entry sheets. Links: 214, +0 / −0. Flow starts are still exactly Admin · Today, Issues, Insights and Manage.
+  - **Page 03:** +1 node (AuditRow).
+  - **Every other page:** unchanged, links included (04 / 05 / 07: 7 / 7 / 1192; page `44:2`: 139).
+- **Renders:** `admin_ad7d/before/`, `admin_ad7d/after/` and `admin_ad7d/before_after.png`.
 
 ## Planned stage: Final audit (FA) (recorded 2026-09-30, not started)
 
