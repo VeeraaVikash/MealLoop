@@ -4010,6 +4010,27 @@ The existing kinds and instances are untouched. The set description now document
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `admin_5c2/before/`, `admin_5c2/after/` and `admin_5c2/before_after.png`.
 
+### AD-5c2 pass 2 (2026-09-30)
+
+- **Buttons:** "Open vote · Pongal on Tuesdays" moved from `Style=Primary` to `Style=Secondary` (white fill, dark outline, dark text), matching "Review · Egg curry on Mondays". The black card is now the only black block on Success.
+  - Offline: both buttons are `Style=Secondary, State=Disabled` (dimmed), with no links.
+  - The Offline banner (the shared OfflineBanner component) is still black on Offline. It was not changed here, because changing it would restyle every Offline screen.
+- **Link:** "Open vote" → AD-5d (NAVIGATE, Dissolve 0.25 ease-out). Back on AD-5d is BACK, so it returns to Proposals. This is the interim fix for gap 150; the proper fix is a confirm sheet (48 h, end time), logged in the gap.
+- **Checks:**
+
+  | Screen | Fill | Blocks | Texts |
+  |---|---|---|---|
+  | Success | 84% (y 626) | 3 | 12 |
+  | Offline | 83% (y 622) | 3 | 12 |
+  | Empty | centred (+1) | 1 | 3 |
+
+  - Review still → Needs review sheet (Dissolve 0.25).
+- **Diff vs `st92` (snapshot `st93`):**
+  - **Links:** 214 → 215. The one addition is Open vote → AD-5d; nothing was removed. **Flow starts:** identical.
+  - **Changed:** the two sheet backgrounds were refreshed. The button swaps are inside instances, so the top-level snapshot signature does not register them (as in gap 149); they were checked through the instance properties instead.
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `admin_5c2/pass2/before/`, `admin_5c2/pass2/after/` and `admin_5c2/before_after_pass2.png`.
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**
