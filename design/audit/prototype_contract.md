@@ -2442,3 +2442,72 @@ Pending and Unavailable got the same structure so the whole family behaves alike
 - **Gap 89 was logged:** a pre-existing clipped legend on Waste · Partial, left for cosmetic cleanup.
 
 **Renders** (`design/audit/student_waste_scroll/`): `at_rest_before.png`, `at_rest_after.png`, `max_scroll_after.png`.
+
+## Student 2: Attendance redesign (2026-09-30)
+
+The snapshot `st54` was taken first. The inventory is in `design/audit/student_attendance/inventory.md`.
+
+**Decisions:**
+- **One screen:** the two screens are merged, so there is one data source.
+- **Retired frames are archived,** not deleted.
+- **The report flow is a sheet.**
+- **"Possible" means every meal that existed in the period.** Leave days are not excluded; the student adds that context with "Something's wrong?".
+- **"Request sent" uses the ResultCard `Hold` state.** The staff status vocabulary transfers to the student side unchanged (Light and Dark).
+
+### What changed (pages 04, 05, 07; built the same way on each)
+
+**Entry history** (the You · ATTENDANCE tile opens it) is now the single Attendance screen. From top to bottom:
+
+1. **SegmentedControl:** This week / This month, with This month selected. It scrolls with the content, as agreed for Waste.
+2. **Black ring card:**
+   - The ring (96 pt) shows attended out of possible.
+   - Segments: Breakfast `lime`, Lunch `on-hero`, Dinner `on-hero-secondary`. Missed meals are the hollow track.
+   - Text: "AUGUST SO FAR · **36** of 41 meals".
+   - Per-meal legend, one fact per line: Breakfast 10 of 14 · Lunch 14 of 14 · Dinner 12 of 13.
+3. **Weeks, newest first:**
+   - Groups: THIS WEEK · 12–14 AUG, LAST WEEK · 5–11 AUG, and 1–4 AUG.
+   - Each day is a **DishRow**: the date, then "n of 3" (or "n of 2" for today), then a chevron.
+   - A day with a miss shows a reason line ("Breakfast not scanned").
+   - **Every row opens the report sheet**, so "report a problem" is inline on the row and there are no dead chevrons.
+4. **Scroll:** it uses the R9 + R9c inline pattern (HeaderBackdrop, Status fade, fixed nav, status bar, fades, tab bar and indicator). The range is 471, and the last item ends 20 pt above the tab bar.
+5. **Removed:** the floating "Report a problem" button and the HeroNumber drill-in.
+
+**Sample data** (Wed 14 Aug, 2:00 PM, 41 meals possible so far):
+- Breakfast was missed on 14, 10, 8 and 3 Aug.
+- Dinner was missed on 13 Aug.
+- The **You · ATTENDANCE tile now reads 36** everywhere it appears: 8 tiles each on 04 and 05, and 6 on 07.
+
+**Entry · Under review** is now a state of the same screen:
+- **ResultCard `Hold`** at the top: "Request sent · Dinner · Tue 13 Aug · Sent Wed 14 Aug · awaiting review".
+- The Tue 13 row reads "Dinner · request sent".
+- The duplicate "Request sent" toast was removed.
+- The tab bar now highlights **You** (it was Home).
+- Back still goes to Entry history.
+
+**Entry · Discrepancy / — sending / — failed** are now **sheets**:
+- Structure: the Attendance screen as background (links stripped), Scrim, **GlassSheet `Detent=Large`** titled "Something's wrong?" with Close, and the original content: meal and record tiles, the three reasons, the optional note, and the error on the failed state.
+- Send request / Sending… stays at the sheet's foot.
+- The frame's own nav, tab bar and Back were removed.
+
+**Entry · History (E7)** was moved to **99 Archive** on all three pages ("Retired 0x · Entry · History"; the label on 04 and 05 too). On the archived 07 copy, its 6 links were removed so the archive stays inert (Archive: 0 links).
+
+### Links on page 07: 1181 → 1192 (+11)
+
+| Change | Links |
+|---|---|
+| Day rows on Entry history and Under review → Entry · Discrepancy (sheet), Dissolve 0.25 | +28 |
+| Sheet Close → Back (3 sheets) | +3 |
+| Removed: Entry history · HeroNumber → E7, and the "Report a problem" button → Discrepancy | −2 |
+| Removed: the Back, 4 tabs and Search on E7 (archived) | −6 |
+| Removed: the Back, 4 tabs and Search on Discrepancy and Discrepancy — sending (they are sheets now) | −12 |
+
+Pages 04 and 05 stay at 7.
+
+### Checks
+
+- **Diff vs `st54`:**
+  - Pages 04 and 05: 13 frames changed. These are the 5 attendance frames plus the 8 frames that show the ATTENDANCE tile (You, You · Offline, the two full-scroll copies, Sign out, Request correction, Correction · Sent / Failed). The E7 frame and its label moved to Archive.
+  - Page 07: 11 frames changed, and E7 was archived.
+  - No other page changed.
+- **Renders** (`design/audit/student_attendance/`): `p07_attendance_states.png` (Attendance at rest and at max scroll, Request sent, and the three sheet states), `p05_dark.png`, `ring_card.png`.
+- **New gaps:** 90 (every row opens the same sample sheet), 91 (no "(full scroll)" copies on 04 and 05), 92 (pre-existing: no link from Sending to Request sent).
