@@ -462,3 +462,15 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 |---|---|---|---|---|
 | 150 | AD-5c2 Success, AD-5d | "290 kcal · veg" (Pongal) left the proposal rows. It still appears on AD-5d (the vote result). **Interim (AD-5c2 pass 2):** "Open vote · Pongal on Tuesdays" now links to AD-5d (Dissolve 0.25; AD-5d Back is BACK), so the fact is one tap away. AD-5d is the *result* screen, though, not the moment of opening a vote. | Low | **Proper fix:** a confirm sheet opened from "Open vote": "Open the vote on Pongal on Tuesdays?", the fact "Meets criteria · 290 kcal · veg · within budget", "Runs 48 h · ends Fri 2:18 PM" (48 h from the Wed 2:18 PM moment), and "Open vote". Retarget the button from AD-5d to the sheet. |
 | 151 | ChartBar (page 03) | The Pill kinds (Pill, Pill lime, Pill ghost) were defined in this pass, ahead of the Trends and Forecast chart pass that was meant to introduce them. | Info | The chart pass should reuse these kinds, or rename them in one place. The instances on AD-5c2 follow any change to the component. |
+
+## Admin AD-5c2 confirm sheet update (2026-09-30)
+
+### Resolved
+
+- **150** ("290 kcal · veg" had no home): **closed.** "Open vote · Pongal on Tuesdays" now opens the confirm sheet `1062:6997`, which shows "Meets criteria · 290 kcal · veg" and "Runs 48 h · ends Fri 2:18 PM". The stopgap link to AD-5d was removed.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 152 | AD-5c2 Proposals, Open vote sheet `1062:6997` | After "Open vote" on the confirm sheet, BACK returns to Proposals, which still shows Pongal as a proposal (check, lime bar, "Open vote" button). Nothing shows that its vote is open. | Low | Add a Proposals state after opening, for example Pongal's row marked "Vote open · ends Fri 2:18 PM" with the Open vote button removed or replaced, and point the sheet's "Open vote" at that state (SWAP) instead of BACK. |

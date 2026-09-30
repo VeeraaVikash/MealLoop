@@ -176,3 +176,10 @@ A position-only stage: every node was moved by id; no content, size, link, flow-
 - **Links:** 214 before and after, identical including transitions. **Flow starts:** identical (Admin · Today, Issues, Insights, Manage).
 - **Other pages:** unchanged, links included.
 - **Screenshot:** `page10_overview.png` (the whole page at low zoom, 7488 × 10883 pt canvas).
+
+## Changes since this record
+
+- **2026-09-30, AD-5c2 confirm sheet:**
+  - The new sheet "AD-5c2 · Open vote sheet" (`1062:6997`) takes AD-5 sheets slot 5 at 2365, 5460.
+  - "AD-5c2 · Needs review sheet" moved 2365 → 2838 and "AD-5c2 · Look the same sheet" moved 2838 → 3311, each with its label, Moment note and chip at unchanged offsets.
+  - The AD-5 sheets row now holds 8 sheets.

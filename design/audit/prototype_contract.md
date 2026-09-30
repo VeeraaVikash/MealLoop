@@ -4031,6 +4031,32 @@ The existing kinds and instances are untouched. The set description now document
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `admin_5c2/pass2/before/`, `admin_5c2/pass2/after/` and `admin_5c2/before_after_pass2.png`.
 
+### AD-5c2 confirm sheet (2026-09-30, closes gap 150)
+
+- **New sheet `1062:6997`, "AD-5c2 · Open vote sheet":** built on the shared sheet skeleton (`mealloop/sheethelp`).
+  - The layers: a copy of Proposals (Success) with every link stripped, the scrim, the "Dismiss · tap outside" layer, a GlassSheet (Detent=Medium) with Close, the sheet content and the home indicator.
+  - GlassSheet title: "Open the vote on Pongal on Tuesdays?" It wraps to two lines, so the content starts under it at y 528.
+  - Lines: "Meets criteria · **290** kcal · veg" (ML/Body, ink) and "Runs **48** h · ends Fri **2:18 PM**" (ML/Secondary, ink-secondary). Numbers and times are ML/Mono Body.
+  - Buttons: "Open vote" (`Style=Primary`) and "Cancel" (`Style=Text`), both full width.
+  - It has 5 text layers.
+- **Links:**
+  - Proposals (Success) "Open vote" → the sheet (NAVIGATE, Dissolve 0.25 ease-out). This replaces the AD-5d stopgap.
+  - Close, Dismiss, Cancel and the sheet's "Open vote" → BACK.
+  - The Offline buttons stay disabled and unlinked. AD-5d is still reached from AD-5c's Decide.
+- **Page 10 grid:** the sheet takes the slot its opener decides. On 5c2, Open vote sits above Review and Look the same, so it goes to AD-5 sheets slot 5 (x 2365, y 5460).
+  - The Needs review and Look the same sheets moved one slot right (to x 2838 and 3311), each with its label, Moment note and sample chip at unchanged offsets.
+  - The new sheet has its own label, Moment note (Wed 2:18 PM) and sample chip, cloned from the Needs review sheet's at the same offsets. No flow start was copied.
+- **Checks:**
+  - **Diff vs `st94` (snapshot `st95`), page 10:**
+    - +4 nodes (the sheet, label, Moment note, chip).
+    - 8 nodes changed x only (the two shifted sheets and their six annotations).
+    - Links 215 → 219: −1 (Open vote → AD-5d) and +5 (Open vote → sheet, plus the sheet's 4 BACK links).
+    - Flow starts are identical, and nothing overlaps.
+  - **Page 03 (ChartBar included) and all other pages:** unchanged. No Pill variant was added; the Pill kinds from gap 151 stay the only ones.
+  - Proposals: Success and Offline both still have 3 blocks and 12 texts.
+- **Renders (scale 1):** `admin_5c2/confirm/` and `admin_5c2/before_after_confirm.png`.
+- **Open:** after opening, Proposals does not yet show Pongal as "vote open" (gap 152).
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**
