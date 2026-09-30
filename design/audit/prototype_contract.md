@@ -4057,6 +4057,67 @@ The existing kinds and instances are untouched. The set description now document
 - **Renders (scale 1):** `admin_5c2/confirm/` and `admin_5c2/before_after_confirm.png`.
 - **Open:** after opening, Proposals does not yet show Pongal as "vote open" (gap 152).
 
+## Admin AD-4b / AD-4c chart pass (2026-09-30)
+
+**Brief:** redesign the two Insights charts using the reference's mechanics only: a black hero card, pill bars with labels inside, a smooth line, and a dashed ghost bar for missing data.
+- Lime stays the only accent. There are no gradients and no toggles.
+- Reuse the ChartBar Pill kinds (gap 151); extend them rather than add a second Pill variant.
+- Targets: fill 75% or more, 12 texts or fewer, at most 3 blocks. Mono is for numbers only.
+
+### ChartBar (page 03): the Pill kinds extended
+
+- **Change:** Pill, Pill lime and Pill ghost now have full radius (999). Any instance is a true pill, vertical or horizontal, and the radius clamps to half its short side.
+- **Scope:** no new variant was added.
+- **AD-5c2 check:** its 8 pt bars render pixel-identical before and after.
+- **Snapshot:** the edit is nested, so the page-03 signature does not register it (as in gap 149).
+
+### AD-4c · Trends (`877:2037`)
+
+- **Nav:** the large title "Trends" stays. The subtitle "All messes · Waste" is hidden (owner's choice, to reach 12; gap 154).
+- **Hero card "Hero · Waste by week":** black (hero-bg), radius 24, padding 20.
+  - HeroNumber "**642** kg" (ML/Hero Metric with ML/Hero Unit).
+  - Delta chip "−13% since 8 Jul" (MetaChip On dark), on the right.
+- **Chart (313 × 268):** zero baseline, 742 kg = 250 pt.
+  - Six 40 pt pills, 54.6 pt apart.
+  - White Pill for 8 Jul, 15 Jul and 29 Jul. Lime Pill for 5 Aug, the latest week.
+  - Two-line week labels ("8 / Jul") in ML/Footnote ink, inside the bottom of each measured pill.
+  - 22 Jul and 12 Aug are Pill ghost at the median of the measured weeks (699 kg), with no label (owner's choice).
+- **Line:** one lime spline, 3 pt, round caps, through the tops of the four measured bars (Catmull-Rom converted to Béziers).
+  - It ends in a lime dot on 642, with a 3 pt hero-bg ring.
+  - The "−100 kg" callout (a lime pill, with "−100" in mono) sits above the line between 29 Jul and 5 Aug.
+- **Legend:** a Pill ghost swatch and "Dashed = not measured yet".
+- **Below the card:** the By week / By month / By year chips, the only control. They moved from above the card and still have no links.
+- **Removed:** the "Waste down 13% since 8 Jul" line (its fact is now the delta chip), the old white chart card, the value labels above the bars, the axis row and the hatch key.
+
+### AD-4b · Forecast vs actual (`877:1877`)
+
+- **Hero card "Hero · Forecast vs served":**
+  - "Tue 13 Aug" (ML/Footnote).
+  - "**2** of **3** meals on target" in one layer: the numbers in ML/Hero Metric, the words in ML/Card Heading.
+- **Chart (313 × 314):** zero baseline, 860 = 280 pt. Three pairs of 40 pt pills (6 pt apart within a pair, 27.5 pt between pairs):
+  - Expected is Pill (white). Served is Pill lime.
+  - Dinner's Served is a Pill with a grey (ink-secondary) fill override.
+  - Dinner's shortfall is a Pill ghost at the full expected height behind the grey pill, so the dashed part that shows on top is the 123-meal gap.
+  - Meal names in ML/Footnote sit under each pair.
+- **Legend:** Expected and Served, with pill swatches.
+- **Under the card:** one fact line, "Dinner · **123** fewer · **15%** below forecast". The Breakfast, Lunch and "Dinner cause" lines were dropped, along with the value labels above the bars (gap 153).
+
+### Checks
+
+| Screen | Fill | Blocks | Texts |
+|---|---|---|---|
+| AD-4c | 85% (y 634) | 1 | 12 |
+| AD-4b | 83% (y 623) | 2 | 9 |
+
+- **Bars:** every height matches its data exactly (0.00 pt error), and all bars share their chart's baseline.
+- **Line:** the four anchors sit exactly on the measured bar tops (0.00 pt error). The tables are in `admin_charts/fill_density.md`.
+- **Diff vs `st96` (snapshot `st97`):**
+  - **Page 10:** only AD-4b and AD-4c changed. 338 nodes.
+  - **Links:** 219, identical (both screens keep Back only). **Flow starts:** identical.
+  - **Page 03:** no change registered (the radius edit is nested; see above).
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `admin_charts/before/`, `admin_charts/after/` and `admin_charts/before_after.png`.
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**

@@ -474,3 +474,16 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | # | Frame(s) | Issue | Severity | Suggested fix |
 |---|---|---|---|---|
 | 152 | AD-5c2 Proposals, Open vote sheet `1062:6997` | After "Open vote" on the confirm sheet, BACK returns to Proposals, which still shows Pongal as a proposal (check, lime bar, "Open vote" button). Nothing shows that its vote is open. | Low | Add a Proposals state after opening, for example Pongal's row marked "Vote open · ends Fri 2:18 PM" with the Open vote button removed or replaced, and point the sheet's "Open vote" at that state (SWAP) instead of BACK. |
+
+## Admin AD-4b / AD-4c chart pass update (2026-09-30)
+
+### Resolved
+
+- **151** (Pill kinds defined ahead of the chart pass): the chart pass reuses them. It extended them to full radius and added no new variant.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 153 | AD-4c Trends, AD-4b Forecast | **Some numbers are now shown only as bar heights.** Trends prints 642 and −100 kg; the week values 742, 718 and 680 are no longer printed. Forecast prints only Dinner's 123 and 15%; the Breakfast and Lunch counts (610 / 596, 860 / 838) and Dinner's 820 / 697 are no longer printed. | Low | Add tap-to-reveal values on the pills, or a VoiceOver label per bar with its value, and check that a reviewer doesn't need the printed numbers. |
+| 154 | AD-4c Trends | The nav subtitle "All messes · Waste" is hidden to stay within 12 texts, so the screen no longer says the trend covers all 4 messes. AD-4a's "Trend needs all 4 messes" relies on that scope. | Low | Put the scope in the delta chip ("−13% since 8 Jul · all messes"), or drop the callout and bring the subtitle back. |
