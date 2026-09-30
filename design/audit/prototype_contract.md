@@ -2539,3 +2539,69 @@ The snapshot `st55` was taken first.
 - **Link lists are identical on every page**, because the day rows kept their reactions through the variant swap. Links: 7 / 7 / 1192.
 
 **Renders:** `student_attendance/density_before_after.png` (full-scroll, page 07, Entry history and Under review).
+
+## Decisions (2026-09-30)
+
+- **The Attendance ring stays at 96 pt.** It is not shrunk, for consistency with other rings, and to avoid another round of diffs.
+- **Student track paused before Admin.** Paused: link cleanup (the 8 unclassified links + gap 92), the 13 overflow frames, Stage 4 verification and cosmetic cleanup. None are broken, just unfinished polish; resume from the roadmap above.
+- **Admin plan:**
+
+  | Stage | Covers |
+  |---|---|
+  | AD-1 | Shell and Today overview |
+  | AD-2 | Today, remainder |
+  | AD-3 | Issues |
+  | AD-4 | Insights |
+  | AD-5 | Manage: menu, nutrition and voting |
+  | AD-6 | Manage: passes, rewards and surplus |
+  | AD-7 | Manage: people, permissions and audit log |
+
+  After all of Admin exists, a connection stage stitches student, mess staff and admin together behind a role-select entry.
+
+## Admin AD-1: shell and Today overview (2026-09-30)
+
+The snapshot `st56` was taken first (all pages, reaction lists, and a visible-layer deep snapshot of page 09).
+
+### Page 03
+
+- **DishRow → `ListRow`** (`764:84422`). Instance counts are the same before and after: 09 = 41, 04 / 05 / 07 = 70 each, 03 = 2. There are no broken or detached instances.
+  - Instances that kept their default layer name now read "ListRow". That is the only change on page 09: the visible-layer deep check lists 7 frames whose only difference is that layer name. Geometry and text are unchanged, and the MS-C3 and MS-D1 renders match.
+- **AdminTabBar** (`808:86775`) is a set with `Selected` = Today / Issues / Insights / Manage.
+  - It was cloned from the student TabBar (Expanded), so it has the same glass pill and search button.
+  - Tab icons: Today = calendar, Issues = exclamationmark.bubble, Insights = chart.bar, Manage = gearshape.
+- **New: `StatusPill`** (`808:86801`), with `State` = Success / Hold / Stop / Offline and a text `Label`. This is the ResultCard vocabulary for **light surfaces**:
+
+  | State | Fill | Text |
+  |---|---|---|
+  | Success | lime | on-lime |
+  | Hold | ink-secondary | surface |
+  | Stop | ink | surface |
+  | Offline | outline, ink-secondary | ink-secondary |
+
+  It was **needed** because ListRow had no status slot (flagged; this also covers gap 85's need).
+- **ListRow** gained **`Show status`** (off by default), an exposed StatusPill before the quantity. Existing uses are unchanged.
+
+### Page "10 Admin" (new, Light only)
+
+The page sits before 99 Archive. Section "AD-1 · Shell & Today overview". The frames are at y 0, with labels, Moment notes (Wed 1:40 / 1:41 PM) and sample chips.
+
+| Frame | Id | Content |
+|---|---|---|
+| AD-1a · Today — Overview | `ids.admin.a` | NavHeader Large Title "Today" / "Wed 14 Aug · Lunch". Filters: MetaChip Tappable "All messes · Lunch · Wed 14 Aug · All years". DemandRingCard "ALL MESSES · LUNCH · **2,418** served · 2,960 expected · 1:40 PM" (ring 82%). Messes as ListRows with status and chevron: Main Mess · Block A · 712 of 860 · **Stop "Safety report"** · 83%; North · Block C · 640 of 700 · **Hold "Shortage risk"** · 91%; South · Block B · 520 of 800 · **Success "On track"** · 65%; Annexe · Last sync 12:10 PM · **Offline "Not reporting"** · 91%. AdminTabBar Today. The large title scrolls with the content; it fits, with the last item at 655. |
+| AD-1b · Today — Mess detail | `ids.admin.b` | Inline "Main Mess" with Back (R9 + R9c inline scroll, range 75). DemandRingCard "MAIN MESS · LUNCH · **712** served · 860 expected". **ResultCard Hold "Awaiting approval · Curd · 60 → 45 L · Food head decides · kitchen cooks 60 L"**, the admin view of the MS-C approval queue. "PREP · LUNCH" rows: Rice 95 kg; Sambar · Override · staff event · Adjusted · 50 L; Paneer butter masala · Hold "Low data" · 38 kg; Chapati 1,700; Curd · Cut to 45 L · Hold "Awaiting approval" · 60 L; Chicken biryani · 214 special passes · Stop "Safety report" · 30 kg. **Read-only: no override or adjust entry point.** |
+
+**Data** matches MS-C and MS-D: Sambar 50 L adjusted, the pending Curd cut, the Paneer low-confidence flag, and the biryani safety report. The cross-mess totals are sums of the four messes.
+
+**Links (page 10):**
+- Main Mess row → AD-1b (Move in, left, 0.3).
+- AD-1b Back → BACK.
+- Flow start: "Admin · Today".
+- The other mess rows and the 3 non-Today tabs are unlinked (samples only).
+
+### Diff vs `st56`
+
+- Page 03: ListRow changed, and AdminTabBar and StatusPill were added.
+- Page 09: layer names only (see above).
+- Page 10 is new.
+- Pages 04, 05 and 07 are unchanged. Links: 7 / 7 / 1192.
+- Renders: `design/audit/admin_ad1/`.
