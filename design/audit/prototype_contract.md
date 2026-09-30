@@ -2605,3 +2605,38 @@ The page sits before 99 Archive. Section "AD-1 · Shell & Today overview". The f
 - Page 10 is new.
 - Pages 04, 05 and 07 are unchanged. Links: 7 / 7 / 1192.
 - Renders: `design/audit/admin_ad1/`.
+
+## Admin AD-1.1: reference-pattern treatments (2026-09-30)
+
+The snapshot `st57` was taken first. Only the visual treatment changed; the content, numbers and statuses stay as in AD-1.
+
+1. **AD-1a hero is a live dial, not a closed ring.**
+   - It is a local composition, "Live dial": a black card with the eyebrow "ALL MESSES · LUNCH · LIVE".
+   - The gauge is a **240° sweep** from 150° to 390°, with the gap at the bottom:
+     - a hollow `on-hero-secondary` track (expected);
+     - a `lime` fill to the current position (2,418 / 2,960 = 82%);
+     - a **lime needle** from an `on-hero` hub at that angle;
+     - end labels "0" and "2,960";
+     - the Metric "2,418" and "served" under the hub.
+   - Line: "4 messes · updated 1:40 PM".
+   - **Rule:** a dial means *live, in motion*. Closed composition rings stay for completed periods (Attendance, Waste, Today's plate).
+2. **AD-1a messes are a badge strip.** The ListRow + StatusPill list became one white card with **four `MessBadge`s** in a row:
+   - Main 83% (Stop ✕), North 91% (Hold clock), South 65% (Success ✓), Annexe 91% (Offline wifi-slash).
+   - **New component `MessBadge`** (page 03, `ids.messBadge`), with `State` = Success / Hold / Stop / Offline, `Name` and `Percent`. It is a 64 pt ring: `ink` served arc (`ink-secondary` when Offline) on a `border` track, the percent inside, the name below, and a 22 pt status glyph at the top-right. The served arc is set per use.
+   - The Main badge links to AD-1b (Move in, 0.3).
+3. **AD-1b prep is a swipeable card sequence.** The vertical list became **"Prep cards (swipe)"**:
+   - A 353 pt clip frame with `overflowDirection = HORIZONTAL` holds a row of six **`PrepCard`**s (272 wide, 12 apart, equal height 172), so the second card peeks.
+   - Order, status first: Chicken biryani (Stop "Safety report"), Curd (Hold "Awaiting approval"), Paneer butter masala (Hold "Low data"), Sambar (Success "Adjusted"), Rice (Success "On plan"), Chapati (Success "On plan").
+   - Page dots follow the cards.
+   - **New component `PrepCard`** (page 03, `ids.prepCard`): an exposed StatusPill, then the name (Section), the quantity (Metric mono) and one fact line.
+   - The Curd approval card (ResultCard Hold) and the mess ring stay as they were. **Still read-only.**
+
+**Diff vs `st57`:**
+- Page 03: +2 components (MessBadge, PrepCard).
+- Page 10: only AD-1a and AD-1b changed. The link is now on the Main badge instead of the Main row, and Back is unchanged.
+- No other page changed. Links: 7 / 7 / 1192.
+- Renders: `admin_ad1/ad1_v2_frames.png`, `admin_ad1/ad1b_card_sequence.png`.
+
+**Decisions:**
+- AD-1b stays read-only. Approval oversight, if ever needed, goes into AD-3 Issues as an escalation queue.
+- Other mess badges stay unlinked (samples), and no second mess-detail screen is built.
