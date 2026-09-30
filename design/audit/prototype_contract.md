@@ -2511,3 +2511,31 @@ Pages 04 and 05 stay at 7.
   - No other page changed.
 - **Renders** (`design/audit/student_attendance/`): `p07_attendance_states.png` (Attendance at rest and at max scroll, Request sent, and the three sheet states), `p05_dark.png`, `ring_card.png`.
 - **New gaps:** 90 (every row opens the same sample sheet), 91 (no "(full scroll)" copies on 04 and 05), 92 (pre-existing: no link from Sending to Request sent).
+
+## Student 2.1: Attendance density (2026-09-30)
+
+The snapshot `st55` was taken first.
+
+1. **Hero card:** the three-line meal legend was removed from inside the black card. The card now holds only the ring and "AUGUST SO FAR · 36 of 41 meals". Its height is still 136, because the 96 pt ring sets it.
+   - A **"Meal stats" row** sits under the card, in the content flow. It holds three label + value pairs side by side, each with a ring-coloured swatch: Breakfast 10/14 · Lunch 14/14 · Dinner 12/13. The Lunch swatch is `on-hero` with a `border` edge so it shows on canvas.
+   - The row is **18 pt tall**, against about 58 pt for the old three lines (roughly a third).
+2. **Day rows are one line in every state**, via a new **DishRow `Layout=Inline`** variant on page 03:
+   - The name is followed by the reason on the same line, in Footnote / `ink-secondary`, truncating with an ellipsis if needed. The existing variants are now `Layout=Stacked` and are unchanged.
+   - The spacing is 4, so the longest row ("Wed 14 Aug · 1 of 2 · Breakfast not scanned") fits without truncating. No row on 04, 05 or 07 truncates.
+   - Rows read "Mon 12 Aug · 3 of 3" and "Wed 14 Aug · 1 of 2 · Breakfast not scanned". Under review: "Tue 13 Aug · 2 of 3 · Dinner · request sent". Every row is **44 pt** (a stacked row with a reason was 64).
+   - The Name layer's width override (carried over from the stacked layout) was reset on each row so the date doesn't wrap.
+3. The **sheet backgrounds** (Discrepancy, sending, failed) were re-cloned from the updated screen, so the screen behind the sheet matches.
+
+**Result:**
+
+| Frame | Content height before | After | Scroll range | Last item at max scroll |
+|---|---|---|---|---|
+| Entry history | 1323 | **1231** | 379 | 728 (20 pt above the tab bar) |
+| Under review | 1491 | **1399** | 547 | 728 (20 pt above the tab bar) |
+
+**Diff vs `st55`:**
+- Pages 04, 05 and 07: only the 5 attendance frames on each page changed.
+- Page 03: only DishRow changed (Inline variants added).
+- **Link lists are identical on every page**, because the day rows kept their reactions through the variant swap. Links: 7 / 7 / 1192.
+
+**Renders:** `student_attendance/density_before_after.png` (full-scroll, page 07, Entry history and Under review).
