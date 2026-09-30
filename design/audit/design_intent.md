@@ -30,6 +30,10 @@ Content diet has a ceiling (3 blocks) and now a floor.
 11. Reading used from 2026-09-30, to confirm: an Offline state that still shows cached data (banner plus hero) counts as non-Empty and meets rule 9, with its banner at the top. An Offline state with no data is a message and follows rule 10.
 12. Measured by `tools/filltool.js` (fill = lowest content item at rest ÷ 748; an Empty card is centred when its centre is within 8 pt of the middle of the free band between whatever sits above it and y 748).
 
+## RULES · logs (from the 2026-09-30 AD-7d brief)
+
+13. A log is a timeline. Rows are quiet unless they are exceptions. Mono is for numbers, times and IDs only.
+
 ## Product decisions
 
 - 3 logins: student, mess staff, admin. Mess staff = permission bundles (scanner, pass checker, kitchen, supervisor). Admin = 4 tabs by intent: Today / Issues / Insights / Manage.
