@@ -3664,3 +3664,89 @@ Added to `design_intent.md` as rules 9–12:
 - Student coupon wallet: buy with points, show a QR (gap 124).
 - Mess-staff coupon redeem, reusing the pass desk (gap 125).
 - Per-student purchase limits, undecided (gap 126).
+
+## Planned stage: Final audit (FA) (recorded 2026-09-30, not started)
+
+**When:** after AD-7 (people, permissions, audit log), the student-track resume (link cleanup, overflow frames, Stage 4 verification, cosmetic clean-up, gap 110) and the linking stage (the role-select entry and the admin tab bar, gap 119).
+
+**How:** read-only first. Every check reports a table before anything is fixed. Fixes then go in small stages, worst first, each with its own snapshot, diff and renders, like every earlier stage.
+
+**Scope:** pages 04 Student Light, 07 Prototype & QA, 09 Mess Staff and 10 Admin. Page 05 is covered through page 04 (it is the Dark twin), and 99 Archive is out of scope.
+
+### FA-0 Tooling (prerequisite)
+
+- `tools/filltool.js` and `tools/densitytool.js` are written for page 10 only. They hard-code the page id (`811:21055`) and read the content column named `Admin / Content`.
+- Before FA-1, generalise them:
+  - take a page id;
+  - find each frame's content column by structure, not name (student frames use names such as `tmp / Content` and `Waste / Content`);
+  - take the floor reference per frame: the tab bar top (y 748) where there is a tab bar; the top of a sticky footer or Save bar where there is one (student Spending, H2–H5); the frame bottom less the home indicator on staff screens, which have no tab bar (A.1).
+- Mark sheet frames, gallery states and full-scroll copies so they are reported separately.
+- Store the tools in the repo and in `mealloop/*` plugin data, as before.
+
+### FA-1 Fill and density
+
+- Run the fill tool on every screen on pages 04, 07, 09 and 10.
+- Report every non-Empty screen that is:
+  - below the 75% fill floor (rules 9–11);
+  - above 3 blocks at rest;
+  - above 12 text layers at rest (rule 6).
+- Also report Empty and message-only Offline states that are not centred (rule 10).
+- **Note:** the fill floor and the content diet were written for admin. Applying them to student and staff screens is part of what this audit reports. Nothing on those pages is changed to meet them without a decision.
+
+| Page | Screen | State | Fill % | Blocks | Text layers | Fails |
+|---|---|---|---|---|---|---|
+
+### FA-2 Card weight
+
+Proposed thresholds, to be adjusted after the first run:
+
+- **a.** Flag any card taller than 25% of the screen (213 pt of 852) that is not the hero.
+- **b.** Flag any screen where two cards carry the same visual weight. Proposed test: the same fill family (black hero vs white card) and a height within 15% of each other, or two ML/Hero Metric numbers.
+- **c.** Flag any card whose height comes from padding rather than content. Proposed test: vertical padding plus empty space is more than 40% of the card height, or more than 24 pt of empty space below the last child.
+
+| Page | Screen | Card | Height | Share of screen | Rule (a / b / c) | Note |
+|---|---|---|---|---|---|---|
+
+### FA-3 Design-rule conformance
+
+Report:
+- detached instances (frames that were once instances);
+- fills and strokes that are raw hex instead of bound variables (outside components' own internals);
+- text without a text style;
+- ListRow used where a distinctive pattern exists (dial, badge, swipe card, stacked cards, coupon; see `design_intent.md`);
+- status colours outside Success / Hold / Stop / Offline / Sent;
+- lime used as anything other than the accent: as text, as a full-card fill, or on a light surface without the ink outline where one is required.
+
+| Page | Screen | Layer | Rule | What was found | Suggested fix |
+|---|---|---|---|---|---|
+
+### FA-4 Consistency
+
+Report:
+- numbers that disagree between screens (for example 196 / 214, ₹2,370 / ₹5,000, 642 kg, 71 g, 36 of 41, 870 kcal, the surplus quantities);
+- dead chevrons;
+- Backs that don't return where they came from (R1a / R1b / R1c; BACK on a frame entered by a timer);
+- missing Moment notes or sample chips (pages 04, 09 and 10);
+- stray flow starts (rule D1; compare each page against its approved list).
+
+| Page | Screen | Issue | Expected | Found |
+|---|---|---|---|---|
+
+### FA-5 Integration
+
+List the student screens that should adopt the admin patterns:
+- **CouponCard:** the student Rewards and the future coupon wallet (gap 124);
+- **NeedsYouCard:** a Home "needs you" moment (for example an unanswered meal plus a pending report);
+- **the metric tile:** a bento tile with one visual, one number and one label (You tiles, the Home dashboard);
+- **the fill-floor treatment:** a screen that would meet the floor by enlarging its hero.
+
+This is a proposal list only; nothing is built from it without approval.
+
+| Student screen | Pattern | Why | Effort |
+|---|---|---|---|
+
+### Output
+
+- `design/audit/final_audit/`: one Markdown table per check (FA-1 to FA-5), the tool output, and renders of every flagged screen.
+- A ranked fix list (High / Med / Low, by the gaps-file severity scale).
+- The fixes then run as stages FA.1, FA.2 and so on, worst first.
