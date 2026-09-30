@@ -2716,3 +2716,34 @@ The snapshot `st60` was taken first.
 - Page 10: only AD-1a changed. There are +4 links (2 rows, plus the 2 Backs on AD-2a and AD-2c), taking page 10 from 4 to 8 reactions.
 - No other page changed. Links: 7 / 7 / 1192.
 - Render: `admin_ad2/ad2_1_ad1a_entry_rows.png` (at rest, and at max scroll).
+
+## Admin AD-2.2 · Badge rule, AD-1a status fade, Shortages wording
+
+The snapshot `st61` was taken first.
+
+**Rule MB1: MessBadge shows the worst open issue.** A mess's badge reflects the single most severe open issue affecting it, whatever its category. Safety reports, pending approvals and shortage risks all count on the same scale.
+- Order: **Stop > Hold > Success**. **Offline** is its own case: it means missing data, not a severity level.
+- **Offline** shows only when a mess is not reporting and no Stop or Hold issue is known for it. *Interpretation, to confirm: a known Stop or Hold still outranks Offline.*
+- **Crowd is not an issue.** Crowd levels (Quiet / Getting busy / Packed) never set the badge (see AD-2).
+
+**Re-check of every mess against the sample data:**
+
+| Mess | Open issues in the sample data | Should be | Was | Now |
+|---|---|---|---|---|
+| Main | Safety report, chicken biryani (Stop, AD-1b); Curd awaiting approval (Hold); Paneer low data (Hold) | Stop | Stop | Stop |
+| North | Rice running out (Stop, AD-2c); Curd at risk (Hold, AD-2c) | Stop | Hold | **Stop** |
+| South | Chapati at risk (Hold, AD-2c) | Hold | Success | **Hold** |
+| Annexe | Not reporting; no known issues | Offline | Offline | Offline |
+
+South was a second mismatch, found by the re-check.
+
+**AD-1a fixes:**
+- **Status fade added.** `ScrollEdgeFade / Style=Status` is cloned from Meals · Menu and placed at the same position. Layer order is now Meal wash, Content, Nav Header, **Top edge fade**, Status Bar, Scroll edge fade, Tab Bar, Home Indicator. Fixed children go from 4 to **5**, matching You and Meals · Menu. The large title now scrolls under the fade (R9c) and no longer collides with the status-bar time. This closes gap 93.
+- **Shortages line** now reads "4 dishes · 1 running out" (was "4 at risk · 1 running out"). This closes gap 95.
+
+**Diff vs `st61`:**
+- Page 10: only AD-1a changed (the fade layer, the 2 badge states, the Shortages line). There are no link changes; page 10 has 8 reactions.
+- No other page changed. Links: 7 / 7 / 1192.
+- Renders:
+  - `admin_ad2/ad2_2_ad1a_rest_mid_max.png` (at rest, 66 pt, and max scroll at 88 pt)
+  - `admin_ad2/ad2_2_badge_strip.png`
