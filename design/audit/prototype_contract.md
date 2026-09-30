@@ -3942,6 +3942,23 @@ IDs, times and numbers in these lines are ML/Mono Body. The CHANGE / REASON / NO
   - **Every other page:** unchanged, links included.
 - **Renders:** `admin_ad7d/pass2/before/`, `admin_ad7d/pass2/after/` and `admin_ad7d/before_after_pass2.png`.
 
+## Page 10 layout grid (2026-09-30, position only)
+
+- **Layout:**
+  - One row per section (AD-1 to AD-7), and a sheet row directly below for AD-5, AD-6 and AD-7.
+  - 80 pt between frames and 240 pt between rows. Every row starts at x 0, and all frames in a row share one y.
+  - Labels, Moment notes and sample chips keep their offsets: (0, −36), (0, +868), (0, +940).
+  - A section title sits above each row at row y − 80. The three sheet-row titles are new; the seven existing titles moved from −100.
+- **Order:**
+  - Each screen group runs Success, Empty, Offline, then its other variants, with groups in journey order.
+  - The AD-5 hub now starts its row. 5c2 follows 5c.
+  - Two groups were reordered to put states first: AD-7b Person is now Success, Offline, changed; AD-7c is now Suresh, Offline, Lakshmi.
+  - Sheets are ordered by the screen that opens them.
+- **Checks:**
+  - The diff (`st89` vs `st88`) shows x and y changes only, on 327 nodes, plus the 3 new titles.
+  - Links (214) and flow starts are identical, and no nodes overlap.
+- **Record:** the full before/after table is in `admin_layout/positions.md`, and a low-zoom page screenshot is in `admin_layout/page10_overview.png`.
+
 ## Planned stage: Final audit (FA) (recorded 2026-09-30, not started)
 
 **When:** after AD-7 (people, permissions, audit log), the student-track resume (link cleanup, overflow frames, Stage 4 verification, cosmetic clean-up, gap 110) and the linking stage (the role-select entry and the admin tab bar, gap 119).
