@@ -3067,3 +3067,47 @@ The snapshot `st69` was taken first. The section "AD-4 · Insights" is on page 1
 - AD-4a's waste strip and AD-1a's turnout strip share the ring, the arc range (49–91%) and the status glyphs. Only the unit ("%" vs "g") and a grey caption differ.
 - Main reads **Stop** on AD-1a (safety report, worst open issue) and **Hold** on AD-4a (over the waste target).
 - Recommended: a stronger distinguisher than a label (see the gaps file, gap 102).
+
+## Admin AD-4.1 · One hero module, scrolling chips, MetricBadge, promoted components (2026-09-30)
+
+The snapshot `st70` was taken first.
+
+**New components (page 03, x 1300–1780, y 13584–13760):**
+- **`MetricBadge`** `State=Value / No data`; text props Name and Value.
+  - Parts:
+    - dim track: `on-hero-secondary` at 30% layer opacity;
+    - white value arc: `on-hero`, 0–100 g scale, set per instance via arcData;
+    - **lime target tick** at 65 g, a thin arc wedge so it survives instancing;
+    - mono value; Inter Semi Bold 15 name.
+  - **No status glyph slot.** Status glyphs stay reserved for MessBadge (worst open issue). Waste badges only say on or over target, through arc vs tick.
+- **`WasteBar`** `State=Measured / Empty`; text props Never served, Left on plates, Donated.
+  - Measured: three segments (Never served `on-hero` · Left on plates `on-hero-secondary` solid · Donated `lime`), 2 pt gaps, 313 wide, set per instance; vertical legend.
+  - Empty: a dim track.
+- **`ForecastPair`** `State=On target / Off target`; text props Meal, Expected, Served.
+  - WeekBars bar style: Expected `chart-past`; served `chart-current` + `lime-outline` (on target) or `ink-secondary` (off target).
+  - Bar heights set per instance.
+
+This closes gap 103 (the local compositions are replaced by instances).
+
+**AD-4a (Success / Offline / Empty):**
+1. **One hero module.** The badge strip is now the hero's footer: after the trend line comes "PER MEAL · TARGET 65 G", then four MetricBadges (space-between). The separate caption and white badge card are gone.
+   - Hero: gap 8, padding 16 top/bottom, WasteBar instance.
+   - Screen pieces: **chips · hero module · Trends + Reports** (was chips · hero · caption · badge card · entry rows).
+   - Offline: Annexe is `No data` "—".
+   - Empty: a WasteBar `Empty` instance, no footer.
+2. **Entry rows.** Reports ("5 ready for last week") already sat below Trends, but at rest it was hidden under the tab bar (the page scrolled 72). After consolidation AD-4a **doesn't scroll**, and both rows are fully visible at rest; the last one ends at **y 728**.
+3. **Badge semantics.** MetricBadge replaces MessBadge on waste. Gap 102 is closed.
+4. **Chips scroll for real (AD-4a ×3, AD-4d).** The chip row is 373 wide (bleeding to the screen edge), clipped, `overflowDirection = HORIZONTAL`, with 20 pt trailing padding. Every chip is reachable by a horizontal drag. Gap 104 is closed.
+
+**AD-4b:** the three meal groups are now `ForecastPair` instances (same values and heights).
+
+**Links:** Main badge → AD-4b moved from `Waste · Main` to `Metric · Main` on Success and Offline (−2 / +2). Page 10 stays at 32.
+
+**Diff vs `st70`:**
+- Page 03: +3 component sets.
+- Page 10: AD-4a ×3 and AD-4b changed. AD-4d's chip-row change is nested, so it isn't visible to the frame signature; it's verified in the render.
+- All other pages unchanged: 7 / 7 / 1192.
+- Renders:
+  - `admin_ad4/ad4_1_before_after.png`
+  - `admin_ad4/ad4_1_after.png` (Success, Offline, Empty, AD-4b, AD-4d)
+  - `admin_ad4/ad4_1_components.png`
