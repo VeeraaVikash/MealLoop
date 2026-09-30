@@ -42,7 +42,7 @@ Content diet has a ceiling (3 blocks) and now a floor.
 
     An academic-year comparison shows "Needs a full year of data" until a full year exists.
 15. Hide any student-year group with fewer than 10 students, and show "Too few to show" in its place.
-16. Turnout is not a funnel. Show it as three groups: **Came**, **On leave** and **Didn't come**. Show scan failures and ID fallbacks beside low counts.
+16. Turnout is not a funnel. Show it as three groups: **said yes and came**, **said yes and didn't come**, and **no answer and came**. Show scan failures and ID fallbacks beside low counts.
 17. No wait-time minutes anywhere.
 18. Admin analytics never include the private calorie or spending trackers.
 19. Pass scans stay separate from entrance attendance.

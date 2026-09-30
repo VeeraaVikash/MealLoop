@@ -505,3 +505,21 @@ This audit was read-only and nothing was changed. The file-wide diff is empty; s
 | 159 | AD-4a bento | BentoTile was not reused: its label is mono caps words (against rule 13) and it has no slot for a mini visual. The tiles follow the Manage hub's local bento pattern. | Low | Update BentoTile (Inter label and a visual slot), then swap both the hub and AD-4a tiles to it. |
 | 160 | AD-4a Success, AD-4a Offline, AD-4e Offline | Over the 12-text target: AD-4a has 19 (full spec, owner's choice), and AD-4e Offline has 13 (the banner). | Info | Accepted for now. |
 | 161 | AD-4e | "Rice 7 kg unserved" was left out of the causes: it is an outcome, offered as surplus (AD-6d). "Too salty · 6 reports" has no plan to compare against, so it is a note, not a bar. | Info | None, unless a shared metric (for example kg possibly linked) is defined. |
+
+## Overnight run, Stage 1 (2026-10-01)
+
+### Resolved
+
+- **160** (over the 12-text target): every AD-4 screen is now at 12 or fewer, by hiding layers (see gap 163).
+
+### Updated
+
+- **157:** the Prep accuracy tile is now locked (overnight brief), so it no longer links to AD-4b. See gap 162.
+- **155:** the Turnout tile shows the brief's three groups (said yes and came 76% · said yes and didn't 14% · no answer and came 10%, sample).
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 162 | AD-4b · Forecast vs actual | **No incoming link.** Its last entry point, the Prep accuracy tile, is locked by the overnight brief, so AD-4b is now a design state that can't be reached. | Medium | Unlock the Prep accuracy tile and link it to AD-4b, or link AD-4b from AD-4e. |
+| 163 | AD-4a (all states), AD-4e Offline | **Hidden, not deleted, to meet the 12-text rule:** the AD-4a nav subtitle "Wed 14 Aug · Waste"; the AD-4a row of three locked tiles (Turnout, Prep accuracy, Dishes); the AD-4a Offline Reports number "5 ready"; the AD-4e Offline "Also reported: sambar too salty · 6 reports" note. | Low | Unhide any of them if the owner accepts going over 12 texts. |

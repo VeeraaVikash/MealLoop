@@ -4136,7 +4136,7 @@ The existing kinds and instances are untouched. The set description now document
 
 - **Two year controls, never merged:** student year (cohort) and academic year (time). An academic-year comparison shows "Needs a full year of data" until a full year exists.
 - **Small groups:** any student-year group under 10 students is hidden, with "Too few to show" in its place.
-- **Turnout:** not a funnel. It shows three groups: **Came**, **On leave**, **Didn't come**. Scan failures and ID fallbacks are shown beside low counts.
+- **Turnout:** not a funnel. It shows three groups: **said yes and came**, **said yes and didn't come**, **no answer and came** (from the overnight brief; this replaces "Came / On leave / Didn't come"). Scan failures and ID fallbacks are shown beside low counts.
 - **No wait-time minutes anywhere.**
 - **Private trackers:** admin analytics never include the private calorie or spending trackers.
 - **Pass scans** stay separate from entrance attendance.
@@ -4227,6 +4227,39 @@ Every other number traces to an existing screen; see the source table in `admin_
   - **Page 10:** 346 nodes (+8: the two AD-4e frames and their six annotations). Changed: AD-4a ×3 and AD-4c.
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `admin_ad4_content/before/`, `admin_ad4_content/after/` and `admin_ad4_content/before_after.png`.
+
+### AD-4 overnight reconciliation (2026-10-01, unattended run, Stage 1)
+
+The overnight brief restated the AD-4 content pass with different specifics. As the newer instruction it took precedence over the earlier interactive answers, and under the unattended rules the design rules took precedence over the brief. What changed:
+
+- **Shortages:**
+  - AD-4a's pair now reads "**4** / shortages", flat week on week ("No change / vs last week"). It matches AD-2c's 4 dishes at risk. This replaces "6 shortage alerts".
+  - AD-4e's reads "**1** / shortage".
+  - Sample: 4 last week and 4 the week before.
+- **All three placeholder tiles are locked:** Turnout, Prep accuracy and Dishes.
+  - Prep accuracy lost its link to AD-4b, so **AD-4b now has no incoming link** (gap 162).
+  - The Turnout tile's bar shows the brief's three groups (sample 76 / 14 / 10 = 40 / 7 / 5 pt). Its "84%" means that 84% of those who said yes came (76 ÷ 90).
+- **12-text rule (followed over the full-spec choice).** These layers are hidden, not deleted (gap 163):
+  - the AD-4a nav subtitle, on all three states;
+  - AD-4a's row of the three locked tiles, on Success and Offline;
+  - AD-4a Offline's Reports number;
+  - AD-4e Offline's "Also reported" note.
+- **AD-4a Offline:**
+  - It now shows the Offline banner ("Offline · saved at 2:05 PM") and saved values: 642 kg, −38 kg, 4 shortages, no change, and Trends −13%.
+  - This replaces the "Annexe missing" partial-data version; the 546 kg figure is retired.
+- **3-block rule:** the look-closer row now sits inside the bento container as its last item. This keeps AD-4a Offline at 3 blocks (banner, hero, bento); Success has 2. The link is unchanged.
+- **Checks:**
+
+  | Screen | Fill | Blocks | Texts |
+  |---|---|---|---|
+  | AD-4a Success | 77% | 2 | 12 |
+  | AD-4a Empty | centred (+1) | 1 | 6 |
+  | AD-4a Offline | 85% | 3 | 12 |
+  | AD-4c | 90% | 1 | 12 |
+  | AD-4e Success | 77% | 2 | 12 |
+  | AD-4e Offline | 80% | 3 | 12 |
+
+  - **Links:** 223 → 221 (−2: the Prep accuracy tiles). **Flow starts:** identical.
 
 ## Page 10 layout grid (2026-09-30, position only)
 
