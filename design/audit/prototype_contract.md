@@ -2693,3 +2693,26 @@ The section **"AD-2 · Today — Crowd & shortages"** is on page 10 at y 1100, w
 - Page 10: +13 nodes (1 section, 3 frames, 3 labels, 3 Moment notes, 3 sample chips) and +2 links. AD-1 is unchanged.
 - No other page changed. Links: 7 / 7 / 1192.
 - Render: `admin_ad2/ad2_section.png`.
+
+## Admin AD-2.1 · Today entry rows
+
+The snapshot `st60` was taken first.
+
+**AD-1a · Today — Overview:** two entry cards now sit under the MessBadge strip. Each reuses the MS-E destination-card pattern: a white card (radius 20) holding a ListRow (Stacked, Divider Off) with a reason line and a chevron. No new row style was added.
+
+| Row | Fact line | Links to |
+|---|---|---|
+| **Crowd** | Busiest: North Mess · Packed | AD-2a · Crowd — All messes (Move in, 0.3) |
+| **Shortages** | 4 at risk · 1 running out | AD-2c · Shortage alerts (Move in, 0.3) |
+
+- AD-1a now scrolls 88 pt. At max scroll the Shortages card ends at y 728, which keeps the 20 pt clearance above the tab bar.
+- **The Back buttons on AD-2a and AD-2c now go to BACK.** This closes the unlinked Backs noted in AD-2, because both frames now have an entry point.
+
+**Decisions:**
+- **Stop is kept as-is** for both the mess status (Main Mess) and the shortage rows (Rice "Running out"). Both mean "act now". The urgency is the same, so the meaning has not drifted.
+- **Open decision: the capacity number needs an owner.** Is it fixed seating, or an estimated safe occupancy? It is used in AD-2a and AD-2b ("max 480 seats"). There is no Figma change until an owner decides.
+
+**Diff vs `st60`:**
+- Page 10: only AD-1a changed. There are +4 links (2 rows, plus the 2 Backs on AD-2a and AD-2c), taking page 10 from 4 to 8 reactions.
+- No other page changed. Links: 7 / 7 / 1192.
+- Render: `admin_ad2/ad2_1_ad1a_entry_rows.png` (at rest, and at max scroll).
