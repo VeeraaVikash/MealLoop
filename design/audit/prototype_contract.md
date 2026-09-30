@@ -3111,3 +3111,51 @@ This closes gap 103 (the local compositions are replaced by instances).
   - `admin_ad4/ad4_1_before_after.png`
   - `admin_ad4/ad4_1_after.png` (Success, Offline, Empty, AD-4b, AD-4d)
   - `admin_ad4/ad4_1_components.png`
+
+## Admin AD-4.2 · Row check, charts that show the change, hero scale (2026-09-30)
+
+The snapshot `st71` was taken first.
+
+**1. Trends/Reports rows: no change needed (measured).**
+- Each row is a ListRow (64 pt, `counterAxisAlignItems = CENTER`) in a 72 pt card with 4 pt padding.
+- The title + subtitle block is inset **10 / 10** (top / bottom), and the chevron is centred (y 22–42).
+- What made Reports look "low" is that at rest it sits under the bottom Scroll edge fade (y 688+), which greys its subtitle. That's the R9 pattern, not misalignment.
+- Close-up: `admin_ad4/ad4_2_rows_before_after.png`.
+
+**2. Charts show the change.**
+- **AD-4c** (WeekBars **detached** in this frame only, so the bars can carry true heights: 742 → 109, 718 → 105, 680 → 100, 642 → 94; before they were component defaults 109 / 104 / 101 / 92):
+  - A trend line joins the bar tops: `lime` 2 pt over an `ink` 4 pt edge, the same pairing as the lime bar's ink outline.
+  - It is **dotted across the unmeasured 22 Jul week**.
+  - Endpoint dots mark 742 and 642.
+  - A `hero-bg` pill reads **"−100 kg"** above the 12 Aug column.
+  - The summary line "Waste down 13% since 8 Jul" stays.
+- **AD-4b:** each served bar carries a **dashed "Gap" block** up to the expected height, and the key gains "Gap".
+
+  | Meal | Expected | Served | Gap |
+  |---|---|---|---|
+  | Breakfast | 85 | 83 | 2 |
+  | Lunch | 120 | 117 | 3 |
+  | **Dinner** | 114 | 97 | **17** |
+
+**3. Type hierarchy.**
+- **Hero number** (AD-4a ×3): JetBrains Mono Bold **40 → 52**, tracking −1.5; unit Medium **15 → 20**. This matches MetricHero and KcalGauge (the student hero numbers).
+  - Side effect: AD-4a Success / Offline scroll **16 pt** again. At rest the Reports row ends at y 744 (above the tab bar at 748, under the fade); at max scroll it ends at 728 (R9b).
+- **Large titles:** Insights / Trends / Reports already use NavHeader Large Title = **Inter Bold 34** (+0.4), identical to You and Home. No change.
+
+**Defect found and fixed: data bars inside instances.**
+- Figma doesn't allow resizing layers **inside** an instance (the size override is silently ignored; min/max size is refused).
+- As a result:
+  - since AD-4.1, **AD-4b's ForecastPair bars all rendered at the component default** (my AD-4.1 note "same values and heights" was wrong);
+  - AD-4c's WeekBars bars and the WasteBar segments sat at component defaults (they happened to be within 1–2 pt, because the defaults came from the same data).
+- **Fix:**
+  - New **`ChartBar`** component (page 03) `Kind = Expected / On target / Off target / Gap`: one bar per instance. The instance itself is resized to the data height (instance roots *can* be resized).
+  - AD-4b pairs are rebuilt as local layouts of ChartBar instances at true heights.
+  - **`ForecastPair` was removed** (0 instances; it can't carry data).
+  - AD-4c's chart is a detached WeekBars (see above).
+- Open: **WasteBar** segment widths are still fixed at 175 / 114 / 20 (right for the current sample proportions only). See gap 105.
+
+**Diff vs `st71`:**
+- Page 03: +ChartBar, −ForecastPair.
+- Page 10: AD-4b and AD-4c changed. The AD-4a hero type change is nested and not visible to the signature; it's verified in renders.
+- Links unchanged; page 10 stays at 32. All other pages unchanged.
+- Close-ups: `admin_ad4/ad4_2_hero_before_after.png`, `ad4_2_rows_before_after.png`, `ad4_2_trends_chart_before_after.png`, `ad4_2_forecast_chart_before_after.png`.
