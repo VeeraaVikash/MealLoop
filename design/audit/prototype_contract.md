@@ -3205,3 +3205,35 @@ The snapshot `st72` was taken first.
 - **New (gap 105):** the student Waste screen's "Per meal, by week" chart (`WeekBars`) draws its bars at the component's fixed default heights. Figma ignores size overrides inside instances. The current sample values happen to match, but any other data would draw wrong heights. Fix as in AD-4: build data bars from `ChartBar` instances (or a detached chart), sized from the values, and verify the rendered heights against the data.
 
 **Batched presentation-mode checks before the review:** gap 96 (Back scroll position), gap 97 (fixed wash during a real scroll), and the AD-4 horizontal chip scroll (gap 104).
+
+## AD-5 precondition · Insights tab check (2026-09-30), NOT PASSED
+
+The snapshot `st73` was taken first. There was no Figma change: the diff vs `st73` after cleanup is clean. **No AD-5 baseline was taken**, because the precondition found two defects.
+
+**Renders:** all six AD-4 frames at rest (top) and full scroll (bottom). The scroll range is 14 on AD-4a Success/Offline and 0 elsewhere. Render: `admin_ad5/precondition_insights_tab.png`. Visually clean.
+
+**Links:** all 13 AD-4 links resolve.
+
+| From | Links |
+|---|---|
+| Success and Offline | chip This week → Empty; Metric · Main → AD-4b; Trends → AD-4c; Reports → AD-4d |
+| Empty | chip Last week and See last week → Success |
+| AD-4b / AD-4c / AD-4d | Back |
+
+**Numbers: consistent.**
+
+| Figure | Where it appears |
+|---|---|
+| **642** | AD-4a Success hero, AD-4c 5 Aug bar, AD-4d "All messes 642 kg" |
+| **546** | AD-4a Offline = 212 + 176 + 158, the AD-4d Main / North / South rows |
+| **−38 kg** | "38 kg less than the week before" = AD-4c 680 → 642 |
+| **−100 kg** | the AD-4c pill = 742 → 642 |
+| **71 g** | AD-4a Main MetricBadge, AD-4d Main row, and the student Waste · Last week hero (with 212 kg = 131 + 81 and donated 18 kg in the 45 kg cross-mess total) |
+
+**Defects found (not fixed; this was a report-only step):**
+1. **Stray flow starts (gap 106).** Page 10 has 8 flow starting points. Cloning a frame copies its flow start, so:
+   - **"Admin · Issues"** is set on AD-3a (correct) and also on AD-4a Empty, AD-4a Offline, AD-4c and AD-4d (cloned from AD-3a);
+   - **"Flow 1"** is on AD-2a (cloned from AD-1a).
+
+   Correct set: Admin · Today (AD-1a), Admin · Issues (AD-3a), Admin · Insights (AD-4a Success).
+2. **Offline trend row claims an all-mess figure (gap 107).** AD-4a Offline's Trends row reads "Waste down 13% since 8 Jul · 3 messes". The 13% is the 4-mess series (742 → 642); a 3-mess figure isn't shown anywhere.
