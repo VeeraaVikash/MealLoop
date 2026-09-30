@@ -2785,3 +2785,63 @@ The snapshot `st62` was taken first. The diff vs `st62` after cleanup shows no c
   - 90 frames lose the MealWash component link.
   - MealWash stays on page 03 for frames that don't scroll.
 - **To confirm:** that Figma's player keeps a scrolling frame's own fill still. Check once in presentation mode after the change.
+
+## Fixed wash: the Meal wash becomes the frame background (90 frames)
+
+The snapshot `st63` was taken first. This carries out the proposal from "Status fade investigation".
+
+**Tokens (ML Color, Light/Dark):**
+
+| Token | Light | Dark |
+|---|---|---|
+| `wash/top` | `#E9F7B0` | `#2A3312` |
+| `wash/clear` | `#E9F7B0` at alpha 0 | `#2A3312` at alpha 0 |
+
+These are the exact colours of the MealWash gradient stops.
+
+**Change:**
+- On each of the 90 frames that use `ScrollEdgeFade / Style=Status` (04: 5, 05: 5, 07: 75, 10: 5), the `Meal wash` instance was removed.
+- A linear gradient was added as a second frame fill, over the canvas fill: `wash/top` at 0 → `wash/clear` at 300 pt (position 300/852). Both stops are bound to the tokens.
+- A frame's own fill doesn't scroll, so the wash now stays put.
+- All 90 frames are absolute layout (no auto layout), so removing the layer shifted nothing.
+- Page 05 frames resolve Dark through their explicit mode.
+
+**R9 amended:** on a scrolling screen, the Meal wash is the frame's fixed background, not a scrolling layer. The Nav Header (large title) and content still scroll.
+
+**Unchanged:**
+- The `MealWash` component and its 626 other instances (non-scrolling screens).
+- `ScrollEdgeFade` (all styles) and `HeaderBackdrop`.
+
+**Visible side effect:** **Sign out** (alert over a You list scrolled 215 pt) had its wash offset to y −215 to show the scroll. Under the new model the background doesn't scroll, so its wash now sits at the top like every other scrolled state.
+
+**Edge measurement:**
+- Method as in the investigation: the largest RGB step, frame margin x 2–10.
+- The status edge is measured at y 36 | 46, and the inline-title header-backdrop edge at y 96 | 108.
+- Values are shown as rest / full scroll.
+
+| Frame | Status edge before | Status edge after | Backdrop edge before | Backdrop edge after |
+|---|---|---|---|---|
+| Meals · Menu (07, light, large title) | 2 / **26** | 2 / 2 | — | — |
+| You (07, light, large title) | 2 / **50** | 2 / 2 | — | — |
+| Spending · This week (07, light, inline) | 2 / 2 | 2 / 2 | 4 / **39** | 4 / 4 |
+| Entry · Under review (05, **Dark**, inline) | 1 / 1 | 1 / 1 | 2 / **22** | 2 / 3 |
+| AD-1a (10, admin, large title) | 2 / **19** | 2 / 2 | — | — |
+| AD-1b (10, admin, inline) | 2 / 2 | 2 / 2 | 4 / **10** | 4 / 4 |
+
+- The inline-title `HeaderBackdrop` had the same mismatch, and it is fixed by the same change.
+- **Pixel diff at rest, before vs after (6 frames):**
+  - 2–4 pixels over the threshold per frame, at most 15 levels.
+  - These are all at the status-bar Wi-Fi glyph (x 320–327, y 26–29), identically on every frame, plus one pixel in the AD-1b tab-bar glass.
+  - This is the documented glass/antialias noise. There is no content shift.
+- Renders:
+  - `status_fade/fixed_wash_before.png` and `status_fade/fixed_wash_after.png`
+  - Top row at rest, bottom row at full scroll.
+  - Columns: Meals · Menu, You, Spending · This week, Entry · Under review (Dark), AD-1a, AD-1b.
+
+**Diff vs `st63`:**
+- Exactly 90 top-level frames changed, and every one is on the target list. There were no unexpected changes.
+- In each changed frame, only these differ: child count −1, instance count −1, fills, and the child-id list. Position, size, text and modes are unchanged.
+- All 90 have 2 fills, both gradient stops bound, and no Meal wash left.
+- Pages 00–03, 06, 08, 09 and 99 are unchanged. Links are unchanged: 7 / 7 / 1192 / 8.
+
+**Still to confirm:** in presentation mode, a scrolling frame's own fill stays fixed. The renders simulate scroll by moving the non-fixed children.
