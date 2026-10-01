@@ -4276,6 +4276,78 @@ The overnight brief restated the AD-4 content pass with different specifics. As 
   - Page 10: +4 nodes; AD-5d and its 3 annotations changed x only.
   - Links 221 → 224 (+4 −1). Flow starts: identical.
 
+### AD-1 to AD-3 Empty and Offline backfill (2026-10-01, overnight Stage 3)
+
+**14 new frames.** Each is a clone of its Success screen, with a label, Moment note and sample chip cloned from that screen at the same offsets.
+
+- **Empty (5):** a centred EmptyState card with no action, only where a list can be empty.
+
+  | Frame | Id | Title · body | Icon |
+  |---|---|---|---|
+  | AD-1a Empty | `1101:7158` | No meals served yet · Counts show after the first scan. | fork.knife |
+  | AD-2a Empty | `1101:7338` | No crowd data yet · Crowd shows once entry scans start. | person.3 |
+  | AD-2c Empty | `1101:7512` | No shortages · Every dish is on track for this meal. | checkmark.circle |
+  | AD-3a Empty | `1101:7664` | No open issues · Safety reports, feedback and student posts appear here. | checkmark.circle |
+  | AD-3d Empty | `1101:7903` | No student reports · Posts from Community show up here. | text.bubble |
+
+  The Success content is hidden, not deleted. AD-1a keeps its header and scope chips, and AD-3a keeps its title and subtitle; the card is centred in the band below them.
+
+- **Offline (9):**
+  - Each has the Offline banner at the top. The banner is cloned from the AD-4e Offline instance; no new component.
+  - Each shows saved values, with editing disabled. Saved times are 1:38 PM (AD-1, AD-2a, AD-2b), 1:43 PM (AD-2c) and 1:48 PM (AD-3).
+  - Ids: AD-1a `1103:7570`, AD-1b `1103:7410`, AD-2a `1103:8325`, AD-2b `1103:8480`, AD-2c `1103:8593`, AD-3a `1103:8116`, AD-3b `1103:7762`, AD-3c `1103:7987`, AD-3d `1103:8744`.
+  - **AD-2a:** every mess reads "Old data" (CrowdBadge Level). Its per-mess times are hidden.
+  - **AD-3b:** Escalate and Add to log are `State=Disabled`, with no links.
+    - The Success screen has no "Close" button. Closing is the "To close · assigned staff only" step list.
+    - So "disable Escalate and Close" was read as disabling both write actions (Escalate and Add to log). The step list itself is hidden for the 12-text rule.
+  - **AD-3c:** Confirm action is disabled.
+  - **AD-3d:** Merge 3 into one is disabled.
+  - **Badge rule kept on AD-1a Offline:**
+    - Main and North stay Stop, and South stays Hold. A known Stop or Hold outranks Offline.
+    - Only Annexe, which had no known Stop or Hold, shows Offline.
+- **Links (+14, none removed):**
+  - Every Back on a new frame is a plain BACK, so it returns to where it came from.
+  - New forward links copy the Success links and their transitions (Move in 0.3):
+    - AD-1a Offline → AD-1b Offline (Main badge);
+    - AD-2a Offline → AD-2b Offline (North badge);
+    - AD-3a Offline → AD-3b Offline (SOS card) and → AD-3c Offline (Sambar card).
+  - AD-2a, AD-2c and AD-3d Offline have no incoming link (gap 166).
+- **12-text rule:** the layers listed in gap 167 are hidden, not deleted. **Rule 17:** one student post on AD-3d Offline read "Waited 20 min for plates" and now reads "Waited long for plates". The Success screen still has the original (gap 168).
+- **Fill floor:** three frames missed the floor on fix attempt 1 and passed on attempt 2, so none were undone.
+
+  | Frame | Attempt 1 | Attempt 2 |
+  |---|---|---|
+  | AD-2a Offline | 558 (below 561) | The LiveDial card padding goes 20 → 24 top and bottom: 566 |
+  | AD-2b Offline | 548 | The LiveDial card padding goes 20 → 28: 564 |
+  | AD-2c Offline | 449 | The hero card goes to 242 pt, the AD-2a dial card's height. Its "4" is 120 pt, a local size override of ML/Hero Metric, aligned to the bottom: 572 |
+
+  AD-2c Success has no hero; its Offline state adds one to reach the floor. This conflicts with "Offline is simpler than Success", and the fill floor won.
+- **Checks** (`filltool` and `densitytool`):
+
+  | Screen | Fill | Blocks | Texts |
+  |---|---|---|---|
+  | AD-1a Empty | centred (0) | 2 | 8 |
+  | AD-2a Empty | centred (0) | 1 | 3 |
+  | AD-2c Empty | centred (0) | 1 | 3 |
+  | AD-3a Empty | centred (+1) | 1 | 4 |
+  | AD-3d Empty | centred (0) | 1 | 3 |
+  | AD-1a Offline | 85% | 3 | 12 |
+  | AD-1b Offline | 80% | 3 | 11 |
+  | AD-2a Offline | 76% | 3 | 12 |
+  | AD-2b Offline | 75% | 3 | 12 |
+  | AD-2c Offline | 76% | 3 | 12 |
+  | AD-3a Offline | 77% | 3 | 9 |
+  | AD-3b Offline | 85% | 3 | 12 |
+  | AD-3c Offline | 81% | 3 | 10 |
+  | AD-3d Offline | 80% | 3 | 12 |
+
+- **Grid:** each row runs Success, Empty, Offline per screen group (see `admin_layout/positions.md`).
+- **Diff vs `st105` (snapshot `st106`):**
+  - Page 10: +56 nodes (14 frames × 4). 24 existing nodes changed x only (frames shifted along their rows, with their annotations).
+  - Links 224 → 238 (+14 −0).
+  - Flow starts: identical. A copied flow start on AD-2a Offline was removed.
+  - Every other page is unchanged.
+
 ## Page 10 layout grid (2026-09-30, position only)
 
 - **Layout:**
