@@ -608,3 +608,10 @@ One gap for each open decision raised by the contract pass (`prototype_contract.
 | 204 | Today · Now (Empty) | Rules 10 and 20 conflict. The Empty state keeps blocks 2 and 3 (never hide), so "Nothing needs you right now" can't be vertically centred. | Info | Accept: on a page with other evidence, the Empty message takes block 1's slot. Reword rule 10 to apply to pages whose only content is the empty message. |
 | 205 | MS-E Shift home (09), MS-D4, AD-7d | At 12:30 PM MS-E shows "1 safety report", before the 12:45 report. MS-E, MS-D4 and AD-7d still show the Curd request as pending or "needs approval", although it lapsed at 11:30. | Low | Staff text pass (CP-1): MS-E Feedback reads "No safety reports" at 12:30; Curd reads "lapsed" everywhere (inventory L35–L36). |
 | 206 | AD-3b resolution log | The When · who lines set words in mono (rule 27, gap 171), and the new escalation and hold rows copy that style. | Low | Fix with gap 171 in the components or Issues stage: mono for times and IDs, Inter for the words. |
+
+## Stage 1 · Today, 1A.1 (2026-10-01)
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 207 | Now · Needs-you card (and 1B) | StatusPill has no dark-surface version. On black, Stop and Lapsed pills use instance overrides (fill, stroke, label colour) that follow ResultCard's tag vocabulary. | Low | Add `Surface = Light / Dark` to StatusPill in the components stage (CP-2), then drop the overrides. |
+| 208 | Now · Entered card | The "How counted" info pill has no destination until the data-freshness sheet exists (1E). | Info | Wire it in 1E. |

@@ -4903,3 +4903,75 @@ The AD-7d biryani sheet now reads "1 report at 12:45 PM".
 - **Renders (scale 1):**
   - `today/before/`: AD-1a Success, Empty and Offline; AD-3b Success and Offline.
   - `today/after/1a_*`: Now Success at rest and at max scroll, Empty, Offline; AD-3b at rest and the log.
+
+### 1A.1 · Now fixes (before 1B)
+
+**Owner's reading of rule 20:**
+- "Never hide, only order" means every fact stays **one tap away**, not that every fact sits on the surface.
+- Provenance goes behind an info pill. Facts a decision needs stay visible.
+
+**Pattern · hero row + quiet lines.** This is the row style for lists of decisions inside a black card. 1B (Decisions) reuses it, and so does any later "needs you" list.
+
+| Part | Spec |
+|---|---|
+| Card | `hero-bg`, radius 24, padding 20, vertical gap 14. The count row comes first: the number in ML/Hero Metric (mono), the label in ML/Body Semibold `on-hero-secondary` (Inter). |
+| **Hero row** (the first, most urgent item) | Horizontal, items centred, gap 10. A text column (FILL), then a 20 pt `chevron.right` in `on-hero-secondary`.<br>• Title row: the title in **ML/Section 22** `on-hero`, then the status pill straight after the title.<br>• Subline: **ML/Footnote 13** `on-hero-secondary`, one fact chain, wrapping if needed. |
+| **Quiet line** (every other item) | Sits directly on the black: **no box, no fill**. Horizontal, items centred, gap 10. A text column (FILL), a **small** status pill (padding 2/8), and the chevron.<br>• Title: **ML/Secondary Medium 15** `on-hero`.<br>• Subline: ML/Footnote 13 `on-hero-secondary`. |
+| Divider | Between every row: a 1 pt rectangle in `on-hero-secondary` at 30% opacity, full width. |
+| "See all n" | A quiet line with no pill: title "See all n" and the subline naming what is left. |
+| Pills on black | **Reuse StatusPill, with dark-surface overrides that follow ResultCard's tag vocabulary.**<br>• Stop: `surface` fill and `ink` label (a white pill).<br>• Lapsed: an `on-hero-secondary` dashed outline and label.<br>• Hold: unchanged (`ink-secondary` / `surface`). |
+| Links | The whole row is the hotspot. A row with no destination in a state (for example Offline) has **no chevron**. |
+| Not used | ListRow inside white boxes (the 1A version), and nested cards. |
+
+**Changes on Now (Success, Empty, Offline):**
+
+**1 · Needs-you card** (Success, Offline):
+
+| Row | Was | Now |
+|---|---|---|
+| Hero | White ListRow card | **Chicken biryani** with a white "Safety" pill; subline "Ravi · hold not confirmed · escalated 1:15 PM"; chevron to AD-3b |
+| Quiet line | "Curd 60 → 45 L" card | "Curd 60 → 45 L" · "Kitchen cooked 60 L" · small dashed "Lapsed 11:30" |
+| Quiet line | "Idli sambar on Sundays" card with "Vote" | **"Idli sambar vote"** · "Waiting since Tue 8 PM" · small Hold pill relabelled **"Decide"** (the title now says "vote", so "Vote" was redundant) |
+| See all | Card | Quiet line "See all 6" · "Pass reissue · 2 access requests" |
+
+- I kept "Kitchen cooked 60 L" as Curd's subline, although the brief listed only the title and pill. It is the fact the outcome record needs.
+- **Offline:** "Approvals need a connection" stays under the count. Only the hero row has a chevron (to AD-3b Offline).
+
+**2 · Entered card** (all three states):
+- **Header:** the "Entered" eyebrow, plus an **EstimatePill On light** relabelled **"How counted"** (an override, as the Rules pills do).
+  - It will open the data-freshness sheet (1E), which holds "Forecast rule v0 · set at 9:00 AM".
+  - The forecast line left the surface.
+- "1,872 of 2,360 forecast" and the slim bar are unchanged: 255 pt drawn vs 254.62 exact, a 0.38 pt difference.
+- **The three grey lines became one:** "3 of 4 reporting · Annexe last sync 12:10 PM".
+- **The four MessBadge rings became four ranked pill-bar rows.**
+  - Order: worst open issue first (Stop, Stop, Hold), Offline last: Main, North, South, Annexe.
+  - Columns: name (Inter, 56 pt), bar (FILL), value (80 pt, right-aligned), status icon (22 pt).
+  - Each icon is a local circle with a Symbol glyph: Stop = `ink` with ✕, Hold = `ink-secondary` with a clock, Offline = outline with wifi.slash. The glyph shape carries the meaning, not only the colour.
+  - The ring percentages and the second denominator line are gone.
+
+  | Row | Bar (139 pt track) | Fill exact | Fill drawn | Diff | Value |
+  |---|---|---|---|---|---|
+  | Main | `border` track + ChartBar **Pill lime** | 115.08 | 115 | 0.08 | 712/860 (mono) |
+  | North | same | 127.09 | 127 | 0.09 | 640/700 |
+  | South | same | 90.35 | 90 | 0.35 | 520/800 |
+  | Annexe | ChartBar **Pill ghost** (dashed), full width | – | 139 | – | "not counted" (Inter) |
+
+  Every drawn width is within 1 pt of the data. The Main row carries the old Main-badge link (→ AD-1b; Offline → AD-1b Offline).
+
+**3 · Kept:** the pills, bell, context line, Watch card and every number.
+
+**Checks:**
+
+| Frame | Fill | Densitytool (blocks / texts) | Scroll | Last item at max scroll |
+|---|---|---|---|---|
+| Now (Success) | 100% | 3 / 24 | 414 (was 488) | y 728 |
+| Now (Empty) | 100% | 4 / 22 | 236 | y 728 |
+| Now (Offline) | 100% | 4 / 23 | 506 | y 728 |
+
+- **Type:** no visible text under 12 pt except the tab labels. No mono range contains a word (scripted check).
+- **Links:** 249, unchanged. Six links were re-made on the new layers with the same destinations.
+- **Flow starts:** the 4 approved.
+- **Diff vs `st114` (snapshot `st115`, full walk):** page 10 changed only in the 3 Now frames. Every other page is unchanged.
+- **Renders (scale 1):**
+  - `today/before_1a1/`: the 1A state;
+  - `today/after/1a1_*`: Success at rest and at max scroll, Empty, Offline.
