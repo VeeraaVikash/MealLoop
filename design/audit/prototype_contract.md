@@ -4975,3 +4975,124 @@ The AD-7d biryani sheet now reads "1 report at 12:45 PM".
 - **Renders (scale 1):**
   - `today/before_1a1/`: the 1A state;
   - `today/after/1a1_*`: Success at rest and at max scroll, Empty, Offline.
+
+### 1A.2 · stopped run (superseded, not committed)
+
+The "dark and circular" run was stopped before checks, renders or a write-up. 1A.3 started with a read-only status check:
+
+| Item | State found |
+|---|---|
+| Light Now frames (Success `811:21056`, Empty `1101:7158`, Offline `1103:7570`) | Rebuilt in place as a ring hero ("6 need you", six segments, tick scale, lime glow), a top-item card, two square tiles (Entered, Watch) and a Messes rings card. Ids, grid slots, annotations and the "Admin · Today" flow start were kept. |
+| Page **"11 Admin Dark"** (`1214:2`) | Three Dark-mode twins (`1214:301`, `1214:396`, `1214:483`), each with its label, Moment note and sample note, plus a section title. 0 links, no flow start. **Now stale:** it still shows the 1A.2 design. Kept, not deleted (gap 220). |
+| `elevation/card` (`VariableID:1211:8150`, flagged) | Light: alias of `surface`. Dark: #242422. Kept. In 1A.3 the Light cards were rebound to `surface`, so only page 11 uses the token. |
+| HeroNumber stroke edit | Done: strokes cleared on all six HeroNumber instances (3 Light, 3 Dark). 1A.3 removed the Light ones; the Dark ones stay on page 11. |
+| 99 Archive | 59 top-level nodes and 0 links, as expected. The archive move that was started and undone left no trace. |
+| Snapshot `st117` vs `st116` (the run's net change) | **Page 10:** only the 3 Now frames changed; links 249 (+12 −12, moved onto the new layers); flow starts are the 4 approved. **Page 11:** first stored (13 nodes). **Page 03:** no node change (the token is a variable, not a node). **Every other page:** unchanged. |
+
+Its renders are kept as befores: `today/before_1a3/1a2_*` (the Light frames, and the stale Dark twins as `1a2_dark_stale_*`).
+
+### 1A.3 · Now, personal and alive (Light only)
+
+**Home pattern (replaces the earlier home patterns):** **greeting, then one question with one action, then the meal time rail, then the mess rings.**
+- On Now it replaces the 1A.1 "hero row + quiet lines" card and the 1A.2 ring hero.
+- The quiet-line row spec (1A.1) stays on file for the Decisions list (1B).
+
+**Sample person (from sign-in, logged):**
+- **Devi Raman, Food head**, 4 messes, initials "DR".
+- The brief gave "Devi" and "Food head". The surname "Raman" is mine, chosen so the avatar has two initials.
+- The demo still holds every approval (CP0.3). Gap 217 records the mismatch with the "Admin" demo user.
+
+**Frames:**
+- Success `811:21056`, Empty `1101:7158` and Offline `1103:7570` were rebuilt in place, in Light.
+- Ids, grid slots, labels, Moment and sample notes, and the "Admin · Today" flow start are kept.
+- Removed: the ring hero (six segments, tick scale, glow, HeroNumber), the top-item card (the old Needs-you card), the Entered and Watch tiles, and the NavHeader.
+
+**Layout (top to bottom):**
+
+| Part | Spec |
+|---|---|
+| **Greeting header** (local frame at y 54, h 128) | Follows the student HomeHeader: same structure and text styles (gap 221).<br>• A 44 pt row: **avatar** on the left (a `hero-bg` circle with "DR" in ML/Card Heading, `on-hero`) and the **bell** (GlassButton) on the right.<br>• Then **"Hey Devi"** (ML/Large Title, `ink`) and **"Food head · 4 messes · Wed lunch"** (ML/Secondary, `ink-secondary`).<br>• It replaces the "Today" large title (the tab bar names the page) and the context line. The "updated" time now lives on the rail ("now 1:40 PM") and in the freshness sheet (1E). |
+| **Pills** | Now, Decisions, Messes, Watch. Unchanged. |
+| **Hero: QuestionCard** (new component, flagged) | `hero-bg`, radius 24, padding 20, gap 16.<br>• Eyebrow **"Needs you first"** (ML/Eyebrow, `on-hero-secondary`).<br>• Question **"Is the biryani held?"** (ML/Title, `on-hero`).<br>• Line **"Ravi hasn't confirmed · escalated 1:15 PM"** (ML/Secondary, `on-hero-secondary`).<br>• Actions, 50/50, 48 pt: primary **"Call Ravi"** (Button Primary with a phone icon, `lime` fill, `on-lime` label; a phone action with no new screen) and secondary **"Open case"** (Button Secondary, outlined in `on-hero-secondary`, `on-hero` label) → AD-3b.<br>• A hairline (`on-hero-secondary` at 30%), then **"5 more need you · 1 lapsed"** (ML/Secondary Medium) with a chevron → Decisions (1B). |
+| **Time rail: TimeRail** (new component, flagged) | White card, radius 24, padding 16.<br>• Header: **"Lunch · serving · 12–2 PM"** (ML/Secondary Medium) and **"now 1:40 PM"** (Inter "now", mono time).<br>• Track over **11:00 to 2:00**: 321 pt for 180 min (1.7833 pt per minute), 8 pt high, `border`.<br>• **Lime fill** to now, a **dashed tick** at the 11:30 cutoff (`ink-secondary`, 3/2), and a **lime now dot** (14 pt, 2 pt `ink` ring, so it reads on white).<br>• Labels: **"11:30 cutoff"** above the track (mono time), **"12:00"** below it, on a small solid tick. They sit on opposite sides because centred on the same line they would overlap by 6.5 pt. |
+| **Messes card** (the 1A.2 card, kept and restyled) | Now `surface` (was `elevation/card`), radius 24.<br>• Header: **"Entered 1,872 of 2,360"** (Inter words, mono numbers) over **"3 of 4 reporting"** (ML/Footnote). An info icon → freshness sheet (1E) and a chevron → Messes (1D).<br>• Four rings, 56 pt: **black arcs on a `border` track**, the percent inside (mono), and the name below with **one status dot** (worst open issue: Main Stop, North Stop, South Hold).<br>• **Annexe:** a dashed ring with "—", and "not counted".<br>• **Main → AD-1b.** The denominators and the forecast rule line open from the card (1D) and the freshness sheet (1E). |
+| **Watch row** | White card, radius 24. **"7 to watch"** (mono 7) over **"4 shortages · 1 crowd · 2 data gaps"**, with a chevron → Watch (1E).<br>• "4 shortages" → AD-2c and "1 crowd" → AD-2a carry the old Watch links until 1E (gap 215). |
+
+**Lime audit (rule f).** Lime appears only on:
+- **Success:** the "Call Ravi" fill, the rail fill and the now dot.
+- **Empty:** there is no primary button, so lime moves to the brief's "lime check", plus the rail fill and the now dot.
+- **Offline:** the dimmed "Call Ravi", the rail fill and the now dot.
+
+To meet rule f, the three frames **dropped the lime page wash** (canvas only). The top status fade became the canvas fade (ScrollEdgeFade `Plain`, rotated 180°, 42 pt), as that component's description prescribes for screens without a wash. Other admin frames keep the wash (gap 213).
+
+**States:**
+
+| State | What differs from Success |
+|---|---|
+| **Empty** | QuestionCard `All clear`: "Needs you first", a lime check, **"All clear"** and **"Next check 2:00 PM"** (gap 218). The rail is live. Watch reads **"6 to watch · 4 shortages · 1 crowd · 1 data gap"** (Annexe only). |
+| **Offline** | The OfflineBanner "Offline · saved at 1:38 PM" stays first.<br>• QuestionCard `Offline`: cached text, **both buttons dimmed** (40%), and **"Needs a connection"** (wifi.slash). The question text opens the saved case, AD-3b Offline (gap 210).<br>• TimeRail `Saved`: **"saved 1:38 PM"**, with the fill and the dot **frozen at 1:38**. |
+
+**Links:**
+- **Success:**
+  - "Open case" → AD-3b (was the top-item card).
+  - "4 shortages" → AD-2c; "1 crowd" → AD-2a.
+  - Main ring → AD-1b (the same node, kept).
+- **Empty:** shortages, crowd and Main, as above.
+- **Offline:**
+  - The question text → AD-3b Offline.
+  - "4 shortages" → AD-2c Offline; "1 crowd" → AD-2a Offline.
+  - Main → AD-1b Offline.
+- **Retired:** the vote link (Success, hero segment 3 → AD-5d). The vote has no row on Now. AD-5d is still reached from AD-5c and the Manage hub, and the link returns on its Decisions row in 1B (gap 211).
+- **Waiting for later substages (unlinked):** "5 more need you" (1B), the info icon and the Watch row (1E), the Messes chevron (1D), "Call Ravi" (a system call) and the bell (gap 203). Gap 216 lists them.
+- **Page 10:** links 249 → **248** (+8 −9).
+- **Flow starts:** the 4 approved. Adding the Offline link auto-created a stray "Flow 1" start on the Offline frame. It was removed, and page 10 was re-snapshotted.
+
+**New components (page 03, y 14900, flagged):**
+- **QuestionCard** `1220:1912`: `State = Ask` `1220:1857` / `All clear` `1220:1879` / `Offline` `1220:1888`.
+  - No component text properties: instances override text directly. This avoids the set-wide default trap from 1A (StatusPill).
+  - Its Buttons carry on-dark overrides (gap 209).
+- **TimeRail** `1220:1937`: `State = Live` `1220:1913` / `Saved` `1220:1925`.
+  - Positions are drawn from the sample times. A later stage that shows other meals sets the fill width and dot x from minutes × 1.7833.
+
+**Checks:**
+
+| Frame | Fill (filltool) | Densitytool (blocks / texts) | Scroll range | Last item at max scroll |
+|---|---|---|---|---|
+| Now (Success) | 100% (lowest item ends at y 895) | 4 / 23 | 167 | **y 728** |
+| Now (Empty) | 100% (y 777) | 5 / 30 | 49 | **y 728** |
+| Now (Offline) | 100% (y 989) | 5 / 20 | 261 | **y 728** |
+
+**Data, drawn against the data:**
+
+| Mark | Data | Exact | Drawn | Difference |
+|---|---|---|---|---|
+| Main arc | 712 / 860 = 82.8% | 5.2019 rad | 5.2019 rad | 0.000 pt (arc length at the 25.76 pt mid radius) |
+| North arc | 640 / 700 = 91.4% | 5.7446 rad | 5.7446 rad | 0.000 pt |
+| South arc | 520 / 800 = 65.0% | 4.0841 rad | 4.0841 rad | 0.000 pt |
+| Rail cutoff tick | 11:30 = 30 min | x 53.50 | 53.50 | 0 |
+| Rail 12:00 tick and label | 60 min | x 107.00 | 107.00 | 0 |
+| Rail fill and now dot (Live) | 1:40 = 160 min | 285.33 pt | 285.33 | 0 |
+| Rail fill and dot (Saved) | 1:38 = 158 min | 281.77 pt | 281.77 | 0 |
+
+- **Type:**
+  - No visible text under 12 pt except the tab labels.
+  - Mono is used only for numbers and times. Scripted check: 0 mono runs contain a word. "Entered 1,872 of 2,360", "7 to watch", "now 1:40 PM" and "11:30 cutoff" are mixed runs.
+- **Contrast (Light, scripted, every visible text):**
+  - Minimum 5.72:1 (`ink-secondary` on canvas).
+  - The dimmed Offline button labels read 2.53 and 3.82. They are disabled controls, so WCAG exempts them.
+  - Non-text contrast:
+    - ink arcs on the track: 12.94;
+    - dashed cutoff tick: 4.6 on the track, 6.72 on white;
+    - lime button on `hero-bg`: 14.97;
+    - outline: 9.16;
+    - rail fill on the track: 1.16 (not the only carrier: gap 212).
+- **Tokens:** 0 unbound solid fills or strokes in the three frames (outside status bar and tab bar chrome).
+- **Diff vs `st117` (snapshot `st118`, full walk):**
+  - **Page 10:** 3 changed (the Now frames); links 248 (+8 −9); flow starts are the 4 approved.
+  - **Page 03:** +2 (QuestionCard, TimeRail).
+  - **Page 11:** unchanged (13 nodes, 0 links, 0 flows).
+  - **99 Archive:** 59, unchanged.
+  - **Every other page:** unchanged.
+- **Renders (scale 1):**
+  - `today/before_1a3/`: the 1A.2 Light frames and the stale Dark twins.
+  - `today/after/1a3_*`: Success, Empty and Offline, each at rest and at max scroll, plus both new component sets.

@@ -615,3 +615,30 @@ One gap for each open decision raised by the contract pass (`prototype_contract.
 |---|---|---|---|---|
 | 207 | Now · Needs-you card (and 1B) | StatusPill has no dark-surface version. On black, Stop and Lapsed pills use instance overrides (fill, stroke, label colour) that follow ResultCard's tag vocabulary. | Low | Add `Surface = Light / Dark` to StatusPill in the components stage (CP-2), then drop the overrides. |
 | 208 | Now · Entered card | The "How counted" info pill has no destination until the data-freshness sheet exists (1E). | Info | Wire it in 1E. |
+
+## Stage 1 · Today, 1A.3 (2026-10-01)
+
+The 1A.2 run ("dark and circular") was stopped before it was written up. Its planned gaps are not filed; the ones that still apply are folded in below.
+
+### Status of earlier gaps
+
+- **207** (StatusPill on black): no longer used on Now, because the hero card has no pills. It still applies if 1B puts pills on a black card.
+- **208** (info destination): carries over to the Messes card's info icon, which opens the data-freshness sheet in 1E.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 209 | QuestionCard (page 03), Now Success and Offline | Button has **no on-dark style**. "Call Ravi" (lime fill, `on-lime` label and icon) and "Open case" (no fill, `on-hero-secondary` outline, `on-hero` label) are instance overrides inside the new component. | Low | Add `Surface = Dark` to Button (Primary in lime, Secondary outlined) in the components stage, then drop the overrides. | CP-2 |
+| 210 | Now (Offline) | "Open case" is **dimmed** as the brief asks, but AD-3b has an Offline state and viewing is allowed offline (CP0.4). The saved case now opens from the question text, which is less discoverable. | Low | Owner decides: keep "Open case" live offline (view only) and dim only "Call Ravi", or keep both dimmed. | 1B |
+| 211 | Now (Success) | **The vote link is retired.** The Idli sambar vote has no row on Now; it sits behind "5 more need you". AD-5d stays reachable from AD-5c (Decide) and the Manage hub (Chip · Vote). | Info | Restore the link as the vote's row on Decisions. | 1B |
+| 212 | TimeRail | **Lime on a light track:** the fill reads 1.16:1 against the `border` track and 1.26:1 against white. Elapsed time is also carried by the ink-ringed now dot (14.97:1 on lime, 18.88:1 on white) and the "now 1:40 PM" text, so the fill is never the only carrier. | Low | Accept, or give the fill an ink edge (or darken the track) if the fill alone must reach 3:1. | CP-2 |
+| 213 | Now (3 frames) vs every other admin frame | Rule f (lime only on the primary button, the rail fill and the now dot) removed the **lime wash** from the three Now frames: canvas only, with the Plain top fade. Every other admin frame keeps the wash. | Low | Owner decides: apply the rule page-wide and drop the wash from all admin frames, or keep it as a Now-only rule. | CP-3 |
+| 214 | Now · Messes card | **The status dot is colour-only.** Stop (`ink`) and Hold (`ink-secondary`) dots differ only in shade; Offline is a ring. 1A.1 used glyphs for this. | Low | Give Hold a different shape (half dot or small clock), or accept, since every ring opens its mess detail. | 1D |
+| 215 | Now · Watch row | **Small tap targets:** "4 shortages" and "1 crowd" are 18 pt text links inside a 72 pt row. They keep the AD-2c and AD-2a links until Watch exists. | Low | When Watch (1E) is built, the whole row opens Watch and the word links retire. | 1E |
+| 216 | Now (all states) | **Unlinked controls waiting on later substages:** "5 more need you" (→ Decisions, 1B), the info icon (→ freshness sheet, 1E), the Messes chevron and denominators (→ Messes, 1D), the Watch row (→ Watch, 1E), "Call Ravi" (a system call, no screen) and the bell (203). | Info | Wire each one in its substage. | 1B–1E |
+| 217 | Now · header and hero | **Persona vs demo approvals:** the header reads "Food head" (sample: Devi Raman), but the demo rule is "Admin with all approvals". The 6 items (biryani plus "5 more") include the pass reissue and the 2 access requests, which are Admin approvals in production. | Low | In 1B, tag items outside the food head's approvals with their role (gap 197), or show the true food-head count. | 1B |
+| 218 | Now (Empty) | **"Next check 2:00 PM" has no definition.** Is it the next Prep or Crowd Agent check, the end of service, or the next escalation sweep? | Low | Owner defines it, then 1E's freshness sheet names it. | 1E |
+| 219 | QuestionCard · "Call Ravi" | A phone action needs **Ravi's number on file** (AD-7b) and a fallback when there is none. The call is not logged on the case timeline. | Low | Owner decides whether calls are logged on AD-3b; the fallback is "No number on file · Open case". | 1C |
+| 220 | Page 11 Admin Dark | **The Dark page is stale.** It holds the 1A.2 design (ring hero, tiles) in Dark mode, with 0 links and no flow start. `elevation/card` (flagged) is now used only there. | Info | Rebuild the Dark twin from the 1A.3 frames when the owner asks. Until then, read page 11 as a superseded study. | Later |
+| 221 | Now · Greeting header | The greeting header is a **local frame** that follows HomeHeader (same structure and text styles). HomeHeader itself carries student-only items: the wordmark, credits and report button. | Low | Add a `Role = Student / Staff` variant to HomeHeader (avatar and bell for staff) in the components stage. | CP-2 |
