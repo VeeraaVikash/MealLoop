@@ -1,6 +1,8 @@
 # MealLoop · design intent
 
-Written down on 2026-09-30 from the owner's notes in the design chat and the content-diet brief. It is not a stage record; `prototype_contract.md` still holds every stage rule. Read this before any design stage.
+Written down on 2026-09-30 from the owner's notes in the design chat and the content-diet brief. **Updated 2026-10-01 by the contract pass** (definitions, new design rules, permissions, offline rules, reasons for absence, sample rules, admin page plan).
+
+It is not a stage record; `prototype_contract.md` still holds every stage rule, and its section "Contract pass · Stage 0" holds the full tables behind the summaries here. Read this before any design stage.
 
 ## How the owner judges design
 
@@ -10,20 +12,50 @@ Written down on 2026-09-30 from the owner's notes in the design chat and the con
 - Reference set (Dribbble inventory and restaurant-ops dashboards): circular capacity badges, gauge / dial, swipeable stacked cards, filter chips with a sticky action footer, directory list with role tags, inventory-dashboard bento. Take the mechanics, never their palettes or illustrations.
 - Full state coverage (Success / Empty / Offline) from AD-4 on. Empty and Offline are simpler than Success, not copies of it.
 
-## RULES · content diet (admin, from the 2026-09-30 brief)
+## Definitions (2026-10-01)
 
-1. At rest, a screen has at most 3 blocks above the fold: (a) one hero, (b) one thing that needs the admin, (c) one row that goes deeper. If nothing needs the admin, omit that block; never invent one.
-2. Policy and rule text never sits on the main surface. One "Rules" pill (Estimate pill style) opens a sheet (H14 sheet pattern) with at most 3 one-line rules.
+- **Intent:** a student's answer for one meal: yes, no or not sure, given before the intent cutoff. **No response** is its own group and **is never a skip**.
+- **Forecast:** the diners the kitchen plans for. It always shows its **rule version** and the **cutoff time** it was set at ("Forecast 860 · rule v0 · set 9:00 AM"). **"Expected" is retired; say "forecast".**
+- **Entered:** a student counted at the door by a **valid entry scan or an approved ID fallback**, once per student per meal. **A scan never means "served".**
+- **Served:** a **kitchen food quantity only** (kg, L, pcs).
+- **Crowd:** a **level** (Quiet / Getting busy / Packed, plus Old data / Unavailable / Closed), its **method** (entry scans at the door) and its **freshness**. **"Inside" is not allowed.** Seat capacity has no owner, so no capacity number is shown.
+- **Donated:** counted **only once the partner has collected it**. Before that it is "offered".
+
+**Data rules:**
+- The forecast is preserved as it stood at the cutoff.
+- The recommended, approved and actual quantities are all kept, along with served and unserved.
+- Waste is labelled **per meal** or **per diner**.
+- **Donated food is not waste.**
+- **Plate waste is a total only** (one number per meal; unserved is per dish).
+- **Missing data is marked, never zero** ("—", "Not logged yet", "Old data", "Not comparable").
+- **The 65 g target and "within 5%" are drafts with no owner.**
+
+## RULES · design (2026-10-01, replaces the content-diet caps)
+
+20. **Never hide, only order.** Nothing is hidden to meet a count; everything is placed in priority order.
+21. **Every number opens its source.**
+22. **Charts show their values** (reverses gap 153).
+23. **Every rate shows its denominator.**
+24. **One page layout:** header, context line, hero, evidence, actions.
+25. **The fill floor stays** (rules 9–12). **The 12-text cap is retired.**
+26. **No readable text below 12 pt.**
+27. **Mono only for numbers, times and IDs**, on every screen (rule 13 widened).
+28. **Empty, Offline and lapsed are states, not pages.**
+
+## RULES · content diet (admin, from the 2026-09-30 brief; partly retired)
+
+1. ~~At rest, a screen has at most 3 blocks above the fold: (a) one hero, (b) one thing that needs the admin, (c) one row that goes deeper.~~ **Retired 2026-10-01, replaced by rule 24.** What needs the admin now lives on Today › Decisions.
+2. Policy and rule text never sits on the main surface. One "Rules" pill (Estimate pill style) opens a sheet (H14 sheet pattern) with at most 3 one-line rules. *(Kept; counts as ordering under rule 20.)*
 3. A mess filter is ONE scope pill ("Main Mess") that opens a single-select sheet (MS-C1 row pattern), never a four-chip row.
-4. Lists show at most 3 rows plus "See all".
+4. Lists show at most 3 rows plus "See all". *(Kept as ordering, pending confirmation: gap 191.)*
 5. One big number per screen.
-6. Density target at rest: 3 blocks and 12 visible text layers or fewer (not counting status bar, tab bar, Moment note, sample chip).
+6. ~~Density target at rest: 3 blocks and 12 visible text layers or fewer.~~ **Retired 2026-10-01 (rule 25).** Every layer hidden to meet it is restored (stage CP-3).
 7. Reuse first. New components only when a brief names them; flag anything else.
 8. Every Back returns where it came from. No dead chevrons.
 
 ## RULES · fill floor (admin, from the 2026-09-30 coupons brief)
 
-Content diet has a ceiling (3 blocks) and now a floor.
+The fill floor stays (rule 25).
 
 9. On every non-Empty screen, content at rest reaches at least 75% of the way down to the tab bar: the lowest content item ends at y 561 or lower (the tab bar top is at y 748). Reach it by enlarging the hero number or the data visual, never by adding blocks.
 10. Empty and Offline states centre their message vertically. They must not sit at the top with dead space below.
@@ -32,7 +64,7 @@ Content diet has a ceiling (3 blocks) and now a floor.
 
 ## RULES · logs (from the 2026-09-30 AD-7d brief)
 
-13. A log is a timeline. Rows are quiet unless they are exceptions. Mono is for numbers, times and IDs only.
+13. A log is a timeline. Rows are quiet unless they are exceptions. Mono is for numbers, times and IDs only. *(Since 2026-10-01 the mono rule applies to every screen: rule 27.)*
 
 ## RULES · analytics (admin, from the 2026-09-30 AD-4 content brief)
 
@@ -42,14 +74,54 @@ Content diet has a ceiling (3 blocks) and now a floor.
 
     An academic-year comparison shows "Needs a full year of data" until a full year exists.
 15. Hide any student-year group with fewer than 10 students, and show "Too few to show" in its place.
-16. Turnout is not a funnel. Show it as three groups: **said yes and came**, **said yes and didn't come**, and **no answer and came**. Show scan failures and ID fallbacks beside low counts.
+16. Turnout is not a funnel. Show it as three groups: **said yes and entered**, **said yes and not entered**, and **no response and entered** (worded with the 2026-10-01 definitions: intent and entered). Show scan failures and ID fallbacks beside low counts.
 17. No wait-time minutes anywhere.
 18. Admin analytics never include the private calorie or spending trackers.
 19. Pass scans stay separate from entrance attendance.
 
+## Permissions (2026-10-01)
+
+**Matrix:**
+- Actions: **view, propose, approve, execute, verify, correct**.
+- Domains: prep override, menu and vote, pass exception, access request, safety case, moderation, surplus, waste entry, scans.
+- Roles: student, scanner, pass checker, kitchen staff, supervisor, food head, admin.
+- The table is in the contract (CP0.3). Cells not yet decided by an owner are marked ° and each has a gap.
+
+**Demo and Decisions:**
+- **The demo user is Admin with all approvals.** In production each approval stays with its role; the demo tags it with that role.
+- **Today's Decisions list is filtered by the signed-in role:** it holds the items waiting on that role's approvals.
+
+## Offline rules (2026-10-01)
+
+- One table in the contract (CP0.4) says what each role may view, decide or correct while unsynced.
+- **No approvals offline.**
+- **A mess that isn't reporting is "not comparable".** It stays out of totals and comparisons and is shown apart with its last sync time.
+- **Pass redemption stays blocked offline** (gap 80).
+
+## Reasons for absence (2026-10-01)
+
+- **The admin list equals the student "Why skipping?" sheet exactly:** Class or exam · Home or leave · Eating elsewhere · Don't like the dish · Dietary reason · Not hungry · Other · Prefer not to say.
+- **Coverage counts only students who skipped and answered.** Everyone else is **"unknown"**.
+- Hide any group under 10 ("Too few to show").
+- **The spending tracker never feeds admin data.**
+- "Long queue" and "Food quality" are logged as optional additions to both lists (gap 184).
+
+## Sample rules (2026-10-01)
+
+- **Prep override cutoff: 11:30 AM** (sample; owner unassigned).
+- **A missed cutoff shows "lapsed", never "overdue".**
+- Intent cutoffs as shown to students: lunch 9:00 AM, dinner 6:00 PM. Breakfast's is not shown (gap 173).
+- **The 48-hour vote lead time is an open question for the food department.**
+
 ## Product decisions
 
-- 3 logins: student, mess staff, admin. Mess staff = permission bundles (scanner, pass checker, kitchen, supervisor). Admin = 4 tabs by intent: Today / Issues / Insights / Manage.
+- 3 logins: student, mess staff, admin. Mess staff = permission bundles (scanner, pass checker, kitchen, supervisor). Admin = 4 tabs by intent:
+  - **Today:** Now, Decisions, Messes, Watch.
+  - **Issues:** SOS, Dishes, Community.
+  - **Insights:** Overview, Meal record, Waste vs shortages, Turnout & reasons.
+  - **Manage:** a bento hub with pills inside each section.
+
+  The page plan, with keep / rebuild / new for each page, is in the contract (CP0.7).
 - Overrides: supervisor overrides go live with a mandatory reason; the food head is notified afterwards; large changes need prior approval (limits are drafts until the food head confirms).
 - Privacy: masked student IDs; feedback is aggregate, never names; calorie and spending trackers are private; spending hidden on Home by default.
 - Voting: hard gate for "Doesn't qualify", soft warning plus logged override for "Needs review". A vote never changes the menu by itself.
