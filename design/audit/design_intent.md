@@ -11,6 +11,7 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 - Status colours may differ by state but must be muted and consistent. Never full-card traffic-light fills. Lime is the only brand accent.
 - Reference set (Dribbble inventory and restaurant-ops dashboards): circular capacity badges, gauge / dial, swipeable stacked cards, filter chips with a sticky action footer, directory list with role tags, inventory-dashboard bento. Take the mechanics, never their palettes or illustrations.
 - Full state coverage (Success / Empty / Offline) from AD-4 on. Empty and Offline are simpler than Success, not copies of it.
+- **Admin home pattern (Today · Now, since 1A.3):** greeting, then one question with one action, then the meal time rail, then the mess rings. On Now, lime appears only on the primary action, the rail fill and the now dot.
 
 ## Definitions (2026-10-01)
 
@@ -90,6 +91,7 @@ The fill floor stays (rule 25).
 **Demo and Decisions:**
 - **The demo user is Admin with all approvals.** In production each approval stays with its role; the demo tags it with that role.
 - **Today's Decisions list is filtered by the signed-in role:** it holds the items waiting on that role's approvals.
+- **Sample signed-in person on admin Today (1A.3): Devi Raman, Food head** (initials DR, 4 messes). The demo still holds every approval (gap 217).
 
 ## Offline rules (2026-10-01)
 
