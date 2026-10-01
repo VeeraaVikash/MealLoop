@@ -185,3 +185,13 @@ A position-only stage: every node was moved by id; no content, size, link, flow-
   - The AD-5 sheets row now holds 8 sheets.
 - **2026-09-30, AD-4 content pass:** the new frames "AD-4e · Meal drilldown (Success)" (`1085:7071`) and "(Offline)" (`1085:94067`) take AD-4 row slots 6 and 7 at 2838, 3276 and 3311, 3276, each with a label, Moment note and chip at the standard offsets. No other frame moved.
 - **2026-10-01, overnight Stage 2:** "AD-5c2 · Proposals (Vote open)" (`1096:94066`) takes AD-5 slot 15 at 7095, 4368. AD-5d moved 7095 → 7568 with its annotations.
+- **2026-10-01, overnight Stage 3:** 14 new Empty and Offline frames joined the AD-1, AD-2 and AD-3 rows, each with its label, Moment note and chip at the standard offsets.
+  - Each row now runs Success, Empty, Offline per screen group. The Success frames after the first moved right along their row (x only):
+    - AD-1b 473 → 1419;
+    - AD-2b 473 → 1419 and AD-2c 946 → 2365;
+    - AD-3b 473 → 1419, AD-3c 946 → 2365 and AD-3d 1419 → 3311.
+  - New row order:
+    - **AD-1:** 1a, 1a Empty, 1a Offline, 1b, 1b Offline.
+    - **AD-2:** 2a, 2a Empty, 2a Offline, 2b, 2b Offline, 2c, 2c Empty, 2c Offline.
+    - **AD-3:** 3a, 3a Empty, 3a Offline, 3b, 3b Offline, 3c, 3c Offline, 3d, 3d Empty, 3d Offline.
+  - The plan, with each node's before and after position, is in plugin data `mealloop/st3_place_plan`.
