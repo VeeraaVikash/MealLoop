@@ -195,3 +195,9 @@ A position-only stage: every node was moved by id; no content, size, link, flow-
     - **AD-2:** 2a, 2a Empty, 2a Offline, 2b, 2b Offline, 2c, 2c Empty, 2c Offline.
     - **AD-3:** 3a, 3a Empty, 3a Offline, 3b, 3b Offline, 3c, 3c Offline, 3d, 3d Empty, 3d Offline.
   - The plan, with each node's before and after position, is in plugin data `mealloop/st3_place_plan`.
+- **2026-10-01, overnight Stage 5 (grid check, position only):**
+  - Every top-level node's x/y was recorded first (plugin data `mealloop/st108_xy_811`, 406 nodes).
+  - A grid plan for all 406 nodes was built from the rules above: 99 frames, 297 annotations and 10 section titles (plugin data `mealloop/layout_plan_st108`). It was applied by id.
+  - It needed **0 moves**: every frame was already on its slot and row, every annotation at (0, −36), (0, +868) and (0, +940), and every title at row y − 80. No stray nodes; every row is contiguous from x 0.
+  - Snapshot `st109` vs `st108`: no changes on any page. Links (241, full walk) and flow starts are identical.
+  - Page render: `../overnight/stage5/page10_grid.png`.
