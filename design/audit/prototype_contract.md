@@ -4453,3 +4453,325 @@ This is a proposal list only; nothing is built from it without approval.
 - `design/audit/final_audit/`: one Markdown table per check (FA-1 to FA-5), the tool output, and renders of every flagged screen.
 - A ranked fix list (High / Med / Low, by the gaps-file severity scale).
 - The fixes then run as stages FA.1, FA.2 and so on, worst first.
+
+## Contract pass · Stage 0 (2026-10-01, documents only)
+
+**Brief:** write the definitions, design rules, permissions, offline rules, reasons for absence, sample rules and admin page plan into `design_intent.md` and this contract, take a read-only label inventory of every page, and log a gap for every open decision. **No design changes.**
+
+**Figma:**
+- Snapshot `st110` (full walk) matched `st109` on all 13 pages: same nodes, signatures, links (page 10: 241) and flow starts.
+- The only Figma writes in this stage were snapshot plugin data. `st111` is the end check (see Checks).
+
+**Precedence:** this section supersedes earlier rules where they differ. Each case is listed under "Conflicts". Earlier stage records stay as history.
+
+### CP0.1 Definitions
+
+| Term | Definition | Replaces |
+|---|---|---|
+| **Intent** | A student's answer for one meal: yes, no or not sure, given before the intent cutoff. **No response** is its own group and is never counted as a skip. | – |
+| **Forecast** | The diners the kitchen plans for. Every forecast shows its **rule version** and the **cutoff time** it was set at, for example "Forecast 860 · rule v0 · set 9:00 AM". | "expected" (retired everywhere) |
+| **Entered** | A student counted at the door by a **valid entry scan** or an **approved ID fallback**. Counted once per student per meal. A scan never means "served". | "served" for people; "came"; "inside" |
+| **Served** | A **kitchen food quantity** only (kg, L, pcs), as on MS-D1 ("Prepared 95 kg · served 88 kg"). | – |
+| **Crowd** | A **level** (Quiet / Getting busy / Packed, plus Old data / Unavailable / Closed), the **method** it comes from (entry scans at the door) and its **freshness** ("2 min ago"). "Inside" is not allowed. **Seat capacity has no owner**, so no capacity number is shown (gap 175). | "410 inside", "480 seats" |
+| **Donated** | Surplus food counts as donated **only once the partner has collected it**. Before that it is "offered". | – |
+
+**Data rules:**
+- **The forecast is kept as it stood at the cutoff.** Later intents or changes never overwrite it.
+- For every dish, the **recommended, approved and actual (prepared)** quantities are all kept, along with served and unserved. Example: Sambar recommended 42 L, approved 50 L (in effect), prepared 50 L, served 46 L, unserved 4 L.
+- **Waste is labelled per meal or per diner:** "18 kg · whole meal" or "71 g per diner". An unlabelled "g per meal" is not allowed.
+- **Donated food is not waste.**
+- **Plate waste is a total only:** one weighed number per meal, never per dish. Unserved is per dish (prepared − served, calculated).
+- **Missing data is marked, never zero:** "—", "Not logged yet", "Old data · 12:10 PM", or "Not comparable".
+- **The 65 g per-diner target and "within 5%" are drafts with no owner** (gaps 176, 177). Wherever they appear they read as drafts.
+
+### CP0.2 Design rules (replace the old caps)
+
+These rules continue the numbering in `design_intent.md`.
+
+| # | Rule | Effect on earlier rules |
+|---|---|---|
+| 20 | **Never hide, only order.** Everything a screen needs is on it, in priority order. Nothing is hidden to meet a count. | Retires the content-diet caps and the practice of hiding the least important layer. Every layer hidden for the 12-text cap is restored (CP-3). |
+| 21 | **Every number opens its source:** the screen, list or log entry it comes from. | Extends rule 8 (no dead chevrons). |
+| 22 | **Charts show their values.** Each bar or point prints its number. | Reverses gap 153 (week values shown only as bar heights). |
+| 23 | **Every rate shows its denominator:** "83% · 712 of 860", "76% for · 1,204 of 1,592". | – |
+| 24 | **One page layout:** header, context line, hero, evidence, actions. | Replaces rule 1 (3 blocks). The "one thing that needs the admin" moves to Today › Decisions. |
+| 25 | **The fill floor stays** (rules 9–12). **The 12-text cap is retired** (rule 6). | Rule 6 retired. |
+| 26 | **No readable text below 12 pt.** | Tab labels are 11 pt today (inventory §3). |
+| 27 | **Mono only for numbers, times and IDs**, on every screen. | Rule 13 widened from logs to all screens (gap 171). |
+| 28 | **Empty, Offline and lapsed are states of a page, not pages.** Each page plan lists its states. | – |
+
+**Kept:**
+- rule 2 (rules behind a Rules pill);
+- rule 3 (one scope pill);
+- rule 5 (one big number);
+- rule 7 (reuse first);
+- rule 8 (Back returns);
+- rules 9–12 (fill floor);
+- rules 14–19 (analytics; rule 16 is reworded with the definitions).
+
+Rule 4 (3 rows plus "See all") is kept as **ordering**, pending confirmation (gap 191).
+
+### CP0.3 Permissions
+
+**Actions:**
+
+| Letter | Action |
+|---|---|
+| V | view |
+| P | propose |
+| A | approve |
+| E | execute |
+| Ve | verify |
+| C | correct |
+
+**Markers:**
+- A plain letter comes from an existing screen or decision in this contract.
+- A letter with **°** is proposed in this pass and needs an owner's confirmation (the gap is named in the notes).
+
+| Domain | Student | Scanner | Pass checker | Kitchen staff | Supervisor | Food head | Admin |
+|---|---|---|---|---|---|---|---|
+| **Prep override** | – | – | – | V · E | V · P · E · C | V · A · Ve · C° | V |
+| **Menu and vote** | V · P | – | – | V | V | V · Ve | V · A · E · C |
+| **Pass exception** | V · P° | – | V · E | – | V° | V° | V · A |
+| **Access request** | – | P | P | P | P | V · Ve° | V · A · E · C |
+| **Safety case** | V · P | – | – | V (aggregate only) | V · E · C | V · A · Ve° | V · E · C |
+| **Moderation** | V · P | – | – | – | – | V · E° | V · E · C |
+| **Surplus** | – | – | – | E° | V · P · E° · C° | V · A° · Ve° | V |
+| **Waste entry** | V (aggregate) | – | – | V · E | V · E · C° | V · Ve° | V |
+| **Scans** (entry and pass) | V · P | E | E | – | V · A° · C° | V | V · Ve° |
+
+**What each cell means:**
+
+- **Prep override:**
+  - Supervisor: P = adjust a quantity, with a required reason. E = within the draft limits the change goes live at once (MS-C4a). C = withdraw a pending request (MS-C4b).
+  - Kitchen staff: E = cook the quantity in effect; read-only otherwise (MS-C decisions).
+  - Food head: A = changes over the limit (MS-C4b). Ve = notified of every live override. C° = reverse a live override (gap 195).
+  - Admin: V only (AD-1b is read-only).
+- **Menu and vote:**
+  - Student: P = propose a dish in Community, and vote (there is no student vote screen; gap 202).
+  - Admin: E = open a vote (a Needs-review proposal needs a logged reason). A = decide the menu after a vote (AD-5d). C = edit dish data (AD-5b).
+  - Food head: Ve = sees the logged review reasons.
+  - Production owner of the menu decision: gap 193.
+- **Pass exception:**
+  - Pass checker: E = redeem, or turn away when the desk can't verify (MS-B).
+  - Student: P° = ask for a reissue.
+  - Admin: A = reissue or decline with a reason (AD-6b). Production approver: gap 194.
+- **Access request:**
+  - Any staff role: P = ask for rights (Suresh, Lakshmi).
+  - Admin: A = approve or decline with a reason (AD-7c). E = change permission toggles with a reason (AD-7b). C = remove access with a reason.
+  - Rules: nobody edits their own permissions, and the last admin can't be removed.
+  - Food head: V = sees removals in the log.
+- **Safety case:**
+  - Student: P = report. V = their own report's status.
+  - Kitchen staff: V = the aggregate Safety row only, with no identity (gap 87).
+  - Supervisor: E = set the batch aside, mark resolved (assigned staff only). C = add to the log.
+  - Food head: A = escalations, manual or automatic after 30 min. V = the queue that keeps identity. Ve° = confirms the case is resolved (gap 179).
+  - Admin: E = assign the owner, escalate. C = add to the log. **No close control** (AD-3.1).
+- **Moderation:**
+  - Student: P = post, support ("Me too").
+  - Admin: E = group look-alike reports, assign an owner. C = fix an owner or a step.
+  - Food head: E° = moves items it owns through the student-visible steps (gap 181). "Mess committee" is an owner in AD-3d but not a role here (gap 181).
+- **Surplus:**
+  - Supervisor: P = offer the surplus (AD-6d2 "Offered · Ravi"). E° = log the pickup weight at the gate. C° = fix that log.
+  - Kitchen staff: E° = weigh.
+  - Food head: A° = partner, dairy rule and deadline. Ve° = confirms it counts as donated.
+  - Admin: V only. The current admin "Log pickup" moves to the supervisor (inventory L37; gap 180).
+- **Waste entry:**
+  - Kitchen staff and supervisor: E = enter served quantities and the plate-waste total; unserved is calculated (MS-D1; Meena logged lunch waste, AD-7d). Confirm kitchen staff may do this (gap 192).
+  - Supervisor: C° = re-weigh or correct, with a reason (gap 182).
+  - Food head: Ve°.
+- **Scans:**
+  - Scanner: E = entry scans (offline: saved, counted, checked on sync).
+  - Pass checker: E = redemption and the typed-ID fallback.
+  - Supervisor: A° = approve an entry ID fallback (gap 178). C° = correct an entry record, with a reason (gap 182).
+  - Student: P = "Something's wrong?" request. V = their own record.
+  - Admin: Ve° = reviews disputes (gap 183).
+
+**Demo user:**
+- The demo signs in as **Admin with all approvals**: the union of every A cell (food head's overrides, escalations and surplus; admin's menu, passes and access; supervisor's ID fallbacks).
+- In production these stay with their roles. In the demo, an approval that belongs to another role carries that role's tag, for example "Food head approval" (gap 197).
+
+**Today › Decisions is filtered by the signed-in role.** It lists the items waiting on that role's A cells (and Ve cells), the nearest deadline first.
+
+| Role | What its Decisions list holds |
+|---|---|
+| Student, scanner, pass checker, kitchen staff | Nothing (a student's own requests stay in My reports) |
+| Supervisor | Entry ID fallbacks° |
+| Food head | Over-limit overrides, escalated safety cases, surplus partner and donated checks° |
+| Admin | Vote results, Needs-review proposals, pass reissues, access requests |
+| **Demo Admin** | All of the above |
+
+**Sample, demo Admin at 1:40 PM:**
+1. Idli sambar on Sundays · vote closed (AD-5d).
+2. Egg curry on Mondays · review before a vote (AD-5c2).
+3. Pass reissue · •••0733 (AD-6b; gap 137 on the student name).
+4. Suresh · scanner rights · North Mess (AD-7c).
+5. Lakshmi · kitchen access · Main Mess (AD-7c).
+
+The lapsed state shows "Curd 60 → 45 L · lapsed 11:30 AM". The biryani case joins the food head's list only if it is still unresolved at 1:55 PM.
+
+### CP0.4 Offline rules (while unsynced)
+
+| Role | May view | May decide | May correct | Notes (execute) |
+|---|---|---|---|---|
+| Student | Cached screens, each with its saved time | – | – | Intent answers queue as "waiting to sync"° (gap 187). Entry QR still shows. A special pass can't be used offline (gap 80). |
+| Scanner | Its own shift count | – | – | Entry scans are saved and counted at once; duplicate and wrong-mess checks run on sync (MS-A5). |
+| Pass checker | Its own redemption log | – | – | **Redemption is blocked** (MS-B6, gap 80). |
+| Kitchen staff | The prep plan as last synced, with the saved time | – | – | Waste entry is saved on the phone as "waiting to sync"° (gap 186). |
+| Supervisor | Prep plan and shift history, cached | – | –° | **No overrides offline**°: an override changes what the kitchen cooks and needs a live record (gap 186). |
+| Food head | The cached queue | **No approvals** | – | – |
+| Admin | Cached screens with the banner and saved time | **No approvals** (votes, reissues, access, Needs review) | No corrections or edits | No executes: Open vote, Decide and Log pickup are disabled. |
+
+**Rules:**
+- **No approvals offline**, for any role.
+- **A mess that isn't reporting is "not comparable".** It stays out of totals and comparisons and is shown apart with its last sync time (inventory L50, N5).
+- **Pass redemption stays blocked offline** (gap 80 stays open as the policy question).
+
+**Copy conflict:** AD-5b Offline's banner reads "Offline · changes save when you reconnect", but Save is disabled. It becomes "Offline · editing needs a connection" (CP-1).
+
+### CP0.5 Reasons for absence
+
+- **The admin list equals the student "Why skipping?" sheet exactly**, in the same words and order. Source: page 07 "Answer No · Why not" (`221:62700`) and its 04/05 twins.
+  1. Class or exam
+  2. Home or leave
+  3. Eating elsewhere
+  4. Don't like the dish
+  5. Dietary reason
+  6. Not hungry
+  7. Other
+  8. Prefer not to say
+- **The question is optional** ("Optional. It helps the mess plan.").
+- **Coverage counts only students who skipped (intent: no) and answered.** Everyone else is **"unknown"** and is never given a reason: skipped without a reason, not sure, no response, or entered.
+  - The screen states coverage as a count: "Reasons from n of N who skipped".
+  - How "Other" and "Prefer not to say" count: gap 185.
+  - Whether to show reasons at all when coverage is low: gap 198.
+- **Hide any group under 10** (rule 15) behind "Too few to show". This applies to each reason in each cohort or mess group.
+- **The spending tracker never feeds admin data.** No "Eating elsewhere" is inferred from canteen spending. The calorie tracker doesn't either (rule 18).
+- **Logged as optional additions to both lists:** "Long queue" and "Food quality" (gap 184). If either is added, both lists change together. "Long queue" carries no minutes (rule 17).
+- **Where it lives:** Insights › Turnout & reasons (CP0.7).
+
+### CP0.6 Sample rules
+
+| Rule | Value | Owner | Missed cutoff |
+|---|---|---|---|
+| Prep override cutoff (lunch) | **11:30 AM** (sample) | **Unassigned** (gap 174) | A request not decided by the cutoff shows **"lapsed"**, never "overdue". The kitchen cooks the quantity in effect (the recommended or last approved amount). |
+| Intent cutoffs (from the student screens) | Lunch 9:00 AM ("Decide by 9 AM"); dinner 6:00 PM | Not named (gap 173). Breakfast's cutoff is not shown anywhere. | The intent count and the forecast freeze at the cutoff (inventory N4). |
+| Vote lead time | **48 h** ("Runs 48 h · ends Fri 2:18 PM") | **Open question for the food department** (gap 190) | – |
+
+**Effect of the 11:30 AM sample cutoff:** the Curd request (60 → 45 L, sent 11:05 AM) lapsed at 11:30. Every later moment shows "lapsed" (inventory L34–L36, N11).
+
+### CP0.7 Admin structure (page plan)
+
+Status: **keep** = the existing frames stay (label fixes allowed), **rebuild** = re-laid out from existing frames, **new** = no frame yet. Each page has a Success state plus the states listed.
+
+| Tab | Page | Status | From (existing) | What changes | States | Stage |
+|---|---|---|---|---|---|---|
+| Today | **Now** | rebuild | AD-1a (S, E, O) | Entered vs forecast (with rule version and cutoff); non-reporting messes kept apart as "not comparable"; the one page layout; every number opens its source | Empty, Offline | CP-4 |
+| Today | **Decisions** | new | Sources: AD-1b approval card, hub NeedsYouCard, AD-5c hero, AD-5c2 Review, AD-6b, AD-7c | Role-filtered list of approvals (CP0.3); each row opens its decision screen | Empty ("Nothing needs you"), Offline (view only, no approvals), lapsed | CP-4 |
+| Today | **Messes** | rebuild | AD-1b (S, O), AD-2a (S, E, O), AD-2b (S, O) | One list of messes, each with entered vs forecast and its crowd level, method and freshness. The mess detail is AD-1b with a crowd section. No "inside", no seats. | Empty, Offline, not comparable | CP-4 |
+| Today | **Watch** | rebuild | AD-2c (S, E, O) | Shortages, non-reporting messes, lapsed requests and unsynced desks: things to watch, not to decide | Empty, Offline | CP-4 |
+| Issues | **SOS** | rebuild (list) / keep (detail) | AD-3a SOS card; AD-3b (S, O) | An SOS list page. AD-3b keeps its flow; closing stays with assigned staff. | Empty, Offline | CP-5 |
+| Issues | **Dishes** | rebuild | AD-3a feedback cards; AD-3c (S, O) | A dish-feedback list. AD-3c's action becomes "Verify after Fri recheck" (L38). | Empty, Offline | CP-5 |
+| Issues | **Community** | keep | AD-3d (S, E, O) | "Group as one issue" (L40); hidden layers restored (CP-3) | Empty, Offline | CP-5 |
+| Insights | **Overview** | rebuild | AD-4a (S, E, O) | Locked tiles restored (rule 20); each tile number opens its source; denominators shown | Empty, Offline | CP-6 |
+| Insights | **Meal record** | rebuild | AD-4e (S, O) | Renamed from Meal drilldown. Shows the forecast at cutoff; recommended, approved and actual quantities; entered; served; unserved; plate waste (total); donated (once collected). Causes stay "possible, not proven". | Offline, not comparable | CP-6 |
+| Insights | **Waste vs shortages** | new | AD-4c, AD-4b, AD-2c data | Charts print their values (rule 22); per meal vs per diner labelled; the 65 g target shown as a draft | Empty, Offline, not comparable | CP-6 |
+| Insights | **Turnout & reasons** | new | the locked Turnout tile | The three intent groups vs entered; reasons for absence with coverage (CP0.5); groups under 10 shown as "Too few to show"; scan failures and ID fallbacks beside low counts | Empty, Offline | CP-6 |
+| Insights | Reports & exports | keep, placement open | AD-4d | Not in the plan (gap 188) | – | CP-6 |
+| Manage | **Hub** | rebuild | AD-5-0 (S, E, O) | Bento sections with pills inside each (CP0.7a). Decisions move to Today › Decisions (gap 189). | Empty, Offline | CP-7 |
+| Manage | Menu, Edit dish, Voting, Proposals, Vote result | keep | AD-5a, 5b, 5c, 5c2, 5d | AD-5a menu = the canonical prep list (gap 110, N3); "Group as one proposal" (L41) | as built | CP-7 |
+| Manage | Passes, Pass exception | keep | AD-6a, 6b | – | as built | CP-7 |
+| Manage | Rewards | keep | AD-6c | "Extra biryani plate" (L39) | as built | CP-7 |
+| Manage | Surplus, Pickup detail | rebuild / keep | AD-6d (S, E, O), AD-6d2 | "Log pickup" leaves admin (L37); "counted as donated" only after collection | Empty, Offline | CP-7 |
+| Manage | People, Staff, Person, Access request, Audit log | keep | AD-7a–7d | AD-7d curd entry reads "lapsed" (L36) | as built | CP-7 |
+
+**CP0.7a · Manage hub sections (pills inside each section):**
+
+| Section | Pills |
+|---|---|
+| Menu | Dishes · Voting · Proposals |
+| Passes | Today · Exceptions |
+| Rewards | Budget · Offers |
+| Surplus | Today · Pickups |
+| People | Staff · Requests · Audit log |
+
+Each pill opens the existing page. The section's number opens its source (rule 21).
+
+### CP0.8 Label inventory
+
+The full table is `design/audit/contract_pass/label_inventory.md`. It has 55 label rows, the text-under-12-pt table and 12 numbers that disagree across roles.
+
+**Headline findings:**
+- **Not found anywhere:** "arrived", "overdue" and "Hold the batch".
+- **Violations of the definitions:**
+  - "served" used for people (AD-1a, AD-1b, AD-1a Empty, AD-4b);
+  - "inside" and "480 seats" (AD-2a, AD-2b);
+  - "expected" (MS-C2 ×3, AD-4b, AD-4e, DemandRingCard, ChartBar `Kind=Expected`, LiveDial layer names);
+  - "SERVED" as a meal state (student Menu and Service ended, MealSectionHeader).
+- **Text under 12 pt:** only the tab-bar labels (ML/Tab Label, 11 pt; TabBar and AdminTabBar).
+- **Cross-role disagreements:**
+  - the biryani report time (staff 12:45 PM vs admin 1:25 PM);
+  - the student's urgent report (rice stone) vs the SOS case (biryani);
+  - the AD-5a menu vs the prep list;
+  - intents "so far" after the 9 AM cutoff;
+  - AD-1a's total including Annexe's stale sync;
+  - the Sambar story (student "Fixed" vs admin "Recheck Fri");
+  - the Curd request still "awaiting approval" after the override cutoff;
+  - vote tallies with no student vote screen.
+
+### CP0.9 Conflicts
+
+| # | Between | What conflicts | Resolution in this pass | Stage |
+|---|---|---|---|---|
+| C1 | Rule 20 vs rules 1, 4, 6 and the overnight "hide the least important layer" rule | Layers were hidden to meet the 12-text cap (gaps 154, 163, 167), and items were dropped for it (AD-7b Offline "See all", AD-7d "1 pending"). | Caps retired; every one is restored and reordered. | CP-3 |
+| C2 | Rule 24 vs rule 1 | The 3-block cap and its "thing that needs the admin" slot. | Replaced by the page layout. Needs-you items move to Today › Decisions. | CP-4 |
+| C3 | Rule 20 vs rule 4 and rules sheets | "At most 3 rows plus See all" and rules behind a pill could read as hiding. | Kept as ordering (the full list is one tap away), pending gap 191. | – |
+| C4 | Rule 20 vs rule 15 | Groups under 10 are suppressed. | Not hiding: the cell shows "Too few to show" (privacy). Consistent. | – |
+| C5 | Rule 27 vs existing components | Words are set in mono in the LiveDial eyebrow, unit and line, CrowdLegend, the Mono-light chip and section eyebrows (gap 171). | Component pass. | CP-2 |
+| C6 | Crowd definition vs AD-2a, AD-2b and the AD-2.1 open decision | "410 inside", "480 seats", and an occupancy dial next to an entered dial (N6). | Remove the count and capacity; level, method and freshness only (gap 175). | CP-4 |
+| C7 | Served definition vs AD-1a, AD-1b, AD-4b, MealSectionHeader and student Menu | "served" for people and for a meal state. | "entered" for people; "Ended" for the state (L1–L10). | CP-1, CP-2 |
+| C8 | Forecast definition vs MS-C2, AD-4b, AD-4e and components | "expected"; no rule version or cutoff on any forecast (gap 172). | Rename, and add the version and cutoff line. | CP-1, CP-2 |
+| C9 | "Forecast kept as at cutoff" vs MS-C2 and MS-E | "412 intents so far" at 10:42 AM and 12:30 PM, after the 9 AM lunch cutoff (N4). | "412 intents at the 9:00 AM cutoff". | CP-1 |
+| C10 | "Lapsed" sample rule vs AD-1b, MS-E, MS-D4 and AD-7d | The Curd request reads "awaiting approval" or "pending" after the 11:30 AM cutoff (N11). | Every place reads "lapsed 11:30 AM"; the kitchen keeps 60 L. | CP-1 |
+| C11 | Surplus permissions vs AD-6d | The admin has an Execute button ("Log pickup") on an Admin = V row. | The control moves to the supervisor; admin keeps view, plus a verifier "Confirm donated" (gap 180). | CP-7 |
+| C12 | Safety permissions vs AD-3b | The admin assigns an owner and adds to the log, but has no close control (AD-3.1). Who verifies resolution is not defined. | Admin E = assign and escalate; C = add to log. Food head Ve° (gap 179). | CP-5 |
+| C13 | Missing-data rule vs AD-1a, the hub Empty and AD-6c | Annexe's stale 546 / 600 is counted as live (N5); "0 dishes" for unlogged surplus (L49); "0 claimed" before launch (L39). | Mark the data as missing: not comparable, not logged yet, launches Fri. | CP-1, CP-7 |
+| C14 | "Plate waste is total only" vs student Waste · Dish breakdown | The per-dish kg values don't say whether they are unserved or plate waste. | Label them "Never served, by dish" (L48). | CP-1 |
+| C15 | "Waste per meal vs per diner labelled" vs Waste, MetricHero and AD-4d | "g per meal", "7 g less than the week before". | "g per diner" (L44–L46). | CP-1, CP-2 |
+| C16 | "Within 5% is a draft" vs AD-5b and AD-4b | Two different "within 5%" rules: the nutrition energy check (AD-5b, from Stage 2.1) and the forecast band behind "on target" (AD-4b). | Both read as drafts until an owner exists (gap 177). | CP-1, CP-6 |
+| C17 | "65 g is a draft" vs MetricBadge | The lime target tick at 65 g reads as a set target. | Labelled as a draft target (L53, gap 176). | CP-2 |
+| C18 | Offline rules vs AD-5b Offline | The banner promises "changes save when you reconnect" while Save is disabled. | Banner becomes "Offline · editing needs a connection". | CP-1 |
+| C19 | Demo "Admin with all approvals" vs product rules | The food head approves large overrides (MS-C), and AD-1b was kept read-only, with oversight planned for AD-3 (AD-1.1). | The demo admin holds every approval, tagged with the production role (gap 197). Today › Decisions supersedes the AD-1.1 plan. | CP-4 |
+| C20 | Admin voting vs the student app | Tallies of 1,204 / 388 with no student vote screen; the legacy map dropped "final vote" (N12). | Owner decision (gap 202). | CP-7 |
+| C21 | Page plan vs the existing page 10 | AD-4d Reports has no slot (gap 188). The hub's NeedsYouCard duplicates Decisions (gap 189). | Logged. | CP-6, CP-7 |
+| C22 | Rule 26 vs ML/Tab Label | Tab labels are 11 pt on every tabbed screen (student and admin). | Raise the style to 12 pt and check the fit. | CP-2 |
+| C23 | Reasons rule vs the existing data | There is no admin reasons list yet. The student list has no "Long queue" or "Food quality" (gap 184). | The new Turnout & reasons page uses the student list verbatim. | CP-6 |
+| C24 | Intent definition vs earlier turnout wording | Rule 16 says "came" and "no answer". | Reworded as intent and entered: "said yes and entered", "said yes and not entered", "no response and entered". | – (text in rule 16) |
+
+### CP0.10 Stage plan (where each fix goes)
+
+| Stage | Scope | Inputs |
+|---|---|---|
+| **CP-1 · Words and numbers** | Text-only changes on existing frames, for all three roles: the definitions vocabulary, lapsed, per-diner labels, missing-not-zero, and the cross-role number fixes. No layout change. | Inventory L1–L55 marked CP-1; N1–N5, N7–N9, N11; C7–C10, C13–C16, C18 |
+| **CP-2 · Components** | ML/Tab Label to 12 pt; mono words out of components (gap 171); MealSectionHeader "Ended"; LiveDial, DemandRingCard and ChartBar defaults ("entered", "forecast"); chart value labels and denominator slots; MetricBadge draft tick | L3, L6, L20, L22, L24, L44, L53; C5, C17, C22 |
+| **CP-3 · Never hide** | Restore every layer hidden for the 12-text cap and every item dropped for it; reorder by the one page layout on pages that are not rebuilt | Gaps 154, 163, 167; C1 |
+| **CP-4 · Today** | Now, Decisions (new, role-filtered), Messes, Watch; Empty, Offline and lapsed states; crowd without a head count | L16, L31, L50, L54; N5, N6; C2, C6, C19 |
+| **CP-5 · Issues** | SOS, Dishes, Community; the safety and moderation permissions | L38, L40, L42; C12 |
+| **CP-6 · Insights** | Overview, Meal record, Waste vs shortages (new), Turnout & reasons (new) | L51; N10; C16, C21, C23 |
+| **CP-7 · Manage** | Hub with pills inside sections; surplus pickup permission; Rewards and Proposals labels | L37, L39, L41, L49; N12; C11, C20, C21 |
+| **CP-8 · Links** | Every number opens its source (rule 21); Decisions rows; the admin tab bar (gap 119); the role-select stitch | Rule 21; gaps 119, 120, 139 |
+
+### CP0.11 Checks
+
+- **Design unchanged by this stage:** `st110` = `st109` on all 13 pages. `st111` (full walk) vs `st110`:
+  - **12 pages are unchanged:** nodes, signatures, links and flow starts (page 10: 406 nodes, 241 links, the 4 approved flow starts).
+  - **Page 03 shows one change:** the documentation board "Usage / UpdateCard" (`101:1618`) is now 177 pt tall (it was 153).
+    - Its UpdateCard instance now matches its main component (101 pt).
+    - No script in this stage wrote to Figma; the only writes were snapshot plugin data. Every other call only read text, styles and sizes.
+    - The likely cause is that Figma re-laid out a stale instance when the read-only scans walked page 03. A concurrent edit to the file can't be ruled out. Nothing was reverted, because the board now agrees with its component.
+  - **No app screen changed.**
+- **Files:**
+  - `design_intent.md`: definitions; design rules 20–28; retired caps; rule 16 reworded; summaries of permissions, offline, reasons, sample rules and page plan.
+  - This section.
+  - `contract_pass/label_inventory.md`.
+  - Gaps 172–202.
