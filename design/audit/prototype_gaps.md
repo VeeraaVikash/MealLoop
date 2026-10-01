@@ -592,3 +592,19 @@ One gap for each open decision raised by the contract pass (`prototype_contract.
 | 200 | Student urgent report (N2) | The student sample reports a **stone in the rice** at 12:41 PM, but the only SOS case is the **biryani foreign object** at 1:25 PM. | Low | Re-point the student sample to the biryani case at 1:25 PM. The student app's user is Aarav, so the admin's reporter mask becomes •••0238 (it is •••2231 today on AD-3b and AD-7d). | CP-1 |
 | 201 | Sambar story (N7) | The student sees Sambar "Too salty" as **Fixed** (breakfast, 5 Aug), while staff and admin show **6 lunch reports, Recheck Fri**. | Low | Make the student's report one of the 6 lunch reports, showing "Recheck Fri". | CP-1 |
 | 202 | Student voting (N12) | Admin vote tallies (1,204 / 388) have **no student vote screen** behind them, and the legacy critique dropped "final vote". | Medium | Owner decides: add a student vote surface, or make votes a mess-committee action. | CP-7 |
+
+## Stage 1 · Today, 1A (2026-10-01)
+
+### Resolved
+
+- **199** (biryani report time): the owner set 12:45 PM, with auto-escalation at 1:15 PM. AD-3b and the AD-7d sheet now match. MS-D2's "Updated 12:45 PM" now agrees.
+- **Inventory L50 / N5** (all-mess total): Now shows 1,872 of 2,360 for 3 of 4 messes, with Annexe named apart.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix |
+|---|---|---|---|---|
+| 203 | Today · Now (all states) | The **bell** (asked for by the brief) has no destination. There is no admin notifications page in the page plan, and an unlinked control is a dead control. | Low | Add an admin notifications page to the plan (Today › Now › bell), or drop the bell. |
+| 204 | Today · Now (Empty) | Rules 10 and 20 conflict. The Empty state keeps blocks 2 and 3 (never hide), so "Nothing needs you right now" can't be vertically centred. | Info | Accept: on a page with other evidence, the Empty message takes block 1's slot. Reword rule 10 to apply to pages whose only content is the empty message. |
+| 205 | MS-E Shift home (09), MS-D4, AD-7d | At 12:30 PM MS-E shows "1 safety report", before the 12:45 report. MS-E, MS-D4 and AD-7d still show the Curd request as pending or "needs approval", although it lapsed at 11:30. | Low | Staff text pass (CP-1): MS-E Feedback reads "No safety reports" at 12:30; Curd reads "lapsed" everywhere (inventory L35–L36). |
+| 206 | AD-3b resolution log | The When · who lines set words in mono (rule 27, gap 171), and the new escalation and hold rows copy that style. | Low | Fix with gap 171 in the components or Issues stage: mono for times and IDs, Inter for the words. |

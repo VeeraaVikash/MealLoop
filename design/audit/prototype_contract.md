@@ -4775,3 +4775,131 @@ The full table is `design/audit/contract_pass/label_inventory.md`. It has 55 lab
   - This section.
   - `contract_pass/label_inventory.md`.
   - Gaps 172–202.
+
+## Stage 1 · Today (contract-pass track CP-4), 2026-10-01
+
+**Brief:** rebuild Today as Now, Decisions, Messes and Watch, and apply the label-inventory fixes on these pages. The brief asks for a snapshot after each substage, with a stop and a report after each. This section grows by one block per substage.
+
+**Sample facts (set once, used everywhere on Today):**
+- The time is 1:40 PM.
+- **Biryani safety report:** received 12:45 PM, owner Ravi, hold requested and not yet confirmed.
+- **Curd 60 → 45 L:** the 11:30 AM cutoff passed, so the request **lapsed** and the kitchen cooked 60 L.
+- **Waiting for a decision:** the Idli sambar vote, and Karan's pass reissue.
+- **Access:** 2 requests.
+- **Demo user:** Admin, holding all approvals.
+
+**Owner's answers before building (2026-10-01):**
+1. **Total:** "Entered **1,872 of 2,360** forecast". This counts the 3 reporting messes only. The brief's 2,418 / 2,960 included Annexe's stale 546 / 600, so Annexe is named apart. This resolves inventory L50 and N5.
+2. **Crowd line:** "**410 in the last 30 min**", a recent rate. It no longer competes with North's 640 entered. Applied in 1E.
+3. **Biryani escalation:** the 30-minute auto-escalation rule (AD-3.1) stays. The report came in at 12:45, so it **escalated to the food head at 1:15 PM**. AD-3b is updated to match. Gap 199 is resolved: 12:45 PM is canonical.
+
+### 1A · Today · Now (AD-1a rebuilt in place)
+
+**Frames:** AD-1a Success `811:21056`, Empty `1101:7158` and Offline `1103:7570` were rebuilt in place. Ids, grid slots, annotations and the "Admin · Today" flow start are kept. They are renamed "AD-1a · Today — Now" plus the state, and their labels follow.
+
+**Layout, following the one page layout:**
+
+| Part | Content |
+|---|---|
+| **Header** | Large title "Today", with a bell in the NavHeader trailing slot (GlassButton, `bell`). |
+| **Context line** | "Wed lunch · All messes · updated 1:40 PM" |
+| **Pills** | Now (MetaChip Selected), then Decisions, Messes, Watch (Tappable). This replaces the old 4-chip scope row; the scope moved into the context line. |
+| **Block 1 · hero** | The black "Needs you" card: count **6** (ML/Hero Metric) with "need you" (Inter). Below it, the top 3 items as white ListRow cards, then "See all 6 · Pass reissue · 2 access requests". |
+| **Block 2 · evidence** | White "Entered" card, described below. |
+| **Block 3 · evidence and actions** | White "Watch" card, described below. |
+
+**Block 1 order:** safety first, then by deadline or age.
+1. Chicken biryani · "Ravi · hold not confirmed" · Stop "Safety".
+2. Curd 60 → 45 L · "Kitchen cooked 60 L" · **Lapsed "Lapsed 11:30"**.
+3. Idli sambar on Sundays · "Waiting since Tue 8 PM" · Hold "Vote".
+
+**The count:** 6 = biryani, curd, vote, pass reissue, and 2 access requests.
+
+**Block 2, the Entered card:**
+- "Entered" over "**1,872** of 2,360 forecast".
+- A slim bar: lime ChartBar Pill at 255 / 321 pt over a `border`-token track.
+- Three lines: "3 of 4 messes reporting", "Annexe not reporting · last sync 12:10 PM", and "Forecast rule v0 · set at 9:00 AM".
+- The four MessBadges, worst open issue first: Main Stop, North Stop, South Hold, Annexe Offline. Each has its denominator underneath in mono: 712/860, 640/700, 520/800, and "—".
+- Annexe's badge now reads "—" with an empty arc. The stale 91% is gone (missing data is never zero or stale).
+
+**Block 3, the Watch card** (ListRows with counts):
+- Shortages "1 running out · 3 at risk" · 4.
+- Crowd "North Mess packed · 2 min ago" · 1.
+- Data gaps "Annexe not reporting · Curd lapsed" · 2.
+
+**No dial:** the LiveDial, the "MESSES · LUNCH" mono eyebrow, the separate mess strip card and the two destination cards were removed. Their facts moved into the blocks above; nothing was hidden.
+
+**States:**
+
+| State | What differs from Success |
+|---|---|
+| **Empty** | Block 1 is an EmptyState "Nothing needs you right now · Decisions show here as they come in." (checkmark.circle, no action). Blocks 2 and 3 stay (rule 20); Data gaps reads 1 (Annexe only). |
+| **Offline** | OfflineBanner "Offline · saved at 1:38 PM" at the top; context line "… saved 1:38 PM". The card adds "Approvals need a connection". Only rows with an Offline page keep a chevron and link: biryani → AD-3b Offline, Main → AD-1b Offline, Shortages → AD-2c Offline, Crowd → AD-2a Offline. Curd, vote and See all have no chevron. |
+
+**Links:**
+- **Success:**
+  - biryani → AD-3b;
+  - vote → AD-5d;
+  - Main badge → AD-1b (kept);
+  - Shortages → AD-2c;
+  - Crowd → AD-2a.
+- **Waiting for the substages that build their destinations:** Curd → 1C decision detail; See all and the count → 1B Decisions; the pills; the Entered figure and the other badges → 1D; Data gaps and "updated" → 1E.
+- **Bell:** unlinked, because there is no admin notifications page (gap 203).
+
+**Component change (flagged):**
+- **StatusPill `State=Lapsed`** (`1181:2`): no fill, a dashed `ink-secondary` outline (3/2) and an `ink-secondary` label.
+- It keeps "lapsed" apart from Offline (solid outline, which means missing data).
+- **Incident, found and fixed in this substage:**
+  - Setting the new variant's text changed the set-wide `Label` default from "On track" to "Lapsed". About 260 hidden and default-label instances across pages 03, 04, 07, 09 and 10 changed text; no visible app screen showed it.
+  - The default was restored to "On track". The previous value was recovered by matching the `st112` text hash.
+  - After the fix, the re-taken `st113` shows no stray changes.
+
+**AD-3b timeline** (Success and Offline; owner's answer 3):
+
+| Item | Was | Now |
+|---|---|---|
+| When | 1:25 PM | **12:45 PM** |
+| Open for | 26 min | **1 h 6 min** (Offline: 1 h 3 min, as saved) |
+| Escalate button | active | `State=Disabled`, "Escalated to food head", kept visible |
+| Escalation chip | "Auto-escalates … 1:55 PM" | "Escalated to food head at 1:15 PM · auto" |
+
+The log, newest first:
+1. Assigned to Ravi · 1:32 PM (unchanged, so AD-7d's order holds).
+2. Escalated to food head · 1:15 PM · auto · after 30 min (new row).
+3. **Hold requested** · biryani 30 kg · 12:50 PM · Admin, with a Hold icon. It replaces "Batch set aside · 1:30 PM": the hold is not yet confirmed.
+4. Report received · 12:45 PM.
+
+The AD-7d biryani sheet now reads "1 report at 12:45 PM".
+
+**Checks:**
+
+| Frame | Fill | Blocks (densitytool) | Texts | Scroll |
+|---|---|---|---|---|
+| Now (Success) | 100% (scrolls; last item at y 728 at max scroll) | 3 (+ pills) | 22 | 488 |
+| Now (Empty) | 100% (scrolls) | 3 | 26 | – |
+| Now (Offline) | 100% (scrolls) | 4 (banner, pills, card, Entered) | 21 | – |
+| AD-3b (Success) | 100% | 3 | 18 | 779 |
+| AD-3b (Offline) | 85% | 3 | 12 | – |
+
+- **Rule 10 vs rule 20:** Now's Empty state keeps blocks 2 and 3, so its message can't be centred (filltool: not centred). Rule 20 wins (gap 204).
+- **Type:** all new text is at least 12 pt (13 Footnote, 13 Mono Footnote, 15 Eyebrow and Secondary, 17, 30, 52). Mono is used only for numbers (6, 1,872, 712/860, the counts, —).
+- **Numbers agree with:**
+  - AD-5d: vote closed Tue 8:00 PM;
+  - AD-6a and AD-6b: Karan;
+  - AD-7a: 2 access requests;
+  - AD-2c: 1 running out plus 3 at risk = 4;
+  - AD-2a: North packed, Annexe 12:10 PM;
+  - AD-1b, AD-4e and MS-C2: Main 712/860;
+  - MS-D2: biryani at 12:45;
+  - AD-3b and AD-7d: 12:45 / 1:15 / 1:32.
+- **Still disagreeing, fixed in later substages or stages:**
+  - AD-1b's Curd card reads "Awaiting approval" (1D).
+  - MS-E (12:30 PM) shows "1 safety report" before the 12:45 report, and "1 needs approval" for the lapsed Curd.
+  - MS-D4 and AD-7d say "pending" for Curd (inventory L35–L36; the staff and Manage stages).
+- **Diff vs `st112` (snapshot `st113`, full walk):**
+  - **Page 10:** 9 changed (the 3 Now frames and their labels, AD-3b ×2, the AD-7d biryani sheet). Links 241 → 249 (+12 −4: the old AD-1a links re-made on the new layers, plus biryani, vote and the Offline retargets). Flow starts: the 4 approved, unchanged.
+  - **Page 03:** StatusPill only (+1 variant).
+  - **Every other page:** unchanged.
+- **Renders (scale 1):**
+  - `today/before/`: AD-1a Success, Empty and Offline; AD-3b Success and Offline.
+  - `today/after/1a_*`: Now Success at rest and at max scroll, Empty, Offline; AD-3b at rest and the log.
