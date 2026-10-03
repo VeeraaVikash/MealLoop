@@ -5797,3 +5797,12 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **Community:** question hero (Compare and merge → AD-3d) and "Open · 5" IssueCards with owner lines → AD-3d.
 - **Pills** are wired state for state, including SOS Empty and SOS Offline.
 - **Page 10 links:** 371 → 392.
+
+## Run 2 · Stage 6 · Pass exception, Staff access, Give access (2026-10-03)
+
+`st147` = `st146` first; end `st148`. Details: `run2/s6/stage6.md`.
+- **AD-6b:** Open, Declining, Sending, Approved and Failed. CouponCard tickets (Missed dashed → New pass lime) in the question hero, a "What happened" rail, and DecisionActions "Approve reissue" / "Decline".
+- **AD-7b Staff access — Ravi:** Request, Changed, Offline (in place), plus Sending, Saved and Failed. The Attendance scanner ask is highlighted (lime, dashed). DecisionActions Approve access / Decline become Save changes after any other flip.
+- **AD-7a:** a Give access pill → picker sheet → Staff access (Lakshmi, Give).
+- **Page 10 links:** 392 → 424.
+- **Page 03:** CouponCard constraints made resizable (no visual change at 353).

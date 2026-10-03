@@ -870,3 +870,12 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 292 | IssueCard (page 03) | The current-step segment is lime in every card, so a list shows several lime data highlights. The admin Community view overrides it to ink per instance. | Medium | Add a `Highlight` boolean or an ink variant, and decide for the student list too. | Audit |
 | 293 | IssueCard (page 03) | "UPDATED 5H AGO" is set in mono caps with words, which breaks "mono only for numbers". | Low | Footnote style with mono numbers only. | Audit |
 | 294 | AD-3a Dishes / Community | Other dish rows (Rice, Paneer, Curd) and "Not now" have no destination. | Info | Add per-dish detail states if needed. | Later |
+
+## Run 2 · Stage 6 (2026-10-03)
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 295 | AD-6b Approved | "Reissue approved 1:42 PM" (brief) comes before the 2:00 PM expiry shown on the same card. | Low | Move the approval after 2:00 PM, or the expiry before it. | Owner |
+| 296 | AD-7a People | "2 access requests · Suresh · Lakshmi" doesn't count Ravi's 10:52 AM scanner ask. | Low | Make it 3, or move Ravi's ask into AD-7c. | Later |
+| 297 | AD-7b Remove access sheet | Unreachable now that Staff access has no Remove access button. | Low | Add a text button under DecisionActions, or archive the sheet. | Stage 11 |
+| 298 | AD-7a Give access sheet | Meena's row has no destination (no Staff access frame for her). | Info | Build one if needed. | Later |
