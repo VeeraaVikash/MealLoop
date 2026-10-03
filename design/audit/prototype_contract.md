@@ -5845,3 +5845,74 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **Page 07:** the "Student · Sign in" start was added on `221:62499`.
 - **Page 09:** MS-0 sign-in trio, staff prototype wired MS-A to MS-E (71 links). Starts: Mess staff · Sign in, Entry scanner, Pass desk.
 - **Reachability:** 07 257/261, 09 25/34, 10 84/151 (unreachable frames are state galleries, listed); no dead ends.
+
+## Run 3 · R2-5 · Prototype wiring (2026-10-03)
+
+`st168` = `st167` first; end `st169`. Page 10 links +202 −44 (the 44 are re-keyed tab links on the R2-4 frames: Dissolve 0.25 → the standard tab transition).
+
+**Flow starts:**
+- **Page 07:** "Student · Sign in" (`221:62499`), plus the 25 run-2 starts.
+- **Page 09:**
+  - Mess staff · Sign in (`1406:370`);
+  - Mess staff · Entry scanner (`732:26`);
+  - Mess staff · Pass desk (`734:171`).
+
+  The two extra staff starts are kept for the scanner and pass-desk accounts. The Sign in chain lands on the supervisor account (logged).
+- **Page 10:** the approved five: Admin · Today, Issues, Insights, Manage, Sign in.
+- **Page 99:** none.
+
+**Sign-in chains** (each Sign in → Verifying → Confirm profile → home):
+
+| Role | Chain |
+|---|---|
+| Student | Onboarding · Sign in → Verifying → Confirm profile → All set → Home (run 2, unchanged) |
+| Staff | MS-0 Sign in → Verifying → Confirm profile → MS-C1 Start your shift → MS-E Shift home |
+| Admin | AD-0 Sign in → Verifying → Confirm profile → AD-1a Today — Now |
+
+**Admin tab bar (126 non-sheet page-10 frames with a visible tab bar, new frames included):**
+- Today → AD-1a Now;
+- Issues → AD-3a SOS;
+- Insights → AD-4a Overview;
+- Manage → AD-5-0 hub;
+- **Search circle → AD-8c Search — Recent** (new, Dissolve 0.25).
+
+Self-links are skipped and the 33 sheets are left alone. 625 tab links in all.
+
+**Avatar "DR"** on 33 root and pill-view frames → **AD-8a Profile sheet**. The sheet links:
+- Notifications → AD-8b;
+- Help → AD-8d;
+- Sign out → AD-0 Sign in;
+- Close and Dismiss → Back.
+
+**Staff prototype:**
+- **MS-E Shift home** shows 8 plain task cards:
+  - Confirm the hold → MS-F1;
+  - Who's coming → C2;
+  - Prep & changes to plan → C3;
+  - Record waste → D1;
+  - Report a shortage → MS-G1;
+  - Spare food pickup → MS-G5;
+  - Feedback → D2;
+  - Shift history → D4.
+- **Avatar R** → MS-H3 Profile sheet. The sheet links:
+  - Notifications → H1;
+  - Waiting to send → H4;
+  - Help → H6;
+  - Sign out → MS-0.
+- **Task screens:** every one uses StaffTopBar Type=Task, with Back → its account's home (MS-E, MS-A1 or MS-B1).
+- **End shift on MS-E** → MS-E2 confirm → MS-H5 summary → Done → MS-0 Sign in.
+- **A6 and B8** (scanner and pass desk) end shift → MS-0 Sign in directly. The summary is the supervisor's (logged).
+
+**Reachability from the starts:**
+
+| Page | Frames | Reached | Unreachable (intentional) | Dead ends |
+|---|---|---|---|---|
+| 10 | 162 | 94 (+ AD-8 search, notifications, profile and help now via Search circle and avatar) | 66 state frames: Empty, Offline, Failed, Sending, Notified, Confirmed, Ready, Sent, Open / Read-only Curd, Surplus Offered / Collected / Late, Notifications (Empty), Search — No results | 0 |
+| 09 | 54 | 40 | 14 state frames: A3–A5, B4–B6 scan outcomes, C4b awaiting approval, E-empty, F5 Failed, F6 Offline, G3 Offline, G4 Offered, G7 Late, H1 (Empty) | 0 |
+| 07 | 261 | unchanged since run 2 (257 of 261 from all starts) | — | 0 |
+
+**Real bugs fixed:**
+- the Search circle was unlinked;
+- the admin avatar was unlinked;
+- the staff Waiting to send queue was reachable only from offline states (now from the profile sheet);
+- both profile sheets ran 6 pt into the home indicator (raised to 452 pt, content ends at 787 / 792).
