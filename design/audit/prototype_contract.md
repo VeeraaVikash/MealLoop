@@ -5806,3 +5806,10 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **AD-7a:** a Give access pill → picker sheet → Staff access (Lakshmi, Give).
 - **Page 10 links:** 392 → 424.
 - **Page 03:** CouponCard constraints made resizable (no visual change at 353).
+
+## Run 2 · Stage 7 · Surplus oversight (2026-10-03)
+
+`st149` = `st148` first; end `st150`. Details: `run2/s7/stage7.md`.
+- **AD-6d states:** Offered, Accepted (was Success), Collected 3:05 PM, Late ("Pickup is late · call Ravi" with a lime Call Ravi) and Offline.
+- **Hero:** a three-step Offered → Accepted → Collected track with times.
+- **Changes:** "Log pickup" removed; "Pickups are logged by the supervisor." added on AD-6d and AD-6d2.

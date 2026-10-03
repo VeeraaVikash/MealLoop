@@ -879,3 +879,10 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 296 | AD-7a People | "2 access requests · Suresh · Lakshmi" doesn't count Ravi's 10:52 AM scanner ask. | Low | Make it 3, or move Ravi's ask into AD-7c. | Later |
 | 297 | AD-7b Remove access sheet | Unreachable now that Staff access has no Remove access button. | Low | Add a text button under DecisionActions, or archive the sheet. | Stage 11 |
 | 298 | AD-7a Give access sheet | Meena's row has no destination (no Staff access frame for her). | Info | Build one if needed. | Later |
+
+## Run 2 · Stage 7 (2026-10-03)
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 299 | AD-6d2 Pickup detail | Offered step reads "Ravi · •••4417 · kitchen supervisor"; Staff access now has Ravi as Kitchen staff with Supervisor off. | Low | Say who offered (the supervisor) or drop the role. | Audit |
+| 300 | AD-6d Offered / Collected / Late | Reachable only by the gallery; no live trigger moves Accepted to Collected or Late. | Info | Intentional states; add a timeout if a demo needs it. | Stage 11 |
