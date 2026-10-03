@@ -5837,3 +5837,11 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **Not linked:** Search, and the 33 sheets.
 - **Flow starts:** reset to the four approved starts.
 - **Page 10 links:** 892. **Gap 119:** closed.
+
+## Run 2 · Stage 11 · Linking (2026-10-03)
+
+`st156` = `st155` first; end `st157`. Details: `run2/s11/stage11.md`. Demo: `DEMO.md`.
+- **Approved admin flow starts (page 10):** Admin · Today `811:21056`, Admin · Issues `849:564`, Admin · Insights `877:983`, Admin · Manage `968:3292`, **Admin · Sign in** `1406:493`. The reset rule after any link edit now resets to these five.
+- **Page 07:** the "Student · Sign in" start was added on `221:62499`.
+- **Page 09:** MS-0 sign-in trio, staff prototype wired MS-A to MS-E (71 links). Starts: Mess staff · Sign in, Entry scanner, Pass desk.
+- **Reachability:** 07 257/261, 09 25/34, 10 84/151 (unreachable frames are state galleries, listed); no dead ends.
