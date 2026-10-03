@@ -150,3 +150,35 @@ The fill floor stays (rule 25).
 
 - The mentor called the app "basically an attendance app" and asked for a 2026-level idea. Direction: a Prep Agent (recommends prep quantities, escalates when unsure) and a Crowd Agent (live turnout). The demand, override, crowd and shortage screens are their surfaces.
 - Target customer: institutional hostel management (SRM first).
+
+## UI words (run 3, R2-2)
+
+On screen (pages 09 and 10), the plain word replaces the internal term. Layer and component names keep the internal term, and the definitions above still use it. Numbers, IDs and times never change. The tab names stay Today, Issues, Insights and Manage.
+
+| Internal term | UI word |
+|---|---|
+| Decisions | To do |
+| Watch | Alerts |
+| SOS | Urgent |
+| Surplus | Spare food |
+| Voting | Votes |
+| Audit log | History |
+| Staff access | Who can do what |
+| Permissions | What they can do |
+| Verify and close | Check and close |
+| Override | Change to plan (short form in tight rows: "Change") |
+| Lapsed | Missed cutoff (short form in tight rows: "too late" / "Change late") |
+| Unserved | Not served |
+| Plate waste | Left on plates (in 72 pt time columns: "On plates") |
+| Entered | Came in |
+| forecast | expected (the How-counted text still says it is a forecast) |
+| Intent answers / intents | Replies |
+| Data gaps | Missing data |
+| Data freshness | How fresh is this? |
+| Escalated | Passed to you |
+| Demand dashboard | Who's coming |
+| Prep recommendation | How much to cook |
+| Corrective action (log) | Fix (Fixes log) |
+| Waste entry | Record waste |
+| Shift select | Pick your shift |
+| Scope | Where |
