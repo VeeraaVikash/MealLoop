@@ -25,28 +25,33 @@ All data is sample. The prototype needs **three prototype links**, one per role.
 
 ## Mess staff · Sign in (page 09)
 
-1. **Sign in with SRM** → Verifying → "Is this you?" (**Ravi · Mess staff · Main Mess**) → **Yep, that's me**.
-2. **MS-C1 Start your shift** (Main Mess, Lunch) → **Start shift** → **MS-E Shift home**.
-3. Tap **Demand** → MS-C2 (860 expected, 412 intents) → **See prep plan** → MS-C3.
-4. **Adjust a quantity** → MS-C4 Sambar 50 L with a reason → **Save change** → C4a "In effect now".
-5. **Back to prep plan** → **Menu and special meal** → MS-C5. Tap the top bar → Shift home.
-6. Tap **Waste entry** → MS-D1 → **Save waste log** → D1a → **Open shift history** → MS-D4.
-7. Top bar → Shift home → **Feedback** → MS-D2 → **Sambar** → MS-D3 → **Save action** → D3a.
-8. Optional starts:
-   - **Mess staff · Entry scanner:** Tap to scan → Scanned → Scan next → End shift → confirm.
-   - **Mess staff · Pass desk:** Check → type the SRM ID → Check ID → Valid → **Redeem pass** → Redeemed → Check next pass.
+1. **Sign in with SRM** → Verifying → "Is this you?" (**Ravi**) → **Yep, that's me** → **MS-C1 Start your shift** (Main Mess, Lunch) → **Start shift**.
+2. **MS-E Shift home** shows only the supervisor's tasks as cards. **End shift** and the avatar **R** are in the top bar.
+3. **Confirm the hold** (Safety) → "Is the biryani off the line?" (asked by Devi 1:41 PM) → lime **Yes, it's held** → Sending → **Held 1:48 PM** → **Mark inspected** → **Inspected 1:50 PM**. Then **Back** → Shift home.
+4. **Report a shortage** → pick **Rice** → stepper **12 kg** → lime **Send alert** (on the black card) → **Alert sent 1:52 PM** → Back.
+5. **Spare food pickup** → Accepted (Offered 2:10, Accepted 2:14, due 3:00 PM) → lime **Log pickup** → **Collected 3:05 PM** → Back.
+6. **Who's coming** → MS-C2 → **See prep plan** → MS-C3 → **Adjust a quantity** → MS-C4 → **Save change** → C4a → Back.
+7. **Record waste** → MS-D1 → **Save waste log** → D1a → Back. **Feedback** → MS-D2 → **Sambar** → MS-D3 → **Save action** → D3a.
+8. Avatar **R** → **Profile sheet** (Kitchen supervisor, Main Mess, lunch) → **Notifications** (4 today) → **Devi asked you to confirm the hold** opens the hold.
+9. Avatar → **Waiting to send** (3 actions, Try again) → Back. Avatar → **Help** (5 questions) → Back.
+10. **End shift** → "End lunch shift?" → **End shift** → **Lunch shift done** (712 entered, waste logged 2:20 PM, 1 open item) → **Done** → Sign in.
+11. Optional starts:
+    - **Mess staff · Entry scanner:** Tap to scan → Scanned → Back → End shift.
+    - **Mess staff · Pass desk:** the Redemption counter opens the log; Check → type the SRM ID → Valid → **Redeem pass** → Redeemed → Back.
 
 ## Admin · Sign in (page 10)
 
 1. **Sign in with SRM** → Verifying → "Is this you?" (**Devi · Food head · 4 messes**) → **Yep, that's me** → **Today · Now**.
-2. Now: the hero "Safe to keep serving lunch?". Open **5 more need you** → Decisions.
-3. Decisions → **Karan pass reissue** → AD-6b → **Approve reissue** → Approving → **Approved 1:42 PM**.
-4. **Issues** tab → SOS. Use the **Dishes · 4** pill → "Will the sambar fix hold?" → **Review fix** → AD-3c.
-5. **Community · 5** pill → "Merge the 3 long-wait reports?" → **Compare and merge** → AD-3d.
-6. **Insights** tab → Overview → **Waste** pill → mirrored chart (waste up, shortages down) → **Look closer · Wed lunch** → Meal.
-7. **Manage** tab → hub → **People** → **Give access** → pick **Lakshmi** → Staff access (nothing highlighted) → Cancel.
-8. People → See all people → **Ravi** → Staff access (Attendance scanner asked 10:52 AM) → **Approve access** → Saved.
-9. Manage → **Surplus** → Accepted (Offered → Accepted → Collected) → **See dishes and steps** → Pickup detail.
-10. Tab bar anywhere → Today, Issues, Insights and Manage roots. Search is not linked.
+2. **Messes** pill → tap **South** → Mess detail South (520 of 800, Chapati at risk) → Back → tap **Annexe** → last synced 12:10 PM, not counted.
+3. Avatar **DR** → **Profile sheet** → **Notifications** → top row **Kitchen confirmed the hold 1:48 PM** → Safety case.
+4. **Search circle** (any tab bar) → Recent → tap the field → Results for "Main" (Dishes, Messes, People, Cases) → **Ravi** → Staff access.
+5. **Issues** tab → SOS → **Dishes · 4** pill → "Will the sambar fix hold?" → **Review fix**.
+6. **Insights** tab → Overview → **Waste** pill → mirrored chart. Then Reports & exports → **All messes** → Report preview (5–11 Aug) → lime **Export CSV** → **Exported 2:36 PM**.
+7. **Manage** tab → hub → **Rewards** → **Redemptions** pill → today's 5 redemptions (₹2,370 of ₹5,000 used).
+8. Hub shortcut rows: **Staff list** → Ravi; **Give access** → Lakshmi; **Audit log** → tap a dot on the hero → its entry.
+9. Today → **To do** → **Karan pass reissue** → **Approve reissue** → Approved 1:42 PM.
+10. Avatar → **Help** (5 questions) → Back. Avatar → **Sign out** → Sign in.
 
-**Known limits:** Empty and Offline states have no live toggle, so they are reached from the tab-root pills or only on canvas. See run2/s11/stage11.md for the reachability lists.
+**Known limits:**
+- Empty, Offline, Failed and other state frames have no live toggle, so they are seen on the canvas. The lists are in prototype_contract.md (Run 3 · R2-5).
+- Turnout and reasons, and Prep accuracy, are deferred.
