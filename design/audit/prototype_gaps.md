@@ -894,3 +894,14 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 301 | Page 09 staff screens | No back or home control. The prototype uses a tap on the StaffTopBar to return to MS-E. | Medium | Add a Home affordance to StaffTopBar. | Later |
 | 302 | Page 10 Empty / Offline families | 54 state frames are reachable only on canvas (no live toggle). | Info | Use a states gallery start like page 07's. | Later |
 | 303 | MS-E vs Staff access | MS-E shows Ravi as Supervisor; admin Staff access now has him as Kitchen staff with Supervisor off. | Low | Pick one role for Ravi across 09 and 10. | Owner |
+
+## Run 2 · Stage 12 audit (2026-10-03)
+
+The full findings are in `final_audit/README.md`. New gaps from the audit:
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 304 | Student lunch (07) vs admin (10) | The student lunch answer says "Change till 9 AM", while admin uses an 11:30 cutoff for lunch. | Medium | Decide one lunch cutoff. | Owner |
+| 305 | 09 MS-0 and 10 AD-0 sign-in rows | No Moment note or sample chip (missed in Stage 11). | Low | Add them. | Next |
+| 306 | MealHero, StepBar, IssueCard, eyebrow text style | Words set in mono on about 175 prototype screens (eyebrows in mono caps, meal window lines, step labels, "UPDATED 5H AGO"). | Medium | Fix in the components and the eyebrow style. | Next |
+| 307 | 07 dead chevrons (186 in 66 screens) | Rows with chevrons and no link: Entry history, Entry · Discrepancy, the You list behind the sheets, Report · No one on duty. | Medium | Link the rows or drop the chevrons. | Next |
