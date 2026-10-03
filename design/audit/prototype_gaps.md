@@ -837,3 +837,22 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 285 | AD-5-0 | The NeedsYouCard chips (Vote, Pass, Pickup) and their links are gone with the card; their destinations (AD-5d, AD-6b, AD-6d) are now reached through Decisions and the tiles only. | Info | Confirm. | Later |
 | 286 | AD-5-0 Empty | People keeps "38 people" (people exist on an empty day); every other tile reads zero. | Info | Confirm. | Later |
 | 287 | 99 Archive | Two older archive copies (AD-3a SOS, AD-4a Overview) still carry flow starts ("Admin · Issues", "Admin · Insights"). | Info | Remove them in a cleanup pass. | Later |
+
+## Run 2 · Stage 3 · Student mechanical (2026-10-03)
+
+### Closed
+
+| # | Status |
+|---|---|
+| 52 | **Closed for screens.** The 9 overflowing page-07 screens (Feedback · Step 2 Not good / Sending / Failed, Report · My reports / Fixed, Rewards / Rewards · Offline, Settings · System off, Notifications · Offline) scroll with the R9 + R9c inline pattern; the last item is 20 pt above the tab bar or the Send footer. The 7 sheet backgrounds (Waste · How measured, Request correction ×3, Entry · Discrepancy ×3) stay at rest by design. See run2/s3/stage3.md. |
+| 77 | **Closed.** Dinner Meal detail answer frames exist on 04, 05 and 07 (Yes Sending / Saved / Failed, Track this meal?, No · Why not, No · Saved, Not sure Sending / Saved). The three Meal detail answer links stay inside Meals. |
+| 92 | **Closed (already in place).** Discrepancy — sending → after 1.5 s → Under review ("Request sent"). |
+| 105 | **Closed for student WeekBars.** The bars are screen-level ChartBar instances drawn from the printed grams (×109/84 pt) on 28 Waste frames (04/05/07). |
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 288 | 07 lunch Meal detail copies (Sending, Saved, Track) | No content links (dishes, tiles) unlike the dinner copies; Crowd only. | Low | Copy the Meal detail content links. | Later |
+| 289 | 04 / 05 dinner Track this meal? | The lunch H1 on 04/05 has a design-page link Track → Your plate · expanded; the dinner copy does not (the clone dropped it). | Info | Add it if the design-page flow needs dinner too. | Later |
+| 290 | Meals · Meal detail (dinner, 07) | Back has no link on the source frame (copies use Back → Meals · Menu). | Low | Add Back → Meals · Menu (Move out 0.3). | Stage 11 |
