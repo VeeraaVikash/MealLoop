@@ -22,3 +22,4 @@
 | Stage | Result | Snapshot | Notes |
 |---|---|---|---|
 | R2-0 Preflight | done | st159 = st158 (14 pages) | HEAD 8ce1b32; push dry-run OK; ids 968:3292 (Manage hub) and 1406:493 (AD-0 Sign in) resolve; PROJECT_CONTEXT.md absent. The previous run finished Stages 0–13 (Stages 1–3 done), so nothing was redone. |
+| R2-1 Brand | done (36 + 3 listed exceptions) | st160 = st159 → st161; links and flows unchanged; student pages unchanged | BRAND RULE V2 in design_intent.md. Wash on all 34 staff frames + AD-0 ×3. StaffTopBar lime on-shift dot (component). On track Hold → Success (09: 45, 10: 100). Arcs, hero chips, Live chips, hub lime action. After: 09 31/34, 10 115/151 (98 before); exceptions listed in brand_audit.md. Ink on lime 15.1:1. |
