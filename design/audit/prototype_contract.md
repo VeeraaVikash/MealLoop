@@ -5729,3 +5729,17 @@ AD-5a Success, Offline and the Scope sheet: cards in prep-list order **Rice, Sam
 **Links:** page 10 365 → **368** (+5 −2: the two relinks, the Meal Empty pills and the Overview Empty Meal pill); page 07 1,229 → 1,229 (Breakfast card relinked; two dish-row link records renamed, same targets); 04 and 05 unchanged. **Flow starts:** unchanged (10: 4, 07: 25).
 
 **Diff vs `st133` (snapshot `st134`):** 10 +4 / 19 changed; 04 and 05: 12 changed each; 07: 13 changed; 09: 3 changed; other pages unchanged (page 03's hash does not cover vector paths or variant names; its edits are listed above). **Renders:** `stage4b/4b_*`.
+
+## Stage 4C · Small fixes from 4B
+
+The snapshot `st135` was taken first (full walk; identical to `st134`).
+
+| # | Gap | Done |
+|---|---|---|
+| 1 | 274, 275 | **One numeral style, ML/Metric (JetBrains Mono Bold 30/36, the HeroNumber family), for the day ring**: KcalGauge `Value=1070, Goal=Off` (Day view, Quick add) now uses it, as `Goal=On` (H6b) already did. Its Centre is a fixed 140 pt (the ring opening) with centred text; "1,070" is 88 pt wide, 13 pt above the ring centre, clear of the stroke. The plate gauges (830 / 920) keep ML/Hero Metric 52. **Home plate tile** (TodaysPlateCard Compact): the number stays ML/Metric 30 and **"kcal" (ML/Metric Unit 15) moves under it** (owner's choice); the Value row is 134 × 56 inside the 142 pt tile, which stays 106 tall. Component-level, so pages 04, 05 and 07 change together. Text stays ≥ 12 pt. |
+| 2 | 276 | AD-5b chip (Edit, Edit Offline, More nutrients sheet): **"Arithmetic check · not a lab value"**, one line (249 pt). |
+| 3 | 278 | Meal Offline and its causes sheet: **"Offline · saved 2:32 PM"**. |
+| 4 | 279 | AD-7d Audit log (Success, and the same list behind the Type sheet and three entry sheets): **2:20 PM Lunch waste logged → 1:32 PM Biryani → 12:52 PM Sambar salt cut**; rail spacing 32 + 1 pt per minute (waste 80 pt for 48 min; last row 24); the dot strip reordered (2:20 first, halo on it). "See all · 6" kept. The waste row reuses the old 12:41 PM row, so its link now opens the waste entry. Offline (log saved 2:12 PM) is unchanged. |
+| 5 | 280 | Lunch Meals · Dish detail (04, 05, 07): **Paneer butter masala, 300 kcal, P 11 g, C 11 g, F 23 g**; bars drawn to the daily references (21.38 / 31.35 / 5.70 / 46.82 of 142.5 pt). NutritionBento is detached in these three frames so the bars can carry true widths (instance size overrides are ignored; same as AD-4c). |
+
+**Links:** counts unchanged (10: 368, 07: 1,229, 04 / 05: 7); one destination changed (Audit log first row → waste entry). **Flow starts:** unchanged. **Diff vs `st135` (`st136`):** 10: 10 changed; 04, 05, 07: Dish detail; others unchanged (page 03 component edits are below the snapshot hash). **Renders:** `stage4c/4c_*`.

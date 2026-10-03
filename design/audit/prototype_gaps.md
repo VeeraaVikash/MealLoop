@@ -812,3 +812,18 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 279 | AD-7d Audit log (Success, Type sheet, entry backgrounds) | The 3-row preview (1:32, 12:52, 12:41 PM) **doesn't show the newer 2:20 PM waste entry**. MS-D1a's "2:20 PM" is set in Inter (pre-existing). | Low | Refresh the preview to the 3 newest; mono on the time. | Later |
 | 280 | Meals · Dish detail (04/05/07) | The lunch dish detail shows **Dal tadka 320 kcal**, which isn't on the lunch list; lunch dish rows open it. | Medium | Make it Sambar (110 kcal, from the table). | Later |
 | 281 | PrepCard rings, MacroBar | Redrawing to the rule fixed a pre-existing drift (Sambar arcs and bars were up to 1.3 pt off). | Info | — | — |
+
+## Stage 4C · Small fixes from 4B (2026-10-03)
+
+### Status of earlier gaps
+
+- **274, 275, 276, 278, 279, 280:** **closed** (see the contract, Stage 4C).
+- **277** (Insights Moment notes): **closed** as applied in 4B (all AD-4 frames 2:35 PM).
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 282 | Meals · Dish detail (04/05/07) | The portion and allergen chips still read "1 bowl", "Mustard seeds", "Curry leaves" (Dal tadka's). The brief changed the name, kcal and macros only. | Low | Owner supplies the Paneer butter masala portion and allergens (e.g. milk). | Next |
+| 283 | Meals · Dish detail — not provided | Still titled Dal tadka; the menu's Paneer butter masala and Curd rows open it (positional links from 4A). | Low | Retarget the Paneer row to the full detail, or retitle this one Curd. | Next |
+| 284 | Meals · Dish detail | NutritionBento is detached in 3 frames (bars to data). | Info | A bar-width property on the component. | Later |
