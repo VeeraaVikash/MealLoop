@@ -9,7 +9,21 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 - "Generic" is the #1 complaint. Default ListRow + pill + chevron on white cards reads as boilerplate SaaS. Before reaching for a list, reuse a distinctive pattern: LiveDial, MessBadge / CrowdBadge / MetricBadge, PrepCard swipe cards, stacked duplicate cards, filter-chip rows, black hero card.
 - Also rejected: too much content per card, several elements competing to be the loudest, screens that feel like "bits and pieces", and unexplained gaps. One fact per line. Every screen has one clear hero.
 - Status colours may differ by state but must be muted and consistent. Never full-card traffic-light fills. Lime is the only brand accent.
-- **Lime rule (owner, 2B, replaces the earlier per-stage lime rules):** lime appears only on the wash, the logo, actions, progress or "now" markers, one data highlight per page, and the Success result.
+- **BRAND RULE V2 (run 3, replaces the 2B lime rule).** Lime (`#D4F25A`, token `lime`) is the brand colour for every role: student, mess staff and admin.
+  - **Allowed:**
+    1. the lime wash on every page background (all roles);
+    2. the primary action on a black card;
+    3. the current step in any progress (stepper, rail, progress segment);
+    4. Success / live / on-track status;
+    5. the filled part of rings, arcs and bars on BLACK cards;
+    6. one lime chip or highlight per black hero;
+    7. tickets and coupons.
+  - **Not allowed:**
+    - lime text on white;
+    - lime card fills (except tickets and coupons);
+    - lime without ink text or an ink outline.
+  - **Count rule:** every non-sheet screen of every role shows the wash AND at least one lime element beyond the wash, and at most three.
+  - **Contrast:** ink `#111111` on lime `#D4F25A` is 15.1:1 (AAA); wordmark lime is the logo and counts neither toward the minimum nor the maximum; a repeated element (a list of identical status pills, rail dots or legend swatches) counts as one kind.
 - Reference set (Dribbble inventory and restaurant-ops dashboards): circular capacity badges, gauge / dial, swipeable stacked cards, filter chips with a sticky action footer, directory list with role tags, inventory-dashboard bento. Take the mechanics, never their palettes or illustrations.
 - Full state coverage (Success / Empty / Offline) from AD-4 on. Empty and Offline are simpler than Success, not copies of it.
 - **Admin home pattern (Today · Now, since 1A.3):** wordmark row (since 1A.4), greeting, then one question with one action, then the meal time rail, then the mess rings. Lime follows the lime rule above (on Now: the primary action, the rail fill as progress and the now dot as "now", over the fixed wash).
