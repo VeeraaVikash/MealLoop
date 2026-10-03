@@ -5096,3 +5096,45 @@ To meet rule f, the three frames **dropped the lime page wash** (canvas only). T
 - **Renders (scale 1):**
   - `today/before_1a3/`: the 1A.2 Light frames and the stale Dark twins.
   - `today/after/1a3_*`: Success, Empty and Offline, each at rest and at max scroll, plus both new component sets.
+
+### 1A.4 · Now, final touches (Light)
+
+The snapshot `st119` was taken first. It matches `st118` on all 14 pages (full traversal: `skipInvisibleInstanceChildren = false`, as `snap_method` requires; a default read undercounts hidden instance children).
+
+**Frames:** Success `811:21056`, Empty `1101:7158` and Offline `1103:7570`, edited in place. No layer was removed from the cards. The Dark twin (page 11) is not part of this stage (gap 220).
+
+| Part | Change |
+|---|---|
+| **Wash** (gap 213, owner decision) | The fixed lime wash is back on all three frames, as on every other admin frame: a second frame fill over `canvas`, linear, `wash/top` at 0 → `wash/clear` at 300 pt (position 0.3521), both stops bound. The top fade went from `ScrollEdgeFade / Style=Plain` back to **`Style=Status`** (rotated 180°, 393×42, same position). Cards keep their opaque `surface` / `hero-bg` fills, so lime stays off the cards. |
+| **Logo row** | The greeting header's 44 pt row now holds **AppWordmark `Size=Header`** (instance of `420:1675`, 100×24) top-left, absolute at x 0, centred, as in the student HomeHeader. The row is right-aligned with gap 8: **avatar "DR", then the bell** at the right edge. The bell keeps its x (309) and the avatar moves from x 0 to 257. "Hey Devi" and the context line stay below. **Row height is unchanged (44), so the hero moved 0 pt** (header bottom y 182 before and after). |
+| **Hero question (During)** | **"Safe to keep serving lunch?"** with **"Biryani report open · Ravi hasn’t confirmed the hold"**. Buttons and links unchanged: "Call Ravi" (no screen) and "Open case" → AD-3b. The question wraps to two lines, so the card grows from 243 to 298. |
+| **Phases (logged, not built, gap 222)** | Before: **"Is lunch ready to serve?"** During: **"Safe to keep serving lunch?"** After: **"Ready to close lunch?"** Only During is built. The QuestionCard description records all three. |
+| **Offline** (gap 210) | "Call Ravi" and "Open case" are **live, view only** (opacity 1; a call needs no data, and AD-3b Offline is read-only). **"Needs a connection" is removed** from the hero. The cached text, the OfflineBanner "Offline · saved at 1:38 PM" and the rail's "saved 1:38 PM" stay. The AD-3b Offline link moved from the question text to **"Open case"**. |
+| **Empty** (gap 218) | "Next check 2:00 PM" → **"Lunch closes 2:00 PM"**. |
+
+**Component (page 03):** QuestionCard `1220:1912`:
+- The Ask and Offline question and line defaults now carry the During copy, and the All clear line is "Lunch closes 2:00 PM". The instances follow the defaults (no text overrides).
+- `State=Offline`: both Buttons at opacity 1, and the "Needs a connection" row (`1220:1903`) is removed. Ask and Offline are 298 pt tall.
+- The description is updated (phases, Offline rule).
+
+**Lime (updates the 1A.3 audit):** the page wash, plus on the cards only "Call Ravi" (the All clear check on Empty), the rail fill and the now dot. The AppWordmark mark carries its own lime, as on the student Home.
+
+**Checks:**
+
+| Frame | Fill (filltool) | Densitytool (blocks / texts) | Scroll range | Status edge step, rest / max scroll |
+|---|---|---|---|---|
+| Now (Success) | 100% (y 950) | 4 / 20 | 222 (was 167) | 3 / 3 (was 0 / 0, canvas only) |
+| Now (Empty) | 100% (y 777) | 5 / 31 | 49 | 3 / 3 |
+| Now (Offline) | 100% (y 1010) | 5 / 20 | 282 (was 261) | 3 / 3 |
+
+- **Edge step:** method as in "Fixed wash": the largest RGB step between y 36 (band) and y 46, frame margin x 2–10, at scale 1. Max scroll is measured on temporary clones with the scrolling layers (content and greeting header) moved up by the range; the clones were deleted. The PNGs were decoded inside Figma and cross-checked on the saved renders: band 233,246,182, below 233,245,184.
+- **Last item at max scroll:** y 728 on all three (bottom padding 124).
+- **Type:** no visible text under 12 pt outside the tab bar. 0 mono runs contain a word.
+- **Tokens:** both wash stops are bound (`wash/top`, `wash/clear`). Every card fill is a solid at 100% opacity.
+- **Diff vs `st119` (snapshot `st120`, full walk):**
+  - **Page 10:** 3 changed (the Now frames). Links **248** (+1 −1: the Offline AD-3b link moved from "Ask" to "Open case"). Flow starts: the 4 approved.
+  - **Page 03:** QuestionCard only (set height 317 → 338).
+  - **Every other page,** including 11 and 99: unchanged.
+- **Renders (scale 1):**
+  - Before: `today/after/1a3_*` (the frames were unchanged between `st118` and `st119`).
+  - After: `today/after/1a4_*`: Success, Empty and Offline, each at rest and at max scroll, plus the QuestionCard set.
