@@ -723,3 +723,25 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 246 | AD-3b Confirmed | The enabled close row also opens the Verify and close sheet (the same action as the lime button), so it is not a dead control. The brief didn't list this link. | Info | Confirm, or make the row non-interactive. | 2B |
 | 247 | AD-3a SOS Empty / Offline | **Pills are not linked** (the Dishes and Community views are Success only). | Low | Link them once the views have Empty and Offline (241). | 2B |
 | 248 | AD-3a2 | The open biryani row doesn't open the case (no link was briefed). | Low | Link the open row → AD-3b. | 2B |
+
+## Stage 2B · Open items (2026-10-03)
+
+### Status of earlier gaps
+
+- **233** (lime rule): **closed.** design_intent.md now carries the owner's lime rule.
+- **235** (Approve failed, Decline states): **closed.**
+- **236** (Now info icon and Messes chevron): **closed.**
+- **238** (only Main had a detail): **partly closed.** North detail built; see 249.
+- **239** (Empty bodies): **closed** (see 250).
+- **243** (Kitchen notified type): **closed** in the AD-7d Type sheet.
+- **245** (verify sheet states): **closed.** Wired with SWAP.
+- **248** (AD-3a2 open case): **closed.**
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 249 | AD-1e Messes | **South and Annexe tiles stay unlinked**, and the Offline North tile has no North Offline detail. | Low | Build South (and an Annexe "not reporting" detail) and North Offline from the AD-1b pattern. | Later |
+| 250 | AD-1f Watch Empty | **The body repeats the title** ("Nothing to watch right now" / "Nothing to watch right now."), as briefed. | Info | Owner picks one, or a different body line. | Later |
+| 251 | DecisionActions `Decline ready` | The entered reason "Usual use is 55 L" is sample text (taken from the evidence). The field-tap step stands in for typing. | Info | Confirm. | Later |
+| 252 | Sheets, Now icons | Now Offline's info icon, and the AD-1b Offline pill, open the online freshness sheet (a view-only reference). | Info | Accept, or add an Offline freshness sheet. | Later |
