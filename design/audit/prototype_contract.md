@@ -5788,3 +5788,12 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **Layout:** one black hero (−13% waste │ −1 shortages a week) holding a mirrored ChartBar chart. Waste pills rise and shortage pills hang. 22 Jul and 12 Aug are dashed ghosts at the median, and 5 Aug is lime. Below it, "Look closer · Wed lunch" → AD-4e.
 - **Links:** state for state, as listed in the write-up.
 - **Archive:** the old AD-4c is on 99 Archive, slot 41.
+
+## Run 2 · Stage 5 · Issues views (2026-10-03)
+
+`st145` = `st144` first; end `st146`. Details: `run2/s5/stage5.md`.
+- **AD-3a Dishes** and **Community** were rebuilt in place, and Empty and Offline were added for both (x 9460–10879, y 2184).
+- **Dishes:** question hero (Review fix → AD-3c) and the "Complaints this week" card with ChartBar bars drawn to the counts (Sambar dashed = fix on trial; row → AD-3c).
+- **Community:** question hero (Compare and merge → AD-3d) and "Open · 5" IssueCards with owner lines → AD-3d.
+- **Pills** are wired state for state, including SOS Empty and SOS Offline.
+- **Page 10 links:** 371 → 392.
