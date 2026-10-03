@@ -5813,3 +5813,12 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **AD-6d states:** Offered, Accepted (was Success), Collected 3:05 PM, Late ("Pickup is late · call Ravi" with a lime Call Ravi) and Offline.
 - **Hero:** a three-step Offered → Accepted → Collected track with times.
 - **Changes:** "Log pickup" removed; "Pickups are logged by the supervisor." added on AD-6d and AD-6d2.
+
+## Run 2 · Stage 8 · Small admin fixes (2026-10-03)
+
+`st151` = `st150` first; end `st152`. Details: `run2/s8/stage8.md`.
+- **Rename:** "Biryani coupon" (3 texts).
+- **Bell:** hidden on 15 Today-family frames.
+- **Page 11:** renamed "11 Admin Dark (stale, not in prototype)".
+- **Hub Empty People:** "No staff added yet".
+- **99 Archive:** both flow starts removed (gaps 286 and 287 closed).
