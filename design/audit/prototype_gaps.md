@@ -790,3 +790,25 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 271 | Meals · Offline | The banner wraps "AM" onto a second line (pre-existing). | Info | No-break space before AM in the banner text. | Later |
 | 272 | Menu — Dinner / Breakfast | No full-scroll copies on 04 / 05. | Info | Add them in the next gallery pass. | Later |
 | 273 | DishLine, CrowdRow | The small veg mark, sentence-case "Veg" and the non-mono "Updated" are **instance overrides** on the Meals family only; Meal detail and Intent keep the 44 pt circle and the mono "VEG" tag. | Low | DishLine `Size=Compact` variant (new component state), and fix the mono words in both components (rule 27). | Later |
+
+## Stage 4B · Canonical dishes in the tracker and the admin menu (2026-10-03)
+
+### Status of earlier gaps
+
+- **109** (Curd nutrition): **closed.** Curd is in AD-5a with sample nutrition.
+- **110 / 264** (tracker and AD-5a on the old lunch): **closed** with sample values (`nutrition_sample.md`); verified values are still owed.
+- **252, 256, 257, 263, 267:** **closed** (relinks, Meal Empty, intent row, Moment notes, Breakfast card).
+- **253** (waste timing): **closed.** Waste is logged after close (2:20 PM); Insights moments 2:35 PM.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 274 | H6, H9 Quick add (04/05/07) | **"1,070" (ML/Hero Metric 52) is wider than the ring's 140 pt opening** and runs into the ring stroke. Not shrunk, as briefed. | Medium | Owner picks: a smaller style for 4-digit totals, no thousands comma in the ring, or a larger ring. | Next |
+| 275 | Home · After last meal (07) | Today's plate tile: **"1,070 kcal" pushes "kcal" past the tile edge.** | Low | Same decision as 274 (or "1.1k"). | Next |
+| 276 | AD-5b | **No "Arithmetic check · not a lab value" chip exists.** The check chip reads "Check: 4P + 4C + 9F = 112 · within 5% of 110" and was left as is. | Low | Confirm the wording (replace, or add a second line). | Next |
+| 277 | AD-4 row | The brief set the Waste view note to 1:40 PM and all Insights notes to 2:35 PM; **all AD-4 frames now read 2:35 PM**. | Info | Confirm. | Next |
+| 278 | AD-4e Meal (Offline) | The banner "saved 1:38 PM" predates the 2:20 PM waste entry, yet the record shows plate waste 18 kg. | Low | Banner "saved 2:30 PM", or hide plate waste offline. | Later |
+| 279 | AD-7d Audit log (Success, Type sheet, entry backgrounds) | The 3-row preview (1:32, 12:52, 12:41 PM) **doesn't show the newer 2:20 PM waste entry**. MS-D1a's "2:20 PM" is set in Inter (pre-existing). | Low | Refresh the preview to the 3 newest; mono on the time. | Later |
+| 280 | Meals · Dish detail (04/05/07) | The lunch dish detail shows **Dal tadka 320 kcal**, which isn't on the lunch list; lunch dish rows open it. | Medium | Make it Sambar (110 kcal, from the table). | Later |
+| 281 | PrepCard rings, MacroBar | Redrawing to the rule fixed a pre-existing drift (Sambar arcs and bars were up to 1.3 pt off). | Info | — | — |

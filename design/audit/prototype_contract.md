@@ -5684,3 +5684,48 @@ Before: none of the 20 family frames (04, 05, 07 and the full-scroll copies) had
 **Diff vs `st131` (snapshot `st132`):** 04 +8 / 21 changed; 05 +8 / 21 changed; 07 +8 / 12 changed; 06: 2 changed; 99 Archive +47; every other page unchanged.
 
 **Checks:** text ≥ 12 pt, no words in mono, last item 728 at max scroll (20 pt above the tab bar), fill 100% (all content runs past 748). **Renders:** `stage4a/4a_*` (Light 04, Dark 05).
+
+## Stage 4B · Canonical dishes in the tracker and the admin menu, small admin fixes
+
+The snapshot `st133` was taken first (full walk; identical to `st132`). Data: `nutrition_sample.md` (**all values sample, not verified**). Tool: `tools/trk4b.js` (`mealloop/trk4b`), run on 04, 05 and 07 in one pass.
+
+### A · Nutrition table
+
+Sample plate (decision 1a): Sambar, Rice, **Paneer butter masala** (300 kcal · P 11 · C 11 · F 23 · fibre 2 · sugar 6 · sodium 520), **Chapati** (240 · 7 · 40 · 6 · 5 · 1 · 200); **Curd** (60 · 3 · 5 · 3 · 0 · 5 · 40) for AD-5a. Rice, Sambar and the snack keep their Stage 2.1 values. Every dish and total passes 4P + 4C + 9F within 5% on the displayed numbers.
+
+### B · Student tracker (pages 03, 04, 05, 07)
+
+**Numbers changed (each frame on 04 / 05 / 07):**
+
+| Where | Before → after |
+|---|---|
+| Dish rows (H2, H3, H4, H5, H11, H14, H2b) | Beetroot poriyal 90 kcal, P 2 · C 10 · F 5 → **Paneer butter masala 300 kcal, P 11 · C 11 · F 23**; Chicken curry (Non-veg) 250, P 22 · C 8 · F 14 → **Chapati (Veg) 240, P 7 · C 40 · F 6** |
+| Plate 1× (H2, H14, H2b) | 630 → **830**; P/C/F 33/72/23 g → **27/105/33 g**; 21/46/33% → **13/51/36%**; Fibre 10 → **13 g** |
+| Plate rice 1.5× (H3, H4, H5; H11 rows) | 720 → **920**; 35/92/23 → **29/125/33 g**; 20/51/29% → **13/55/32%**; Fibre 11 → **14 g** |
+| Day (H6, H9 Quick add, H6b) | 870 → **1,070** (= 920 + 150); 38/112/29 → **32/145/39 g**; 18/52/30% → **12/55/33%**; "720 kcal · 4 dishes · planned" → **"920 kcal …"** |
+| H6 Nutrients card, H7 | Fibre 12 → **15 g**, Sugar 21 → **18 g**, Sodium 1,446 → **1,326 mg**; H7 Energy 870 → **1,070 kcal**, Protein 38 → **32 g**, Carbs 112 → **145 g**, Fat 29 → **39 g** |
+| H7 bars (of 321 pt) | 139.63 / 243.96 / 130.73 / 132.99 / 137.57 / 134.82 / 202.37 → **171.74 / 205.44 / 169.25 / 178.84 / 171.96 / 115.56 / 185.06** |
+| H6b goal on | 870 → **1,070 of 2,000** (arc 43.5% → **53.5%**, knob moved); rings 38/112/29/12 g → **32/145/39/15 g**, left 12/163/41/16 → **18/130/31/13 g**, arcs **64.0 / 52.7 / 55.7 / 53.6%** |
+| H8 Week | Wed 0.9k → **1.1k**, bar 47.45 → **58.36 pt** (scale 1,870 = 101.96 pt); the six days and the 1,870 average unchanged |
+| Home · After last meal (07) | Today's plate 870 → **1,070**, macros → **P 32 g · C 145 g · F 39 g** (TodaysPlateCard defaults) |
+| Search (S2, S3) | "Sambar · 110 kcal" already follows the table; unchanged |
+
+**Components (page 03):** KcalGauge variants renamed Value=630/720/870 → **830/920/1070** (Off and On); the three Off rings redrawn (paths 35.8/169.4/116.8°, 34.5/183.1/104.5°, 32.3/183.1/106.7°; visible lengths match the energy shares to 0.01 pt) and their legends; the On variants' goal arcs and knobs (41.5 / 46.0 / 53.5%). TodaysPlateCard rings redrawn to the day (Full 24.9/170.7/96.8°, Compact 21.0/160.5/89.8°) and defaults set to 1,070 / P 32 g · C 145 g · F 39 g. MacroBar variants Beetroot poriyal / Chicken curry renamed **Paneer butter masala / Chapati**; all four redrawn by energy share (Sambar 35/98/63, Rice 18/180, Paneer 29.23/29.23/137.53, Chapati 22.68/129.59/43.74 of 200 pt). NutrientsCard defaults 15 g / 18 g / 1,326 mg.
+
+**Arithmetic check (33 frames on 04/05/07):** rows sum to the gauge; row macros sum to the legend; the day equals plate + snack. All pass.
+
+### C · Admin menu
+
+AD-5a Success, Offline and the Scope sheet: cards in prep-list order **Rice, Sambar, Paneer butter masala, Chapati, Curd**, values from the table; **Curd now "In tracker" with 60 kcal · P 3 · C 5 · F 3 · Fibre 0 g** (gap 109). Card rings redrawn by energy share (start 0.03 rad past 12 o'clock, 0.06 rad gaps). Chicken biryani stays only as the Wednesday special. AD-5a Empty, AD-5b Edit (Sambar, already on the table) and Add (empty) unchanged.
+
+### D · Small fixes
+
+- **Gap 267:** page 07 Menu — Breakfast card → **Feedback · Pick dish** (was Meals · Meal detail).
+- **AD-4e · Insights — Meal (Empty)** `1354:11448` (AD-4 row x 4730): pills with Meal selected, "No meals logged yet" centred (481 against 480). Overview Empty's Meal pill → it; its Overview pill → Overview Empty, Waste → AD-4c.
+- **Data freshness sheets** (online and Offline): new row **"Intent answers · 48% answered"** before Forecast; the sheet grew 64 pt upward (y 368).
+- **Relinks:** Now Offline's info icon and Mess detail Offline's "How counted" pill → the Offline freshness sheet.
+- **Waste is logged after the meal closes (owner, 4B).** Lunch closes 2:00 PM; MS-D1a reads **"Waste logged · 2:20 PM"** (Moment 2:20 PM); MS-D4 and AD-7d All activity put the entry first (2 PM group; the long-gap break moved to "Pass turned away"); the AD-7d entry reads "Logged by Meena · •••2291 · 2:20 PM". **Every Insights (AD-4 row) Moment note reads Wed 2:35 PM**, which also aligns the Waste view (gap 263; see 277).
+
+**Links:** page 10 365 → **368** (+5 −2: the two relinks, the Meal Empty pills and the Overview Empty Meal pill); page 07 1,229 → 1,229 (Breakfast card relinked; two dish-row link records renamed, same targets); 04 and 05 unchanged. **Flow starts:** unchanged (10: 4, 07: 25).
+
+**Diff vs `st133` (snapshot `st134`):** 10 +4 / 19 changed; 04 and 05: 12 changed each; 07: 13 changed; 09: 3 changed; other pages unchanged (page 03's hash does not cover vector paths or variant names; its edits are listed above). **Renders:** `stage4b/4b_*`.
