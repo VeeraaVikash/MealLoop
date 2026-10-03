@@ -905,3 +905,13 @@ The full findings are in `final_audit/README.md`. New gaps from the audit:
 | 305 | 09 MS-0 and 10 AD-0 sign-in rows | No Moment note or sample chip (missed in Stage 11). | Low | Add them. | Next |
 | 306 | MealHero, StepBar, IssueCard, eyebrow text style | Words set in mono on about 175 prototype screens (eyebrows in mono caps, meal window lines, step labels, "UPDATED 5H AGO"). | Medium | Fix in the components and the eyebrow style. | Next |
 | 307 | 07 dead chevrons (186 in 66 screens) | Rows with chevrons and no link: Entry history, Entry · Discrepancy, the You list behind the sheets, Report · No one on duty. | Medium | Link the rows or drop the chevrons. | Next |
+| 308 | 09 MS-A1 / MS-B1 avatar | The StaffTopBar avatar shows on the scanner and pass-desk homes, but only the supervisor (Ravi) has a profile sheet. The avatar there is unlinked. | Low | Add account profiles, or hide the avatar on those homes. | Next |
+| 309 | 10 AD-4d Reports | Only "All messes" has a preview (AD-4f). The Main / North / South / Annexe rows have no destination (chevrons hidden). | Low | Build per-mess previews, or one preview with a mess picker. | Next |
+| 310 | 10 AD-5a Menu dish cards | Only Sambar opens (Edit dish). The Rice, Paneer, Chapati and Curd cards do not open on tap (swipe-row rule). | Medium | Add Edit dish frames for the four dishes. | Next |
+| 311 | Cross-role shortage | Staff MS-G2 sends a Main Mess Rice alert (1:52 PM). Admin AD-2c lists Rice for North Mess only. | Low | Add the Main Mess alert to AD-2c, or change the staff sample. | Next |
+| 312 | 09 MS-E-empty | The shift line reads "Kitchen staff", while MS-E reads "Supervisor" (gap 303 family). | Low | Align it with the supervisor account. | Next |
+| 313 | 09 result screens | 21 frames sit under the 75% fill floor (42–72%): scanner and pass-desk results, C4a, C4b, D3a, D4. | Medium | Centred result + next action, or a recent-scans rail. | Next |
+| 314 | 09 MS-D1 Waste entry | The last item is 16 pt above the footer (rule 20). | Low | Trim the spacing or scroll. | Next |
+| 315 | 09 / 10 state frames | About 80 state frames (Failed, Offline, Empty, scan outcomes) cannot be reached in the prototype. Only page 07 has state galleries. | Medium | Add a "States" gallery start per role, or accept them as canvas-only. | Owner |
+| 316 | 10 AD-1b Annexe hero | "—" in the hero metric renders as a long bar. | Low | Use a chip "Not counted" and hide the number. | Next |
+| 317 | 07 student navigation (report only) | Report · Receipt and Urgent receipt have no Back. Reminder prompt has no Close. 41 state frames have an unlinked Back. 44 frames have dead chevrons. | Medium | A student pass (student edits: 04 source → 05 → 07). | Owner |
