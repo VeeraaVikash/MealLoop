@@ -5138,3 +5138,111 @@ The snapshot `st119` was taken first. It matches `st118` on all 14 pages (full t
 - **Renders (scale 1):**
   - Before: `today/after/1a3_*` (the frames were unchanged between `st118` and `st119`).
   - After: `today/after/1a4_*`: Success, Empty and Offline, each at rest and at max scroll, plus the QuestionCard set.
+
+### 1B + 1C · Decisions and Decision detail (Light)
+
+The snapshot `st121` was taken first (full walk; identical to `st120` on all 14 pages). `PROJECT_CONTEXT.md` is not in the repo, so its section 8 was skipped.
+
+**Placement (page 10, AD-1 row, y 0, after the existing frames):** AD-1c Success `1291:8170` (x 2365), Empty `1292:8312` (2838), Offline `1292:8434` (3311); AD-1d Lapsed `1293:8646` (3784), Open `1293:95944` (4257), Read-only `1293:96117` (4730), Offline `1293:96252` (5203). Each frame has a label, a Moment note (AD-1c 1:40 PM; AD-1d Lapsed 1:41 PM; Open, Read-only and Offline 11:18 AM) and a sample chip.
+- **Sheet:** AD-1c · Awaiting others sheet `1292:95738` sits in the next row (y 1092) at x 3784, the first free slot. The slot directly under AD-1c (x 2365) holds AD-2c (gap 228).
+
+#### AD-1c · Today — Decisions
+
+Cloned from AD-1a Now, so the header (logo row, "Hey Devi", context line), the fixed wash, the Status fade, the tab bar and the fixed children are the same. Pills: **Decisions** is `Selected` and Now is `Tappable`.
+
+| Part | Spec |
+|---|---|
+| **Hero** (local frame, `hero-bg`, radius 24, padding 20, gap 16) | **"6 need you"**: the 6 in ML/Hero Metric `on-hero`, the rest in ML/Card Heading `on-hero-secondary` (the AD-7d count style). Then five **type chips** (MetaChip `On dark`, wrapping row, gap 8, numbers in ML/Mono Footnote): **"1 safety"** (override: `surface` fill, no stroke, `ink` label), **"1 lapsed"** (override: dashed 3/2 `on-hero-secondary` outline and label), **"1 vote"**, **"1 pass"**, **"2 access"** (plain `On dark` outlines). **Display only** (gap 224). |
+| **Decision rail** (white card, radius 24, padding 16) | Five AuditRow rows, safety first, then by deadline. Each row: time, node, title, Detail line, one small StatusPill. The whole row is the hotspot (wrapper frame, as on AD-7d). |
+| **Awaiting others · 2** | White row (the AD-7d "See all" row pattern: ListRow `Stacked`, chevron) → the Awaiting others sheet. |
+
+| Time | Node | Title | Detail | Pill |
+|---|---|---|---|---|
+| 12:45 | Incident (solid ink) | Chicken biryani | Ravi · hold not confirmed | Stop "Safety" |
+| 11:30 | Pending | Curd 60 → 45 L | Kitchen cooked 60 L | Lapsed "Lapsed" (dashed) |
+| Tue 8 PM | Pending | Idli sambar vote | Waiting for you | Hold "Decide" |
+| 12:41 | Pending | Karan pass reissue | Desk was offline | Hold "Decide" |
+| 10:52 | Pending | Access · 2 requests (one grouped row) | Suresh, Lakshmi | Hold "Review" |
+
+- No `Done` (lime) nodes, so the card carries no lime.
+- "Tue 8 PM": "Tue" is Inter (ML/Footnote) and "8 PM" mono, so mono holds only the time (rule 27).
+
+**States:**
+- **Empty:** the hero becomes a lime check (32 pt, `lime`, checkmark) and **"Nothing needs you right now"** (ML/Section, `on-hero`), then the five chips at **0**, all as plain outlines (gap 231). No rail and no Awaiting row. The hero is centred in the free band (centre y 480, band middle 480).
+- **Offline:** OfflineBanner **"Offline · saved 1:38 PM"** above the pills. Rows stay readable; every pill is at 40%. The Awaiting row keeps its text but has no chevron and no link (gap 227).
+
+**Sheet** (H14 pattern via `sheethelp`, GlassSheet Medium "Awaiting others · 2", Close and Dismiss → BACK): two ListRows, no chevrons: **"Hold confirmation" · "Ravi · since 12:50"** and **"Karan’s original pass" · "Main pass desk · offline since 12:41"**.
+
+#### AD-1d · Decision detail — Curd override (reusable pattern)
+
+**Pattern (prep overrides now; pass exceptions and access requests reuse it later):** inline NavHeader with Back and the item as title → black **hero** (eyebrow with type and place, the change as one big mono value, the ask line, a status row) → white **evidence** card (why, then pill bars drawn to data) → **DecisionActions** → white **Timeline** card (AuditRow, oldest first). Cloned from AD-1b, so the wash, the Status fade, the HeaderBackdrop and the fixed children match it.
+
+| Part | Spec |
+|---|---|
+| Nav | NavHeader `Inline Title`, Back (BACK), title **"Curd override"**. |
+| Hero | Eyebrow **"Prep override · Main Mess"** (ML/Eyebrow). **"60 → 45 L"**: ML/Hero Metric, with " L" in ML/Hero Unit `on-hero-secondary`. **"Ravi asked 10:58 AM · cutoff 11:30"** (ML/Secondary, times in ML/Mono Body). Status row: StatusPill `Lapsed` **"Lapsed 11:30"** with on-dark overrides (dashed `on-hero-secondary`), then **"Kitchen cooked 60 L"** (`on-hero`). |
+| Evidence | **"Why Ravi asked"** (ML/Card Heading) and **"Staff event after lunch"**. Three rows: label (84 pt), a 130 pt slot, and the value right-aligned in mono. Scale **60 L = 130 pt** (2.1667 pt per L). |
+| Actions | DecisionActions `Lapsed`: **"Cutoff passed. Nothing to approve."** and one Primary (black) **"Record outcome"** (no destination yet, gap 229). |
+| Timeline | 10:58 **Ravi asked for 45 L**; 11:30 **Cutoff passed**; 11:35 **Kitchen cooked 60 L**. All are solid nodes; no lime. |
+
+| Bar | Kind | Data | Exact | Drawn | Difference |
+|---|---|---|---|---|---|
+| Asked | ChartBar `Pill ghost` | 45 L | 97.5000 | 97.5000 | 0 |
+| Usual use | ChartBar `Pill lime` | 55 L | 119.1667 | 119.1667 | 0 |
+| Cooked (Lapsed) / Plans (other states) | ChartBar `Pill`, fill overridden to `ink` (gap 225) | 60 L | 130.0000 | 130.0000 | 0 |
+
+**States:**
+- **Open (Moment 11:18 AM):** chip **"12 min to cutoff"** (MetaChip `On dark`, mono 12) replaces the Lapsed pill. **"Kitchen plans 60 L"**. The third bar reads **"Plans"**. DecisionActions `Open`: **Approve** (Primary) and **Decline** (Secondary). Timeline: 10:58 Ravi asked for 45 L; **11:30 Cutoff** as a future row (Pending node with a dashed 3/2 stroke, `ink-secondary` title, no line). There is no 11:35 row.
+- **Read-only (11:18 AM):** as Open, with DecisionActions `Read-only`: **"Only a food head can decide this."** and no buttons.
+- **Offline (11:18 AM):** as Open, with OfflineBanner **"Offline · saved 11:16 AM"** and DecisionActions `Offline`: both buttons at 40% and **"Approvals need a connection"**.
+- Read-only and Offline are drawn before the cutoff, because both still have a decision to make (gap 226).
+
+**Components (page 03):**
+- **NEW, flagged: DecisionActions** `1290:2031` at (0, 15400). `State = Lapsed / Open / Declining / Read-only / Offline`.
+  - **Interactive:** in `Open`, Decline → **Change to `Declining`** (Smart animate 0.25). `Declining` adds FormField **"Reason to decline (required)"** ("Add a reason"; helper "Decline turns on once a reason is entered"), and Decline is `Disabled`.
+  - Buttons are 52 pt.
+- **AuditRow** `1028:1887` (changed):
+  - The time column is now **72 pt** (was 64), so "Tue 8 PM" fits with room to spare. No AD-7d title or time wraps.
+  - New **Detail** text and **Show detail** boolean (off by default), ML/Footnote `ink-secondary` under the title. AD-7d instances gain one hidden text layer each.
+
+**Links (page 10: 248 → 271; +23, −0):**
+- **Now → Decisions:**
+  - Success: "5 more need you" → AD-1c (Move in 0.3); Decisions pill → AD-1c (Dissolve 0.25).
+  - Empty: Decisions pill → AD-1c Empty.
+  - Offline: "5 more need you" and the Decisions pill → AD-1c Offline.
+- **AD-1c Success rows** (Move in 0.3):
+  - Biryani → AD-3b; Curd → AD-1d Lapsed; vote → AD-5d; pass → AD-6b; access → AD-7c Suresh.
+  - Awaiting others → its sheet (Dissolve 0.25).
+- **AD-1c Offline (view only):** biryani → AD-3b Offline; access → AD-7c Offline. Curd, vote and pass have no offline view to open (gaps 226, 227).
+- **Back paths (BACK):**
+  - The Now pill on the three AD-1c frames returns to Now.
+  - The sheet's Close and Dismiss.
+  - Back on the four AD-1d frames.
+  - AD-3b, AD-5d, AD-6b and AD-7c already use BACK, so each returns to AD-1c.
+- **Interactive:** Decline → Declining, inside the DecisionActions instance on AD-1d Open (counted once on page 10, once on page 03).
+- **Flow starts:** the 4 approved. One stray "Flow 1" that a link edit created on Now Offline was removed. No flow start was copied.
+
+**Sample data (new, logged as sample, not fact):**
+- From the brief: Ravi asked at 10:58; "Staff event after lunch"; usual use 55 L; kitchen cooked at 11:35; "Tue 8 PM"; both Awaiting-others rows.
+- Mine: "Offline · saved 11:16 AM" on AD-1d Offline; the reason-field copy; "12 min to cutoff" (11:18 → 11:30).
+
+**Checks:**
+
+| Frame | Fill | Densitytool (blocks / texts) | Scroll range | Last item at max scroll | Status edge rest / max | Backdrop edge rest / max |
+|---|---|---|---|---|---|---|
+| AD-1c Success | 100% | 3 / 28 | 271 | y 728 | 3 / 3 | — |
+| AD-1c Empty | Empty: centred (offset 0) | 2 / 14 | 0 | — | 3 | — |
+| AD-1c Offline | 100% | 4 / 26 | 331 | y 728 | 3 / 3 | — |
+| AD-1d Lapsed | 100% | 4 / 21 | 57 | y 728 | 3 / 3 | 5 / 5 |
+| AD-1d Open | 95% (y 711) | 4 / 21 | 0 | — | 3 | 5 |
+| AD-1d Read-only | 91% (y 680) | 4 / 20 | 0 | — | 3 | 5 |
+| AD-1d Offline | 100% | 5 / 21 | 73 | y 728 | 3 / 3 | 5 / 5 |
+
+- The backdrop edge of 5 equals AD-1b and AD-3b (same HeaderBackdrop).
+- **Type:** no visible text under 12 pt outside the tab bar. 0 mono runs contain a word.
+- **Lime:** on cards, only the Usual use bar (AD-1d). The Empty hero's check is on the black hero, as asked.
+- **Diff vs `st121` (snapshot `st122`, full walk):**
+  - **Page 10:** +32 (8 screens with labels, Moment notes and sample chips), 0 removed. Links +23 −0. Flow starts: the 4 approved. Changed: 10 AD-7d frames, text count only (the hidden Detail layer); no size or position change.
+  - **Page 03:** +1 (DecisionActions); AuditRow changed (advisory only in the diff).
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `today/after/1b_*` and `1c_*`: every screen at rest, the scrolling ones also at max scroll, plus the sheet, AuditRow and DecisionActions.
