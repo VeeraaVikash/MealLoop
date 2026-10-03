@@ -9,9 +9,10 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 - "Generic" is the #1 complaint. Default ListRow + pill + chevron on white cards reads as boilerplate SaaS. Before reaching for a list, reuse a distinctive pattern: LiveDial, MessBadge / CrowdBadge / MetricBadge, PrepCard swipe cards, stacked duplicate cards, filter-chip rows, black hero card.
 - Also rejected: too much content per card, several elements competing to be the loudest, screens that feel like "bits and pieces", and unexplained gaps. One fact per line. Every screen has one clear hero.
 - Status colours may differ by state but must be muted and consistent. Never full-card traffic-light fills. Lime is the only brand accent.
+- **Lime rule (owner, 2B, replaces the earlier per-stage lime rules):** lime appears only on the wash, the logo, actions, progress or "now" markers, one data highlight per page, and the Success result.
 - Reference set (Dribbble inventory and restaurant-ops dashboards): circular capacity badges, gauge / dial, swipeable stacked cards, filter chips with a sticky action footer, directory list with role tags, inventory-dashboard bento. Take the mechanics, never their palettes or illustrations.
 - Full state coverage (Success / Empty / Offline) from AD-4 on. Empty and Offline are simpler than Success, not copies of it.
-- **Admin home pattern (Today · Now, since 1A.3):** wordmark row (since 1A.4), greeting, then one question with one action, then the meal time rail, then the mess rings. On Now's cards, lime appears only on the primary action, the rail fill and the now dot. The page keeps the fixed lime wash like every admin frame (owner, 1A.4).
+- **Admin home pattern (Today · Now, since 1A.3):** wordmark row (since 1A.4), greeting, then one question with one action, then the meal time rail, then the mess rings. Lime follows the lime rule above (on Now: the primary action, the rail fill as progress and the now dot as "now", over the fixed wash).
 
 ## Definitions (2026-10-01)
 

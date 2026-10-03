@@ -5573,3 +5573,35 @@ H14 pattern via `sheethelp` over the Confirmed frame, GlassSheet **Large** (y 92
   - **99 Archive:** +20.
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `issues/after/2a_*`, every frame at rest and the scrolling ones at max scroll, plus the sheet states and HeroActions. The archived copies are the "before".
+
+## Stage 2B · Open items (no new design)
+
+The snapshot `st127` was taken first (full walk; identical to `st126`).
+
+| # | Item | Done |
+|---|---|---|
+| 1 | Gap 245 · verify sheet | Wired in place with **SWAP** (Dissolve): Ready "Verify and send update" → Sending; Sending (after 1.2 s) → **Sent**, which shows the ResultCard Success "Case closed 1:53 PM · Student told"; Failed "Try again" → Sending. SWAP keeps the sheet out of history, so Close, Dismiss and Reopen still return to the case. Failed is a drawn state; nothing in the prototype leads to it. |
+| 2 | Gap 248 | AD-3a2's open "Chicken biryani" row → AD-3b. |
+| 3 | Gap 235 · DecisionActions | New `Approve failed` ("Didn’t approve. Try again." → Approving). Decline path: `Declining` (reason empty, Decline disabled; tapping the field stands in for typing) → `Decline ready` (sample reason "Usual use is 55 L", Decline enabled) → `Decline sending` (Loading; Approve disabled) → after 1.2 s `Declined` (ResultCard Success **"Declined 11:19 AM"** · "Kitchen cooks 60 L"); `Decline failed` ("Didn’t decline. Try again.", reason kept) → Decline sending. The set now has 16 states. |
+| 4 | Gap 236 | Now (S/E/O): the Messes card's **info icon → Data freshness sheet**, and its **chevron → AD-1e** (state for state). |
+| 5 | Gap 238 · North | **AD-1b · Mess detail — North** `1321:10794` (AD-1 row, x 8514, Moment 1:41 PM), cloned from AD-1b. Ring **640 of 700** (91%; arc 235.070 exact = 235.070 drawn), "entered of 700 forecast", Serving, updated 1:40 PM. Dish risk: **Rice · Running out · 12 kg · 60 still due · North Mess**. **Issues · 0 open** · "Last: Hair in dal · Mon · closed". Data freshness row → sheet. The Messes North tile opens it. South, Annexe and North Offline stay unlinked (gap 249). |
+| 6 | Gap 239 | EmptyState bodies: Messes "Messes show up when a meal starts."; Watch "Nothing to watch right now." Both re-centred (480 against 480). |
+| 7 | Gap 233 | design_intent.md lime rule (text only): the wash, the logo, actions, progress or "now", one data highlight per page, and the Success result. |
+| 8 | AD-1b forecast line | "Forecast rule v0 · set 9:00 AM" is gone from the hero (Main, Main Offline, North). An **info pill "How counted"** (EstimatePill On dark) sits right of the eyebrow and opens the Data freshness sheet, which lists "Forecast · rule v0 · set 9:00 AM". |
+| 9 | Gap 243 | AD-7d Type sheet: new row **"Incidents · Kitchen notified"** under Incidents. |
+
+**Links (page 10: 326 → 343; +17 −0):**
+- Now icons: 6.
+- North: Back, updated, pill and freshness row.
+- The pill on Main and on Main Offline.
+- Messes North tile.
+- AD-3a2 open case.
+- Sheet: Verify → Sending, Sending timeout → Sent, Try again → Sending.
+- **Flow starts:** the 4 approved.
+
+**Diff vs `st127` (snapshot `st128`):**
+- **Page 10:** +4 (North and its annotations). Changed: AD-1b Main and Offline, AD-7d Type sheet, Messes Empty, Watch Empty.
+- **Page 03:** DecisionActions only.
+- **Every other page:** unchanged.
+
+**Renders:** `stage2b/2b_*`.
