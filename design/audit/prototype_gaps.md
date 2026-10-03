@@ -886,3 +886,11 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 |---|---|---|---|---|---|
 | 299 | AD-6d2 Pickup detail | Offered step reads "Ravi · •••4417 · kitchen supervisor"; Staff access now has Ravi as Kitchen staff with Supervisor off. | Low | Say who offered (the supervisor) or drop the role. | Audit |
 | 300 | AD-6d Offered / Collected / Late | Reachable only by the gallery; no live trigger moves Accepted to Collected or Late. | Info | Intentional states; add a timeout if a demo needs it. | Stage 11 |
+
+## Run 2 · Stage 11 (2026-10-03)
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 301 | Page 09 staff screens | No back or home control. The prototype uses a tap on the StaffTopBar to return to MS-E. | Medium | Add a Home affordance to StaffTopBar. | Later |
+| 302 | Page 10 Empty / Offline families | 54 state frames are reachable only on canvas (no live toggle). | Info | Use a states gallery start like page 07's. | Later |
+| 303 | MS-E vs Staff access | MS-E shows Ravi as Supervisor; admin Staff access now has him as Kitchen staff with Supervisor off. | Low | Pick one role for Ravi across 09 and 10. | Owner |
