@@ -5743,3 +5743,26 @@ The snapshot `st135` was taken first (full walk; identical to `st134`).
 | 5 | 280 | Lunch Meals · Dish detail (04, 05, 07): **Paneer butter masala, 300 kcal, P 11 g, C 11 g, F 23 g**; bars drawn to the daily references (21.38 / 31.35 / 5.70 / 46.82 of 142.5 pt). NutritionBento is detached in these three frames so the bars can carry true widths (instance size overrides are ignored; same as AD-4c). |
 
 **Links:** counts unchanged (10: 368, 07: 1,229, 04 / 05: 7); one destination changed (Audit log first row → waste entry). **Flow starts:** unchanged. **Diff vs `st135` (`st136`):** 10: 10 changed; 04, 05, 07: Dish detail; others unchanged (page 03 component edits are below the snapshot hash). **Renders:** `stage4c/4c_*`.
+
+## Stage 5A · Manage tab root
+
+The snapshot `st137` was taken first (full walk; identical to `st136`). Tool: `tools/hub5a.js` (`mealloop/hub5a`). Archive: the three hubs on 99 Archive, slots 38–40, links stripped.
+
+**AD-5-0 · Manage hub (Success `968:3292`, Empty `969:90191`, Offline `969:90286`), rebuilt in place.** Tile nodes, ids and their links are kept.
+- **Header (tab-root template):** AppWordmark Header + avatar DR, no bell; **"Manage"**, subtitle **"Menu, votes, passes, rewards, people"**. NavHeader removed.
+- **Slim row** (replaces the NeedsYouCard instance; the component stays on page 03): black, 44 pt, radius 22. **"3 need you"** left (mono 3) and **"Decisions ›"** right; opens AD-1c (Move in 0.3), state for state. Empty reads **"Nothing needs you"** → AD-1c Empty; Offline → AD-1c Offline.
+- **Tiles** (white; labels ML/Footnote; numbers ML/Metric; word units ML/Secondary, numbers mono):
+  - **Passes** (wide): label + black chip **"1 exception"** (MetaChip Selected, display-only), **196** "of 214", ring **91.59%** (196/214).
+  - **Menu**: five filled dots (owner: all five dishes are in the tracker since 4B), **5** "dishes".
+  - **Voting**: label + chip **"1 to decide"**, for/against bar **102.22 / 32.28 of 134.5 pt** (76%), **76%** "for".
+  - **Rewards** (wide): **₹2,370** "of ₹5,000", the existing **semicircle** (flat side down) filled to **47.40%** of the half circle, black on a light track.
+  - **Surplus**: three-step dots (2 done, 1 to do), **"Pickup by 3 PM"**.
+  - **People**: AD-7a's role-bar proportions (14 / 8 / 6 / 6 / 2 / 2 of 38) at **46.61 / 26.63 / 19.97 / 19.97 / 6.66 / 6.66 of 126.5 pt**, on-light ChartBar kinds (AD-7a's on-dark kinds vanish on white), **38** "people".
+  - Squares are equal columns (170.5 pt, 12 pt gaps). No lock or placeholder tiles existed.
+- **Empty:** 0 of 214 (no arc), "0 exceptions"; hollow dots, "No dishes yet"; "0 to decide", empty track, "No votes yet"; ₹0 of ₹5,000 (no arc); hollow steps, "No pickup today"; People 38 (people exist on an empty day).
+- **Offline:** banner **"Offline · saved 1:38 PM"**; saved values 188 of 214 (87.85%), ₹2,310 (46.20%), the rest as Success.
+- **Moment notes:** Wed 1:40 PM. Fill 100% (content to 882 / 942); last item 20 pt above the tab bar at max scroll.
+
+**Links (page 10: 368 → 365):** +3 slim rows → AD-1c (state for state); −3 NeedsYouCard chips (Vote, Pass, Pickup); −3 hidden NavHeader Back links (a tab root has no Back). Tiles keep their section-root links; every section's Back is BACK, so it returns to the hub. **Flow starts:** the 4 approved; a stray start copied onto the archive clone was removed.
+
+**Diff vs `st137` (`st138`):** 10: the 3 hubs and 3 Moment notes changed; 99 Archive +12; every other page unchanged. **Renders:** `stage5a/5a_*`.

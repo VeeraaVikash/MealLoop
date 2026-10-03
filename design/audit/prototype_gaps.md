@@ -827,3 +827,13 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 282 | Meals · Dish detail (04/05/07) | The portion and allergen chips still read "1 bowl", "Mustard seeds", "Curry leaves" (Dal tadka's). The brief changed the name, kcal and macros only. | Low | Owner supplies the Paneer butter masala portion and allergens (e.g. milk). | Next |
 | 283 | Meals · Dish detail — not provided | Still titled Dal tadka; the menu's Paneer butter masala and Curd rows open it (positional links from 4A). | Low | Retarget the Paneer row to the full detail, or retitle this one Curd. | Next |
 | 284 | Meals · Dish detail | NutritionBento is detached in 3 frames (bars to data). | Info | A bar-width property on the component. | Later |
+
+## Stage 5A · Manage tab root (2026-10-03)
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 285 | AD-5-0 | The NeedsYouCard chips (Vote, Pass, Pickup) and their links are gone with the card; their destinations (AD-5d, AD-6b, AD-6d) are now reached through Decisions and the tiles only. | Info | Confirm. | Later |
+| 286 | AD-5-0 Empty | People keeps "38 people" (people exist on an empty day); every other tile reads zero. | Info | Confirm. | Later |
+| 287 | 99 Archive | Two older archive copies (AD-3a SOS, AD-4a Overview) still carry flow starts ("Admin · Issues", "Admin · Insights"). | Info | Remove them in a cleanup pass. | Later |
