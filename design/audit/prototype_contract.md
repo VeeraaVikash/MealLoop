@@ -5436,3 +5436,140 @@ Cloned from Now: same header and pills, with **Watch** `Selected`.
   - **99 Archive:** +28 (7 frames with annotations), 0 links.
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `today/after/1d_*`, `1e_*` and `1c1_*`, at rest and, where a frame scrolls, at max scroll. The archived copies on page 99 are the "before" state of the rebuilt frames.
+
+## Stage 2A · Issues root and the safety case (Light)
+
+The snapshot `st125` was taken first (full walk; identical to `st124` on all 14 pages).
+
+### Tab-root template (from 2A; every admin tab root)
+
+- **Header:**
+  - Header row: **AppWordmark `Size=Header`** on the left, the **avatar** on the right (no bell on tab roots other than Today).
+  - Then the **large title** (ML/Large Title) and **one-line subtitle** (ML/Secondary, `ink-secondary`, numbers in mono).
+  - The header scrolls with the content (R9); the Status fade, the fixed wash, the tab bar and the home indicator stay fixed.
+- **Pills = views with counts** ("SOS · 1"): MetaChip `Selected` for the current view and `Tappable` for the others, counts in mono. Pills link between views (Dissolve 0.25).
+- **One black hero:**
+  - Eyebrow (with a chevron when the hero opens a detail).
+  - **A question**, then one fact line.
+  - **HeroActions:** one lime action, optionally one outlined action.
+- **Then rails and tiles:** white cards, radius 24 (AuditRow rails, ListRow rows, tiles).
+- **Mono only for numbers, times and units.**
+
+### AD-3a · Issues — SOS (Success `849:564`, Empty `1101:7664`, Offline `1103:8116`; rebuilt in place)
+
+Ids, grid slots and incoming links are kept. The old frames are copied to 99 Archive (x 13311–15203, y 100, links stripped). The frames are renamed from "Overview" to "SOS".
+
+| Part | Spec |
+|---|---|
+| Header | Template. **"Issues"**, subtitle **"Wed lunch · All messes · 1 safety open"**. |
+| Pills | **"SOS · 1"** (selected), **"Dishes · 4"**, **"Community · 5"** (the old "Feedback" is renamed "Dishes"). |
+| Hero | Eyebrow **"Safety · Main Mess ›"**, **"Is the biryani / off the line?"** (ML/Title, two lines), **"Ravi hasn’t confirmed · open 55 min"**, HeroActions `Default`: lime **Call Ravi** (a phone action) and outlined **Notify kitchen**. **The hero opens AD-3b.** |
+| Closed this week · 2 | White card, AuditRow rail; the time column shows the day (Inter, not mono). **Mon · Hair in dal · North · verified by Devi** [Closed]; **Sun · Dirty tray · South · verified by Devi** [Closed]. "Closed" uses StatusPill `Sent` (quiet) so the card carries no lime. |
+| All safety cases · 3 | White row with a chevron → **AD-3a2**. |
+
+**States:**
+- **Empty:** "0 safety open", "SOS · 0", and a hero with a lime check and **"No open safety cases"**. The rail stays; the row reads "All safety cases · 2".
+- **Offline:** banner **"Offline · saved 1:38 PM"**; HeroActions `Offline` (Call Ravi live, Notify kitchen at 40%); the hero opens AD-3b Offline.
+- Moment notes on all three are now **1:40 PM** (were 1:50 PM), to match "open 55 min".
+
+**Views (new, Success only):**
+- **AD-3a · Issues — Dishes** `1312:98953` (x 4730): the template header, with "Dishes · 4" selected, over the old AD-3a feedback cards (4 dishes, page dots). Sambar's card → AD-3c.
+- **AD-3a · Issues — Community** `1312:99107` (x 5203): "Community · 5" selected, over the old AD-3a community rows. Each row → AD-3d.
+- AD-3c and AD-3d stay as drill-in details with Back, unchanged.
+- The content is kept as briefed; Empty and Offline for these views wait for the full rebuild (gap 241).
+
+**AD-3a2 · All safety cases** `1312:99349` (x 5676, new):
+- Inline nav with Back.
+- Hero "This week · all messes", **"3 safety cases"**, "1 open · 2 closed".
+- Rail: **Wed · Chicken biryani · Main · open 55 min** [Stop "Open"]; Mon · Hair in dal [Closed]; Sun · Dirty tray [Closed].
+- The rail gaps were widened to 32 pt to meet the fill floor (y 563).
+
+### AD-3b · Safety case (Default `849:1014`, Offline `1103:7762` rebuilt in place; Notified `1313:9935`, Failed `1313:10130`, Confirmed `1313:10312` new)
+
+| Part | Spec |
+|---|---|
+| Nav | Inline title **"Safety case"**, Back (BACK). |
+| Hero | Eyebrow **"Chicken biryani · Main Mess"**; **"Is the biryani / off the line?"**; **"Ravi hasn’t confirmed · open 55 min"**; **stepper**; HeroActions. |
+| Stepper | 3 steps on a 313 pt track. Dots (12 pt) are centred at **6 / 156.5 / 307** (0, ½ and 1 of the track). Done = `on-hero` dot and solid 2 pt line; pending = dashed `on-hero-secondary` ring and dashed line. Labels sit under their dots (left, centred, right), word over mono time: **Reported 12:45 · Requested 12:50 · Not confirmed**. |
+| Report | White card: **"Foreign object in food · 1 report"**; **"Student •••2231 · 30 kg cooked · Block A"**. |
+| Timeline | AuditRow, oldest first, **drawn to the minutes** (row gap = 24 pt + 1 pt per minute to the next entry: 29 / 49 / 41): 12:45 Reported by a student · 12:50 Hold requested · Ravi told · **1:15 Escalated to you** (dashed node) · 1:32 Assigned to Ravi. |
+| Close row | **"Close case · Needs a confirmed hold"**, disabled (50%, no chevron). |
+
+**States:**
+- **Notified (Moment 1:41 PM):**
+  - HeroActions `Notified`: **"Notified 1:41 PM"**, disabled.
+  - The line reads "open 56 min".
+  - The timeline gains **1:41 Kitchen notified by you** (a **new event type**, gap 243).
+- **Failed (1:41 PM):** HeroActions `Failed`: outlined **"Try again"** and **"Didn’t send. Try again."** No receipt.
+- **Confirmed (Moment 1:52 PM):**
+  - **"Biryani is off the line"**, **"Ravi confirmed 1:48 PM · inspected 1:50 PM"**.
+  - The stepper is all filled (Confirmed 1:48).
+  - HeroActions `Confirmed`: one lime **"Verify and close"** → the sheet.
+  - The close row is enabled ("Hold confirmed 1:48 PM · ready to verify", chevron → the same sheet, gap 246).
+  - The timeline gains 1:48 Ravi confirmed the hold and 1:50 Batch inspected (gaps 40 / 26).
+- **Offline (1:40 PM):** banner "Offline · saved 1:38 PM", HeroActions `Offline` (Notify kitchen dimmed), close row disabled.
+- **In place:** Notify kitchen → Sending → (after 1.2 s) Notified, through the HeroActions component.
+
+### AD-3b2 · Verify and close sheet (Ready `1314:10107`, Sending `1314:10377`, Sent `1314:10642`, Failed `1314:10910`)
+
+H14 pattern via `sheethelp` over the Confirmed frame, GlassSheet **Large** (y 92). Title **"Verify and close"**, sub "Chicken biryani · Main Mess".
+
+- **Check rail:** Hold confirmed (Ravi · 1:48 PM), Batch inspected (Ravi · 1:50 PM), **Your verification** (dashed node, "Someone other than Ravi").
+- **What the student sees:** a `fill-quiet` card with a black StatusPill Stop **"Action taken"**, "Your report was acted on", "The batch was removed and inspected.", "Sent to •••2231".
+- **Ready:** Primary (black) **"Verify and send update"** and the Text button **"Reopen case instead"** → BACK.
+- **Sending:** Primary Loading "Sending".
+- **Sent (1:53 PM):** ResultCard Success **"Case closed 1:53 PM"** · "Student told".
+- **Failed:** "Didn’t send. Try again.", Primary "Try again", Reopen.
+- Close and Dismiss → BACK on every state. The sheet opens only from the Confirmed frame.
+
+### Components (page 03)
+
+**NEW, flagged: HeroActions** `1311:1990` at (0, 16100):
+- Variants: `Default` (lime Call Ravi with a phone icon, outlined Notify kitchen) / `Sending` / `Notified` / `Failed` / `Confirmed` (lime Verify and close) / `Offline` (Notify at 40%).
+- In place: Notify → Sending → (after 1.2 s) Notified; Try again → Sending.
+- It carries the on-dark Button styling that QuestionCard holds as overrides (gap 209).
+
+**Links (page 10: 299 → 326; +39 −12):**
+- **AD-3a hero → AD-3b** (Offline → AD-3b Offline). **"All safety cases" → AD-3a2** (S/E/O).
+- **SOS, Dishes and Community pills link between the three views** (Dissolve). Dishes Sambar → AD-3c; Community rows (6) → AD-3d.
+- **Confirmed "Verify and close" → sheet** (and the enabled close row, gap 246). Sheet Close, Dismiss and Reopen → BACK.
+- Back → BACK on AD-3a2 and every AD-3b state.
+- HeroActions instances carry Notify → Sending and Try again → Sending.
+- **Unchanged:** Now "Open case" and Decisions' biryani row → AD-3b (id kept).
+- **Removed:** the 10 old AD-3a links, re-made on the new layers except the old Offline Sambar → AD-3c Offline (gap 242). The 2 old Back links show as removed only because their frames were renamed.
+- **Flow starts:** the 4 approved. A stray "Flow 1" from a link edit was removed.
+
+**Sample data (new, logged):**
+- The two closed cases: Hair in dal · North · Mon and Dirty tray · South · Sun, verified by Devi.
+- Ravi confirmed 1:48 PM; inspected 1:50 PM; "Kitchen notified 1:41".
+- The student update text; "open 55 min".
+- Mine (derived or stated): "open 56 min" at 1:41; "Wed" for the open case; "This week · all messes · 1 open · 2 closed"; "Hold confirmed 1:48 PM · ready to verify".
+
+**Checks:**
+
+| Frame | Fill | Blocks / texts | Scroll | Last item at max | Status edge rest / max | Backdrop |
+|---|---|---|---|---|---|---|
+| SOS | 100% | 4 / 22 | 38 | y 728 | 3 / 3 | — |
+| SOS Empty | 82% | 4 / 18 | 0 | — | 3 | — |
+| SOS Offline | 100% | 4 / 22 | 98 | y 728 | 3 / 3 | — |
+| Dishes view | **55%** (old content, gap 241) | 2 / 15 | 0 | — | 3 | — |
+| Community view | 89% | 2 / 25 | 0 | — | 3 | — |
+| AD-3a2 | 75% (y 563) | 2 / 16 | 0 | — | 3 | 5 |
+| AD-3b Default | 100% | 3 / 20 | 131 | y 728 | 3 / 3 | 5 / 5 |
+| AD-3b Offline | 100% | 4 / 19 | 191 | y 728 | 3 / 3 | 5 / 5 |
+| Notified | 100% | 3 / 20 | 185 | y 728 | 3 / 3 | 5 / 5 |
+| Failed | 100% | 3 / 19 | 159 | y 728 | 3 / 3 | 5 / 5 |
+| Confirmed | 100% | 3 / 19 | 225 | y 728 | 3 / 3 | 5 / 5 |
+
+- **Type:** no visible text under 12 pt.
+- **Mono:** no mono word, except the kept Dishes view cards ("6 reports", gap 241).
+- **Lime:**
+  - Each page has exactly one lime action (Call Ravi or Verify and close); SOS Empty has the lime check.
+  - Sheet Sent: the ResultCard Success, as allowed.
+  - Community view: the kept "Fixed" pill (gap 241).
+- **Diff vs `st125` (snapshot `st126`, full walk):**
+  - **Page 10:** +40 nodes; the 5 rebuilt frames changed in place; their labels and Moment notes renamed or re-timed.
+  - **Page 03:** +HeroActions.
+  - **99 Archive:** +20.
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `issues/after/2a_*`, every frame at rest and the scrolling ones at max scroll, plus the sheet states and HeroActions. The archived copies are the "before".

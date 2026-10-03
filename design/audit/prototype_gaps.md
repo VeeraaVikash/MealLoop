@@ -703,3 +703,23 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 238 | AD-1e, AD-1f | **Only the Main tile opens a detail** (AD-1b is Main only); North, South and Annexe are unlinked. The Offline Data gaps tile is unlinked (there is no AD-2d Offline), and Offline "saved" labels don't open the sheet. | Low | Build North/South/Annexe details (or one parameterised detail) and AD-2d Offline. | Later |
 | 239 | AD-1e / AD-1f Empty | **EmptyState with no body line** (hidden, so no copy is invented) and the people icon reused from Crowd's Empty state. | Info | Owner supplies the body copy and icon. | 1D/1E |
 | 240 | AD-2c, AD-2a Moment notes | Rebuilt frames keep their Moment notes (AD-2a 1:42 PM, AD-2c 1:45 PM), while Watch at 1:40 PM opens them. | Info | Re-time to 1:40 PM, or accept as later moments. | Later |
+
+## Stage 2A · Issues root and the safety case (2026-10-03)
+
+### Status of earlier gaps
+
+- **209** (Button has no on-dark style): **partly closed.** HeroActions now carries the on-dark lime and outlined buttons; QuestionCard still uses instance overrides.
+- **199 / 200** (biryani report time and reporter): unchanged; the case keeps 12:45 PM and •••2231.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 241 | AD-3a Dishes, Community views | **Kept content, not rebuilt** (as briefed). The Dishes view fills 55% (below the floor), its cards set "6 reports" in mono, and Community keeps a lime "Fixed" pill. Neither view has Empty or Offline. | Medium | Full rebuild of both views on the tab-root template (hero, rails), with Empty and Offline. | 2B |
+| 242 | AD-3c Offline | **No longer reachable.** The old Offline overview linked Sambar → AD-3c Offline, and the Dishes view is Success only. | Low | Comes back with the Dishes Offline view (241). | 2B |
+| 243 | AD-3b Notified, AD-7d | **New event type "Kitchen notified"** on the case timeline. AD-7d's type sheet and the audit log don't list it. | Low | Add it to the audit-log types (who notified, when, which kitchen). | Later |
+| 244 | HeroActions `Sending` | The outline of the Loading Secondary renders fainter than the other on-dark outlines. | Info | Add `Surface = Dark` to Button (gap 209) and drop the overrides. | CP-2 |
+| 245 | AD-3b2 sheet | **Sheet states are drawn frames.** Verify and send → Sending → Sent / Failed are not wired (the brief linked only Close and Reopen). | Low | Make the sheet's action block a component with in-place states (like DecisionActions). | Later |
+| 246 | AD-3b Confirmed | The enabled close row also opens the Verify and close sheet (the same action as the lime button), so it is not a dead control. The brief didn't list this link. | Info | Confirm, or make the row non-interactive. | 2B |
+| 247 | AD-3a SOS Empty / Offline | **Pills are not linked** (the Dishes and Community views are Success only). | Low | Link them once the views have Empty and Offline (241). | 2B |
+| 248 | AD-3a2 | The open biryani row doesn't open the case (no link was briefed). | Low | Link the open row → AD-3b. | 2B |
