@@ -658,3 +658,25 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 |---|---|---|---|---|---|
 | 222 | QuestionCard (page 03) | **Meal-phase questions are logged, not built.** Only During ("Safe to keep serving lunch?") exists. Before ("Is lunch ready to serve?") and After ("Ready to close lunch?") have no variant, sublines or actions. | Info | Add a `Phase = Before / During / After` property when the owner defines each phase's line and actions. | 1B |
 | 223 | QuestionCard lines | **Times in the hero line are Inter**, for example "Lunch closes 2:00 PM" (and "escalated 1:15 PM" before 1A.4). The TimeRail on the same screen sets its times in mono ("now 1:40 PM"). Rule 27 allows both readings. | Low | Owner decides: times in mono everywhere (as on the rail), or Inter inside sentences. | CP-2 |
+
+## Stage 1 · Today, 1B + 1C (2026-10-03)
+
+### Status of earlier gaps
+
+- **211** (vote link retired on Now): **closed.** The vote's row on Decisions → AD-5d.
+- **216** (unlinked controls on Now): "5 more need you" → Decisions is now linked. The info icon, the Messes chevron, the Watch row, "Call Ravi" and the bell remain.
+- **207** (StatusPill on black): applies again. The Decisions hero chips and the AD-1d Lapsed pill use on-dark overrides.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 224 | AD-1c hero | **The type chips are display only** (as briefed): "1 safety", "1 lapsed", "1 vote", "1 pass", "2 access" don't filter the rail. | Info | Make them filters (single select, with "All") when the list grows past one screen. | Later |
+| 225 | AD-1d evidence card | **ChartBar `Pill` kinds are built for dark cards.** `Pill` is white, so on the white evidence card the Cooked / Plans bar fill is overridden to `ink`. `Pill ghost` uses `on-hero-secondary`. | Low | Add `Surface = Light` to the Pill kinds (ink, lime, dashed `ink-secondary`) in the components stage. | CP-2 |
+| 226 | AD-1d Offline, Read-only | **The Offline and Read-only details are drawn before the cutoff (11:18 AM)**, because both still have a decision to make. So AD-1c Offline (1:40 PM, Curd lapsed) has no matching detail, and its Curd row is unlinked. | Low | Owner decides: add a Lapsed-offline detail (Record outcome dimmed), or accept the unlinked row. | 1C |
+| 227 | AD-1c Offline | **Vote and pass rows are unlinked** (AD-5d and AD-6b have no Offline frames). The Awaiting others row has no chevron and no link offline. | Low | Add view-only Offline states to AD-5d and AD-6b, or keep them unlinked. | Later |
+| 228 | Page 10 grid | **AD-1 has no sheet row.** The Awaiting others sheet sits in the AD-2 row at x 3784 (the first free slot), because AD-2c fills the slot under AD-1c. | Info | Add an "AD-1 · Sheets" row (moves every row below by 1,092), or keep it. | Later |
+| 229 | AD-1d actions | **"Record outcome" and "Approve" have no destination.** The decline reason is a component state (Declining), with no typed or submitted state, and no sent, failed or saved receipt. | Medium | Build the outcome sheet and the approve/decline confirmations with sending and failed states (rule: no receipt before the server confirms). | 1C |
+| 230 | Now ↔ Decisions | **No transition rule for sub-tab pills.** The Decisions pill uses Dissolve 0.25, and the Now pill on AD-1c returns with BACK. | Info | Add a pill-switch role to §0.5.1, for example an instant swap. | Later |
+| 231 | AD-1c Empty | **Chips at 0 are all plain outlines.** The white "safety" and dashed "lapsed" styles mark something that needs attention, so at 0 they fall back to the plain outline. | Info | Confirm. | 1B |
+| 232 | AD-1c rows | **Times mix formats:** today's rows show "12:45" with no AM/PM (as briefed), but "Tue 8 PM" does. AD-7d writes "12:52 PM". | Low | Pick one rule for rails: today's times without AM/PM, older items with day and AM/PM, or AM/PM everywhere. | CP-1 |
