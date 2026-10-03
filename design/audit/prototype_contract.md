@@ -5766,3 +5766,17 @@ The snapshot `st137` was taken first (full walk; identical to `st136`). Tool: `t
 **Links (page 10: 368 → 365):** +3 slim rows → AD-1c (state for state); −3 NeedsYouCard chips (Vote, Pass, Pickup); −3 hidden NavHeader Back links (a tab root has no Back). Tiles keep their section-root links; every section's Back is BACK, so it returns to the hub. **Flow starts:** the 4 approved; a stray start copied onto the archive clone was removed.
 
 **Diff vs `st137` (`st138`):** 10: the 3 hubs and 3 Moment notes changed; 99 Archive +12; every other page unchanged. **Renders:** `stage5a/5a_*`.
+
+## Run 2 · Stage 3 · Student mechanical (2026-10-03)
+
+Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.md`. Tools: `tools/scr52.js`, `tools/din77.js`, `tools/wb105.js`.
+
+- **Gap 52 (R9 + R9c inline pattern, page 07):** 9 screens now scroll. Last item 728 (tab bar) or 664 (Send footer). The pixel test at rest gives max 4 (0 px > 6). Sheet backgrounds are unchanged. Pages 04 and 05 are untouched (static design pages; logged).
+- **Gap 77 (dinner answer frames):** 8 frames on each of 04, 05 and 07, wired on 07:
+  - Meals · Meal detail I'm in → dinner Yes · Sending → 1.2 s → Saved → 0.8 s → Track this meal?;
+  - Skip → No · Why not → (Close / Save / Skip this) → No · Saved;
+  - Not sure → Not sure · Sending → 1.2 s → Not sure · Saved.
+  All stay in the Meals tab.
+- **Gap 92:** already wired (1.5 s).
+- **Gap 105:** student weekly bars are screen-level ChartBar (Expected / On target), height = g × 109/84.
+- **Links:** page 07 1,229 → 1,335 (+109 −3). Pages 04 and 05 stay at 7. **Flow starts unchanged:** 07 25, 04 2, 05 2, 10 4, 99 2.
