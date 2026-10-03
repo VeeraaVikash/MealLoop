@@ -43,6 +43,7 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 26. **No readable text below 12 pt.**
 27. **Mono only for numbers, times and IDs**, on every screen (rule 13 widened).
 28. **Empty, Offline and lapsed are states, not pages.**
+29. **Horizontal swipe (owner, 4A):** "Horizontal swipe is only for four or more rich cards where stacking would push key content off screen, and never when there is blank space below. Date strips, short lists and two cards use a fitted layout."
 
 ## RULES · content diet (admin, from the 2026-09-30 brief; partly retired)
 
