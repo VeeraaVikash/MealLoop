@@ -769,3 +769,24 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 261 | AD-4e Prep row | The dashed **Override** pill reuses StatusPill `Lapsed` (the only dashed pill) with a new label. | Info | Add a StatusPill `Override` variant (new component state). | Later |
 | 262 | AD-4e, AD-4c | Now tab-root views, so **no Back**: arriving from "Look closer" or a tile shows pills, not Back. | Info | Confirm. | Later |
 | 263 | AD-4c | Moment note stays 2:07 PM (content unchanged) while the other Insights views read 1:40 PM. | Info | Align on the next AD-4c pass. | Later |
+
+## Stage 4A · Student Meals menu layout and lunch dish names (2026-10-03)
+
+### Status of earlier gaps
+
+- **110** (student lunch menu): **partly closed.** Names are aligned on the Meals menu family, Service ended, Intent, the lunch Meal detail frames and page 06. Tracker numbers, rings, Your plate and AD-5a remain (264); decisions 1 and 2 of the inventory are still open.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 264 | Your plate (21 frames), plate tracker H frames, Home plate tile, AD-5a (3) | **Deferred as briefed:** still list Beetroot poriyal and Chicken curry, with the old numbers and rings. | Medium | Run after the sample plate and IFCT values are decided (gap-110 decisions 1–2). | Later |
+| 265 | Meals family | Besides "You’re in", the **Special pass tile carries lime** (its dot; the icon tile in Dark) and the **Dark selected date** is lime, from component tokens. | Low | Set the SpecialPassTile dot to ink, or accept both as "now" markers. | Later |
+| 266 | Meals · Offline (04/05/07) | **Pills, tiles and rows are unlinked** (no offline Dinner or Breakfast variant). Loading has no pills. | Low | Add offline variants, or link the pills to the online ones. | Later |
+| 267 | Menu — Breakfast | The card keeps the old Breakfast row's link to **Meals · Meal detail, which is dinner**; breakfast dishes are unlinked (no breakfast dish detail). | Low | A breakfast Meal detail. | Later |
+| 268 | Menu — Breakfast | **Breakfast dishes (Idli, Sambar, Coconut chutney)** come from Feedback · Pick dish, the only breakfast list in the file. | Info | Confirm. | Later |
+| 269 | Meals family | The special pass appears twice: the "Wednesday special" row and the Special pass tile, both → Pass · Available, as briefed. | Info | Confirm, or drop one. | Later |
+| 270 | Menu (07) | Dish details are positional: Paneer butter masala and Curd → "not provided", Rice, Sambar and Chapati → the Sambar detail. | Info | Per-dish details for the new dishes. | Later |
+| 271 | Meals · Offline | The banner wraps "AM" onto a second line (pre-existing). | Info | No-break space before AM in the banner text. | Later |
+| 272 | Menu — Dinner / Breakfast | No full-scroll copies on 04 / 05. | Info | Add them in the next gallery pass. | Later |
+| 273 | DishLine, CrowdRow | The small veg mark, sentence-case "Veg" and the non-mono "Updated" are **instance overrides** on the Meals family only; Meal detail and Intent keep the 44 pt circle and the mono "VEG" tag. | Low | DishLine `Size=Compact` variant (new component state), and fix the mono words in both components (rule 27). | Later |

@@ -5641,3 +5641,46 @@ Moment notes: Wed 1:40 PM on every rebuilt and new frame (AD-4a S/E/O and AD-4e 
 - **Every other page:** unchanged.
 
 **Renders:** `stage3a/3a_*` (status edge step 3, backdrop 4; sheets 2).
+
+## Stage 4A · Student Meals menu layout and lunch dish names
+
+The snapshot `st131` was taken first (full walk; identical to `st130`). Builders: `tools/meals4a.js` (layout, stored as `mealloop/meals4a`), `tools/lunch4b.js` (names, `mealloop/lunch4b`), `hovf` (horizontal-overflow audit). One script per part, run on page 04, the page-05 Dark twin and the page-07 copies (source rule).
+
+**Owner answers (this run):** Dinner chip "Decide by 6 PM", Breakfast no chip (eyebrow "Served · 7:30–9:30 AM"); Menu changed note "Changed 11:40 · Egg curry is now Paneer butter masala"; headline "Rice, sambar, paneer butter masala, chapati, curd" (wraps to two lines); new rows and tiles copy the Meal detail links.
+
+**Archive (99 Archive, slots 18–37, links stripped):** Meals · Menu, Menu changed, Loading, Offline from 04 (with their full-scroll copies), 05 (same) and 07.
+
+### A · Meals menu family (rebuilt in place; ids, slots and the lunch card link kept)
+
+Frames: Menu, Menu changed, Loading, Offline on 04, 05 and 07, and the eight full-scroll copies on 04 / 05 (heights 974 / 1046 / 966 / 1034).
+- **Header:** NavHeader Large Title "Meals" with subtitle **"Wed 14 Aug · Main Mess"**; content at y 186.
+- **Date row:** the existing DateStrip, seven equal chips Mon 12 – Sun 18 fitted to 353 pt, Wed 14 selected (black in Light).
+- **Meal pills:** MetaChip Breakfast / **Lunch** (Selected) / Dinner. They replace the "Later today" Dinner and "Earlier" Breakfast accordion rows.
+- **Black meal card** (the kept "Current meal" frame): eyebrow **"Serving now · 12–2 PM"** (ML/Eyebrow, times mono), title **"Lunch"**, lime StatusPill **"You’re in"**, divider, then five DishLine rows with a **small veg mark** (diet circle set to Hug, no fill or stroke; rows 36 pt) and **"Veg"** in sentence case (ML/Footnote).
+- **Below:** row **"Wednesday special · Chicken biryani"** / "Pass · Wed 12–2 PM" (surface card + ListRow, chevron right); **Entry QR** and **Special pass** tiles side by side at equal width (cloned from Meals · Meal detail); crowd row **"Getting busy · Updated 12:08"** (the word "Updated" moved out of mono).
+- **Menu changed:** the note sits under the card, now "Changed 11:40 · Egg curry is now Paneer butter masala".
+- **Offline:** the banner first, then the same layout. **Loading:** date row, then skeletons for the pills, card, row, tiles and crowd.
+- **New variants** (04 x 5423 / 5916, 05 the same, 07 x 1972 / 2465 at y 6440; label, Moment 12:30 PM and sample note): **Meals · Menu — Dinner** ("Tonight · 7:30–9:30 PM", outlined "Decide by 6 PM", Chapati, Paneer masala, Dal, Rice, Egg bhurji) and **Meals · Menu — Breakfast** ("Served · 7:30–9:30 AM", no chip, Idli, Sambar, Coconut chutney from Feedback · Pick dish).
+- Lime: wash, Meals tab, and "You’re in" as the page's data highlight (component lime noted in gap 265).
+
+### B · Lunch dish names (gap 110, names only)
+
+Rice, Sambar, Paneer butter masala, Chapati, Curd (all Veg) in prep-list order, rows kept by position, Curd added as a fifth row where the list had four. The MealHero menu line reads "Rice, sambar, paneer butter masala, chapati, curd", with truncation off so it wraps to two lines.
+- **Frames (38 + the 26 above):** Meals · Service ended; Intent · Reason failed, Cutoff passed, Correction requested, No response (+3 full-scroll); Meal detail · Answer Yes · Sending / Saved / Failed, Answer No · Why not, Track this meal?, on 04 and 05; the 07 copies (Service ended, 4 Intent, Sending, Saved, Track); page 06 Tamil length · Intent · Reason sheet (Light, Dark; "~" padding kept). Full-scroll copies grew 80 pt.
+- **Deferred (not touched):** the 21 Your plate frames (04 / 05 / 07: expanded, adjusting, saved, offline, numbers hidden, About estimates, per-dish macros), the plate-tracker H frames and their numbers and rings, the Home Today's plate tile, AD-5a (Success, Offline, Scope sheet). See gap 264.
+
+### C · Horizontal overflow
+
+Before: none of the 20 family frames (04, 05, 07 and the full-scroll copies) had a horizontal scroll or content wider than 393 pt (the DateStrip already held 7 × 48 pt chips in 353 pt). After: none of the 26 frames.
+
+### Links (page 07: 1,192 → 1,229; +44 −7; pages 04 and 05 unchanged)
+
+- Retired: the five old dish links on Menu and the Dinner and Breakfast accordion links.
+- Pills (Dissolve 0.15) between Lunch (Menu), Dinner and Breakfast; Menu changed's pills open Dinner and Breakfast.
+- Copied from Meal detail: Entry QR → Entry · QR, Special pass and the special row → Pass · Available, Crowd → Crowd · Detail (Menu, Menu changed, Dinner, Breakfast).
+- Dishes → Dish detail by position (Paneer butter masala and Curd → "not provided"; Dinner as on Meal detail). Dinner and Breakfast cards → Meals · Meal detail. The Dinner and Breakfast tab bars come with the clone.
+- **Flow starts:** unchanged on every page (07: 25).
+
+**Diff vs `st131` (snapshot `st132`):** 04 +8 / 21 changed; 05 +8 / 21 changed; 07 +8 / 12 changed; 06: 2 changed; 99 Archive +47; every other page unchanged.
+
+**Checks:** text ≥ 12 pt, no words in mono, last item 728 at max scroll (20 pt above the tab bar), fill 100% (all content runs past 748). **Renders:** `stage4a/4a_*` (Light 04, Dark 05).
