@@ -5246,3 +5246,193 @@ Cloned from AD-1a Now, so the header (logo row, "Hey Devi", context line), the f
   - **Page 03:** +1 (DecisionActions); AuditRow changed (advisory only in the diff).
   - **Every other page:** unchanged.
 - **Renders (scale 1):** `today/after/1b_*` and `1c_*`: every screen at rest, the scrolling ones also at max scroll, plus the sheet, AuditRow and DecisionActions.
+
+### 1D + 1E + 1C.1 · Messes, Watch and decision results (Light)
+
+The snapshot `st123` was taken first (full walk; identical to `st122` on all 14 pages). `PROJECT_CONTEXT.md` is not in the repo, so its section 8 was skipped.
+
+**Owner answers (asked before building):**
+- **Hero sizes:** the brief's "84 pt" was in sketch units (a 300 px-wide phone). Heroes are about **110 pt** and keep every sketched element. No 84 pt numeral.
+- **Tiles:** **170.5 × 175** (two columns fill 353 with a 12 gap; the sketch's 132 × 136 ratio kept). The ring, the count and the issue line scale with the tile, and text stays at 12 pt or larger.
+- **Shortages and Crowd:** rebuild **all states**.
+
+**Retire nothing:**
+- Rebuilt frames keep their ids, so every incoming link still lands.
+- A copy of each old version, links stripped, with its label, Moment note and sample chip, is on **99 Archive** at y 100, x 10000 + n × 473:
+  - AD-1d Offline (before 1C.1);
+  - AD-1b Success and Offline (before 1D);
+  - AD-2c Success and Offline, AD-2a Success and Offline (before 1E).
+- AD-2a Empty and AD-2c Empty were already a centred EmptyState with Back, so they are unchanged.
+
+**Placement (page 10):**
+- **AD-1 row (y 0):** AD-1e Messes Success `1301:8979` (5676), Empty `1301:96402` (6149), Offline `1301:96622` (6622); AD-1f Watch Success `1303:9168` (7095), Empty `1303:96777` (7568), Offline `1303:96893` (8041).
+- **AD-2 row (y 1092):** AD-2d Data gaps `1305:9264` (4257); AD-2 · Data freshness sheet `1305:9466` (4730).
+- Every new frame has a label, a Moment note (1:40 PM) and a sample chip.
+
+#### AD-1e · Today — Messes
+
+Cloned from Now: same header and pills, with **Messes** `Selected` and Now `Tappable`.
+
+| Part | Spec |
+|---|---|
+| Hero (114 pt) | Eyebrow **"Same meal, same minute"**. **"3 of 4 reporting"**: 3 and 4 in ML/Metric, "of" and "reporting" in Inter. **"Annexe last synced 12:10 PM · not counted"** (ML/Footnote, time in mono). |
+| Board | 2 × 2 wrap, gap 12. Tiles are 170.5 × 175, `surface`, radius 24, padding 14. Each tile: name (ML/Card Heading) and status word (ML/Footnote) on top; a **72 pt ring** (black `ink` arc on a `border` track, inner radius 0.84, percent inside in mono) beside the **entered count** (ML/Metric) and **"of N"**; then **one issue line with a dot**. |
+| Main | 712 of 860 (83%) · Serving · ● Safety report (`ink` dot) |
+| North | 640 of 700 (91%) · Serving · ● Rice running out (`ink`) |
+| South | 520 of 800 (65%) · Serving · ● Chapati at risk (`ink-secondary`) |
+| Annexe | Dashed tile (1.5 pt `ink-secondary`, no fill), dimmed text, a dashed ring with "—", **"Stale"**, **"not counted"**, ○ **Not reporting** |
+
+**Arcs drawn to the data** (arc length at the mid radius 33.12 pt):
+
+| Mess | Exact | Drawn | Difference |
+|---|---|---|---|
+| Main | 172.287 | 172.287 | 0 |
+| North | 190.262 | 190.262 | 0 |
+| South | 135.264 | 135.264 | 0 |
+
+**States:**
+- **Empty:** EmptyState **"No messes reporting yet"**, with the body line hidden (no copy invented). Centred: centre y 481 against a band middle of 480.
+- **Offline:** banner **"Offline · saved 1:38 PM"**, with the same saved values; tiles stay readable.
+
+#### AD-1b · Mess detail — Main (rebuilt in place, read only)
+
+- **Hero:**
+  - Eyebrow "Main Mess · Lunch".
+  - An 88 pt ring: white arc on `on-hero-secondary` at 30%, "83%" inside. Arc 212.861 exact = 212.861 drawn.
+  - **"712"** (ML/Hero Metric) and **"entered of 860 forecast"**.
+  - The status chip **"Serving"** (MetaChip On dark) and **"updated 1:40 PM"** → freshness sheet.
+  - **"Forecast rule v0 · set 9:00 AM"** (definitions: the forecast shows its rule and cutoff).
+- **PrepCard row:**
+  - Eyebrow "Dish risks · lunch · 3 of 6 dishes".
+  - Only the **three risk cards** stay: Chicken biryani (Safety report), Curd (now **Lapsed 11:30** · "Kitchen cooked 60 L · cut lapsed"), Paneer butter masala (Low data). There are 3 page dots.
+  - Sambar, Rice and Chapati carried lime "Adjusted" and "On plan" pills, so they left the row (gap 234).
+- **Rows:**
+  - **Issues · 1 open** · "Chicken biryani · safety report · 12:45 PM" (no chevron: no link was briefed).
+  - **Data freshness** · "Entry scans updated 1:40 PM · rule v0" → freshness sheet.
+- **Wording:** "entered", never "served" or "inside". No edit controls.
+- **Offline:** the same layout, banner "Offline · saved 1:38 PM", "saved 1:38 PM" in the hero, and the Data freshness row without a chevron.
+
+#### AD-1f · Today — Watch
+
+Cloned from Now: same header and pills, with **Watch** `Selected`.
+
+| Part | Spec |
+|---|---|
+| Hero (110 pt) | **"7 to watch"** (7 in ML/Metric), then the chips **"4 shortages"**, **"1 crowd"**, **"2 data gaps"** (MetaChip On dark, mono numbers, **display only**). |
+| Shortages (wide tile) | "Shortages" and a mono **4**. ListRows: **Rice · North · 60 still due** [Stop "Running out"]; **Curd · North · 15% under forecast** [Hold "At risk"]; **See all 4** with a chevron. The whole tile → Shortages. |
+| Crowd (170.5 × 175) | "Crowd", **"Packed"** (ML/Section), a 3-step scale (Quiet / Getting busy / Packed; all three filled), "North Mess", **"410 scans in 30 min"**, **"updated 1:38 PM"** → freshness sheet. The tile → Crowd. No dial and no seat capacity. |
+| Data gaps (170.5 × 175) | "Data gaps", a mono **2**, ○ "Annexe last sync 12:10", ○ "Curd outcome missing". The tile → Data gaps. |
+
+**States:**
+- **Empty:** EmptyState **"Nothing to watch right now"**, centred (481 against 480).
+- **Offline:** banner and the same saved values.
+
+#### Watch details
+
+- **AD-2c Shortages (rebuilt S/O):**
+  - Hero "Lunch · worst first", **"4 dishes at risk"**, "updated 1:40 PM · 3 of 4 messes reporting" → freshness sheet.
+  - A rail card of four AuditRows (time column hidden), each with one pill:
+    - Rice · North Mess · 60 still due · 12 kg [Stop "Running out"];
+    - Curd · 15% under forecast · 38 L [Hold "At risk"];
+    - Chapati · South Mess · 8% under forecast · 140 [Hold "At risk"];
+    - Paneer butter masala · Main Mess · new dish · 38 kg [Offline "Low data"].
+  - The old quantities stay in the detail line (rule 20).
+  - Offline: banner, "saved 1:38 PM", pills at 40%.
+- **AD-2a Crowd (rebuilt S/O):**
+  - Hero "Busiest now", **"Packed"**, "North Mess · 410 scans in 30 min · updated 1:38 PM" → freshness sheet.
+  - Method line **"Level comes from entry scans at the door. No seat count."**
+  - One row per mess (level word and 3-step scale):
+    - Main Getting busy · 260 scans · updated 1:37 PM;
+    - North Packed · 410 · 1:38 PM (→ AD-2b, the old link re-made);
+    - South Quiet · 90 · 1:39 PM;
+    - **Annexe Old data** · last sync 12:10 PM · not counted.
+  - "inside" and "480 seats" are gone.
+  - Offline: every level reads Old data, with "saved 1:38 PM".
+- **AD-2d Data gaps (new):**
+  - Hero **"2 data gaps"** (ML/Hero Metric) and "Missing data is marked, never zero."
+  - Rail rows:
+    - 12:10 **Annexe entry scans** · Last sync 12:10 PM · Annexe desk · not counted [Offline "Old data"];
+    - 11:30 **Curd outcome** · Not recorded · Ravi · cutoff lapsed 11:30 [Lapsed "Missing"].
+  - Row **Data freshness** → sheet. Back (BACK).
+- **Data freshness sheet (new):**
+  - H14 pattern via `sheethelp` over Watch. GlassSheet Medium **"Data freshness"**, Close and Dismiss → BACK.
+  - One row per feed:
+    - Entry scans · Main, North, South: updated 1:40 PM · mess desks;
+    - Entry scans · Annexe: last sync 12:10 PM · Annexe desk · not counted;
+    - Crowd levels: updated 1:38 PM · from entry scans;
+    - Forecast: rule v0 · set 9:00 AM · Prep Agent;
+    - Prep outcomes: Curd missing · Ravi.
+
+#### 1C.1 · Decision results (gaps 226, 229)
+
+- **AD-1d Offline redrawn in place:** 1:40 PM (Moment note updated), Curd **lapsed**, banner **"Offline · saved 1:38 PM"**, the Lapsed hero, evidence and timeline, and DecisionActions **`Lapsed · Offline`** ("Record outcome" at 40% and "Needs a connection"). **AD-1c Offline's Curd row → AD-1d Offline.**
+- **DecisionActions** `1290:2031` gains six variants:
+  - `Lapsed · Offline`;
+  - `Sending` (Primary Loading "Saving");
+  - `Saved` (ResultCard Success: Tag "Saved", **"Outcome recorded 1:42 PM"**, "Kitchen cooked 60 L");
+  - `Failed` (**"Didn’t save. Try again."** and Primary "Try again");
+  - `Approving` (Primary Loading, Decline disabled);
+  - `Approved` (ResultCard Success: Tag "Approved", **"Approved 11:19 AM"**, "Kitchen cooks 45 L").
+- **In place (interactive component):**
+  - Record outcome → Sending → (after 1.2 s) Saved.
+  - Try again → Sending.
+  - Approve → Approving → (after 1.2 s) Approved.
+  - Failed is a drawn state; nothing in the prototype leads to it.
+  - Approving was added so Approve has a sending state (README rule: every submit has a sending state).
+
+**Links (page 10: 271 → 299; +36 −8):**
+- **Now:**
+  - The Messes pill → AD-1e and the Watch pill → AD-1f (Dissolve 0.25), state for state.
+  - The **Watch row → AD-1f** (Move in 0.3), state for state.
+  - **Retired:** the six "4 shortages" and "1 crowd" word links (gap 215).
+- **Back paths:**
+  - The Now pill on the six AD-1e and AD-1f frames → BACK.
+  - AD-2a, AD-2c and AD-2d Back → BACK, so Crowd and Shortages return to Watch.
+- **Drill-ins:**
+  - Messes Main tile → AD-1b (Offline → AD-1b Offline).
+  - Watch tiles: Shortages → AD-2c, Crowd → AD-2a, Data gaps → AD-2d. Offline: Shortages and Crowd → their Offline frames.
+  - AD-1c Offline Curd → AD-1d Offline.
+  - The re-made AD-2a North → AD-2b (Offline → AD-2b Offline).
+- **Freshness sheet** (Dissolve 0.25):
+  - Openers: Watch "updated 1:38 PM", AD-1b "updated 1:40 PM" and its Data freshness row, AD-2a "updated 1:38 PM", AD-2c "updated 1:40 PM", and AD-2d Data freshness.
+  - Close and Dismiss → BACK.
+- **Interactive:** DecisionActions instances on AD-1d Lapsed (Record outcome) and Open (Approve).
+- **Flow starts:** the 4 approved; no strays.
+
+**Sample data (new, logged as sample):**
+- Main 260 and South 90 scans in 30 min.
+- Crowd update times 1:37 PM and 1:39 PM (from the old "3 min" / "1 min ago" at 1:40).
+- Shortages "updated 1:40 PM".
+- Feed owners: mess desks, Annexe desk, Prep Agent, Ravi.
+- "Offline · saved 1:38 PM" on the rebuilt Offline frames (was 1:43 PM on AD-2c).
+- "Outcome recorded 1:42 PM" and "Approved 11:19 AM" (from the brief).
+
+**Checks:**
+
+| Frame | Fill | Blocks / texts | Scroll | Last item at max | Status edge rest / max | Backdrop rest / max |
+|---|---|---|---|---|---|---|
+| AD-1e Messes | 95% | 3 / 34 | 0 | — | 3 | — |
+| AD-1e Empty | centred (offset 1) | 2 / 9 | 0 | — | 3 | — |
+| AD-1e Offline | 100% | 4 / 35 | 44 | y 728 | 3 / 3 | — |
+| AD-1f Watch | 100% | 4 / 30 | 47 | y 728 | 3 / 3 | — |
+| AD-1f Empty | centred (offset 1) | 2 / 9 | 0 | — | 3 | — |
+| AD-1f Offline | 100% | 5 / 27 | 107 | y 728 | 3 / 3 | — |
+| AD-1b Main | 100% | 4 / 21 | 18 | y 728 | 3 / 3 | 5 / 5 |
+| AD-1b Offline | 100% | 5 / 20 | 78 | y 728 | 3 / 3 | 5 / 5 |
+| AD-2c Shortages | 87% | 2 / 16 | 0 | — | 3 | 5 |
+| AD-2c Offline | 95% | 3 / 17 | 0 | — | 3 | 5 |
+| AD-2a Crowd | 76% (y 565) | 3 / 18 | 0 | — | 3 | 5 |
+| AD-2a Offline | 81% | 4 / 19 | 0 | — | 3 | 5 |
+| AD-2d Data gaps | 77% (y 575) | 3 / 13 | 0 | — | 3 | 5 |
+| AD-1d Offline | 100% | 5 / 19 | 147 | y 728 | 3 / 3 | 5 / 5 |
+
+- The backdrop edge of 5 equals AD-1b before the rebuild and AD-3b.
+- AD-2a reached the fill floor by enlarging its rows (padding 12 → 13), not by adding a block.
+- **Type:** no visible text under 12 pt outside the chrome. Mono only holds numbers, times and units (kg, L).
+- **Lime:** on the new and rebuilt frames, only the wash and the logo; on cards, only the Usual use bar on AD-1d (gap 233).
+- **Diff vs `st123` (snapshot `st124`, full walk):**
+  - **Page 10:** +32 nodes, 0 removed. 7 rebuilt frames changed in place, plus the AD-1d Offline Moment note. Links +36 −8. Flow starts unchanged.
+  - **Page 03:** DecisionActions only (5 → 11 variants).
+  - **99 Archive:** +28 (7 frames with annotations), 0 links.
+  - **Every other page:** unchanged.
+- **Renders (scale 1):** `today/after/1d_*`, `1e_*` and `1c1_*`, at rest and, where a frame scrolls, at max scroll. The archived copies on page 99 are the "before" state of the rebuilt frames.
