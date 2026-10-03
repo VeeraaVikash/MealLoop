@@ -5605,3 +5605,39 @@ The snapshot `st127` was taken first (full walk; identical to `st126`).
 - **Every other page:** unchanged.
 
 **Renders:** `stage2b/2b_*`.
+
+## Stage 3A · Insights root, Overview and Meal record (Light)
+
+The snapshot `st129` was taken first (full walk; identical to `st128`). Builders: `tools/ins3a.js` (stored as `mealloop/ins3a`).
+
+**Archive (99 Archive, slots 12–17, links stripped, " · before 3A"):** AD-4a Waste S/E/O, AD-4c Trends, AD-4e Meal drilldown S/O.
+
+**Insights tab root (tab-root template).** Header: AppWordmark, avatar DR, **"Insights"**, a one-line subtitle. Pills **Overview / Meal / Waste** (MetaChip Selected/Tappable, Dissolve 0.25). Frames keep their ids and grid slots.
+
+| Frame | Content |
+|---|---|
+| **AD-4a · Overview (Success)** `877:983` | Subtitle "Last week · 5–11 Aug · 4 of 4 reporting". Black hero: eyebrow "Last week · all 4 messes"; **642** (ML/Hero Metric) "kg wasted" │ hairline │ **2** "shortages"; hairline; "vs week before · −38 kg · shortages flat" (sample comparison: 680 → 642). White row **"Look closer · Wed lunch"** / "Main Mess · 3 possible causes" → AD-4e. Tiles 170.5 × 175: **Trends** (four ChartBar Pill bars from 0, 742 = 44 pt: 742 / 718 / 680 / 642 kg drawn 44 / 42.577 / 40.323 / 38.070 pt, the latest Pill lime = the page's data highlight, the rest ink; **−13%**, "since 8 Jul · all messes") → AD-4c; **Reports** (CSV and PDF display chips, **5** "ready") → AD-4d. White row **"Waste and shortages · 4 weeks"** → AD-4c. |
+| **AD-4a · Overview (Empty)** `877:1329` | Subtitle "Last week · 5–11 Aug". EmptyState (chart.bar) **"No waste logged yet for this period"**, body hidden, centred (481 against 480). |
+| **AD-4a · Overview (Offline)** `877:1553` | Subtitle "… · 3 of 4 reporting". Banner **"Offline · saved 1:38 PM"**. Hero eyebrow **"Same 3 messes · Annexe not counted"**, **546** kg wasted; the rest from saved values. |
+| **AD-4e · Meal (Success)** `1085:7071` | Subtitle "Wed 14 Aug lunch · Main Mess", Meal selected. Hero: "Main Mess · Wed lunch", **712** "entered · 860 forecast", "Plate waste 18 kg · Sambar 4 L unserved". White card **"The chain"**: AuditRow (State=Incident, ink nodes) with the time column as a label column (ML/Footnote): Intent "356 yes · 412 answered" · Forecast "860 at 9:00 AM" · Prep "Sambar 42 → 50 L" + dashed **Override** pill (StatusPill Lapsed, relabelled) · Entered "712 · 83% of forecast" · Unserved "Sambar 4 L" · Plate waste "18 kg · whole meal" · Feedback "Sambar too salty · 6". White row **"Possible causes · 3"** → sheet. No "served" for scans. |
+| **AD-4e · Meal (Offline)** `1085:94067` | The same, with the banner "Offline · saved 1:38 PM". |
+| **AD-4e · Possible causes sheet** `1333:11049` (x 3784) and **(Offline)** `1333:100035` (x 4257), AD-4 row | H14 sheet "Possible causes, not proven": the three ranked rows from the old AD-4e card, recoloured to ink (Sambar raised 42 → 50 L +19% · 712 came of 860 expected −17% · 18 of 214 passes unused 8%; bars 285 / 257 / 126 pt of 285 = 19.05 / 17.21 / 8.41%). Close and Dismiss → BACK. |
+| **AD-4c · Trends** `877:2037` (the Waste view) | NavHeader and its Back removed; tab-root header, subtitle "Last 6 weeks · all messes", pills with Waste selected. Content unchanged. |
+| **AD-2 · Data freshness sheet (Offline)** `1333:100350` (AD-2 row, x 5203) | Over Watch Offline; the five feeds, with Entry scans **"saved 1:38 PM · mess desks"**. |
+| **AD-1f · Watch (Empty)** `1303:96777` | Body **"Shortages, crowd and data gaps are all clear."**; re-centred (480.5 against 480). |
+
+Moment notes: Wed 1:40 PM on every rebuilt and new frame (AD-4a S/E/O and AD-4e S/O were 2:05 and 2:09 PM).
+
+**Links (page 10: 343 → 365; +35 −13):**
+- Pills: Overview ↔ Meal ↔ Waste, state for state (Offline Overview ↔ Meal Offline; Waste is one frame). Overview Empty: Waste only.
+- Overview (S, O): Look closer → AD-4e (state for state), Trends tile and the Waste and shortages row → AD-4c, Reports → AD-4d (Move in 0.3).
+- Meal chain (Move in): Forecast → AD-4b; Entered → AD-1b (Offline → AD-1b Offline); Feedback → AD-3c (Offline → AD-3c Offline). Intent → Data freshness sheet (Offline → the Offline sheet). Possible causes → its sheet (Dissolve).
+- Retired: the old Period chips and the "See last week" button (AD-4a), and the Back on AD-4c and on both AD-4e frames (now tab-root views). AD-4b and AD-4d keep Back.
+- **Flow starts:** the 4 approved.
+
+**Diff vs `st129` (snapshot `st130`):**
+- **Page 10:** +12 (3 sheets and their annotations). Changed: the 5 rebuilt frames, AD-4c, Watch Empty and the AD-4 labels and Moment notes.
+- **99 Archive:** +24.
+- **Every other page:** unchanged.
+
+**Renders:** `stage3a/3a_*` (status edge step 3, backdrop 4; sheets 2).

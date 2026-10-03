@@ -745,3 +745,27 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 250 | AD-1f Watch Empty | **The body repeats the title** ("Nothing to watch right now" / "Nothing to watch right now."), as briefed. | Info | Owner picks one, or a different body line. | Later |
 | 251 | DecisionActions `Decline ready` | The entered reason "Usual use is 55 L" is sample text (taken from the evidence). The field-tap step stands in for typing. | Info | Confirm. | Later |
 | 252 | Sheets, Now icons | Now Offline's info icon, and the AD-1b Offline pill, open the online freshness sheet (a view-only reference). | Info | Accept, or add an Offline freshness sheet. | Later |
+
+## Stage 3A · Insights root, Overview and Meal record (2026-10-03)
+
+### Status of earlier gaps
+
+- **242** (AD-3c Offline unreachable): **closed.** Meal Offline's Feedback row opens it.
+- **250** (Watch Empty body): **closed.**
+- **252** (no Offline freshness sheet): **partly closed.** The sheet exists and opens from Meal Offline's Intent row; see 260.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 253 | AD-4e Meal | **Timing conflict, kept as is:** MS-D logged plate waste at 12:40 PM while lunch runs to 2:00 PM, and the record shows "Plate waste 18 kg" at 1:40 PM. | Medium | Owner decides when plate waste is logged (after close?) and the record's moment. | Later |
+| 254 | AD-4e chain | **Prep, Unserved and Plate waste rows are unlinked** (no destination briefed). | Low | Prep → AD-1d or the audit log; Unserved and Plate waste → a waste-log detail. | Later |
+| 255 | AD-4a | "Waste and shortages · 4 weeks" opens AD-4c, which shows waste only. | Low | The paired waste-and-shortages view. | Later |
+| 256 | AD-4a Empty, AD-4e | Overview Empty's **Meal pill is unlinked** (Meal has no Empty), and the Empty subtitle drops "of 4 reporting" (no count was given). | Low | Add a Meal Empty, or route the pill to it. | Later |
+| 257 | Data freshness sheets | The **Intent row opens a sheet with no intent feed** (the "356 yes · 412 answered" source and time are not listed). | Low | Add an "Intent · answered by …" feed row. | Later |
+| 258 | AD-4a Trends tile | Draws the four measured weeks (742 / 718 / 680 / 642) and **skips 22 Jul** (not measured, dashed on AD-4c); the "4 weeks" row spans five calendar weeks. | Info | Confirm, or add a dashed slot. | Later |
+| 259 | AD-4a Offline | Counts 3 messes (546 kg) but keeps the 4-mess comparison "−38 kg" and 2 shortages from the saved values. | Info | Owner supplies 3-mess figures, or the line says "4 messes". | Later |
+| 260 | Now Offline, AD-1b Offline | Their freshness openers (gap 252) still open the **online** sheet; no relink was briefed. | Low | Retarget both to `1333:100350`. | Later |
+| 261 | AD-4e Prep row | The dashed **Override** pill reuses StatusPill `Lapsed` (the only dashed pill) with a new label. | Info | Add a StatusPill `Override` variant (new component state). | Later |
+| 262 | AD-4e, AD-4c | Now tab-root views, so **no Back**: arriving from "Look closer" or a tile shows pills, not Back. | Info | Confirm. | Later |
+| 263 | AD-4c | Moment note stays 2:07 PM (content unchanged) while the other Insights views read 1:40 PM. | Info | Align on the next AD-4c pass. | Later |
