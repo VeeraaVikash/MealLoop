@@ -5829,3 +5829,11 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **States:** Community · Suggestion has Me too states Sending, Backed (113, "You backed this · tap to undo"), Failed and Offline on 04, 05 and 07.
 - **Wiring on 07:** Default → Sending → 1.2 s → Backed → tap → Default. Community · List is unchanged.
 - **Gap 76:** closed.
+
+## Run 2 · Stage 10 · Admin tab bar (2026-10-03)
+
+`st154` = `st153` first; end `st155`. Details: `run2/s10/stage10.md`.
+- **Tabs:** on 115 page-10 screens, AdminTabBar Today / Issues / Insights / Manage → AD-1a Now / AD-3a SOS / AD-4a Overview / AD-5-0 hub (Dissolve 0.15).
+- **Not linked:** Search, and the 33 sheets.
+- **Flow starts:** reset to the four approved starts.
+- **Page 10 links:** 892. **Gap 119:** closed.
