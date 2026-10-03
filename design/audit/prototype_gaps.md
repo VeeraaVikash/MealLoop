@@ -680,3 +680,26 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 230 | Now ↔ Decisions | **No transition rule for sub-tab pills.** The Decisions pill uses Dissolve 0.25, and the Now pill on AD-1c returns with BACK. | Info | Add a pill-switch role to §0.5.1, for example an instant swap. | Later |
 | 231 | AD-1c Empty | **Chips at 0 are all plain outlines.** The white "safety" and dashed "lapsed" styles mark something that needs attention, so at 0 they fall back to the plain outline. | Info | Confirm. | 1B |
 | 232 | AD-1c rows | **Times mix formats:** today's rows show "12:45" with no AM/PM (as briefed), but "Tue 8 PM" does. AD-7d writes "12:52 PM". | Low | Pick one rule for rails: today's times without AM/PM, older items with day and AM/PM, or AM/PM everywhere. | CP-1 |
+
+## Stage 1 · Today, 1D + 1E + 1C.1 (2026-10-03)
+
+### Status of earlier gaps
+
+- **215** (Watch word links): **closed.** The whole Watch row opens Watch, and the "4 shortages" / "1 crowd" word links are retired.
+- **226** (AD-1d Offline before the cutoff): **closed.** AD-1d Offline is now Lapsed at 1:40 PM (saved 1:38 PM), and AD-1c Offline's Curd row opens it.
+- **229** (no results for Record outcome / Approve): **mostly closed.** Record outcome → Sending → Saved, with a Failed state; Approve → Approving → Approved. The rest is in gap 235.
+- **208 / 216** (info and freshness destinations): the Data freshness sheet now exists and opens from every "updated" label. Now's info icon and its Messes chevron are still unlinked (gap 236).
+- **214** (colour-only status dot): carries over to the Messes tiles' issue dots.
+
+### New findings
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 233 | AD-1d, DecisionActions | **Lime rule (1D/1E brief: "wash, logo and one action") vs earlier asks:** the Usual use bar (1C brief) and the ResultCard Success icon and tag in `Saved` and `Approved` are lime. | Low | Owner decides: allow lime on data bars and success receipts, or switch those to ink. | CP-2 |
+| 234 | AD-1b | **The PrepCard row shows only the 3 dish risks.** Sambar (Adjusted), Rice and Chapati (On plan) carried lime pills and aren't risks, so they are no longer on a live screen (the archived copy keeps them). | Low | Add a "Full prep list" row to a mess prep screen, or accept risks-only. | 1D |
+| 235 | DecisionActions | **Approve has no Failed state, and Decline has no submit / sending / failed / receipt states.** | Medium | Add `Approve failed` and a Decline submit path with the same sending → saved / failed pattern. | 1C |
+| 236 | Now | **The info icon (→ freshness sheet) and the Messes chevron (→ Messes) are still unlinked.** Both destinations now exist, but these links were not in the brief. | Low | Link them in the next Now pass. | 1F |
+| 237 | Freshness sheet | **One background (Watch).** Opened from AD-1b, AD-2a, AD-2c or AD-2d, the dimmed screen behind is Watch. | Info | Add per-opener sheet copies, or accept for the prototype. | Later |
+| 238 | AD-1e, AD-1f | **Only the Main tile opens a detail** (AD-1b is Main only); North, South and Annexe are unlinked. The Offline Data gaps tile is unlinked (there is no AD-2d Offline), and Offline "saved" labels don't open the sheet. | Low | Build North/South/Annexe details (or one parameterised detail) and AD-2d Offline. | Later |
+| 239 | AD-1e / AD-1f Empty | **EmptyState with no body line** (hidden, so no copy is invented) and the people icon reused from Crowd's Empty state. | Info | Owner supplies the body copy and icon. | 1D/1E |
+| 240 | AD-2c, AD-2a Moment notes | Rebuilt frames keep their Moment notes (AD-2a 1:42 PM, AD-2c 1:45 PM), while Watch at 1:40 PM opens them. | Info | Re-time to 1:40 PM, or accept as later moments. | Later |
