@@ -862,3 +862,11 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | # | Frame(s) | Issue | Severity | Suggested fix | Stage |
 |---|---|---|---|---|---|
 | 291 | AD-4a Overview (Offline) | Banner reads "Offline · saved 1:38 PM", while the run default for Insights is "saved 2:32 PM" (AD-4c Offline uses 2:32). | Low | Align the Insights offline banners. | Audit |
+
+## Run 2 · Stage 5 · Issues views (2026-10-03)
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 292 | IssueCard (page 03) | The current-step segment is lime in every card, so a list shows several lime data highlights. The admin Community view overrides it to ink per instance. | Medium | Add a `Highlight` boolean or an ink variant, and decide for the student list too. | Audit |
+| 293 | IssueCard (page 03) | "UPDATED 5H AGO" is set in mono caps with words, which breaks "mono only for numbers". | Low | Footnote style with mono numbers only. | Audit |
+| 294 | AD-3a Dishes / Community | Other dish rows (Rice, Paneer, Curd) and "Not now" have no destination. | Info | Add per-dish detail states if needed. | Later |
