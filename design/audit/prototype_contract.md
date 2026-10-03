@@ -5780,3 +5780,11 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **Gap 92:** already wired (1.5 s).
 - **Gap 105:** student weekly bars are screen-level ChartBar (Expected / On target), height = g × 109/84.
 - **Links:** page 07 1,229 → 1,335 (+109 −3). Pages 04 and 05 stay at 7. **Flow starts unchanged:** 07 25, 04 2, 05 2, 10 4, 99 2.
+
+## Run 2 · Stage 4 · AD-4c Waste (2026-10-03)
+
+`st143` = `st142` first; end `st144`. Details: `run2/s4/stage4.md`.
+- **AD-4c · Insights — Waste** has Success (`877:2037`, rebuilt in place), Empty (`1380:11667`) and Offline (`1380:11505`).
+- **Layout:** one black hero (−13% waste │ −1 shortages a week) holding a mirrored ChartBar chart. Waste pills rise and shortage pills hang. 22 Jul and 12 Aug are dashed ghosts at the median, and 5 Aug is lime. Below it, "Look closer · Wed lunch" → AD-4e.
+- **Links:** state for state, as listed in the write-up.
+- **Archive:** the old AD-4c is on 99 Archive, slot 41.

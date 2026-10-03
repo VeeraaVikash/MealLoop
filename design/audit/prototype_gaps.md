@@ -856,3 +856,9 @@ The 1A.2 run ("dark and circular") was stopped before it was written up. Its pla
 | 288 | 07 lunch Meal detail copies (Sending, Saved, Track) | No content links (dishes, tiles) unlike the dinner copies; Crowd only. | Low | Copy the Meal detail content links. | Later |
 | 289 | 04 / 05 dinner Track this meal? | The lunch H1 on 04/05 has a design-page link Track → Your plate · expanded; the dinner copy does not (the clone dropped it). | Info | Add it if the design-page flow needs dinner too. | Later |
 | 290 | Meals · Meal detail (dinner, 07) | Back has no link on the source frame (copies use Back → Meals · Menu). | Low | Add Back → Meals · Menu (Move out 0.3). | Stage 11 |
+
+## Run 2 · Stage 4 · AD-4c Waste (2026-10-03)
+
+| # | Frame(s) | Issue | Severity | Suggested fix | Stage |
+|---|---|---|---|---|---|
+| 291 | AD-4a Overview (Offline) | Banner reads "Offline · saved 1:38 PM", while the run default for Insights is "saved 2:32 PM" (AD-4c Offline uses 2:32). | Low | Align the Insights offline banners. | Audit |
