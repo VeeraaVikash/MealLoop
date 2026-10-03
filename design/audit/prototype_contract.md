@@ -5822,3 +5822,10 @@ Snapshot `st141` (= `st140`) first; end `st142`. Full write-up: `run2/s3/stage3.
 - **Page 11:** renamed "11 Admin Dark (stale, not in prototype)".
 - **Hub Empty People:** "No staff added yet".
 - **99 Archive:** both flow starts removed (gaps 286 and 287 closed).
+
+## Run 2 · Stage 9 · Student "Me too" (2026-10-03)
+
+`st152` first; end `st153`. Details: `run2/s9/stage9.md`.
+- **States:** Community · Suggestion has Me too states Sending, Backed (113, "You backed this · tap to undo"), Failed and Offline on 04, 05 and 07.
+- **Wiring on 07:** Default → Sending → 1.2 s → Backed → tap → Default. Community · List is unchanged.
+- **Gap 76:** closed.
