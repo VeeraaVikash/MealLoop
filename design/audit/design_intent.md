@@ -9,6 +9,17 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 - "Generic" is the #1 complaint. Default ListRow + pill + chevron on white cards reads as boilerplate SaaS. Before reaching for a list, reuse a distinctive pattern: LiveDial, MessBadge / CrowdBadge / MetricBadge, PrepCard swipe cards, stacked duplicate cards, filter-chip rows, black hero card.
 - Also rejected: too much content per card, several elements competing to be the loudest, screens that feel like "bits and pieces", and unexplained gaps. One fact per line. Every screen has one clear hero.
 - Status colours may differ by state but must be muted and consistent. Never full-card traffic-light fills. Lime is the only brand accent.
+- **BACK STANDARD (Final-2 G1, replaces the Final-fix F4 titled back).** Apple's UIKit documentation for `UINavigationItem.backButtonDisplayMode` describes three modes:
+  - `.default` shows the previous screen's title, then falls back to the generic "Back", then to nothing as space runs out;
+  - `.generic` shows "Back";
+  - `.minimal` shows only the back indicator (the chevron).
+
+  MealLoop uses **minimal**. Every drill-in screen has ONE BackButton: a round 44 pt glass circle with the system chevron (GlassButton Kind=Icon, chevron.left), top-left at x 16, y 58. It has the same size and offset on every screen of every role. The screen's own title is the navigation title (centred inline, or the iOS large title under the bar), and the button never holds title text.
+  - Tab roots have no Back.
+  - Sheets have a grab handle and a Close (×) top-right, and close on a tap outside.
+  - Multi-step sequences (Confirm hold, Record waste, Running out?) are modal: Close (×) top-right; inside, Back steps back.
+  - Edge-swipe back is the system behaviour in the real app; the prototype shows only the button.
+  - Back on a result state (Sent, Saved, Approved) goes to the screen the flow started from, so it never re-runs a Sending timer.
 - **BRAND RULE V2 (run 3, replaces the 2B lime rule).** Lime (`#D4F25A`, token `lime`) is the brand colour for every role: student, mess staff and admin.
   - **Allowed:**
     1. the lime wash on every page background (all roles);
