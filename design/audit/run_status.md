@@ -29,3 +29,9 @@
 | R2-5 Prototype wiring | done | st168 = st167 (14 pages) → st169; 10 links +202 −44 (re-keyed tab links); 09 +1 link; flows: 10 = approved 5, 09 = 3, 99 = 0; student pages unchanged | Admin tab bar on 126 frames (625 links) incl. Search circle → AD-8c; avatar DR on 33 frames → AD-8a. Staff: profile sheet gets Waiting to send; both profile sheets raised to clear the home indicator. Sign-in chains verified for 3 roles. Reachability: 10 94/162 + AD-8 via search/avatar, 09 40/54; all unreachable are state frames (listed in prototype_contract.md); 0 dead ends. DEMO.md staff and admin walkthroughs rewritten (10 steps each, new screens). |
 | R2-6 Quick audit | done (report only) | st170 = st169 (14 pages, no change) | final_audit_run2/ (README with summary and ranked fix list of 10, fa_09.md per frame, fa_10.md by check). 09: fill < 75% 21 (all pre-run-3 result screens), MS-D1 clear 16 pt, mono 15, lime ≥ 4 elements 5. 10: fill 1 (AD-2b), mono 36, lime ≥ 4 elements 18. Both: 0 small text, 0 overflow, 0 dead ends, 0 dead chevrons, wash on all; max depth 4 (pre-home C1; Exported state). |
 | R2-7 Final report | done | — (no design change after st170) | overnight3_report.md: stage table, 21 decisions, 8 brief-vs-rule conflicts, gaps 308–317 (also in prototype_gaps.md), sample data, components (none added; StaffTopBar set flagged), NEEDS REVIEW list of the 32 new screens. |
+
+# Final-fix run ("RUN FINAL-FIX") · status log (2026-10-04)
+
+| Stage | Result | Snapshot | Notes |
+|---|---|---|---|
+| F0 Preflight | done | st171 = st170 (14 pages) | HEAD 73349c4; push dry-run OK; 968:3292 (Manage hub) and 1406:493 (AD-0 Sign in) resolve; PROJECT_CONTEXT.md absent (contract and design_intent.md used). Finished before: run 2 stages 0–13 and run 3 R2-0 to R2-7, so nothing is redone. |
