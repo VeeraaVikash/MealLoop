@@ -915,3 +915,17 @@ The full findings are in `final_audit/README.md`. New gaps from the audit:
 | 315 | 09 / 10 state frames | About 80 state frames (Failed, Offline, Empty, scan outcomes) cannot be reached in the prototype. Only page 07 has state galleries. | Medium | Add a "States" gallery start per role, or accept them as canvas-only. | Owner |
 | 316 | 10 AD-1b Annexe hero | "—" in the hero metric renders as a long bar. | Low | Use a chip "Not counted" and hide the number. | Next |
 | 317 | 07 student navigation (report only) | Report · Receipt and Urgent receipt have no Back. Reminder prompt has no Close. 41 state frames have an unlinked Back. 44 frames have dead chevrons. | Medium | A student pass (student edits: 04 source → 05 → 07). | Owner |
+
+## Final-fix run (2026-10-04)
+
+| # | Where | Gap | Severity | Fix | When |
+|---|---|---|---|---|---|
+| 318 | 09 staff starts | Scanner (MS-A1–A6) and pass desk (MS-B1–B8) are unreachable from the only staff start (Mess staff · Sign in); no duty picker exists. | Medium | Add a duty picker after Confirm profile, or allow two more staff starts. | Next |
+| 319 | 07 state gallery | The 96 gallery frames lost their flow start (one student start allowed). | Low | Present from Gallery · A · Sign in, or add a hidden debug link. | Owner |
+| 320 | 07 / 09 / 10 | 83 controls lead to destination-absent screens (finalfix_report.md). | Medium | Build the listed screens. | Next |
+| 321 | 09 / 10 mono words | Eyebrows and word parts in mono on 19 staff and 28 admin frames. | Medium | Sans style for words, mono for numbers only. | Next |
+| 322 | 09 / 10 lime | 12 frames with ≥ 4 lime elements; AD-6c3 (6) and MS-F4 (5) need a by-kind review. | Low | Review under rule V2. | Next |
+| 323 | 10 AD-7a / AD-7d | 10 tappables under 44 pt (Give access, Role bar, Type pill, timeline dots). | Low | 44 pt hit areas. | Next |
+| 324 | 07 lunch Meal detail | No unanswered / Skip / Not sure states for the lunch Meal detail. | Low | Build them or route to Home answer states. | Next |
+| 325 | tools/fa1.js | Counts layers under a sheet's scrim. | Low | Skip under-scrim layers. | Next |
+| 326 | 10 AD-5a menus | 10 dish tiles have no Edit dish frame (gap 310 widened by F3). | Medium | One Edit dish template per dish. | Next |
