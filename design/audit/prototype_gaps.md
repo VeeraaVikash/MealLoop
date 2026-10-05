@@ -910,7 +910,7 @@ The full findings are in `final_audit/README.md`. New gaps from the audit:
 | 310 | 10 AD-5a Menu dish cards | Only Sambar opens (Edit dish). The Rice, Paneer, Chapati and Curd cards do not open on tap (swipe-row rule). | Medium | Add Edit dish frames for the four dishes. | Next |
 | 311 | Cross-role shortage | Staff MS-G2 sends a Main Mess Rice alert (1:52 PM). Admin AD-2c lists Rice for North Mess only. | Low | Add the Main Mess alert to AD-2c, or change the staff sample. | Next |
 | 312 | 09 MS-E-empty | The shift line reads "Kitchen staff", while MS-E reads "Supervisor" (gap 303 family). | Low | Align it with the supervisor account. | Next |
-| 313 | 09 result screens | 21 frames sit under the 75% fill floor (42–72%): scanner and pass-desk results, C4a, C4b, D3a, D4. | Medium | Centred result + next action, or a recent-scans rail. | Next |
+| 313 | 09 result screens | **Closed (Final-3 H4):** these frames were replaced in the G2–G7 rebuild. The new full-screen results (Welcome, Already in, Not valid, Sent, Saved) are one-message screens under design_intent rule 9a, and every task frame reaches 74–100%. Was: 21 frames sit under the 75% fill floor (42–72%): scanner and pass-desk results, C4a, C4b, D3a, D4. | Medium | Centred result + next action, or a recent-scans rail. | Next |
 | 314 | 09 MS-D1 Waste entry | The last item is 16 pt above the footer (rule 20). | Low | Trim the spacing or scroll. | Next |
 | 315 | 09 / 10 state frames | About 80 state frames (Failed, Offline, Empty, scan outcomes) cannot be reached in the prototype. Only page 07 has state galleries. | Medium | Add a "States" gallery start per role, or accept them as canvas-only. | Owner |
 | 316 | 10 AD-1b Annexe hero | "—" in the hero metric renders as a long bar. | Low | Use a chip "Not counted" and hide the number. | Next |
@@ -925,7 +925,29 @@ The full findings are in `final_audit/README.md`. New gaps from the audit:
 | 320 | 07 / 09 / 10 | 83 controls lead to destination-absent screens (finalfix_report.md). | Medium | Build the listed screens. | Next |
 | 321 | 09 / 10 mono words | Eyebrows and word parts in mono on 19 staff and 28 admin frames. | Medium | Sans style for words, mono for numbers only. | Next |
 | 322 | 09 / 10 lime | 12 frames with ≥ 4 lime elements; AD-6c3 (6) and MS-F4 (5) need a by-kind review. | Low | Review under rule V2. | Next |
-| 323 | 10 AD-7a / AD-7d | 10 tappables under 44 pt (Give access, Role bar, Type pill, timeline dots). | Low | 44 pt hit areas. | Next |
+| 323 | 10 AD-7a / AD-7d | **Closed (Final-2 G10; re-verified by Final-3 H1):** 44 pt hit areas. Was: 10 tappables under 44 pt (Give access, Role bar, Type pill, timeline dots). | Low | 44 pt hit areas. | Next |
 | 324 | 07 lunch Meal detail | No unanswered / Skip / Not sure states for the lunch Meal detail. | Low | Build them or route to Home answer states. | Next |
 | 325 | tools/fa1.js | Counts layers under a sheet's scrim. | Low | Skip under-scrim layers. | Next |
 | 326 | 10 AD-5a menus | 10 dish tiles have no Edit dish frame (gap 310 widened by F3). | Medium | One Edit dish template per dish. | Next |
+
+## Final-2 run (2026-10-05) · gaps 327–341, with Final-3 status
+
+These were first listed in final2_report.md and are recorded here so this file stays the one gap list. The Final-3 closures follow the format above.
+
+| # | Where | Gap | Severity | Status / fix |
+|---|---|---|---|---|
+| 327 | 04 / 05 / 07 You | The You tile still read "REWARDS" after the Credits rename. | Low | **Closed (Final-3 H3):** the tile and every student balance string now read Credits (credits_rename.md). |
+| 328 | 10 AD-2b Crowd — Mess detail | Fill 65%; G10 tried twice to enlarge the dial and reverted both. | Low | **Closed (Final-3 H4):** accepted exception, design_intent rule 9b. The screen has one hero and nothing hidden; enlarging the dial left empty bands; adding blocks is not allowed. |
+| 329 | 10 AD-8c Search — No results | Fill 57%. | Low | **Closed (Final-3 H4):** empty states are exempt from the fill floor (rule 9a) and follow rule 10 (centred message). |
+| 330 | 07 (+ 04 / 05) list screens | 12 list screens have fill of 56–74% and no data visual to enlarge (Recheck · Inbox, Pass · Available, Feedback ×3, Rewards history, Help, Community · Archived, Search · Menu result, About, Daily goal ×2). | Low | Open. These are not empty states; the owner decides between short lists and a layout change. |
+| 331 | 04 / 05 / 07 Onboarding | Student sign-in has the lime wash only under the onboarding art. | Low | Open. |
+| 332 | 07 / 10 | Pills, chips and scope pills were 30 pt and menu dish rows 36 pt (read6 skipped those layer names). | Medium | **Closed (Final-3 H1):** 81 invisible 44 pt hit areas with the links moved; dish rows are 44 pt (hit_areas.md). |
+| 333 | 10 AD-1a | The info.circle and chevron.right targets were 20 pt. | Low | **Closed (Final-3 H1):** two 44 × 44 hit areas, split at their midpoint. |
+| 334 | 04 / 05 / 07 Home · Crowd stale | "Show at the counter" was cut off. | Low | **Closed (Final-3 H2):** it wraps to two lines and the tile grows. 0 real truncations on any page. |
+| 335 | 04 / 05 / 07 Pass · Confirm, Reminder prompt | These sheets close with Cancel / Not now and have no round Close. | Low | Open (owner). |
+| 336 | 07 lunch Meal detail | No unanswered lunch Meal detail exists, so the lunch "Change" buttons lead nowhere. | Low | Open (gap 324 family). |
+| 337 | 10 | Admin status bars read 9:41 while the content's Moment is 1:40 PM or later. | Low | Open. |
+| 338 | 10 AD-1b North / South / Annexe | "Last: Hair in dal · Mon · closed" is repeated on three messes (clone sample). | Info | Open. |
+| 339 | 03 ReportTicket | The spaces in the step labels carry the mono font. | Info | Open (cosmetic). |
+| 340 | tools / reach8 | Does not scan frames inside sections. | Info | Open. AD-4f was checked by hand. |
+| 341 | tools / fa1, qc8 | Count chevrons under a scrim as dead. | Info | Open (gap 325 family). |

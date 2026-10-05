@@ -86,6 +86,20 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 The fill floor stays (rule 25).
 
 9. On every non-Empty screen, content at rest reaches at least 75% of the way down to the tab bar: the lowest content item ends at y 561 or lower (the tab bar top is at y 748). Reach it by enlarging the hero number or the data visual, never by adding blocks.
+9a. **Empty states are exempt from the 75% floor (Final-3 H4, 2026-10-05).** This covers every screen whose content is one message with no data behind it:
+    - Empty and No results screens, including **AD-8c Search — No results** and the student Search · No results;
+    - first-use and "coming soon" messages;
+    - error and unavailable messages (Error, Unavailable, Not published, No menu, Not eligible, Expired, Already used, Wrong mess, Hidden, Pending).
+
+    **Why:** the message is the whole content. Reaching 75% would mean adding blocks, which rule 9 forbids, or inflating one line of text into a poster, which breaks rule 5 (one big number per screen) and the type scale. These screens follow rule 10 (centred message) instead, and the fill check skips them.
+9b. **AD-2b Crowd — Mess detail is an accepted exception (fill 65%, Final-3 H4).**
+
+    **Why:**
+    - The screen answers one question, "how busy is this one mess right now?". It has one LiveDial hero, the level, its method and its freshness, so nothing on it can be cut and nothing is hidden (rule 20).
+    - The dial is already the largest data visual the card holds. G10 made two attempts to enlarge it; both left empty bands inside the card and were reverted (max two attempts).
+    - Adding blocks to reach 75% would break rule 9.
+
+    Review it again if the screen gains real content, for example a per-slot turnout strip.
 10. Empty and Offline states centre their message vertically. They must not sit at the top with dead space below.
 11. Reading used from 2026-09-30, to confirm: an Offline state that still shows cached data (banner plus hero) counts as non-Empty and meets rule 9, with its banner at the top. An Offline state with no data is a message and follows rule 10.
 12. Measured by `tools/filltool.js` (fill = lowest content item at rest ÷ 748; an Empty card is centred when its centre is within 8 pt of the middle of the free band between whatever sits above it and y 748).
