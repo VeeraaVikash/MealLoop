@@ -90,6 +90,7 @@ The fill floor stays (rule 25).
     - Empty and No results screens, including **AD-8c Search — No results** and the student Search · No results;
     - first-use and "coming soon" messages;
     - error and unavailable messages (Error, Unavailable, Not published, No menu, Not eligible, Expired, Already used, Wrong mess, Hidden, Pending).
+    - Loading skeletons and the search Typing state. These are transient, and the fill tool has skipped Loading since Final-2 G10; written down here in Final-3 H6.
 
     **Why:** the message is the whole content. Reaching 75% would mean adding blocks, which rule 9 forbids, or inflating one line of text into a poster, which breaks rule 5 (one big number per screen) and the type scale. These screens follow rule 10 (centred message) instead, and the fill check skips them.
 9b. **AD-2b Crowd — Mess detail is an accepted exception (fill 65%, Final-3 H4).**
