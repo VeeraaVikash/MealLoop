@@ -59,6 +59,7 @@ Manifest "missing" counts at the G11 end:
 | Nutrient list with goal | You · Daily breakdown · goal on, "All nutrients" | 1 |
 | Plate tracker for other meals | Meal detail (dinner) · Track this meal? | 1 |
 | Ice cream ticket | Credits Ice cream Get (G9) | 1 |
+| Unanswered lunch Meal detail (so the answer can be changed) | "Change" on Meal detail · Answer Yes · Saved and Meal detail · Track this meal? (G12) | 2 |
 | **MESS STAFF** | | |
 | Dish detail for every dish except Sambar | MS-C1 rows (their chevrons were removed in G7) | 5 |
 | Help for Door scanner, Pass desk and Supervisor | MS-G5 is written for the Kitchen job only | 3 |
