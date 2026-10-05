@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-05, after Final-3 H5)
+# MealLoop · STATE (2026-10-05, after Final-3 H6)
 
 The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md`, and the run logs are in `run_status.md`.
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st222 (the H5 start). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Last snapshot:** st225 (the Final-3 end). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
 - **Flow starts (exactly 7):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
@@ -29,7 +29,9 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 | Real truncation | 0 on all phone pages (1,499 texts with truncation turned on, all fitting) | Final-3 H2 |
 | Student balance strings | All read "Credits"; admin reads "Rewards" | Final-3 H3 |
 | Fill floor | Exemptions written down (rule 9a, empty states; rule 9b, AD-2b). 12 student list screens are still open (gap 330). | Final-3 H4 |
-| Reachability, iOS check, fill | Re-run in H6; see `final3_report.md` | Final-3 H6 |
+| iOS check | 0 tab roots with Back; tab bars 3–4 items, navigation only; 0 targets under 44 pt; status bar and home indicator clear on all pages | Final-3 H6 |
+| Fill | 07: 12 list screens under 75% (gap 330); 09: 0; 10: 0 open (AD-8c is covered by rule 9a, AD-2b by rule 9b) | Final-3 H6 |
+| Reachability | 07 165 / 262, 09 66 / 77, 10 98 / 163 + 13 in the section; 0 bugs, 0 dead ends; the three Sign in walks pass | Final-3 H6 |
 
 ## Where things are
 
