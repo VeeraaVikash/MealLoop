@@ -1,0 +1,53 @@
+# MealLoop · STATE (2026-10-05, after Final-3 H5)
+
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md`, and the run logs are in `run_status.md`.
+
+- **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
+- **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
+- **Last snapshot:** st222 (the H5 start). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Flow starts (exactly 7):**
+  - 07: Student · Sign in.
+  - 09: Mess staff · Sign in.
+  - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
+
+## Frames
+
+| Page | Phone frames | Role |
+|---|---|---|
+| 04 Student Light | 300 | Student design source |
+| 05 Student Dark | 300 | Dark twin; the Dark mode (collection 45:2, mode 45:1) is set on each frame |
+| 07 Prototype & QA | 262 | Student prototype and state gallery (no start) |
+| 09 Mess Staff | 77 | Staff design and prototype |
+| 10 Admin | 163 + 13 (AD-4f section) | Admin design and prototype, plus 9 A4 report page components |
+| 99 Archive | 153 | Replaced frames, links stripped |
+
+## Health (latest checks)
+
+| Check | Result | When |
+|---|---|---|
+| Targets, all layer names | 0 under 44 pt on 07 / 09 / 10. Staff: only the 3 status-bar time skips are under 56 pt (a demo shortcut). | Final-3 H1 |
+| Real truncation | 0 on all phone pages (1,499 texts with truncation turned on, all fitting) | Final-3 H2 |
+| Student balance strings | All read "Credits"; admin reads "Rewards" | Final-3 H3 |
+| Fill floor | Exemptions written down (rule 9a, empty states; rule 9b, AD-2b). 12 student list screens are still open (gap 330). | Final-3 H4 |
+| Reachability, iOS check, fill | Re-run in H6; see `final3_report.md` | Final-3 H6 |
+
+## Where things are
+
+- **Gaps:** `prototype_gaps.md`; the latest is 341.
+- **Controls with no destination yet:** `still_absent.md`.
+- **Demo walks:** `DEMO.md`.
+- **iOS checklist:** `ios_checklist.md`.
+- **Reports:** `final2_report.md` and `final3_report.md`.
+
+## Open decisions for the owner
+
+1. **iOS 27 kit:** none was available, so the file uses the iOS 26 Liquid Glass components. Swap them when a kit exists?
+2. **Turnout and reasons page:** build an in-app Insights screen (three turnout groups plus reasons), or keep it in the weekly report only?
+3. **Admin coupon wallet:** a per-student view of coupons issued, used and outstanding. Is it needed, and what may it show?
+
+## How to resume
+
+1. Take a snapshot of all 14 pages and compare it with the last stored snapshot (snaptool). Stop if they differ.
+2. Keep the seven flow starts. Reset the starts after any link edit.
+3. Work in chunks of about 90 frames, since each call times out at 60 s.
+4. After each stage: render at scale 1, take the snapshot diff (frames, links, flow starts), commit, push, and add a row to `run_status.md`.
