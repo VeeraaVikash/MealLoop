@@ -69,8 +69,8 @@ Run two prototype links side by side, on two phones or two windows. The prototyp
 
 | Loop | Admin (Devi) | Mess staff (Ravi) | Closes on |
 |---|---|---|---|
-| **Notify kitchen → Confirm hold** | AD-3b · Safety case → **Notify kitchen** (Notified 12:52 PM) | Supervisor or Kitchen home (Alert) → **Open alert** → MS-F1 Stop → F2 Check → F3 Done ("Held 1:48 PM, checked 1:50 PM") | Admin: AD-8b Notifications → "Kitchen confirmed the hold 1:48 PM" → AD-3b (Confirmed) → Verify and close |
-| **Running out? → Alerts** | AD-1f · Today — Watch → **Shortages**, or a mess detail's dish card → **AD-2c · Shortage alerts** | MS-C3 Running out? → **Send alert** → Sent | The alert appears on AD-2c (and the Sambar alert on MS-E1 for the kitchen) |
+| **Notify kitchen → Confirm hold** | AD-3b · Safety case → **Notify kitchen** (changes in place to Notified) | Supervisor or Kitchen home (Alert) → **Open alert** → MS-F1 Stop → F2 Check → F3 Done ("Held 1:48 PM, checked 1:50 PM") | Admin: AD-8b Notifications → "Kitchen confirmed the hold 1:48 PM" → AD-3b (Confirmed) → Verify and close |
+| **Running out? → Alerts** | AD-1f · Today — Watch → **Shortages**, or a mess detail's dish card → **AD-2c · Shortage alerts** | MS-C3 Running out? → **Send alert** → Sent | AD-2c lists the dishes at risk across messes ("4 dishes at risk"); the kitchen's own alerts show on MS-E1 |
 | **Pass problem → pass exception** | AD-1c To do → **Karan pass reissue** → **AD-6b · Pass exception (Open)** → Approve → Approved | Pass desk → **Pass problem** → **Ask for a reissue** → MS-B7 Sent to Devi | Student: Special pass → Pass · Live (the reissued pass) |
 
 ## Known limits
