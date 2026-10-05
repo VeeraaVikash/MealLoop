@@ -24,7 +24,7 @@
 
 **Overlap check:**
 - No hit area overlaps another hit area.
-- No hit area newly covers another tappable, apart from one case on AD-1a · Today — Now (Offline). There the info and chevron hit areas sit 35 pt above the tab bar's top edge at rest, and the fixed tab bar stays on top.
+- No hit area newly covers another tappable, apart from one case on AD-1a · Today — Now (Offline). There the info and chevron hit areas (y 713–757) reach 9 pt into the tab bar (top at 748) at rest. The fixed tab bar is above them in the layer order, so the tabs keep their taps, and the rows move clear once the screen scrolls.
 
 ## Menu dish rows
 
