@@ -15,7 +15,7 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
   - `.minimal` shows only the back indicator (the chevron).
 
   MealLoop uses **minimal**. Every drill-in screen has ONE BackButton: a round 44 pt glass circle with the system chevron (GlassButton Kind=Icon, chevron.left), top-left at x 16, y 58. It has the same size and offset on every screen of every role. The screen's own title is the navigation title (centred inline, or the iOS large title under the bar), and the button never holds title text.
-  - Tab roots have no Back.
+  - Tab roots have no Back. **Demo exception (owner, 2026-10-07):** the eight mess-staff job homes (MS-H Door scanner, Pass desk, Kitchen, Supervisor and their Empty / Alert / Offline states) have the round Back at 16, 58, with a 56 pt hit area that goes to MS-1 Pick your job, so a demo can switch jobs quickly. In the real app, switching jobs stays under Me → Switch job.
   - Sheets have a grab handle and a Close (×) top-right, and close on a tap outside.
   - Multi-step sequences (Confirm hold, Record waste, Running out?) are modal: Close (×) top-right; inside, Back steps back.
   - Edge-swipe back is the system behaviour in the real app; the prototype shows only the button.
