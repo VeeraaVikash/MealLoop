@@ -4,7 +4,7 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st225 (the Final-3 end). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Last snapshot:** st228 (2026-10-07 owner fixes). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
 - **Flow starts (exactly 7):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
@@ -54,17 +54,21 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 3. Work in chunks of about 90 frames, since each call times out at 60 s.
 4. After each stage: render at scale 1, take the snapshot diff (frames, links, flow starts), commit, push, and add a row to `run_status.md`.
 
-## Queued for the next session (owner requests, 2026-10-07)
+## Done 2026-10-07 (owner requests)
 
-Figma disconnected before these could be made. Do them first, with the usual snapshot, renders, diff and push.
+1. **AD-5a Menu:**
+   - "+" (Add dish) moved from 20, 54 (on top of the Back) to the top-right at 333, 58 on Lunch, Breakfast, Dinner, Empty and Offline. The Back is visible again.
+   - A scan of 04 / 05 / 07 / 09 / 10 found no other control on top of a Back.
+2. **Staff homes:** the eight MS-H homes have a demo Back at 16, 58, with a 56 pt hit area that goes to MS-1 Pick your job.
+   - Header and content moved down 44 pt.
+   - Door scanner, Door scanner (Empty) and Pass desk now scroll with fixed bars.
+   - The last card clears the tab bar by 20 pt on all eight.
+   - Logged in design_intent.md as a demo exception.
+3. **Page 05:** removed a stray prototype link (Issue hero on "Community · Suggestion · Me too Offline") and the "Flow 1" start Figma had added with it. The file is back to exactly 7 starts.
+4. **Snapshot:** st228. Renders are in owner_fixes/.
 
-1. **AD-5a Menu: "+" sits where the Back belongs.** The Menu frames (Lunch, Breakfast, Dinner, Empty, Offline) are drill-ins from the Manage hub, but the round "+" (Add dish) is at 16, 58 and there is no Back.
-   - Put the standard round Back at 16, 58 (GlassButton Kind=Icon, chevron.left; link: Back).
-   - Move "+" to the trailing slot top-right at the same height, linked as before (Add dish).
-   - Check the other admin frames for any control at 16, 58 that isn't the Back.
-2. **Mess staff homes: add a Back for the demo, so jobs can be switched quickly.** On the four job homes and their states (MS-H Door scanner, Pass desk, Kitchen, Supervisor; Empty, Alert, Offline), add the round Back at 16, 58 (56 pt hit area) → MS-1 Pick your job.
-   - Shift the "Hi Ravi" header down so nothing overlaps.
-   - Log it in design_intent.md as a demo exception to "tab roots have no Back".
-3. **iOS 27 swap (agreed):** keep 393 pt; our own tab bars on the iOS 27 glass.
-   - The "iOS and iPadOS 27" library is added to the file, but the connector can't import from it ("Not permitted to upsert").
-   - Waiting on the owner to place one instance each of these on page 03, in a frame named "iOS 27 kit": Status bar - iPhone 17 Pro, Home Indicator, Tab Bar - iPhone, Sheet - iPhone, Grabber, Button - Liquid Glass - Symbol, Alert, Action Sheet.
+## Still queued
+
+- **iOS 27 swap** (agreed: keep 393 pt; our own tab bars on the iOS 27 glass).
+  - The library is added, but the connector can't import from it ("Not permitted to upsert").
+  - Waiting on the owner to place one instance each of these on page 03, in a frame named "iOS 27 kit": Status bar - iPhone 17 Pro, Home Indicator, Tab Bar - iPhone, Sheet - iPhone, Grabber, Button - Liquid Glass - Symbol, Alert, Action Sheet.
