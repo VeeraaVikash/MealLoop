@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-05, after Final-3 H6)
+# MealLoop · STATE (2026-10-08, after the brand audit)
 
 The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md`, and the run logs are in `run_status.md`.
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st228 (2026-10-07 owner fixes). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Last snapshot:** st240 (2026-10-08, end of the brand audit). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
 - **Flow starts (exactly 7):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
@@ -33,9 +33,16 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 | Fill | 07: 12 list screens under 75% (gap 330); 09: 0; 10: 0 open (AD-8c is covered by rule 9a, AD-2b by rule 9b) | Final-3 H6 |
 | Reachability | 07 165 / 262, 09 66 / 77, 10 98 / 163 + 13 in the section; 0 bugs, 0 dead ends; the three Sign in walks pass | Final-3 H6 |
 
+## Brand audit (2026-10-08)
+
+- Report: `brand_audit_report.md`; checklist: `RELEASE_CHECKLIST.md`; detail: `final_audit/`; exports: `export/` (27 at 2×).
+- Page 03 now ends with the **Deprecated** section (5 zero-instance components) and the **Brand sheet · new** board.
+- Invisible fixes made: 28 paints bound to tokens, 132 text styles applied, 4 descriptions, 26 text boxes to auto height.
+- Top VISIBLE items: mono words on 04 / 05 (gap 342), HoldToConfirm in Dark (gap 343), ink-secondary on black (gap 344). Gaps 342–355 are new.
+
 ## Where things are
 
-- **Gaps:** `prototype_gaps.md`; the latest is 341.
+- **Gaps:** `prototype_gaps.md`; the latest is 355.
 - **Controls with no destination yet:** `still_absent.md`.
 - **Demo walks:** `DEMO.md`.
 - **iOS checklist:** `ios_checklist.md`.

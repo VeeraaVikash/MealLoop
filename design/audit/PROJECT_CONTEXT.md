@@ -291,3 +291,10 @@ Reachability (Final-3 H6) is in `final3_report.md`. There are 0 dead ends; every
 1. **iOS 27 kit.** The file uses the iOS 26 Liquid Glass components; no iOS 27 kit was available. Decide whether to move to an iOS 27 kit when one exists, and which components to swap: StatusBar, HomeIndicator, NavHeader, GlassButton, GlassSheet and the tab bars.
 2. **Turnout and reasons page.** Insights has Overview, Meal record and Waste, and the weekly report has a Turnout page. There is no in-app Turnout & reasons screen yet: three groups (said yes and came in, said yes and did not come in, no response and came in) plus the reason breakdown. Decide whether to build it and where it lives.
 3. **Admin coupon wallet.** Redemptions shows what was redeemed. There is no view of coupons issued, used and outstanding per student. Decide whether admins need it and what it may show, given the privacy rules.
+
+## 12. Brand audit (2026-10-08)
+
+- **Files:** `brand_audit_report.md`, `RELEASE_CHECKLIST.md`, `final_audit/` (inventory, tokens, text styles, hygiene, deprecations, brand rule, per-frame checks, conformance, consistency, prototype, iOS, doc sync, summary, before / after), `export/`.
+- **Page 03:** 97 sets and 38 single components, all described; 5 zero-instance components in the **Deprecated** section; the **Brand sheet · new** board (render: `final_audit/brand_sheet.png`).
+- **Health:** 0 small targets, 0 truncation, 0 reachability bugs, 91 / 91 demo hops, 7 starts. Open: mono words on 04 / 05 (gap 342), Dark HoldToConfirm contrast (343), ink-secondary on black (344), lime on light in 13 components (346), fill floor (330, 347).
+- **Snapshot:** st240.
