@@ -4,7 +4,7 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st240 (2026-10-08, end of the brand audit). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Last snapshot:** st242 (2026-10-08, Foundations rebuilt after the brand audit). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
 - **Flow starts (exactly 7):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
@@ -36,6 +36,7 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 ## Brand audit (2026-10-08)
 
 - Report: `brand_audit_report.md`; checklist: `RELEASE_CHECKLIST.md`; detail: `final_audit/`; exports: `export/` (27 at 2×).
+- Page 01 Foundations was rebuilt from the live tokens and styles (old board on 99 Archive).
 - Page 03 now ends with the **Deprecated** section (5 zero-instance components) and the **Brand sheet · new** board.
 - Invisible fixes made: 28 paints bound to tokens, 132 text styles applied, 4 descriptions, 26 text boxes to auto height.
 - Top VISIBLE items: mono words on 04 / 05 (gap 342), HoldToConfirm in Dark (gap 343), ink-secondary on black (gap 344). Gaps 342–355 are new.
