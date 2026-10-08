@@ -26,7 +26,7 @@ Every step of the three walks was resolved to frames and each consecutive pair w
 | Mess staff (14 steps) | 32 | 32 | MS-A7 Can't scan? → MS-A2 Welcome (Wednesday pass) verified directly (1 hop) |
 | Admin (15 steps) | 28 | 28 | |
 
-"Pass" includes 13 checker artefacts where a button label resolved to the frame it sits on (for example "Me" on MS-G1 · Me); none is a missing link. **DEMO.md needs no repair** (C1 step 9: nothing to do).
+The first pass also produced 16 checker artefacts where a button label resolved to the frame it sits on (for example "Me" on MS-G1 · Me); they are not hops and none is a missing link. **DEMO.md needs no repair** (C1 step 9: nothing to do).
 
 ## Wiring manifest (wire7)
 

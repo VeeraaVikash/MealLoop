@@ -1,6 +1,6 @@
 # Component inventory · Brand audit A1 (2026-10-08)
 
-Page 03 Components (44:5355). 135 main components and sets: 96 sets, 39 single components. Counts are live instances, read with `figma.skipInvisibleInstanceChildren = false`, nested instances included. Data is stored in shared plugin data `mealloop/a1_rows`, `a1_cnt_*`, `a1_detached`.
+Page 03 Components (44:5355). 135 main components and sets: 97 component sets and 38 single components. Counts are live instances, read with `figma.skipInvisibleInstanceChildren = false`, nested instances included. Data is stored in shared plugin data `mealloop/a1_rows`, `a1_cnt_*`, `a1_detached`.
 
 Columns: **04** Student Light, **05** Student Dark, **07** Prototype, **09** Mess staff, **10** Admin (incl. the AD-4f section), **03** Components (doc and spec instances), **99** Archive. Pages 02, 06, 08, 11 and 00 are in `a1_cnt_other` and do not change any status. **Desc** is 1 when the description field is filled.
 
