@@ -30,6 +30,8 @@ Each walk below was traced link by link on 2026-10-05 (reachability_final.md).
 
 ## Mess staff · Sign in (page 09)
 
+Demo shortcut (2026-10-07): every MS-H home has a round Back at the top left that returns to **MS-1 · Pick your job**, so the presenter can switch jobs in one tap. Its link sits on a 56 pt hit area. Re-checked hop by hop in the 2026-10-08 brand audit: all 91 hops in the three walks pass.
+
 1. **MS-0 · Sign in**: tap **Sign in with SRM**. **MS-0 · Verifying** moves on by itself to **MS-0 · Confirm profile** (Ravi, "Mess staff · Main Mess").
 2. **Yep, that's me** → **MS-1 · Pick your job** (Door scanner, Pass desk, Kitchen, Supervisor).
 3. **Door scanner** → **MS-2 · Start shift — Door scanner** → **Start shift** → **MS-H · Home — Door scanner** → **Scan** → **MS-A1 · Scan** → tap the viewfinder → **MS-A2 · Welcome** (Aarav ·0238) → Scan next.
