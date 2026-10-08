@@ -5,7 +5,7 @@
 | Check | Before (st229) | After (st239) | Changed by |
 |---|---|---|---|
 | Raw solid paints (03 / 04 / 05 / 07 / 09 / 10) | 942 / 0 / 0 / 60 / 0 / 21 | 940 / 0 / 0 / 45 / 0 / 12 (03 includes the new Deprecated section's outline) | A2 (27 bound), C1 (1 bound) |
-| Exact-match bindable paints left | 35 (19 invisible in both modes) | 17 on 03, all lock-screen mock / CreditsChip (binding would change page 05 Dark) | A2 |
+| Exact-match bindable paints left | 35 (27 invisible, bound in A2) | 17 on 03, all lock-screen mock / CreditsChip (binding would change page 05 Dark) | A2 |
 | Unstyled texts (03 / 04 / 05 / 07 / 09 / 10) | 72 / 38 / 38 / 68 / 2 / 266 | 39 / 0 / 0 / 45 / 2 / 266 | A3 (132 styles) |
 | Exact-match styles left | 132 | 0 | A3 |
 | Components with no description | 4 | 0 | A4 |
