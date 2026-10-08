@@ -951,3 +951,24 @@ These were first listed in final2_report.md and are recorded here so this file s
 | 339 | 03 ReportTicket | The spaces in the step labels carry the mono font. | Info | Open (cosmetic). |
 | 340 | tools / reach8 | Does not scan frames inside sections. | Info | Open. AD-4f was checked by hand. |
 | 341 | tools / fa1, qc8 | Count chevrons under a scrim as dead. | Info | Open (gap 325 family). |
+
+## Brand audit (2026-10-08) · new gaps
+
+Found by the brand audit (final_audit/audit_summary.md). All are open; the class (VISIBLE / OWNER) says who can close them.
+
+| # | Where | Gap | Severity | Status / fix |
+|---|---|---|---|---|
+| 342 | 04 / 05 (all families) | Mono words: 1,165 on 04 and 1,229 on 05 (203 / 218 frames). G10 fixed 07 and 10 only, so the source pages drifted from the prototype. | Medium | Open (VISIBLE): run mw10 on 04 and 05 with the same mapping as G10. |
+| 343 | 05 Pass · Confirm (holding, failed) · HoldToConfirm | In Dark, "Hold to use" and the hand icon are on-lime (#111111) on the surface track (#161616): 1.04:1; on Failed the whole label is unreadable. | High | Open (VISIBLE): give the track a Dark value that the label reads on, or bind the label to ink outside the lime fill. |
+| 344 | 10 AD-6b Pass exception (5 states), AD-3a Issues — Community (Offline) | "Missed" tag and "Not now" are ink-secondary (#5C5C58) on black: 2.81:1. | Medium | Open (VISIBLE): use on-hero-secondary (6.7:1). |
+| 345 | 05 Entry · Under review | "Request sent" tag reads 2.26:1 in Dark. | Low | Open (VISIBLE). |
+| 346 | 03 components (13) | Lime on a light surface outside rule V2: CommentComposer Send, ReasonPicker / ScopeSheet radio, HoldToConfirm progress, KcalGauge arcs on white, CrowdLegend On light, SlotChart Now, TimeRail, DateChip Today dot, DatePillStrip selected day, MealSectionHeader Serving now, PortionControl thumb, CreditsChip glyph, PrepCard status. | Medium | Open (VISIBLE / OWNER for the "current" markers). brand_rule_components.md |
+| 347 | 04 / 05 / 07 You · Weekly view | Fill 29% (not in gap 330). | Low | Open (VISIBLE). |
+| 348 | 07 Home · After last meal | Has a Today's plate card (and a "Trackers empty" variant) that 04 / 05 do not. | Low | Open (OWNER: add to the source or remove from 07). |
+| 349 | 04 / 05 / 07 Waste · Partial, Waste · How this is measured | 2–3 layers run past the right edge unclipped. | Low | Open (VISIBLE). |
+| 350 | 04 / 05 / 07 Meals · Dish detail | One detached instance. | Info | Open (re-link if the render stays identical). |
+| 351 | 03 MetaChip Surface=Tappable / Selected | 30 pt tall at component level; screens pass only through H1 hit areas. | Low | Open (VISIBLE). |
+| 352 | 04 / 05 / 07 Intent · Correction requested, Entry · Under review, Report · Urgent; 10 AD-3c Dish feedback, AD-1d Curd override | Two black cards of equal weight on one screen. | Low | Open (VISIBLE). |
+| 353 | 07 Feedback · Pick meal rows, Spending chevrons, "All nutrients", Track chevron | Tappable, destination exists, not linked. | Low | Open (OWNER to confirm, then link). |
+| 354 | 03 OnboardingPage, LockScreen, LiveDial, MetricBadge, ListRow Inline | 15 fixed-size text boxes left (A4); LiveDial "Max · expected" wraps to two lines in an 18 pt box on AD-2a / AD-2b. | Low | Open (VISIBLE). |
+| 355 | 04 / 05 "(full scroll)" copies | The last card sits 16 pt above the tab bar (38 copies; −9 / −12 on three). | Info | Open (documentation copies; the 07 frames pass). |
