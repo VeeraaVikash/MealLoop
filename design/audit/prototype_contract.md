@@ -5916,3 +5916,11 @@ Self-links are skipped and the 33 sheets are left alone. 625 tab links in all.
 - the admin avatar was unlinked;
 - the staff Waiting to send queue was reachable only from offline states (now from the profile sheet);
 - both profile sheets ran 6 pt into the home indicator (raised to 452 pt, content ends at 787 / 792).
+
+## Superseded facts (note added by the 2026-10-08 brand audit)
+
+The sections above are the contract as it was written, run by run, and are kept as history. Facts in the last sections that later runs changed:
+
+- **Staff screens:** StaffTopBar is archive-only. Since the G run, staff screens use NavHeader with the single BackButton plus StaffTabBar (Home, Alerts, Me); the frame names are MS-0 … MS-G6.
+- **Reachability now:** 07 165 / 262, 09 66 / 77, 10 98 / 163 (+ the AD-4f section), 0 bugs, 0 dead ends (final_audit/prototype_check.md).
+- **Where the current state lives:** reachability_final.md, final3_report.md, STATE.md and design/audit/final_audit/ (brand audit).

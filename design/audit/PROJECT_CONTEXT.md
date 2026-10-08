@@ -164,7 +164,7 @@ These live in `design_intent.md`: the BACK STANDARD, brand rule V2, the design r
 | 00 Before | 44:2 | The first version (81 frames in sections), kept for comparison |
 | 01 Foundations | 44:5353 | Colour variables (Light / Dark modes), type, spacing, radii, glass recipe |
 | 02 Mood Frames | 44:5354 | 24 approved review frames |
-| 03 Components | 44:5355 | 97 component sets and 38 single components, each with a usage note |
+| 03 Components | 44:5355 | 97 component sets and 38 single components, each with a description. At the bottom: the **Deprecated** section (KcalRing, PlateDishRow, MessBadge, MetricBadge, WasteBar; 0 instances) and the **Brand sheet · new** board (tokens, type, spacing, status, navigation, tickets, cards, readability), both from the 2026-10-08 brand audit |
 | 04 Student Light | 44:5356 | 300 student frames (source), with labels, Moment notes and sample chips |
 | 05 Student Dark | 44:5357 | The same 300 frames with the Dark mode set on the frame |
 | 06 States & Accessibility | 44:5358 | 14 frames: accessibility XL and the Tamil length test |
@@ -193,8 +193,8 @@ These live in `design_intent.md`: the BACK STANDARD, brand rule V2, the design r
   - CreditsChip (100:1096, "Credits soon" before launch), BentoTile (100:1142), CouponCard (993:1881);
   - IssueCard (101:1470) and ReportTicket (101:1285), whose list cards show the current step in ink;
   - NotificationRow (75:408; read rows show a white mark), StepBar (100:1045);
-  - LiveDial (820:87165), MessBadge (814:87225), MetricBadge (881:1850), DecisionActions (1290:2031), HeroActions (1311:1990);
-  - StaffTopBar (1427:2333), **StaffTabBar** (1507:120513), AdminTabBar (808:86775), TabBar (74:236), TabSearchButton (426:1681);
+  - LiveDial (820:87165), CrowdBadge (822:87167), BentoTile (100:1142), DecisionActions (1290:2031), HeroActions (1311:1990). MessBadge and MetricBadge had 0 instances and were moved to the Deprecated section (brand audit A5);
+  - StaffTopBar (1427:2333, archive-only since the G run), **StaffTabBar** (1507:120513), AdminTabBar (808:86775), TabBar (74:236), TabSearchButton (426:1681);
   - SearchField (428:1725), SearchResultRow (428:1760), GlassSheet (74:275), ScopeSheet (967:1838), RulesSheet (967:1862);
   - EmptyState (75:270), OfflineBanner (75:187), SampleNote (75:257), StatusBar (74:2), HomeIndicator (74:21).
 - **Report pages** (page 10, AD-4f section): 9 A4 components (595 × 842), reused by the preview thumbnails and the viewers.

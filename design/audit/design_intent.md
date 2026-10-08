@@ -6,7 +6,7 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 
 ## How the owner judges design
 
-- "Generic" is the #1 complaint. Default ListRow + pill + chevron on white cards reads as boilerplate SaaS. Before reaching for a list, reuse a distinctive pattern: LiveDial, MessBadge / CrowdBadge / MetricBadge, PrepCard swipe cards, stacked duplicate cards, filter-chip rows, black hero card.
+- "Generic" is the #1 complaint. Default ListRow + pill + chevron on white cards reads as boilerplate SaaS. Before reaching for a list, reuse a distinctive pattern: LiveDial, CrowdBadge, BentoTile tiles (MessBadge and MetricBadge were retired in the 2026-10-08 brand audit), PrepCard swipe cards, stacked duplicate cards, filter-chip rows, black hero card.
 - Also rejected: too much content per card, several elements competing to be the loudest, screens that feel like "bits and pieces", and unexplained gaps. One fact per line. Every screen has one clear hero.
 - Status colours may differ by state but must be muted and consistent. Never full-card traffic-light fills. Lime is the only brand accent.
 - **BACK STANDARD (Final-2 G1, replaces the Final-fix F4 titled back).** Apple's UIKit documentation for `UINavigationItem.backButtonDisplayMode` describes three modes:
