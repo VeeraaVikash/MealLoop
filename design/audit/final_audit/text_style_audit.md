@@ -15,7 +15,7 @@ Tool: `tools/txt15.js` (`mealloop/txt15`). A TEXT node counts when it is a loose
 | Tamil | Title, Headline, Body, Footnote, Eyebrow | 30, 16, 15, 12, 11 |
 | AX3 (accessibility size) | Large Title … Dish (10) | 52 → 28 |
 
-17 styles have an empty description: the 6 Display styles, Mono/Serial, Mono/Code, the 5 Tamil styles, AX3/Display, AX3/Mono, AX3/Dish (A4 writes component descriptions; style descriptions are listed here only).
+16 styles have an empty description: the 6 Display styles, Mono/Serial, Mono/Code, the 5 Tamil styles, AX3/Display, AX3/Mono, AX3/Dish (A4 writes component descriptions; style descriptions are listed here only).
 
 ## Unstyled text: before and after
 
@@ -39,9 +39,8 @@ Tool: `tools/txt15.js` (`mealloop/txt15`). A TEXT node counts when it is a loose
 
 | Page | Signature | Count | Where | Nearest style |
 |---|---|---|---|---|
-| 10 | Inter / JetBrains Mono 10–11 pt at 140% line height (24 signatures) | 252 | The 9 A4 weekly-report pages (AD-4f) | None: the report has its own document type scale (10 pt minimum, body 10.5–11 pt), an accepted exception from G8 |
+| 10 | Inter / JetBrains Mono 10–40 pt at 140% line height (21 signatures; body 10–11 pt) | 263 | The 9 A4 weekly-report pages (AD-4f) | None: the report has its own document type scale (10 pt minimum, body 10.5–11 pt), an accepted exception from G8 |
 | 10 | Inter Semi Bold 17/auto | 3 | Admin frames | ML/Body Semibold (17/24): line height differs |
-| 10 | Inter 13–40 at 140% | 11 | Report page headings | Document scale |
 | 07 | Inter Bold 40/auto, Regular 17/auto, Medium 15/auto | 45 | The 15 "Gallery · A–O" header cards | iOS/Body, ML/Secondary Medium: line height differs (auto) |
 | 09 | JetBrains Mono Bold 104/115% | 2 | Scan count hero | None (largest style is 52) |
 | 03 | 13 signatures, e.g. Inter Medium 12/16 ×8, Inter Semi Bold 20/auto ×5, Inter Bold 104/112 ×5, JetBrains Mono Medium 13/auto ×5 | 39 | Component internals (lock-screen mock, ticket codes, gauges) | iOS/Caption Emphasized differs by letter spacing; others by line height |
