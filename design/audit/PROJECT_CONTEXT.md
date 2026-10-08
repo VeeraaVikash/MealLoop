@@ -162,7 +162,7 @@ These live in `design_intent.md`: the BACK STANDARD, brand rule V2, the design r
 |---|---|---|
 | 00 MoodBoard | 0:1 | References |
 | 00 Before | 44:2 | The first version (81 frames in sections), kept for comparison |
-| 01 Foundations | 44:5353 | Colour variables (Light / Dark modes), type, spacing, radii, glass recipe |
+| 01 Foundations | 44:5353 | Rebuilt 2026-10-08 from the live variables and styles: all 53 ML Color tokens with role, Light and Dark hex; the ML type scale; spacing, radius, sizes and elevation (bound to ML Layout); contrast pairs computed from the variables; the lime rule; changes from the starting spec. The old lavender-era board is on 99 Archive |
 | 02 Mood Frames | 44:5354 | 24 approved review frames |
 | 03 Components | 44:5355 | 97 component sets and 38 single components, each with a description. At the bottom: the **Deprecated** section (KcalRing, PlateDishRow, MessBadge, MetricBadge, WasteBar; 0 instances) and the **Brand sheet · new** board (tokens, type, spacing, status, navigation, tickets, cards, readability), both from the 2026-10-08 brand audit |
 | 04 Student Light | 44:5356 | 300 student frames (source), with labels, Moment notes and sample chips |
