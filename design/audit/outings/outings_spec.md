@@ -39,3 +39,17 @@ Pending, Escalated → Hold · Approved, Out, Returned → Success · Rejected, 
 3. The gate has no tab bar (single-task staff device; the home holds every route). The warden tab bar reuses StaffTabBar with its three labels overridden (Queue, Escalated, Me).
 4. Guardian pages are mobile web: no tab bar, no iOS status-bar chrome beyond the shared StatusBar.
 5. New components (flagged): RangeSlider, OutingRibbon, LoopTracker, OutingPass, SlideToApprove, DeckCard, GateVerify.
+
+## Components added at O1 (page 03, all flagged NEW in their descriptions)
+
+| Component | Node | Variants |
+|---|---|---|
+| RangeSlider | 1835:2157 | State Default, Dragging, Disabled (dashed) |
+| SlideToApprove | 1835:2192 | State Default, Dragging, Done, Failed; "Use button instead" link built in |
+| OutingRibbon | 1836:2223 | Day Saturday, Sunday, Weekday (black card) |
+| LoopTracker | 1837:2353 | State × Size: 7 states × Full / Mini |
+| OutingPass | 1838:3006 | State Valid, Out, Returned, Overdue, Revoked, Expired unused |
+| DeckCard | 1839:2258 | State Due soon, Calm, Escalated |
+| GateVerify | 1839:2327 | Direction Exit, Return |
+
+Reused (no new component): BackButton (GlassButton), StatusPill, TabBar, StaffTabBar, GlassSheet, ResultCard, AuditRow, BentoTile, ListRow, SettingsRow, Button, OfflineBanner, EmptyState.

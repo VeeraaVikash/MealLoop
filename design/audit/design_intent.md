@@ -48,6 +48,12 @@ It is not a stage record; `prototype_contract.md` still holds every stage rule, 
 - **Crowd:** a **level** (Quiet / Getting busy / Packed, plus Old data / Unavailable / Closed), its **method** (entry scans at the door) and its **freshness**. **"Inside" is not allowed.** Seat capacity has no owner, so no capacity number is shown.
 - **Donated:** counted **only once the partner has collected it**. Before that it is "offered".
 
+- **Outing request (2026-10-13):** a student's ask to leave the hostel for a set window (day, out time, back-by time, place, reason). It is only a request until the guardian and the warden both approve.
+- **Planned leave:** an outing that is approved and has a pass, but the student has **not left yet**.
+- **Confirmed exit:** the gate (security) **recorded the departure** by scanning or checking the pass.
+- **Returned:** the gate recorded the student coming back; the outing is closed.
+- **Rule:** an approved outing is **not an absence**. The meal forecast uses **only confirmed exits, never approvals** (planned leave does not change any meal count).
+
 **Data rules:**
 - The forecast is preserved as it stood at the cutoff.
 - The recommended, approved and actual quantities are all kept, along with served and unserved.
@@ -208,3 +214,40 @@ On screen (pages 09 and 10), the plain word replaces the internal term. Layer an
 | Waste entry | Record waste |
 | Shift select | Pick your shift |
 | Scope | Where |
+
+
+## OUTING PASS (run OUTINGS, 2026-10-13)
+
+**Approved workflow.**
+1. The student sends an outing request (day, out-between window, place, reason).
+2. **The guardian approves first**, by the guardian deadline. The guardian can approve, ask to change, or decline; every reply is recorded with the guardian's name and the time.
+3. **The warden reviews next, within the review window** (deadline). Approve, Ask (change requested), or No (rejected, reason required).
+4. On both approvals the system issues a **signed, time-bound pass** (code, e.g. 7F3K; valid only inside the approved window).
+5. **Gate exit, once:** security checks the pass and the student's face, and records the confirmed exit. A pass cannot be used to leave twice.
+6. **Gate return:** security records the return; the outing closes.
+7. **Overdue:** past the back-by time with no return, the outing is Overdue (Stop); the warden and the guardian are told.
+8. **Escalation:** a request whose guardian or warden deadline passes goes to the senior (duty) warden. **There is no automatic approval on an SLA breach; a timeout is escalation, never permission.**
+9. An emergency outing is handled by phone with the warden; any override is recorded with a reason for review.
+
+**Status map (existing StatusPill variants only).**
+
+| State | Pill |
+|---|---|
+| Pending (waiting for guardian or warden) | Hold |
+| Escalated | Hold |
+| Approved, Out, Returned | Success |
+| Rejected, Overdue | Stop |
+| Expired, missed cutoff | Lapsed |
+| Offline | Offline |
+
+**Weekend policy (draft; needs institutional approval).** Used by the live deadline preview (OutingRibbon) and the policy screens.
+
+| Outing starts | Guardian replies by | Warden reviews |
+|---|---|---|
+| Saturday before 12 PM | Friday 3 PM | Friday 3–8 PM |
+| Saturday at or after 12 PM | Friday 11 PM | Saturday 8 AM–12 PM |
+| Sunday before 12 PM | Saturday 3 PM | Saturday 3–8 PM |
+| Sunday at or after 12 PM | Saturday 11 PM | Sunday 8 AM–12 PM |
+| Weekday (Monday to Thursday) | any time (submit any time) | warden works 8 AM–8 PM; decision within 12 working hours (draft) |
+
+**Words.** "Out" (not "absent"), "Back by", "Exit recorded", "Return recorded", "Overdue". A gate scan never means "served"; never "redeem" a pass.
