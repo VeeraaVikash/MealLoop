@@ -36,3 +36,13 @@ Tools are kept in this folder as `.js` files. Some older ones exist only in the 
 - staff task frames are measured to the frame bottom − 34 by `fa1`; the rule's reference for them is the fixed bottom action, so they are listed with that note.
 
 The old `filltool.js` and `densitytool.js` were page-10 only and are kept for history.
+
+## Outings run tools (2026-10-13)
+
+| Tool | What it does |
+|---|---|
+| `ouh.js` (`mealloop/ouh`) | bs17 plus icon (recoloured Symbol instance), pill (StatusPill), btn (Button), t (styled text), row, fill, dash, arc, `paint` (bound colour with the token's real value as base, so top-level fills never fall back to black) and `paintA` (bound colour with opacity; note: instances drop paint opacity, so dim tracks use layer opacity). |
+| `oust.js` (`mealloop/oust`) | Student frame base (clone of 04 Help, scroll content stack), grid notes (label, Moment, Sample note cloned from 09), card, listRow, sheet. |
+| `oustaff` / `ouadmin` (file only) | Staff base (large-title header or inline Back, StaffTabBar relabelled) and admin base (clone of AD-7a People). |
+| `ou_rework` (file only) | The owner-reference rework applied by the same operation to 04, 05 and 07. |
+| `snapb` (file only) | Runs snaptool over a list of pages and prints per-page differences, links and starts. |

@@ -298,3 +298,14 @@ Reachability (Final-3 H6) is in `final3_report.md`. There are 0 dead ends; every
 - **Page 03:** 97 sets and 38 single components, all described; 5 zero-instance components in the **Deprecated** section; the **Brand sheet · new** board (render: `final_audit/brand_sheet.png`).
 - **Health:** 0 small targets, 0 truncation, 0 reachability bugs, 91 / 91 demo hops, 7 starts. Open: mono words on 04 / 05 (gap 342), Dark HoldToConfirm contrast (343), ink-secondary on black (344), lime on light in 13 components (346), fill floor (330, 347).
 - **Snapshot:** st240.
+
+
+## 13. Outing Pass module (run OUTINGS, 2026-10-13)
+
+- **New pages:** 13 Guardian (18 frames, start Guardian · Sign in), 14 Warden (18, Warden · Sign in), 15 Gate (23, Gate · Sign in); all Light, inserted before 99 Archive. **Approved starts: 10.**
+- **Student:** section "O · Outings" (28 frames) on 04, 05 (Dark) and 07 (wired); entry = SettingsRow "Outings" at the top of the You settings card (Home unchanged).
+- **Admin (10):** section AD-9 · Outings (19 frames: Overview, Policy, Edit policy, Activation, Guardian enrolment, Staff and assignments, Emergency authorities, Audit; Success / Empty / Offline); Manage hub Outings tile (×3 hubs); Insights chain row "On leave · 112 confirmed out · Confirmed exits only"; report page 9 line on planned leave vs confirmed exit.
+- **Components (03):** RangeSlider, SlideToApprove, OutingRibbon, LoopTracker, OutingPass, DeckCard, GateVerify — reworked mid-run to the owner's six reference mockups (large titles, single-track ribbon, thick ring tracker, boarding-pass ticket, light deadline ring, silhouette gate check).
+- **Rules added (design_intent.md):** definitions Outing request / Planned leave / Confirmed exit / Returned; "an approved outing is not an absence"; status map; OUTING PASS workflow; draft weekend table; "no automatic approval on an SLA breach".
+- **Tools added:** ouh, oust, oustaff, ouadmin (builders), snapb (snapshot batches); see tools/README.md.
+- **Open owner decisions:** gaps 356–369.

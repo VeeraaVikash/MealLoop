@@ -972,3 +972,22 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 353 | 07 Feedback · Pick meal rows, Spending chevrons, "All nutrients", Track chevron | Tappable, destination exists, not linked. | Low | Open (OWNER to confirm, then link). |
 | 354 | 03 OnboardingPage, LockScreen, LiveDial, MetricBadge, ListRow Inline | 15 fixed-size text boxes left (A4); LiveDial "Max · expected" wraps to two lines in an 18 pt box on AD-2a / AD-2b. | Low | Open (VISIBLE). |
 | 355 | 04 / 05 "(full scroll)" copies | The last card sits 16 pt above the tab bar (38 copies; −9 / −12 on three). | Info | Open (documentation copies; the 07 frames pass). |
+
+## Run OUTINGS (2026-10-13) · new gaps
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 356 | Outings (all roles) | **Guardian verification source.** The design says "the number SRM has on record" and "verified as Aarav's guardian"; nobody has confirmed where guardian numbers come from, who verifies them, or how a changed number is handled. | High | OWNER |
+| 357 | 03 ResultCard State=Hold, 05 Emergency outing · Sent | The Hold tag reads 2.26:1 in Dark mode. Component colour. | Medium | Open (VISIBLE) |
+| 358 | Outings policy (design_intent OUTING PASS, AD-9b) | **Official policy and cutoffs.** The weekend table, warden hours 8 AM–8 PM and "12 working hours" are drafts; no institutional approval. | High | OWNER |
+| 359 | 14 W-4, 15 GA-6 Emergency exit, AD-9f | **Emergency authorities.** Who may allow an emergency exit (duty warden, senior warden, hostel administrator) and how overrides are reviewed are assumptions. | High | OWNER |
+| 360 | 15 Gate | **Security fallback.** Offline is fail-closed ("Can't verify. Ask the warden."). The phone-less path (Find student by SRM ID) and the pass-code keypad need the institution's agreement; the photo source for GateVerify is undecided. | High | OWNER |
+| 361 | AD-9c Activation, AD-9a pilot checklist | **Pilot thresholds.** "98% recorded" and "within 10%" are drafts "not confirmed by the institution". | Medium | OWNER |
+| 362 | 13 Guardian | **Guardian channel.** Guardians use a mobile web page reached by SMS link with a 6-digit code; the SMS provider, link expiry (48 h shown) and language support are undecided. | Medium | OWNER |
+| 363 | Outings data | **Data retention.** How long requests, approvals, gate events, overrides and photos are kept, and who can see them. | Medium | OWNER |
+| 364 | 07 Outings tracker | The "What happened" rail asked for by the brief is not shown on the tracker (the owner's reference has none; the owner's later instruction was followed). The admin audit (AD-9g) keeps the full rail. | Low | Open (OWNER to confirm) |
+| 365 | 13 Request family | No in-page Back (mobile web page, as the reference); the browser's Back is assumed. Request · Offline and · Expired are states shown by control. | Low | Open (OWNER to confirm) |
+| 366 | 04 / 05 / 07 New outing · Offline / No guardian / Duplicate, Outing pass · Returned / Overdue / Revoked / Expired unused | The notice or extra button pushes the last element below the tab bar; the stack scrolls (inner scroll container), so it is reachable, but the first screen does not show the disabled Send. | Low | Open (VISIBLE) |
+| 367 | 15 Gate results, GA-2 Scan | No wash on full-screen results and the camera (same as the 09 results they reuse). | Info | Accepted pattern |
+| 368 | 10 Manage hub | The Outings tile's lime dot sits at the tile's right edge rather than next to the label. | Low | Open (VISIBLE) |
+| 369 | Masked IDs | The owner's mockups show "Aarav •••0238"; the file's convention "Aarav ·0238" was kept. New IDs used: students ·5841, ·6127, ·9375, ·1468, ·4962, ·8253, ·7319; staff IDs •••6390 (Block B warden) and •••2648 (Main Gate security; first set to 8253, which collided with a student, and changed in O9). | Info | OWNER to confirm the masking style |
