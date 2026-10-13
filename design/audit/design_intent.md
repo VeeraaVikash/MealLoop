@@ -250,4 +250,18 @@ On screen (pages 09 and 10), the plain word replaces the internal term. Layer an
 | Sunday at or after 12 PM | Saturday 11 PM | Sunday 8 AM–12 PM |
 | Weekday (Monday to Thursday) | any time (submit any time) | warden works 8 AM–8 PM; decision within 12 working hours (draft) |
 
+**WEEKDAY RULE (draft, institution to confirm; run OUTINGS-FIX, 2026-10-13).** Monday to Thursday and Friday outings: the student may request any time; the guardian replies by (leave time minus 7 h) and the warden decides by (leave time minus 3 h), both not earlier than the warden's 8 AM start; if that is already past on the same day the request is "Too soon". Friday uses the same draft rule until the institution decides otherwise.
+
+| Sample (week Mon 13 – Sun 19 Oct; today Mon 13 Oct 1:40 PM) | Out | Guardian replies by | Warden decides | Shown |
+|---|---|---|---|---|
+| Mon 13 (today) | 3–6 PM | 8 AM (passed) | by 12 PM (passed) | Too soon |
+| Tue 14, Thu 16, Fri 17 | 2–6 PM | 8 AM (7 AM → the 8 AM floor) | 8–11 AM | "You'll know by Tue / Thu / Fri 11 AM" |
+| Wed 15 (the sample weekday) | 6–9 PM | 11 AM | 11 AM–3 PM | "You'll know by Wed 3 PM" |
+
+The OUTINGS-FIX brief listed Tue / Thu as "Guardian by 9 AM, Warden by 1 PM"; those numbers do not follow the rule above (2 PM − 7 h = 7 AM → 8 AM; 2 PM − 3 h = 11 AM), so the rule is followed (logged in run_status.md and outings_fix/report.md).
+
+**WEEKEND RULE (draft).** The weekend table above ("Weekend policy").
+
+**Clock.** A clock (ClockDial) shows the outing window on a 12-hour ring; a window longer than 12 hours is shown as a full ring with "+1 day".
+
 **Words.** "Out" (not "absent"), "Back by", "Exit recorded", "Return recorded", "Overdue". A gate scan never means "served"; never "redeem" a pass.
