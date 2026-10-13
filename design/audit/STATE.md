@@ -1,24 +1,28 @@
-# MealLoop · STATE (2026-10-08, after the brand audit)
+# MealLoop · STATE (2026-10-13, after run OUTINGS)
 
 The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md`, and the run logs are in `run_status.md`.
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st242 (2026-10-08, Foundations rebuilt after the brand audit). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
-- **Flow starts (exactly 7):**
+- **Last snapshot:** st254 (2026-10-13, end of run OUTINGS; 17 pages incl. 13 Guardian, 14 Warden, 15 Gate). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Flow starts (exactly 10):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
+  - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
 
 ## Frames
 
 | Page | Phone frames | Role |
 |---|---|---|
-| 04 Student Light | 300 | Student design source |
-| 05 Student Dark | 300 | Dark twin; the Dark mode (collection 45:2, mode 45:1) is set on each frame |
-| 07 Prototype & QA | 262 | Student prototype and state gallery (no start) |
+| 04 Student Light | 328 (28 Outings) | Student design source |
+| 05 Student Dark | 328 (28 Outings) | Dark twin; the Dark mode (collection 45:2, mode 45:1) is set on each frame |
+| 07 Prototype & QA | 290 (28 Outings) | Student prototype and state gallery (no start) |
 | 09 Mess Staff | 77 | Staff design and prototype |
-| 10 Admin | 163 + 13 (AD-4f section) | Admin design and prototype, plus 9 A4 report page components |
+| 10 Admin | 182 (19 AD-9 Outings) + 13 (AD-4f section) | Admin design and prototype, plus 9 A4 report page components |
+| 13 Guardian | 18 | Guardian mobile web (Outings) |
+| 14 Warden | 18 | Warden and senior warden (Outings) |
+| 15 Gate | 23 | Main Gate security (Outings) |
 | 99 Archive | 153 | Replaced frames, links stripped |
 
 ## Health (latest checks)
