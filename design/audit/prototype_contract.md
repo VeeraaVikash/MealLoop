@@ -5924,3 +5924,16 @@ The sections above are the contract as it was written, run by run, and are kept 
 - **Staff screens:** StaffTopBar is archive-only. Since the G run, staff screens use NavHeader with the single BackButton plus StaffTabBar (Home, Alerts, Me); the frame names are MS-0 … MS-G6.
 - **Reachability now:** 07 165 / 262, 09 66 / 77, 10 98 / 163 (+ the AD-4f section), 0 bugs, 0 dead ends (final_audit/prototype_check.md).
 - **Where the current state lives:** reachability_final.md, final3_report.md, STATE.md and design/audit/final_audit/ (brand audit).
+
+## Run OUTINGS (2026-10-13) · approved flow starts and Outing Pass wiring
+
+**Approved flow starts: exactly 10.** The seven existing — Student · Sign in (07), Mess staff · Sign in (09), Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage (10; the four admin tab starts are among them) — plus three new: **Guardian · Sign in** (13 Guardian, G-0 · Sign in), **Warden · Sign in** (14 Warden, W-0 · Sign in), **Gate · Sign in** (15 Gate, GA-0 · Sign in). Starts are never copied; archive copies carry none; every link edit is followed by removing any automatic "Flow N" start (done after each stage of this run).
+
+**Wiring added:**
+- 07: You and You · Offline → Outings row → You · Outings; the 28 Outings frames (every Back, tab bar, Search, list rows, day tiles and slider for the Saturday ↔ Sunday preview, Sending moves on after 1.2 s (frame-level delay), Sent → tracker, sheets close, Approved → pass, Cancel pass link → sheet; demo controls: tap the ring on Waiting / Under review, tap the pass on Valid / Out). 04 and 05: only You → Outings (as the brief asks).
+- 13 Guardian: Sign in → Verify code → Waiting for you → Request; slide (drag or tap) → Dragging → Approved (0.8 s); Use button instead → Approved; Ask / Decline / Withdraw sheets close back; invite → Activate → Confirm link → Done → Waiting for you; History, Notifications, Help.
+- 14 Warden: Sign in → Verifying (1.5 s) → Confirm profile → Queue; tab bar Queue / Escalated / Me; WB avatar → Me; card Approve → Queue — Approved, Ask / No → sheets, student row → Review request; See all 14 → All requests → Escalated / Review; Escalated → Reassign / Emergency override sheets, Approve → Decision recorded; Me → Alerts, Sign out → Sign in.
+- 15 Gate: Sign in → Verifying → Confirm profile → Gate home; Scan → Verify — Exit → Exit recorded; Can't scan → Pass code → Verify; Find student → Verify; Out now → Verify — Return → Return recorded; Overdue → Back late; Doesn't match → Report a problem → Sent; End shift → Sign in; every result → Scan next. No cross-page links.
+- 10 Admin: Manage hub (Success / Empty / Offline) Outings tile → AD-9a (matching state); AD-9a rows → Policy, Activation, Guardian enrolment, Staff and assignments, Emergency authorities, Audit; Policy row → Edit policy sheet; admin tab bar and Search on every AD-9 frame.
+
+**Reachability (reach8, 2026-10-13):** 07 183 / 290, 10 106 / 182, 13 16 / 18, 14 15 / 18, 15 16 / 23; 0 bugs, 0 dead ends. Unreached new frames are states shown by control (listed in DEMO.md).
