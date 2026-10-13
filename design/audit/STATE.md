@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-13, after run OUTINGS)
+# MealLoop · STATE (2026-10-13, after run OUTINGS-FIX)
 
 The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md`, and the run logs are in `run_status.md`.
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st254 (2026-10-13, end of run OUTINGS; 17 pages incl. 13 Guardian, 14 Warden, 15 Gate). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Last snapshot:** st272 (2026-10-13, end of run OUTINGS-FIX Q8; 17 pages). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
 - **Flow starts (exactly 10):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
@@ -20,7 +20,7 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 | 07 Prototype & QA | 290 (28 Outings) | Student prototype and state gallery (no start) |
 | 09 Mess Staff | 77 | Staff design and prototype |
 | 10 Admin | 182 (19 AD-9 Outings) + 13 (AD-4f section) | Admin design and prototype, plus 9 A4 report page components |
-| 13 Guardian | 18 | Guardian mobile web (Outings) |
+| 13 Guardian | 30 | Guardian mobile web (Outings; rebuilt in OUTINGS-FIX: minimal Request and Status with ClockDial) |
 | 14 Warden | 18 | Warden and senior warden (Outings) |
 | 15 Gate | 23 | Main Gate security (Outings) |
 | 99 Archive | 153 | Replaced frames, links stripped |
@@ -47,7 +47,7 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 
 ## Where things are
 
-- **Gaps:** `prototype_gaps.md`; the latest is 355.
+- **Gaps:** `prototype_gaps.md`; the latest is 380.
 - **Controls with no destination yet:** `still_absent.md`.
 - **Demo walks:** `DEMO.md`.
 - **iOS checklist:** `ios_checklist.md`.
@@ -84,3 +84,11 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 - **iOS 27 swap** (agreed: keep 393 pt; our own tab bars on the iOS 27 glass).
   - The library is added, but the connector can't import from it ("Not permitted to upsert").
   - Waiting on the owner to place one instance each of these on page 03, in a frame named "iOS 27 kit": Status bar - iPhone 17 Pro, Home Indicator, Tab Bar - iPhone, Sheet - iPhone, Grabber, Button - Liquid Glass - Symbol, Alert, Action Sheet.
+
+## Run OUTINGS-FIX (2026-10-13)
+
+- **New outing has all seven days** (Mon 13 – Sun 19 Oct; WeekStrip = the Menu DateStrip with letters; RuleTag; ribbon per day; Mon is "Too soon"). Draft weekday rule in design_intent.md (gap 370).
+- **Guardian rebuilt** (page 13, 30 frames): minimal Request and Status pages around the new **ClockDial**; detail moved to "About this outing"; language pill "EN · தமிழ்"; Messages reference frame.
+- **Scrolling rule:** a frame scrolls only when its content is taller than the frame (frame VERTICAL, content HUG, chrome fixed, last item 20 pt above the bar); main lists have ≥ 7 rows (outings_fix/scroll_audit.md).
+- **Completeness:** AD-9b Policy (Empty), AD-9c Activation (Empty, Offline), Manage hub full-height export clone; weekday rule and Too soon on Policy and the Edit sheet.
+- **Reports:** outings_fix/report.md, checks.md, completeness.md, scroll_audit.md; exports export_outings_fix/ (6 at 2×).

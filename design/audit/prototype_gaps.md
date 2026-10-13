@@ -991,3 +991,21 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 367 | 15 Gate results, GA-2 Scan | No wash on full-screen results and the camera (same as the 09 results they reuse). | Info | Accepted pattern |
 | 368 | 10 Manage hub | The Outings tile's lime dot sits at the tile's right edge rather than next to the label. | Low | Open (VISIBLE) |
 | 369 | Masked IDs | The owner's mockups show "Aarav •••0238"; the file's convention "Aarav ·0238" was kept. New IDs used: students ·5841, ·6127, ·9375, ·1468, ·4962, ·8253, ·7319; staff IDs •••6390 (Block B warden) and •••2648 (Main Gate security; first set to 8253, which collided with a student, and changed in O9). | Info | OWNER to confirm the masking style |
+
+## Run OUTINGS-FIX (2026-10-13) · new gaps 370–380
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 370 | Outing policy (design_intent OUTING PASS; 04 / 05 / 07 New outing; 10 AD-9b) | **Weekday rule and Friday.** The weekday rule (guardian by leave − 7 h, warden by leave − 3 h, not before 8 AM; "Too soon" when already past) and its use for Friday are drafts written for this run. The brief's own Tue / Thu numbers (guardian by 9 AM, warden by 1 PM for a 2 PM leave) do not follow it; the file follows the rule (8 AM, 8–11 AM, "You'll know by … 11 AM"). | High | Open (OWNER: institution to confirm the rule, Friday, and the 8 AM floor) |
+| 371 | 13 Guardian (language pill, Language sheet, Messages reference) | **Tamil translation.** Only the word "தமிழ்" appears; no Tamil copy was written for any page or message. The Language sheet promises "Messages and this page". | Medium | Open (OWNER: translation source and review) |
+| 372 | 04 / 05 / 07, 10 AD-9, 13, 14, 15 (list in outings_fix/checks.md) | **Frames with no lime element beyond the wash** (Brand rule V2 count rule): error / closed / onboarding / list states with no Success status, no primary on black and no current step. Adding one would add a block. Mostly pre-existing. | Low | Open (VISIBLE / review) |
+| 373 | 13 G-4 History, G-2A About ("last 30 days") | **Guardian history visibility.** How far back a guardian may see Aarav's outings, and whether results (on time / late, the warden's reason) are shown. | Medium | Open (OWNER) |
+| 374 | 13 Status (Out, Back, Back late), Notifications, Messages | **Who may see exit and return times.** The guardian sees the gate's exit and return times and lateness. | Medium | Open (OWNER) |
+| 375 | 13 Messages reference, Request (the opened link) | **Message channel.** SMS from "SRM Hostels" with an "Open request" link; sender ID, link expiry, delivery fallback and cost are not decided (extends gap 362). | Medium | Open (OWNER) |
+| 376 | 05 Dark New outing (7 days + 4 states) | In Dark the `action` token is lime, so the selected day and the Send button add two lime elements (4–5 per frame; the rule allows 3). Changing it would change every Dark screen. | Low | Open (NEEDS REVIEW) |
+| 377 | 07 New outing · Tue–Sun | Only Saturday's Send is wired (Sending / Sent / tracker are the Saturday sample); the Sat day frame (Moment Mon 1:40 PM) leads to Sending at the story's Fri 6:00 PM. | Low | Open (NEEDS REVIEW) |
+| 378 | 13 Guardian | Added beyond the brief's list so every control has a destination: Status · Declined and Status · Change asked; History / Notifications / Help are reached from rows at the end of About (the minimal Request and Status pages allow nothing else). | Low | Open (NEEDS REVIEW) |
+| 379 | 13 G-0 Verify code (55%), G-A2 Confirm link (68%) | Under the 75% fill floor; no dial to enlarge; accepted as intentionally sparse guardian pages. | Info | Accepted exception |
+| 380 | 15 GA-1 / GA-7 / GA-8 | Sample density for the ≥ 7-row rule: 7 students out and 7 overdue; the home tiles read 7 and 7 to match the lists they open (different moments of the same Saturday). | Info | Logged |
+
+**Status updates to earlier gaps (OUTINGS-FIX):** 365 — the guardian drill-ins (Verify code, Activate, Confirm link, About, History, Notifications, Help) now have the BackButton; Request and Status are root pages of the opened link. 366 — fixed: those frames now scroll with the frame-level method (Q4).
