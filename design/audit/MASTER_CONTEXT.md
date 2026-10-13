@@ -23,3 +23,11 @@ This file did not exist before run OUTINGS (2026-10-13). The full master context
 **Owner decisions open:** gaps 356 (guardian verification source), 358 (official policy and cutoffs), 359 (emergency authorities), 360 (security fallback, photo source), 361 (pilot thresholds), 362 (guardian channel), 363 (data retention), plus 364 / 365 / 369.
 
 **Where to look:** outings/outings_spec.md, outings_audit.md, outings_report.md, DEMO.md ("Outing Pass module"), prototype_contract.md (last section), export_outings/.
+
+## Run OUTINGS-FIX (2026-10-13)
+
+- **New components (page 03, flagged NEW):** ClockDial (1902:2358; a 12-hour ring showing the outing window: Request, Request 6–9 PM, Status, Out, Returned, Late, Not going, Overnight × Large / Medium), RuleTag (1902:2194; Weekday, Weekend, Too soon), token `track` (#E1E1DA). Extended: DateChip (+ Weekend, Past; Today = ink outline), OutingRibbon (Weekday single-day axis, Weekday 2–6 PM, Too soon; Weekend-Saturday / Weekend-Sunday), RangeSlider (+ four ranges).
+- **Week strip:** New outing on 04 / 05 / 07 has one frame per day, Mon 13 – Sun 19 Oct (today Mon 13 Oct 1:40 PM); the WeekStrip is the student Menu DateStrip (M T W T F S S), the RuleTag names the rule, the ribbon shows the deadlines; Mon is "Too soon". Weekday rule (draft, gap 370): guardian by leave − 7 h, warden by leave − 3 h, not before 8 AM.
+- **Guardian redesign (page 13):** the opened SMS link is a minimal Request page (sentence, place, ClockDial, "Reply by Fri 11 PM", SlideToApprove, Ask to change · Decline, More about this outing, verified footnote); after approving, a minimal Status page follows the outing (Waiting → Pass ready → Out → Back, or Back late / Not going / Withdrawn) by status-bar time skips; detail lives on "About this outing"; sheets Ask to change, Decline, Withdraw approval, Language; History, Notifications, Help; a Messages reference frame. Start: Guardian · Sign in.
+- **Scrolling rule:** frames scroll only when content is taller than the frame, with the file's frame-level method (VERTICAL, content HUG, chrome fixed, last item 20 pt above the bar); lists that are the main content have at least 7 rows.
+- **Where to look:** outings_fix/report.md (decisions, conflicts, NEEDS REVIEW, OWNER), run_status.md (Q0–Q9), gaps 370–380, DEMO.md (Student outing and Guardian walkthroughs).

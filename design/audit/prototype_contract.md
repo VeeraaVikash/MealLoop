@@ -5937,3 +5937,19 @@ The sections above are the contract as it was written, run by run, and are kept 
 - 10 Admin: Manage hub (Success / Empty / Offline) Outings tile → AD-9a (matching state); AD-9a rows → Policy, Activation, Guardian enrolment, Staff and assignments, Emergency authorities, Audit; Policy row → Edit policy sheet; admin tab bar and Search on every AD-9 frame.
 
 **Reachability (reach8, 2026-10-13):** 07 183 / 290, 10 106 / 182, 13 16 / 18, 14 15 / 18, 15 16 / 23; 0 bugs, 0 dead ends. Unreached new frames are states shown by control (listed in DEMO.md).
+
+## Run OUTINGS-FIX (2026-10-13) · seven-day New outing, minimal Guardian, scrolling and completeness
+
+**Flow starts: exactly 10** (unchanged): Student · Sign in (07), Mess staff · Sign in (09), Admin · Sign in / Today / Issues / Insights / Manage (10; the four admin tab starts are among the ten), Guardian · Sign in (13, now on the rebuilt G-0 · Sign in), Warden · Sign in (14), Gate · Sign in (15). Archive copies carry no start; a start Figma copied onto a clone was removed.
+
+**Components (page 03):** NEW ClockDial (1902:2358; Kind Request, Request 6–9 PM, Status, Out, Returned, Late, Not going, Overnight × Size Large 176 / Medium 140), NEW RuleTag (1902:2194; Weekday, Weekend, Too soon), NEW token ML Color `track` (#E1E1DA / #2C2C2A); DateChip + Weekend and Past (Today = ink outline, dot hidden); OutingRibbon Day = Weekday (8 AM–9 PM axis, Wed sample), Weekday 2–6 PM, Weekend-Saturday, Weekend-Sunday (10 AM–4 PM), Too soon; RangeSlider + 3–6 PM, 2–6 PM, 6–9 PM, 10 AM–4 PM. The WeekStrip is the student Menu DateStrip instance (no new component).
+
+**Student (04 / 05 / 07):** New outing · Mon … Sun · new replace the two-tile frames (archived, links stripped). Wiring on 07: each day pill → that day's frame; Sat Send → Sending → (1.2 s) Sent → tracker; the eight New outing entries open New outing · Sat; history rows open the matching tracker / pass.
+
+**Guardian (13, rebuilt):** 30 frames (see run_status.md Q3); the old 18 are on 99 with links stripped. Wiring: Sign in → Verify → Request · Ready; Activate → Confirm link → Done → Request; Request drag (On drag, Smart animate) → Dragging → (0.6 s) Approved → (1.2 s) Status · Waiting for the warden; Use button instead (44 pt hit area) → Approved; Ask / Decline → sheets → Change asked / Declined; More about this outing → About → History / Notifications / Help; status-bar time skips Request → Expired, Waiting → Pass ready → Out → Back, right-half hit areas Waiting → Not going and Out → Back late; Withdraw approval → sheet → Withdrawn; every Back / Close / Cancel / Keep → Back; every language pill → Language sheet.
+
+**Scrolling rule (Q4):** a frame scrolls only when its content is taller than the frame; then the frame has `overflowDirection = VERTICAL`, the content stack hugs, the chrome are the last N children (`numberOfFixedChildren = N`), and the last item sits 20 pt above the bar at maximum scroll; the bottom fade starts 20 pt above the bar. Main lists carry at least 7 rows.
+
+**Wiring added in Q6:** W-1 Approved Ask / No → sheets; W-3 Aarav row → W-2; avatars → W-5 Me; W-4 Ask / No → sheets; Reassign → Decision recorded; AD-9b Policy (Success) rows → Edit policy sheet.
+
+**Reachability (reach8, Q6):** 13 26 / 30, 14 15 / 18, 15 16 / 23, 10 every AD-9 Success frame, 07 outing frames reached except states; 0 dead ends on every page. Unreached frames are states shown by control (outings_fix/report.md).
