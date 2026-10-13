@@ -77,40 +77,45 @@ Run two prototype links side by side, on two phones or two windows. The prototyp
 
 ## Outing Pass module (run OUTINGS, 2026-10-13)
 
-Three new flow starts, each on its own page; the owner makes one prototype link per start (Present → pick the start → Share prototype). **Approved starts now: 10** — Student · Sign in, Mess staff · Sign in, Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage, **Guardian · Sign in** (13), **Warden · Sign in** (14), **Gate · Sign in** (15). All data is sample. Checked with reach8 on 2026-10-13: 0 bugs, 0 dead ends on 07, 10, 13, 14, 15.
+Three new flow starts, each on its own page; the owner makes one prototype link per start (Present → pick the start → Share prototype). **Approved starts now: 10** — Student · Sign in, Mess staff · Sign in, Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage, **Guardian · Sign in** (13), **Warden · Sign in** (14), **Gate · Sign in** (15). All data is sample. Checked with reach8 on 2026-10-13 (OUTINGS-FIX Q6): 0 dead ends on 07, 10, 13, 14, 15; unreached frames are states only (listed in outings_fix/report.md).
 
-### Student outing (page 07, from Student · Sign in) · 13 steps
+### Student outing (page 07, from Student · Sign in) · 14 steps (updated OUTINGS-FIX, 2026-10-13)
 
 1. Sign in as usual → Home → **You** tab → **You**.
-2. **Outings** row (top of the settings card) → **You · Outings** (one active request, history).
-3. **New outing** → **New outing** (Sat 18 Oct, 2 PM – 8 PM, Express Avenue Mall, Shopping; ribbon "You'll know by Sat 12 PM").
-4. Tap **Sun 19 Oct** → **New outing · Sunday 10 AM** (ribbon: guardian by Sat 3 PM, warden Sat 3–8 PM).
-5. Tap **Sat 18 Oct** (or the slider) → back to the Saturday preview.
-6. **Send to guardian** → **New outing · Sending** → moves on by itself to **New outing · Sent**.
-7. **See your request** → **Outing · Waiting for guardian** (Fri 11 PM, in 5 h).
-8. Tap the ring (demo: time passes) → **Outing · Under warden review** (Sat 12 PM, in 14 h; guardian approved Fri 7:42 PM).
-9. **Edit request** → **Edit warning** sheet → Keep it as it is. **Cancel request** → **Cancel confirm** sheet → Keep it.
-10. Tap the ring (demo) → **Outing · Approved** → **Open pass** → **Outing pass · Valid** (7F3K, 2:00 PM – 8:00 PM).
-11. **Cancel pass** link → **Cancel pass** sheet → Keep my pass.
-12. Tap the pass (demo: the gate scanned it) → **Outing pass · Out** → tap again → **Outing pass · Returned**.
-13. **Back to Outings** → **You · Outings** → **Emergency outing** row → **Emergency outing** → Send to the duty warden → **Emergency outing · Sent**.
+2. **Outings** row (top of the settings card) → **You · Outings** (one active request; Earlier: 7 past outings, scroll).
+3. **New outing** → **New outing · Sat** (the week strip M T W T F S S, 13–19 Oct; Mon outlined as today, Sat and Sun shaded; Sat selected; RuleTag "Weekend rule · earlier deadline · draft"; 2 PM – 8 PM; ribbon "You'll know by Sat 12 PM").
+4. Tap **M 13** → **New outing · Mon** (today, 1:40 PM, 3 – 6 PM): RuleTag and ribbon "Too soon"; the Send button is a dashed "Pick a later time".
+5. Tap **W 15** → **New outing · Wed** (the weekday sample, 6 – 9 PM): "Weekday rule · same-day decision · draft"; guardian by 11 AM, warden 11 AM – 3 PM, "You'll know by Wed 3 PM".
+6. Tap **T 14** / **T 16** / **F 17** → the same weekday rule for 2 – 6 PM (guardian by 8 AM, warden 8 – 11 AM, "You'll know by … 11 AM").
+7. Tap **S 19** → **New outing · Sun** (10 AM – 4 PM; guardian by Sat 3 PM, warden Sat 3 – 8 PM, "You'll know by Sat 8 PM").
+8. Tap **S 18** → back to Saturday → **Send to guardian** → **New outing · Sending** → moves on by itself to **New outing · Sent** (the story's send time, Fri 6:00 PM).
+9. **See your request** → **Outing · Waiting for guardian** → tap the ring (demo: time passes) → **Outing · Under warden review**.
+10. **Edit request** → **Edit warning** sheet → Keep it as it is. **Cancel request** → **Cancel confirm** sheet → Keep it.
+11. Tap the ring (demo) → **Outing · Approved** → **Open pass** → **Outing pass · Valid** (7F3K, 2:00 PM – 8:00 PM).
+12. **Cancel pass** link → **Cancel pass** sheet → Keep my pass.
+13. Tap the pass (demo: the gate scanned it) → **Outing pass · Out** → tap again → **Outing pass · Returned**.
+14. **Back to Outings** → **You · Outings** → **Emergency outing** row → **Emergency outing** → Send to the duty warden → **Emergency outing · Sent**.
 
-States shown by control (no path; present the frame): Outings · Empty / Not enabled; New outing · Offline / No guardian / Duplicate; Outing · Escalated / Changes requested (Rejected and Expired open from the history rows); Outing pass · Overdue / Revoked / Expired unused. The same 28 frames are on 04 (Light) and 05 (Dark) without links, except You → Outings.
+Only Saturday's **Send** is wired (Sending, Sent and the tracker are the Saturday sample); on the other days the button is a preview. States shown by control (present the frame): Outings · Empty / Not enabled; New outing · Offline / No guardian / Duplicate (their week strips show Fri as today and Mon–Thu dashed as past); Outing · Escalated / Changes requested (Rejected and Expired open from the history rows); Outing pass · Overdue / Revoked / Expired unused. The same frames are on 04 (Light) and 05 (Dark) without links, except You → Outings.
 
-### Guardian · Sign in (page 13) · 12 steps
+### Guardian · Sign in (page 13) · 14 steps (rebuilt OUTINGS-FIX, 2026-10-13)
 
-1. **G-0 · Sign in** ("We use the number SRM has on record") → **Send code**.
-2. **G-0 · Verify code** (6 digits) → **Verify** → **G-1 · Waiting for you**.
-3. Tap Aarav's card (reply by Fri 11 PM) → **G-2 · Request** ("Aarav is asking to go out.").
-4. **Ask to change** → **Ask Aarav to change it** sheet (Day / Time / Place / Other) → Close.
-5. **Decline** → **Decline this request?** sheet (reason required) → Cancel.
-6. Drag or tap **Slide to approve** → **Request · Dragging** → moves on by itself to **Request · Approved** ("Thank you. The warden reviews it next."). ("Use button instead" goes straight to Approved.)
-7. **Withdraw approval** → **Withdraw your approval?** sheet → Keep my approval.
-8. **Back to requests** → **Waiting for you** → **History** (Back) → **Notifications** (Back) → **Help** (Back).
-9. Activation path: on Sign in tap **First time here? Activate with your invite link** → **G-A1 · Activate account** → Continue.
-10. **G-A2 · Confirm link** ("You're linked to Aarav · Block B") → **Yes, that's right**.
-11. **G-A3 · Done** → **See requests** → Waiting for you.
-12. States by control: Request · Offline, Request · Expired, Waiting for you (Empty) (reached after Decline or Ask).
+1. **G-0 · Sign in** ("We use the number SRM has on record.") → **Send code**.
+2. **G-0 · Verify code** (6 digits) → **Verify** → **G-2 · Request · Ready** (the opened SMS link; demo shortcut).
+3. Read the request: "Aarav wants / to go out.", Express Avenue Mall, Sat 18 Oct · Shopping; the clock shows 2 → 8 PM (6 hours); "Reply by Fri 11 PM".
+4. **More about this outing** → **G-2A · About this outing** (scroll: Leave / Back by / Reason, last 30 days, What happens next, Call the warden, verified).
+5. Back → the Request.
+6. (Optional) **Ask to change** → sheet → Close; **Decline** → sheet → Cancel. Tap **EN · தமிழ்** → **Language** sheet → English.
+7. Drag the track (**Slide to approve**) → **Request · Dragging** → **Request · Approved** → moves on by itself to **G-3 · Status · Waiting for the warden** ("You approved." "The warden decides by Sat 12 PM."). "Use button instead" goes straight to Approved.
+8. Tap the status bar (time skip to Sat 10:40 AM) → **Status · Pass ready** ("Pass issued 10:40 AM · Aarav hasn't left yet").
+9. Tap the status bar (time skip to Sat 5:10 PM) → **Status · Out** (black dot at now; "Aarav left Main Gate at 2:04 PM").
+10. Tap the status bar (time skip to 7:41 PM) → **Status · Back** ("Aarav is back at the hostel (7:41 PM)").
+11. Alternative endings: on Out tap the right half of the status bar → **Back late** ("Aarav was 40 min late. The warden has been told."); on Waiting tap the right half → **Not going** (with the warden's reason).
+12. On Waiting **Withdraw approval** → sheet ("This cancels Aarav's pass. Aarav is told.") → Withdraw approval → **Status · Withdrawn** (or Keep my approval → back).
+13. About this outing → **History** (7 past outings with on time / late) → Back; **Notifications** (7) → Back; **Help** (5 questions, Call the warden) → Back.
+14. Activation path: on Sign in tap **First time here? Activate with your invite link** → **Activate account** → **Confirm link** ("You're linked to Aarav · Block B") → **Done** → **Open the request**.
+
+States by control (present the frame): Request · Overnight (Sat 2 PM → Sun 8 PM, "+1 day"), Request · Weekday (Wed 6 → 9 PM, "Reply by Wed 11 AM"), Request · Offline, Request · Expired (time skip on Ready); Status · Declined and Change asked (after the sheets). **Messages (reference, not an app screen)** shows the four SMS from SRM Hostels; it has no links.
 
 ### Warden · Sign in (page 14) · 12 steps
 
@@ -135,7 +140,7 @@ States shown by control (no path; present the frame): Outings · Empty / Not ena
 4. On Scan tap **Can't scan?** → **GA-4 · Pass code** (7F3K) → **Check code** → Verify — Exit.
 5. On Verify tap **Doesn't match** → **GA-9 · Report a problem** → a choice → **Sent to the duty warden** → Done → home.
 6. Pass code → **No phone? Find the student by SRM ID** → **GA-5 · Find student** → Aarav → Verify.
-7. Home → **Out now** → **GA-7 · Out now** (3) → Aarav → **GA-3 · Verify — Return** → **Yes, record return** → **GA-6 · Return recorded** ("Welcome back", 7:41 PM).
+7. Home → **Out now** → **GA-7 · Out now** (7) → Aarav → **GA-3 · Verify — Return** → **Yes, record return** → **GA-6 · Return recorded** ("Welcome back", 7:41 PM).
 8. Home → **Overdue returns** → **GA-8** → **Record a return** → **GA-6 · Back late · flagged** → Scan next.
 9. Home → **Report a problem** → GA-9.
 10. Home → **End shift** → Sign in.
@@ -144,7 +149,7 @@ States shown by control (no path; present the frame): Outings · Empty / Not ena
 ### The cross-role loop (present in this order; each role on its own page)
 
 1. **Student sends** — 07 New outing → Sent (Fri 6:00 PM, reply by Fri 11 PM).
-2. **Guardian approves** — 13 Request → Slide to approve → Approved (Fri 7:42 PM).
+2. **Guardian approves** — 13 Sign in → Verify → Request → Slide to approve → Status · Waiting for the warden (Fri 7:42 PM); later the guardian's Status page follows the outing by time skip (Pass ready → Out → Back).
 3. **Warden approves** — 14 Queue: Aarav is the third card (decide by Sat 12 PM); open it from All requests → Review request → Approve (Sat 10:40 AM).
 4. **Pass issued** — 07 Outing · Approved → Open pass → Outing pass · Valid (7F3K).
 5. **Gate exit** — 15 Scan → Verify — Exit → Exit recorded (Sat 2:04 PM).
