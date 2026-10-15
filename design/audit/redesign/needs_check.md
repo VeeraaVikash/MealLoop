@@ -17,3 +17,8 @@ Shown in the app exactly as transcribed from the board photo; confirm with the m
 | Every day | Tea · Coffee · Milk | Board "Tea/Coffee/Milk" split |
 | Sun 18 · Lunch | Chicken Gravy (no highlight) | Only gravy line not highlighted on the board |
 | All ** gravies | Fish / Mutton / Chicken Gravy | The board does not say who they are for (OWNER gap) |
+
+## P12
+
+- Guardian G-4 History lists "Sat 17 Aug · Express Avenue Mall · Returned" while the student sample day is Wed 14 Aug (the outing is still ahead). Kept from the P10 shift (decision 52); the guardian history is a later moment. NEEDS CHECK with the owner.
+- "Home · No Special pass" is dated Thursday 15 Aug on purpose (Special pass is a Wednesday thing). Kept.
