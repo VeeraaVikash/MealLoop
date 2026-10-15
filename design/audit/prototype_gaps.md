@@ -1009,3 +1009,27 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 380 | 15 GA-1 / GA-7 / GA-8 | Sample density for the ≥ 7-row rule: 7 students out and 7 overdue; the home tiles read 7 and 7 to match the lists they open (different moments of the same Saturday). | Info | Logged |
 
 **Status updates to earlier gaps (OUTINGS-FIX):** 365 — the guardian drill-ins (Verify code, Activate, Confirm link, About, History, Notifications, Help) now have the BackButton; Request and Status are root pages of the opened link. 366 — fixed: those frames now scroll with the frame-level method (Q4).
+
+## Run STUDENT-REDESIGN (2026-10-14 – 15) · new gaps 381–397
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 381 | Menu board, Meals HighlightChip, admin Menu | **What yellow means on the menu board.** Items highlighted in yellow ([H]) are shown as "Highlight" (featured / special). | Medium | Open (OWNER) |
+| 382 | Meals · Snacks (7 days), admin AD-5a Snacks | **Snacks intent.** Snacks are information only ("No answer or entry QR needed (draft)"): no answer, no entry QR, not counted. | Medium | Open (OWNER) |
+| 383 | Meals non-veg rows, admin Menu | **The ** gravies** (Fish / Mutton / Chicken Gravy): the board does not say who they are for; shown as slim non-veg rows. | Medium | Open (OWNER) |
+| 384 | OrbitMark, AppIcon (page 03); Guardian / Warden headers (AppWordmark) | **Final logo file.** The mark and icon are drawn from the reference images; no vector logo was supplied. Guardian and Warden headers still use the older AppWordmark. | Medium | Open (OWNER) |
+| 385 | 13 Guardian language pill and sheet | **Tamil text.** Only "தமிழ்" appears; no Tamil copy (extends 371). | Medium | Open (OWNER) |
+| 386 | All student icons | **SF Symbols not used.** The file's own icon set is kept (brief); SF Symbols would be a build-time swap. | Low | Open (OWNER) |
+| 387 | 07 Answer · Dinner family | No entry on the sample day: the Wed 14 Home has no dinner row and Meals · Dinner no answer row. States by control. | Low | Open (NEEDS REVIEW) |
+| 388 | 07 Notification settings, Quiet hours, Reminder prompt, Settings · System off, About MealLoop, Report · From feedback | Kept from before the redesign; the new You has no row that leads to them. | Low | Open (NEEDS REVIEW) |
+| 389 | 13 G-4 History | Lists "Sat 17 Aug · Express Avenue Mall · Returned" while the student sample day is Wed 14 (the outing is ahead). | Low | Open (NEEDS CHECK) |
+| 390 | Onboarding Sign in / failed / Offline | Tagline "Hostel meals, without the waste." kept (not the Waste screen). | Low | Open (NEEDS REVIEW) |
+| 391 | 13 G-3 Status pages ("when he is back") | Sample copy assumes Aarav's pronoun; "when Aarav is back" would avoid it. | Low | Open (NEEDS REVIEW) |
+| 392 | Meals · Dish detail (Sambar) | Portion, allergen and "Verified by mess · Mon 12 Aug" lines are earlier sample text, not checked with the kitchen. | Low | Open (NEEDS CHECK) |
+| 393 | Feedback · Which dish → Me too | Goes to the Community issue page (brief), whose sample is the counter-3 wait issue, not a Sambar issue. | Low | Open (NEEDS REVIEW) |
+| 394 | 05 Student Dark | 333 frames marked " · stale" (not rebuilt; list in redesign/stale_05.md). | Medium | Open (next run) |
+| 395 | 10 AD-5b Edit / Add dish, nutrient sheets, vote "290 kcal", AD-8c "110 kcal" | Admin still has nutrition inputs; the ban is for the student UI and the brief keeps admin layouts. | Medium | Open (OWNER) |
+| 396 | 09 Mess staff MS-A2 | Still "Aarav ·0238" (staff page unchanged by the brief); every other page uses "••0238". | Low | Open (NEEDS REVIEW) |
+| 397 | 07 / 04 tab bars | 07 tab bars now link on every screen; 04 (design source) has no tab links on any frame, as before. | Info | Logged |
+
+**Status updates:** 369 (masking style) — resolved to "••0238" on 04, 07, 13, 14, 15 (P12). 371 — see 385.

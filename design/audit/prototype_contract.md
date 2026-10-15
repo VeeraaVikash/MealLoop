@@ -5953,3 +5953,23 @@ The sections above are the contract as it was written, run by run, and are kept 
 **Wiring added in Q6:** W-1 Approved Ask / No → sheets; W-3 Aarav row → W-2; avatars → W-5 Me; W-4 Ask / No → sheets; Reassign → Decision recorded; AD-9b Policy (Success) rows → Edit policy sheet.
 
 **Reachability (reach8, Q6):** 13 26 / 30, 14 15 / 18, 15 16 / 23, 10 every AD-9 Success frame, 07 outing frames reached except states; 0 dead ends on every page. Unreached frames are states shown by control (outings_fix/report.md).
+
+## Run STUDENT-REDESIGN (2026-10-14 – 15) · student rebuild, Orbit brand, wiring
+
+**Flow starts: exactly 10** (unchanged): Student · Sign in (07), Mess staff · Sign in (09), Admin · Sign in / Today / Issues / Insights / Manage (10), Guardian · Sign in (13), Warden · Sign in (14), Gate · Sign in (15). Automatic "Flow N" starts removed after every link edit (none left).
+
+**Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug), Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug 2–8 PM, Express Avenue Mall, pass 7F3K; Juice ticket 7A3F.
+
+**Student prototype (07), required links (all verified P13):**
+- Home hero **Show entry QR** → Entry QR; lunch row → Answer · Lunch; **SOS** → SOS (choose) → I feel unwell / Next → SOS · Camera → shutter → SOS · Review → Send SOS → SOS · Sent → Done → Home; feedback row → My feedback; bell → Notifications; Credits chip → Credits; Special pass strip → Pass · Available.
+- Feedback: How was breakfast → Good → Thanks / Not good → Which dish → Me too → Community · Issue; dish tiles → What's wrong · <dish>; More dishes; Service → Community; Unsafe or unwell? → SOS; Send → Sending (auto) → Sent → See it in My feedback / Done.
+- Meals (every day × slot): date strip → the same slot on that day; segments → the other slots of that day; Highlight chip → Highlight info sheet; Wednesday ticket → Pass · Available.
+- You rows: Outings, Credits, Attendance, Spending, My feedback, Help, Terms and privacy, Sign out; profile row → Request correction.
+- Tab bars (P13): Home → Home, Meals → Meals · Wed 14 · Lunch, Community → Community, You → You, Search → Search · Empty, on 134 frames (626 links; sheets, Gallery and lock-screen frames excluded; no self-links).
+- Added in P13: Ticket · Juice status bar → Used; Spending "Food delivery" → Edit expense; Search · Menu result dish card → Meals · Dish detail; "Open in menu" → Meals · Wed 14 · Breakfast.
+
+**Hit areas (P14):** text links in sheets are wrapped in 44 pt "… hit area" frames (04 and 07); controls inside instances on 07 have transparent 44 pt "… hit area" frames with the same reaction.
+
+**Reachability (reach8, P13):** 07 147 / 296 from Student · Sign in, 0 dead ends; 13 26 / 30; 14 15 / 18; 15 16 / 23; 10 107 / 187. Unreached: states shown by control and the legacy frames in gap 388.
+
+**Components added (page 03):** OrbitBackdrop, DietMark, OrbitMark, AppIcon, DishPictogram, ProblemGlyph, HighlightChip, DishTile, MealSegments4, TicketStrip, CrowdRow, HeroCard, AnswerRow, FaceButton, ProblemTile, SeveritySegmented, ProofCard, ProofChecks, EntryQRCard, IssueCard (redesign). Tokens `veg`, `non-veg`.

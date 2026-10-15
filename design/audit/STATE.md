@@ -1,10 +1,11 @@
-# MealLoop · STATE (2026-10-13, after run OUTINGS-FIX)
+# MealLoop · STATE (2026-10-15, after run STUDENT-REDESIGN)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md`, and the run logs are in `run_status.md`.
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and this run's report is `redesign/report.md`.
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st272 (2026-10-13, end of run OUTINGS-FIX Q8; 17 pages). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end.
+- **Last snapshot:** st290 (2026-10-15, end of STUDENT-REDESIGN P15; 17 pages). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 10):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
@@ -15,17 +16,21 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 
 | Page | Phone frames | Role |
 |---|---|---|
-| 04 Student Light | 328 (28 Outings) | Student design source |
-| 05 Student Dark | 328 (28 Outings) | Dark twin; the Dark mode (collection 45:2, mode 45:1) is set on each frame |
-| 07 Prototype & QA | 290 (28 Outings) | Student prototype and state gallery (no start) |
-| 09 Mess Staff | 77 | Staff design and prototype |
-| 10 Admin | 182 (19 AD-9 Outings) + 13 (AD-4f section) | Admin design and prototype, plus 9 A4 report page components |
-| 13 Guardian | 30 | Guardian mobile web (Outings; rebuilt in OUTINGS-FIX: minimal Request and Status with ClockDial) |
-| 14 Warden | 18 | Warden and senior warden (Outings) |
-| 15 Gate | 23 | Main Gate security (Outings) |
-| 99 Archive | 153 | Replaced frames, links stripped |
+| 04 Student Light | 285 | Student design source (rebuilt in STUDENT-REDESIGN; Orbit backdrop) |
+| 05 Student Dark | 333 | **Stale**: every frame named " · stale" (not rebuilt; redesign/stale_05.md) |
+| 07 Prototype & QA | 296 | Student prototype and state gallery (no start other than Student · Sign in) |
+| 09 Mess Staff | 77 | Staff design and prototype (unchanged) |
+| 10 Admin | 187 | Admin; Menu (AD-5a, + Snacks) and Dishes rebuilt in this run |
+| 13 Guardian | 30 | Guardian mobile web (Orbit backdrop; dates Aug 2024) |
+| 14 Warden | 18 | Warden (Orbit backdrop) |
+| 15 Gate | 23 | Main Gate security (Orbit backdrop except Scan and results) |
+| 99 Archive | 455 | Replaced frames, links stripped |
 
-## Health (latest checks)
+## Health (STUDENT-REDESIGN P14, 2026-10-15)
+
+Contrast 0 real failures (lowest 4.88:1); mono words 0; lime ≤ 3 kinds per frame; backdrop on every app frame (exceptions listed in redesign/checks.md); targets 0 under 44 pt on 07, 13, 14, 15; truncation 0; overflow 0; detached 0; 04 / 07 parity 282 / 282; banned words 0 (tagline kept, gap 390). Exports: export_redesign/ (34 at 2×).
+
+## Health (older checks)
 
 | Check | Result | When |
 |---|---|---|
@@ -47,7 +52,7 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 
 ## Where things are
 
-- **Gaps:** `prototype_gaps.md`; the latest is 380.
+- **Gaps:** `prototype_gaps.md`; the latest is 397.
 - **Controls with no destination yet:** `still_absent.md`.
 - **Demo walks:** `DEMO.md`.
 - **iOS checklist:** `ios_checklist.md`.
@@ -92,3 +97,11 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 - **Scrolling rule:** a frame scrolls only when its content is taller than the frame (frame VERTICAL, content HUG, chrome fixed, last item 20 pt above the bar); main lists have ≥ 7 rows (outings_fix/scroll_audit.md).
 - **Completeness:** AD-9b Policy (Empty), AD-9c Activation (Empty, Offline), Manage hub full-height export clone; weekday rule and Too soon on Policy and the Edit sheet.
 - **Reports:** outings_fix/report.md, checks.md, completeness.md, scroll_audit.md; exports export_outings_fix/ (6 at 2×).
+
+## Run STUDENT-REDESIGN (2026-10-14 – 15)
+
+- **Student app rebuilt** from design/reference/redesign_2026-10/ on 04 and 07: Home, Meals (28 day × slot frames from the real board), Answer, Entry QR, Community, Feedback (3 steps), SOS with photo proof, You, Notifications, Credits, Juice ticket, Attendance, Spending, Help; Orbit brand V2 (OrbitBackdrop fixed layer, ≤ 3 lime kinds, mono only for numbers).
+- **Removed from the student UI** (archived): Waste, plate tracker, nutrition, Meal detail; kcal text; Recheck Home waste tile hidden.
+- **Outings, Guardian, Warden, Gate** restyled with the backdrop; dates moved to the Aug 2024 week.
+- **Admin:** Menu (four slots + Snacks) and Dishes only.
+- **Reports:** redesign/report.md, redesign/checks.md, redesign/decisions.md (1–74), redesign/replacements.md, redesign/needs_check.md; DEMO.md student walk (16 steps); gaps 381–397.
