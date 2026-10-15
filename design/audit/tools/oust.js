@@ -7,7 +7,7 @@
 // S.sheet(frame, title, detent) adds Scrim + GlassSheet + "Sheet Content" like 04 "Intent · Reason failed".
 const AF = Object.getPrototypeOf(async function(){}).constructor;
 const S = await new AF('figma', 'args', figma.root.getSharedPluginData('mealloop', 'ouh'))(figma, {});
-const help = await figma.getNodeByIdAsync('94:11356');
+const help = await figma.getNodeByIdAsync('2174:33148');
 const mom = await figma.getNodeByIdAsync('1508:101'), smp = await figma.getNodeByIdAsync('1508:107'), lab = await figma.getNodeByIdAsync('1508:100');
 S.base = async (name, x, y, title, o = {}) => { const f = help.clone(); f.name = name; f.x = x; f.y = y; if (o.parent) o.parent.appendChild(f);
   f.findOne(n => n.name === 'O8 / Content').remove();
