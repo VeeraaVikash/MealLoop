@@ -1,0 +1,1304 @@
+[
+ {
+  "day": "Mon",
+  "slot": "Breakfast",
+  "highlight": {
+   "n": "Millet Dosa",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Chapathi",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "White Khuruma",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [
+   {
+    "n": "Boiled Egg",
+    "nv": true,
+    "h": false,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Idly Podi",
+   "Oil",
+   "Chutney",
+   "Sambar",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 14,
+  "veg": 13,
+  "nonveg": 1,
+  "check": []
+ },
+ {
+  "day": "Mon",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Chappathi",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Veg Subji",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Jeera Pulao",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Panchratna Dal",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Rajma Masala",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Drumstick Brinjal",
+    "nv": false,
+    "h": true,
+    "q": true
+   }
+  ],
+  "nvrows": [],
+  "comes": [
+   "Steamed Rice",
+   "Arachivitta Sambar",
+   "Pineapple Rasam",
+   "Pickle",
+   "Butter Milk",
+   "Fryums"
+  ],
+  "count": 12,
+  "veg": 12,
+  "nonveg": 0,
+  "check": [
+   "Drumstick Brinjal"
+  ]
+ },
+ {
+  "day": "Mon",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Pav Bajji",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Tea",
+   "Coffee"
+  ],
+  "count": 3,
+  "veg": 3,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Mon",
+  "slot": "Dinner",
+  "highlight": {
+   "n": "Madras Paratha",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Vegetable Idly",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Steamed Rice",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Hara Moong Dal",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Mattar Paneer Masala",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "nvrows": [
+   {
+    "n": "Fish Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Idly Podi",
+   "Oil",
+   "Special Chutney",
+   "Sambar",
+   "Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Banana"
+  ],
+  "count": 16,
+  "veg": 15,
+  "nonveg": 1,
+  "check": []
+ },
+ {
+  "day": "Tue",
+  "slot": "Breakfast",
+  "highlight": {
+   "n": "Poori",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Dal Allo Masala",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Semia Veg Kichadi",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Chutney",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 10,
+  "veg": 10,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Tue",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Millet Chappathi",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Bahara Pulao",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Dal Fry",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Meal Maker Curry",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Urulai Peas Rosted",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "nvrows": [],
+  "comes": [
+   "Sweet",
+   "Variety Rice",
+   "Curd Rice",
+   "Steamed Rice",
+   "Tomato Rasam",
+   "Pickle",
+   "Butter Milk"
+  ],
+  "count": 12,
+  "veg": 12,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Tue",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Mysore Bonda",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Chutney",
+   "Tea",
+   "Coffee"
+  ],
+  "count": 4,
+  "veg": 4,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Tue",
+  "slot": "Dinner",
+  "highlight": {
+   "n": "Methi Chappathi",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Chilly Gobi Dry",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Millet Dosa",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Idly",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Black Chenna",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Veg Gobi Dry",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "nvrows": [
+   {
+    "n": "Mutton Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Steamed Rice",
+   "Dal Fry",
+   "Podi",
+   "Oil",
+   "Sambar",
+   "Pepper Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Special Fruits"
+  ],
+  "count": 18,
+  "veg": 17,
+  "nonveg": 1,
+  "check": []
+ },
+ {
+  "day": "Wed",
+  "slot": "Breakfast",
+  "highlight": {
+   "n": "Millet Idli",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Pongal",
+    "nv": false,
+    "h": false,
+    "q": true
+   }
+  ],
+  "curries": [],
+  "nvrows": [
+   {
+    "n": "Masala Omelet",
+    "nv": true,
+    "h": false,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Idly Podi",
+   "Oil",
+   "Sambar",
+   "Chutney",
+   "Mint Chutney",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 14,
+  "veg": 13,
+  "nonveg": 1,
+  "check": [
+   "Pongal"
+  ]
+ },
+ {
+  "day": "Wed",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Bhindi Aloo Bujjiya",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Chappati",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Veg Pulao",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Muttar Masala",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Steamed Rice",
+   "Masala Sambar",
+   "Tomato Dal",
+   "Garlic Rasam",
+   "Pickle",
+   "Poriyal",
+   "Butter Milk",
+   "Fryums"
+  ],
+  "count": 12,
+  "veg": 12,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Wed",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Veg Puff",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Sweet Puff",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Tea",
+   "Coffee"
+  ],
+  "count": 4,
+  "veg": 4,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Wed",
+  "slot": "Dinner",
+  "highlight": null,
+  "mains": [
+   {
+    "n": "Chappathi",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Steamed Rice",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Dal Tadka",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Butter Chicken Masala",
+    "nv": true,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Panneer Butter Masala",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "nvrows": [
+   {
+    "n": "Chicken Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Banana"
+  ],
+  "count": 12,
+  "veg": 10,
+  "nonveg": 2,
+  "check": []
+ },
+ {
+  "day": "Thu",
+  "slot": "Breakfast",
+  "highlight": null,
+  "mains": [
+   {
+    "n": "Lemon Idiyappam",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Masala Idiyappam",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Millet Idiyappam",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Channa Masala",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "White Khurma",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "nvrows": [],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Chappathi",
+   "Chutney",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 13,
+  "veg": 13,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Thu",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Chappathi",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Onion Pulao",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Punjabi Dal Fry",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Aloo Gobi Athiraki",
+    "nv": false,
+    "h": true,
+    "q": true
+   },
+   {
+    "n": "Kadi Pakoda",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "nvrows": [],
+  "comes": [
+   "Steamed Rice",
+   "Rasam",
+   "Pickle",
+   "Yam Varuval",
+   "Butter Milk",
+   "Fryums"
+  ],
+  "count": 11,
+  "veg": 11,
+  "nonveg": 0,
+  "check": [
+   "Aloo Gobi Athiraki"
+  ]
+ },
+ {
+  "day": "Thu",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Pani Poori",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Chenna Sundal",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Tea",
+   "Coffee"
+  ],
+  "count": 4,
+  "veg": 4,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Thu",
+  "slot": "Dinner",
+  "highlight": {
+   "n": "Millet Sweet",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Kasari",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Tomato Dal",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Idly",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Chole Pattora",
+    "nv": false,
+    "h": true,
+    "q": true
+   },
+   {
+    "n": "Chole Masala",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "nvrows": [
+   {
+    "n": "Mutton Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Steamed Rice",
+   "Sambar",
+   "Coconut Chutney",
+   "Idly Podi",
+   "Oil",
+   "Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Banana"
+  ],
+  "count": 18,
+  "veg": 17,
+  "nonveg": 1,
+  "check": [
+   "Chole Pattora"
+  ]
+ },
+ {
+  "day": "Fri",
+  "slot": "Breakfast",
+  "highlight": null,
+  "mains": [
+   {
+    "n": "Chappathi",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Dosa",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Idly",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Rajma Masala",
+   "Podi",
+   "Oil",
+   "Sambar",
+   "Coconut Chutney",
+   "Tomato Chutney",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 15,
+  "veg": 15,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Fri",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Capscum Gobi Curry",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Veg Briyani",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Dal Tadka",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Dry Jamun",
+   "Bread Halwa",
+   "Mix Raihta",
+   "Bisibelabath Rice",
+   "Curd Rice",
+   "Steamed Rice",
+   "Tomato Rasam",
+   "Pickle",
+   "Butter Milk",
+   "Fryums"
+  ],
+  "count": 13,
+  "veg": 13,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Fri",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Sambar Vada",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Millet Vada",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Tea",
+   "Coffee"
+  ],
+  "count": 4,
+  "veg": 4,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Fri",
+  "slot": "Dinner",
+  "highlight": {
+   "n": "Ghee Chappathi",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Millet Rava Upma",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Vegetable Dal",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Aloo Mutter Masala",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "nvrows": [
+   {
+    "n": "Chicken Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Coconut Chutney",
+   "Steamed Rice",
+   "Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Special Fruits"
+  ],
+  "count": 13,
+  "veg": 12,
+  "nonveg": 1,
+  "check": []
+ },
+ {
+  "day": "Sat",
+  "slot": "Breakfast",
+  "highlight": {
+   "n": "Chappathi",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Veg Khruma",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Millet Pongal Vada",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Pongal",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Sambar",
+   "Chutney",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 12,
+  "veg": 12,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Sat",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Poori",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Khismiri Pulao",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "KaraKozhambu",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Dal Fry",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "White Peas Curry",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "AloThindeli",
+    "nv": false,
+    "h": true,
+    "q": true
+   }
+  ],
+  "nvrows": [],
+  "comes": [
+   "Steamed Rice",
+   "Kootu (Cabbage)",
+   "Rasam",
+   "Pickle",
+   "Butter Milk",
+   "Fryums"
+  ],
+  "count": 12,
+  "veg": 12,
+  "nonveg": 0,
+  "check": [
+   "AloThindeli"
+  ]
+ },
+ {
+  "day": "Sat",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Cake",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Browni",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Tea",
+   "Coffee"
+  ],
+  "count": 4,
+  "veg": 4,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Sat",
+  "slot": "Dinner",
+  "highlight": {
+   "n": "Veg Jhal Pyaza",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Bagara Dal",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Kathamba Sambar",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Panjabi Paratha",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [
+   {
+    "n": "Chicken Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Potato Fry",
+   "Steamed Rice",
+   "Idly",
+   "Idly Podi",
+   "Oil",
+   "Chutney",
+   "Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Banana"
+  ],
+  "count": 17,
+  "veg": 16,
+  "nonveg": 1,
+  "check": []
+ },
+ {
+  "day": "Sun",
+  "slot": "Breakfast",
+  "highlight": {
+   "n": "Chole Bhature",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Samba Rava Upma",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Chenna Masala",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Bread",
+   "Butter",
+   "Jam",
+   "Coconut Chutney",
+   "Tea",
+   "Coffee",
+   "Milk"
+  ],
+  "count": 10,
+  "veg": 10,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Sun",
+  "slot": "Lunch",
+  "highlight": {
+   "n": "Pepper Chicken",
+   "nv": true,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Mixed Veg Poriyal",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Chapathi",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Mint Pulao",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [
+   {
+    "n": "Kadai Chicken",
+    "nv": true,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Panneer Butter Masala",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "nvrows": [
+   {
+    "n": "Chicken Gravy",
+    "nv": true,
+    "h": false,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Dal Dhadka",
+   "Steamed Rice",
+   "Rasam",
+   "Pickle",
+   "Butter Milk",
+   "Fryums"
+  ],
+  "count": 13,
+  "veg": 10,
+  "nonveg": 3,
+  "check": []
+ },
+ {
+  "day": "Sun",
+  "slot": "Snacks",
+  "highlight": {
+   "n": "Corn Bajji",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Bajji with Chutney",
+    "nv": false,
+    "h": true,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [],
+  "comes": [
+   "Tea",
+   "Coffee"
+  ],
+  "count": 4,
+  "veg": 4,
+  "nonveg": 0,
+  "check": []
+ },
+ {
+  "day": "Sun",
+  "slot": "Dinner",
+  "highlight": {
+   "n": "Kathamba Sambar",
+   "nv": false,
+   "h": true,
+   "q": false
+  },
+  "mains": [
+   {
+    "n": "Poriyal",
+    "nv": false,
+    "h": true,
+    "q": false
+   },
+   {
+    "n": "Aloo Paratha",
+    "nv": false,
+    "h": false,
+    "q": false
+   },
+   {
+    "n": "Steamed Rice",
+    "nv": false,
+    "h": false,
+    "q": false
+   }
+  ],
+  "curries": [],
+  "nvrows": [
+   {
+    "n": "Chicken Gravy",
+    "nv": true,
+    "h": true,
+    "q": false
+   }
+  ],
+  "comes": [
+   "Masala Curd",
+   "Hara Moong Dal Tadka",
+   "Rasam",
+   "Pickle",
+   "Fryums",
+   "Veg Salad",
+   "Milk",
+   "Banana",
+   "Cone Ice Cream"
+  ],
+  "count": 14,
+  "veg": 13,
+  "nonveg": 1,
+  "check": []
+ }
+]
