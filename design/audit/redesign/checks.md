@@ -57,3 +57,11 @@ Row 1 is a tool artefact: the checker composites only the label's ancestors (the
 ## Reachability (from P13)
 
 07: 147 of 296 frames reached from Student · Sign in, 0 dead ends; 13: 26 / 30; 14: 15 / 18; 15: 16 / 23; 10: 107 / 187. Unreached frames are states shown by control and the legacy frames listed in DEMO.md.
+
+## Addendum (found in P15 while rendering)
+
+| Check | Found | Fix |
+|---|---|---|
+| Banned: student waste / "served" | "Recheck · Home · Recheck / yes / no" (04, 07) still had the old Home "Impact" tile: "38 kg wasted at yesterday's lunch · Never served 24 kg · Left on plates 14 kg" | Tile hidden on the 6 frames. Only "Hostel meals, without the waste." (onboarding tagline) remains. |
+| Check marks | ProofChecks "Done" (page 03, 7 variants' rows), SOS option "Selected" and SOS · Sent "Mark" hugged a 16 pt icon: 19 × 28 capsules | Square, centred (28 × 28 / 32 × 32). |
+| Scroll fade over actions | 8 SOS frames per page have no tab bar; the fade (made for the floating tab bar) covered "Next: take a photo" / "Send SOS" / "Done" | Fade hidden where no tab bar is shown (04, 07). |

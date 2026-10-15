@@ -31,3 +31,19 @@ This file did not exist before run OUTINGS (2026-10-13). The full master context
 - **Guardian redesign (page 13):** the opened SMS link is a minimal Request page (sentence, place, ClockDial, "Reply by Fri 11 PM", SlideToApprove, Ask to change · Decline, More about this outing, verified footnote); after approving, a minimal Status page follows the outing (Waiting → Pass ready → Out → Back, or Back late / Not going / Withdrawn) by status-bar time skips; detail lives on "About this outing"; sheets Ask to change, Decline, Withdraw approval, Language; History, Notifications, Help; a Messages reference frame. Start: Guardian · Sign in.
 - **Scrolling rule:** frames scroll only when content is taller than the frame, with the file's frame-level method (VERTICAL, content HUG, chrome fixed, last item 20 pt above the bar); lists that are the main content have at least 7 rows.
 - **Where to look:** outings_fix/report.md (decisions, conflicts, NEEDS REVIEW, OWNER), run_status.md (Q0–Q9), gaps 370–380, DEMO.md (Student outing and Guardian walkthroughs).
+
+## Run STUDENT-REDESIGN (2026-10-14 – 15)
+
+**What changed.** The student app (pages 04 and 07) was rebuilt from the reference pack design/reference/redesign_2026-10/ (34 images, menu board data, prompt). Page 05 Dark was not rebuilt: its 333 frames are marked " · stale". Staff and admin are unchanged except the admin Menu (four slots + Snacks) and Dishes.
+
+**Sample day (all roles).** Wed 14 Aug 2024, 7:00 AM; week Mon 12 – Sun 18 Aug; Aarav ••0238, Block B, Main Mess, 120 pts; Juice ticket 7A3F; outing Sat 17 Aug 2–8 PM, Express Avenue Mall, Shopping, pass 7F3K (outing dates moved by 427 days from Oct 2025, weekday kept). Menus come from the real mess board (redesign/menu_tiers.json; NEEDS CHECK items in redesign/needs_check.md).
+
+**Brand rule V2 (Orbit).** OrbitBackdrop is a fixed bottom layer on every app frame (exceptions: OS lock-screen mockups, Gallery, SOS camera, Guardian Messages board, Gate Scan and full-colour results); lime on light only as an ink-outlined element; never lime text on white; at most 3 lime kinds per frame beyond the backdrop (logo and AppIcon exempt); mono only for numbers.
+
+**Banned in the student UI.** Calories, nutrition, kcal, plate tracker, the Waste screen, "How this is measured", "or" between dishes, "served" for scans.
+
+**Components (page 03, this run).** OrbitBackdrop 2129:2343, DietMark 2129:2198, OrbitMark 2129:2211, AppIcon 2129:2240, DishPictogram 2129:2299, ProblemGlyph 2129:2324, HighlightChip 2132:2197, DishTile 2132:2406, MealSegments4 2133:2323, TicketStrip 2133:2374, CrowdRow 2133:2427, HeroCard 2135:2336, AnswerRow 2135:2382, FaceButton 2136:2321, ProblemTile 2136:2360, SeveritySegmented 2136:2382, ProofCard 2137:2399, ProofChecks 2137:2448, EntryQRCard 2153:3742, IssueCard 2156:2702.
+
+**Tools.** design/audit/tools/ (srh, srarc, srhome, srmeals, srmealswire, srp5–srp9 and wires, srlight, oust, menu_tiers.py); stored in the file's shared plugin data under the same keys. The builders clone the archived "Help (before redesign)" frame 2174:33148 on page 99 — do not move or delete it.
+
+**Owner items.** Gaps 381–386 (yellow highlight meaning, snacks intent, ** gravies, final logo file, Tamil text, SF Symbols), 395 (admin nutrition inputs), plus the NEEDS REVIEW list in redesign/report.md.
