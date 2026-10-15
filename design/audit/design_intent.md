@@ -265,3 +265,37 @@ The OUTINGS-FIX brief listed Tue / Thu as "Guardian by 9 AM, Warden by 1 PM"; th
 **Clock.** A clock (ClockDial) shows the outing window on a 12-hour ring; a window longer than 12 hours is shown as a full ring with "+1 day".
 
 **Words.** "Out" (not "absent"), "Back by", "Exit recorded", "Return recorded", "Overdue". A gate scan never means "served"; never "redeem" a pass.
+
+## STUDENT REDESIGN 2026-10 (run STUDENT-REDESIGN, 2026-10-15)
+
+Source: design/reference/redesign_2026-10 (34 screens drawn 292 pt wide; × 1.346 for the 393 pt frames). The images set layout, hierarchy and copy; sizes follow the readability standard (body 15, secondary 13, meta 12, primary actions 17 or more, never below 12).
+
+**Hierarchy.** Each screen has one hero, at most one action card, and quiet rows below. Rows never compete with the hero: no second solid button and no second lime element in the row list.
+
+**One place per feature.**
+- Entry QR lives in the Home top card (HeroCard), and only there. No second Entry QR card.
+- Crowd is one Home row (CrowdRow). There is no crowd screen in the student app.
+- Passes (Special pass, tickets) show on Home only as a row, and on the day they apply (the sample: Wednesday).
+- Outings live under You (first row) and in their own flow.
+
+**The QR is never locked.** The meal answer (I'm in / Skip / Not sure) only helps the kitchen plan. Every HeroCard case (In, Skipped, Not answered, QR available) keeps "Show entry QR" as a solid button. A passed cutoff turns the answer buttons dashed; the QR still works.
+
+**Feedback = dish + exact problem + how bad.** Step 1 Good or Not good (Good sends at once). Step 2 the dish (Most reported today with one-tap Me too; or pick a dish; a dashed Service tile goes to Community). Step 3 the specific problem for that dish type, How bad (Quite preselected), an optional note, Send. Problem sets per dish type:
+
+| Dish type | Problems |
+|---|---|
+| Curries, dal, sambar, rasam | Too salty, Too spicy, Too watery, Too sour, Cold, Too little |
+| Rice, pulao, briyani | Undercooked, Mushy, Hard, Stale, Cold, Too little |
+| Breads (chapathi, paratha, poori, dosa, idli …) | Hard, Undercooked, Burnt, Stale, Cold, Too little |
+| Paneer and dry dishes | Too oily, Too spicy, Too salty, Hard, Cold, Too little |
+| Curd and sweets | Too sour, Watery, Not fresh, Warm, Too little |
+
+**SOS needs proof.** A food SOS needs a live photo (no gallery) stamped with GPS and time, then three checks (photo, place, time) before Send SOS. "I feel unwell" may be sent without a photo. Camera denied → "Send without photo", flagged on the admin Safety case. The admin Safety case shows the proof (ProofCard).
+
+**Not in the student app.** Calories, kcal, nutrition, the plate tracker, the student Waste screen and "How this is measured". Admin keeps its own waste analytics.
+
+**Menu tiers (Meals).** Highlight = the first [H] dish, a large black tile with the HighlightChip ("Marked by the mess on the menu board"). Mains = up to three tiles (remaining [H] dishes, then breads, then rice / pulao / briyani, then dal or curries). "Curries" = a row of two tiles on Dinner and wherever there are two or more curries. Non-veg dishes carry the non-veg mark; the ** gravies are a slim outlined non-veg row. Everything else is the "Comes with it" list, in board order. Items joined by "or" or "/" on the board are separate dishes, all listed; the word "or" never appears between dishes. Wednesday Lunch carries the alternate-Wednesday ticket (Chicken Briyani, Paneer Briyani · Limited). (?) items are shown as transcribed and listed under NEEDS CHECK.
+
+**Orbit (brand rule V2).** Background art on one fixed layer (OrbitBackdrop): canvas, 7% dot texture, a lime disc top right with four hairline rings and one black dot, a fainter ring pair bottom left. On a light card, lime appears only as an ink-outlined chip or arc; never lime text on white; at most three lime elements per frame beyond the backdrop. Mono only for numbers, times and units. Exceptions: SOS camera (dark) and the gate result (full lime) have no backdrop.
+
+**Sample calendar.** Week Mon 12 – Sun 18 Aug 2024; today Wed 14 Aug (matches the real menu board, data/mess_menu_2024-08-12.md). Home at 7:00 AM; Meals at any time. Student Aarav ••0238, Main Mess, 120 points. Sample outing on Sat 17 Aug 2024 (Express Avenue Mall, pass 7F3K).
