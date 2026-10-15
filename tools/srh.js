@@ -13,17 +13,35 @@ S.screen = async (pg, name, x, y, o = {}) => {
   const { f, c } = await S.base(name, x, y, o.title || '', { parent: pg, noTab: o.noTab, noBack: !o.back });
   const wash = f.findOne(n => n.name === 'Meal wash'); if (wash) wash.remove();
   if (o.backdrop !== 'None') { const b = await S.v(S.ID.backdrop, { Style: o.backdrop || 'Full' }); f.insertChild(0, b); b.x = 0; b.y = 0; b.name = 'OrbitBackdrop'; }
-  f.fills = [S.paint('canvas')];
+  f.fills = [S.paint('canvas')]; f.overflowDirection = 'VERTICAL';
   const nav = f.findOne(n => n.name === 'Nav Header');
-  c.name = 'Content';
-  if (o.noNav) { nav.remove(); c.y = 54; c.resize(393, 852 - 54); c.paddingTop = 8; }
+  c.name = 'Content'; c.clipsContent = false; c.overflowDirection = 'NONE';
+  if (o.noNav) { nav.remove(); c.y = 54; c.paddingTop = 8; }
   else { const set = {}; for (const k of Object.keys(nav.componentProperties)) { if (k.startsWith('Subtitle')) set[k] = o.subtitle || ''; if (k.startsWith('Show Subtitle')) set[k] = !!o.subtitle; } set.Type = o.inline ? 'Inline Title' : 'Large Title'; nav.setProperties(set); nav.fills = [];
-    const ny = 54 + nav.height; c.y = ny; c.resize(393, 852 - ny); }
+    c.y = 54 + nav.height; }
+  c.primaryAxisSizingMode = 'AUTO';
   if (!o.noTab) { const tb = f.findOne(n => n.name === 'Tab Bar'); if (tb) tb.setProperties({ Selected: o.tab || 'Home' }); }
-  const kids = f.children.length; const chrome = f.children.filter(n => ['Status Bar', 'Nav Header', 'Scroll edge fade', 'Tab Bar', 'Home Indicator'].includes(n.name));
+  const st = f.findOne(n => n.name === 'Status Bar'); if (o.time && st) { const k = Object.keys(st.componentProperties).find(k => k.startsWith('Time')); if (k) st.setProperties({ [k]: o.time }); }
+  const chrome = f.children.filter(n => ['Status Bar', 'Nav Header', 'Scroll edge fade', 'Tab Bar', 'Home Indicator'].includes(n.name));
   for (const n of chrome) f.appendChild(n); f.numberOfFixedChildren = chrome.length;
   return { f, c };
 };
+S.reframe = async (f, o = {}) => {
+  const keep = f.children.filter(n => /^Gallery/.test(n.name));
+  for (const n of [...f.children]) if (!keep.includes(n)) n.remove();
+  if (f.layoutMode !== 'NONE') f.layoutMode = 'NONE';
+  await f.setReactionsAsync([]); f.resize(393, 852); f.clipsContent = true;
+  const r = await S.screen(f.parent, 'tmp reframe', f.x + 5000, f.y, o);
+  for (const n of [...r.f.children]) f.appendChild(n);
+  r.f.remove(); f.fills = [S.paint('canvas')]; f.overflowDirection = 'VERTICAL';
+  for (const k of keep) f.appendChild(k);
+  f.numberOfFixedChildren = f.children.filter(n => ['Status Bar', 'Nav Header', 'Scroll edge fade', 'Tab Bar', 'Home Indicator'].includes(n.name)).length + keep.length;
+  return { f, c: f.findOne(n => n.name === 'Content') };
+};
+S.nav = (id, o = {}) => ({ type: 'NODE', destinationId: id, navigation: o.overlay ? 'OVERLAY' : (o.back ? 'NAVIGATE' : 'NAVIGATE'), transition: o.overlay ? { type: 'MOVE_IN', direction: 'TOP', matchLayers: false, easing: { type: 'EASE_OUT' }, duration: 0.3 } : { type: 'DISSOLVE', easing: { type: 'EASE_OUT' }, duration: 0.25 }, preserveScrollPosition: false, resetVideoPosition: false });
+S.link = async (node, id, o) => { await node.setReactionsAsync([{ trigger: { type: 'ON_CLICK' }, actions: [S.nav(id, o)] }]); return node; };
+S.back = async node => { await node.setReactionsAsync([{ trigger: { type: 'ON_CLICK' }, actions: [{ type: 'BACK' }] }]); return node; };
+S.byName = (pg, name) => pg.children.find(n => n.type === 'FRAME' && n.name === name);
 S.KEY = [[/dosa|idli|idly|chap+at+h?i|paratha|poori|bhature|bhatura|idiyappam|bread/i, 'Bread'], [/rice|pulao|briyani|biryani/i, 'Rice'], [/pan+eer/i, 'Paneer'], [/curd|raita|butter ?milk|ice cream/i, 'Curd']];
 S.pic = n => { for (const [re, t] of S.KEY) if (re.test(n)) return t; return 'Curry'; };
 S.tile = async (parent, dish, size, fill, nv) => { const t = await S.v(S.ID.tile, { Size: size, Fill: fill || 'Default', Diet: nv ? 'Non-veg' : 'Veg' }, { Dish: dish }, parent);
