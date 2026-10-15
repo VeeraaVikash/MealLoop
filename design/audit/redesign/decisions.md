@@ -33,3 +33,7 @@
 | 29 | P5 | Answer tiles use the real Wed 14 dishes (reference placeholders Rice / Sambar / Paneer / Chapati / Curd replaced). The reference's lime "Sambar" tile has no stated meaning; not used (lime budget). | Real dishes; ≤ 3 lime. |
 | 30 | P5 | "Why skipping?" sheet: the eight reasons that match the admin list (design_intent "Reasons for absence"), optional, "Skip without a reason" link, grab handle + Close; sized to its content. | — |
 | 31 | P5 | Entry QR moment 7:40 AM (breakfast). Entry · Expired → Refreshing, Entry · Offline → Saved QR; Scanned / Already scanned / Wrong mess restyled; Walk-in new. Discrepancy flows and Entry history keep their layouts (backdrop pass in P14). | — |
+| 32 | P6 | Reference copy "Long wait at North" / "North mess" would invent a mess. | Kept the file's existing issues and counts (Long wait at counter 3 after 1 PM · 64; Sambar too watery at dinner · 38; Curd runs out by 8:45 PM · 21; Rice undercooked on Mondays · 17), all at Main Mess, in the reference layout. Fixed tab: two sample issues (Cold idli at breakfast · 29, Spoons missing at counter 2 · 12). |
+| 33 | P6 | New component IssueCard (flagged; Me too, Sending, Backed with Undo, Failed, Fixed). | Reuse first; SegmentedControl (Items=2) reused for Open / Fixed. |
+| 34 | P6 | Issue page lime budget: progress bar (one element), Me too button, peak bar = 3. | ≤ 3 lime elements. |
+| 35 | P6 | "Report a problem" flow and the Comments frames keep their layouts; restyled with OrbitBackdrop (srlight replaces the old wash layer). | — |
