@@ -12,3 +12,7 @@
 | 8 | P1 | ClockDial already has Request, Status, Out, Returned, Late, Not going, Overnight in Large and Medium (OUTINGS-FIX). | Reused unchanged. |
 | 9 | P1 | Dot texture: 7% ink dots every 14 sketch pt. | A 47 px PNG tile (one dot, alpha 7%) at scale 0.4 → 18.8 pt tile, r 1.2 pt. |
 | 10 | P1 | HighlightChip info target. | 44 pt hit frame around a 32 pt pill. |
+| 11 | P2 | Frames that stay in the flow (Sign in with the "Student · Sign in" start, Getting your details, Offline, and the failed state) are rebuilt in place so their node IDs, inbound links and start survive; a copy of each old version goes to 99 Archive ("(before redesign)", links stripped). | Never delete; never copy a start (a copied start on 99 was removed at once; srarc now drops copied starts). |
+| 12 | P2 | "Onboarding · Request correction — failed" sat in the 07 QA gallery chain (Gallery A Sign in → … → Offline). | Rebuilt in place as "Onboarding · Sign in failed" ("Couldn't sign in. Try again"), so the gallery chain and its Back / Next halves still work. |
+| 13 | P2 | 04 has no frame named "Home"; links into the archived onboarding frames on 04 go to "Home · Morning" (106:10991); on 07 to Home (221:62548). | — |
+| 14 | P2 | SRM down, Session expired, Not eligible are OnboardingPage instances. | Restyled without detaching: instance fill cleared, "Art" hidden, OrbitBackdrop and OrbitMark added. |
