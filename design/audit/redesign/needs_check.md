@@ -22,3 +22,8 @@ Shown in the app exactly as transcribed from the board photo; confirm with the m
 
 - Guardian G-4 History lists "Sat 17 Aug · Express Avenue Mall · Returned" while the student sample day is Wed 14 Aug (the outing is still ahead). Kept from the P10 shift (decision 52); the guardian history is a later moment. NEEDS CHECK with the owner.
 - "Home · No Special pass" is dated Thursday 15 Aug on purpose (Special pass is a Wednesday thing). Kept.
+
+## P13
+
+- Meals · Dish detail now shows Sambar (Wed breakfast); "1 bowl", "Mustard seeds", "Curry leaves" and "Verified by mess · Mon 12 Aug" are the file's earlier sample lines, not checked against the kitchen.
+- Answer · Dinner family has no entry on the sample day (decision 69).

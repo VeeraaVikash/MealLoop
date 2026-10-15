@@ -4,29 +4,36 @@ All data is sample. Each role has exactly one flow start, and admin has four ext
 
 | Role | Flow start | Page | Home after sign-in |
 |---|---|---|---|
-| Student (Aarav ·0238) | **Student · Sign in** | 07 Prototype & QA | Home · Afternoon |
+| Student (Aarav ••0238) | **Student · Sign in** | 07 Prototype & QA | Home (Wed 14 Aug, 7:00 AM) |
 | Mess staff (Ravi, supervisor) | **Mess staff · Sign in** | 09 Mess Staff | MS-H · Home for the job picked |
 | Admin (Devi, food head) | **Admin · Sign in** (+ Admin · Today, Issues, Insights, Manage) | 10 Admin | AD-1a · Today — Now |
 
 Each walk below was traced link by link on 2026-10-05 (reachability_final.md).
 
-## Student · Sign in (page 07)
+## Student · Sign in (page 07) · 16 steps (STUDENT-REDESIGN, 2026-10-15)
 
-1. **Onboarding · Sign in**: tap **Sign in with SRM**. **Onboarding · Verifying** moves on by itself to **Onboarding · Confirm profile** ("Is this you?").
-2. **Yep, that's me** → **Onboarding · All set** → **Home · Afternoon**.
-3. On Home tap **I'm in** → **Answer Yes · Tap** → Sending → **Answer Yes · Saved** (moves on by itself).
-4. **Crowd** card → **Crowd · Detail** → ⓘ → **Crowd · About this estimate** (sheet) → Close.
-5. **Meals** tab → **Meals · Menu** → **Sambar** → **Meals · Dish detail** → **Rate this dish** → **Feedback · Step 1** → Not good → Send → **Feedback · Sending** → **Feedback · Receipt**.
-6. Meals → **Dinner** pill → **Meals · Menu — Dinner** → current meal → **Meals · Meal detail** → **I'm in** → Sending → Saved → **Meal detail (dinner) · Track this meal?**
-7. **Track** → **Plate tracker · First run** → **Turn on** → **Your plate · expanded** → Save → **Your plate · saved** → **Done** → **You · Daily breakdown**.
-8. Home → **Special pass** → **Pass · Available** → **Use** → **Pass · Confirm (holding)** → hold → Sending → **Pass · Live 1** → 2 → 3 (the code and colour change every few seconds) → **Pass · Used**.
-9. Home → **Credits** → **Rewards** (titled "Credits"). On the Juice ticket tap **Get** → **Offer · Sending** → **Ticket · Juice · new** (code 7A3F, lime colour pill).
-10. On the ticket tap the status bar (time skip) → **Ticket · Juice (Used) · new** → **Done** → Credits.
-11. **Community** tab → **Community · List** → ⓘ → **Community · Info sheet · new** → Close. Then tap Long wait at counter 3 → **Community · Detail** → **Support** → Sending → **Community · Supported**.
-12. Home → **Report a problem** → **Report · What's wrong** → Not clean → **Report · Details** → Send → **Report · Sending** → **Report · Receipt** → My reports.
-13. **You** tab → **You** → Sign out → **Onboarding · Welcome**.
+Sample day: **Wed 14 Aug 2024, 7:00 AM**, Aarav ••0238, Main Mess, 120 pts. Every tab bar on page 07 now works (Home, Meals, Community, You, Search). Traced link by link on 2026-10-15 (reach8: 147 of 296 frames reached from the start, 0 dead ends; the rest are states shown by control, listed below).
 
-**State gallery:** the 96 student state frames have no flow start, because the brief allows one student start. To walk them, present from the **Gallery · A · Sign in** frame on page 07 (Figma: select the frame → Present). Tap the right half for next and the left half for previous.
+1. **Onboarding · Sign in** → **Sign in with SRM** → **Onboarding · Getting your details** moves on by itself → **Home** ("Hey Aarav", Wednesday 14 Aug, "You're in for breakfast").
+2. Hero **Show entry QR** → **Entry QR** (live code) → tap the card (demo: the door scanned it) → **Entry QR · Scanned** → **Home** tab.
+3. Lunch row **You in for lunch?** → **Answer · Lunch** (Bhindi Aloo Bujjiya highlight) → **I'm in** → Sending moves on → **Answer · Lunch · I'm in** → **Home** tab.
+4. **Special pass** strip → **Pass · Available** → **Use pass** → **Pass · Confirm (holding)** → **Hold to use** → **Pass · Live 1 → 2 → 3** (moves on) → **Pass · Used**.
+5. **Meals** tab → **Meals · Wed 14 · Lunch** → date strip **Thu 15** → **Meals · Thu 15 · Lunch**; on any day the segments **Breakfast / Snacks / Dinner** switch the meal; **Highlight** chip → info sheet.
+6. Meals · Wed 14 · Lunch → Wednesday ticket strip (Chicken Briyani · Panneer Briyani) → **Pass · Available** → **Home** tab.
+7. On Home tap the status bar (time skip) → **Home · Breakfast open** (8:10) → status bar again → **Home · After a meal** (9:40, "How was breakfast?").
+8. **Not good** → **Feedback · Which dish** (Most reported: Sambar · Too salty) → tile **Sambar** → **What's wrong · Sambar** → **Send** → Sending moves on → **Feedback · Sent** ("The kitchen saw it") → **See it in My feedback** → **My feedback**.
+9. Back on **Feedback · Which dish**: **Me too** → **Community · Issue** → **Me too** → Sending moves on → **Backed**; **4 comments** → **Community · Comments**. (**Service › Community** on the same sheet → **Community**.)
+10. **Community** tab → **Community** (Open / Fixed) → **Fixed** → Community · Fixed → **Open**; ⓘ → **Community · Info sheet**.
+11. Home → **SOS** → **SOS** (choose) → **I feel unwell after eating** → **Next: add a photo** → **SOS · Camera** → shutter → **SOS · Review** (proof checks) → **Send SOS** → **SOS · Sent** → **Done** → **Home**.
+12. Home feedback row **You said the sambar was too salty** → **My feedback** → **Better** → **My feedback · Better saved**.
+13. Bell → **Notifications** → "Your guardian approved your outing" → **You · Outings** (the outing walk below starts here).
+14. **You** tab → **You** → **Credits** (120 pts) → Juice **Get** → Getting a ticket moves on → **Ticket · Juice** (7A3F) → status bar (time skip) → **Ticket · Juice · Used**.
+15. You → **Attendance** / **Spending** (tap Food delivery → **Edit expense**) / **My feedback** / **Help**; the profile row → **Request correction**.
+16. Search circle on the tab bar → **Search** → recent **sambar** → **Search · Typing** → **Sambar · Wed · Breakfast** → **Search · Menu result** → the dish card → **Meals · Dish detail** (Sambar, Breakfast · Wed 14 Aug) → **Rate a dish** → **How was breakfast?**; finally You → **Sign out** → **Onboarding · Sign in**.
+
+**States by control** (present the frame; no link leads there in the sample day): Onboarding errors (Sign in failed, SRM down, Session expired, Not eligible, Offline); Home · Mess closed / After cutoff / Skipped / Empty / Offline / Loading / No Special pass; Answer · Cutoff passed (×4), Answer · Dinner family (the sample day's Home has no dinner row yet); Entry QR · Refreshing / Wrong mess / Walk-in / Already scanned, Entry · Discrepancy family; Pass · Expired / Not today / Not eligible / Already used / Wrong mess / Unavailable / Confirm (failed); Meals · Menu changed / Service ended / Not published / No menu; Crowd · Stale / Unavailable; Community · Issue · Hidden / Me too failed; all Offline, Loading, Error, Empty, Failed variants; Outings states listed below. **Legacy frames kept without an entry** (no row on the new You): Notification settings, Quiet hours, Reminder prompt, Settings · System off, About MealLoop, Report · From feedback (NEEDS REVIEW in redesign/report.md).
+
+**State gallery:** present from **Gallery · A · Sign in** on page 07 to walk the older state frames (right half next, left half previous).
 
 ## Mess staff · Sign in (page 09)
 
@@ -83,12 +90,12 @@ Three new flow starts, each on its own page; the owner makes one prototype link 
 
 1. Sign in as usual → Home → **You** tab → **You**.
 2. **Outings** row (top of the settings card) → **You · Outings** (one active request; Earlier: 7 past outings, scroll).
-3. **New outing** → **New outing · Sat** (the week strip M T W T F S S, 13–19 Oct; Mon outlined as today, Sat and Sun shaded; Sat selected; RuleTag "Weekend rule · earlier deadline · draft"; 2 PM – 8 PM; ribbon "You'll know by Sat 12 PM").
-4. Tap **M 13** → **New outing · Mon** (today, 1:40 PM, 3 – 6 PM): RuleTag and ribbon "Too soon"; the Send button is a dashed "Pick a later time".
-5. Tap **W 15** → **New outing · Wed** (the weekday sample, 6 – 9 PM): "Weekday rule · same-day decision · draft"; guardian by 11 AM, warden 11 AM – 3 PM, "You'll know by Wed 3 PM".
-6. Tap **T 14** / **T 16** / **F 17** → the same weekday rule for 2 – 6 PM (guardian by 8 AM, warden 8 – 11 AM, "You'll know by … 11 AM").
-7. Tap **S 19** → **New outing · Sun** (10 AM – 4 PM; guardian by Sat 3 PM, warden Sat 3 – 8 PM, "You'll know by Sat 8 PM").
-8. Tap **S 18** → back to Saturday → **Send to guardian** → **New outing · Sending** → moves on by itself to **New outing · Sent** (the story's send time, Fri 6:00 PM).
+3. **New outing** → **New outing · Sat** (the week strip M T W T F S S, 12–18 Aug; Mon outlined as today, Sat and Sun shaded; Sat selected; RuleTag "Weekend rule · earlier deadline · draft"; 2 PM – 8 PM; ribbon "You'll know by Sat 12 PM").
+4. Tap **M 12** → **New outing · Mon** (today, 1:40 PM, 3 – 6 PM): RuleTag and ribbon "Too soon"; the Send button is a dashed "Pick a later time".
+5. Tap **W 14** → **New outing · Wed** (the weekday sample, 6 – 9 PM): "Weekday rule · same-day decision · draft"; guardian by 11 AM, warden 11 AM – 3 PM, "You'll know by Wed 3 PM".
+6. Tap **T 13** / **T 15** / **F 16** → the same weekday rule for 2 – 6 PM (guardian by 8 AM, warden 8 – 11 AM, "You'll know by … 11 AM").
+7. Tap **S 18** → **New outing · Sun** (10 AM – 4 PM; guardian by Sat 3 PM, warden Sat 3 – 8 PM, "You'll know by Sat 8 PM").
+8. Tap **S 17** → back to Saturday → **Send to guardian** → **New outing · Sending** → moves on by itself to **New outing · Sent** (the story's send time, Fri 6:00 PM).
 9. **See your request** → **Outing · Waiting for guardian** → tap the ring (demo: time passes) → **Outing · Under warden review**.
 10. **Edit request** → **Edit warning** sheet → Keep it as it is. **Cancel request** → **Cancel confirm** sheet → Keep it.
 11. Tap the ring (demo) → **Outing · Approved** → **Open pass** → **Outing pass · Valid** (7F3K, 2:00 PM – 8:00 PM).
@@ -102,10 +109,10 @@ Only Saturday's **Send** is wired (Sending, Sent and the tracker are the Saturda
 
 1. **G-0 · Sign in** ("We use the number SRM has on record.") → **Send code**.
 2. **G-0 · Verify code** (6 digits) → **Verify** → **G-2 · Request · Ready** (the opened SMS link; demo shortcut).
-3. Read the request: "Aarav wants / to go out.", Express Avenue Mall, Sat 18 Oct · Shopping; the clock shows 2 → 8 PM (6 hours); "Reply by Fri 11 PM".
+3. Read the request: "Aarav wants / to go out.", Express Avenue Mall, Sat 17 Aug · Shopping; the clock shows 2 → 8 PM (6 hours); "Reply by Fri 11 PM".
 4. **More about this outing** → **G-2A · About this outing** (scroll: Leave / Back by / Reason, last 30 days, What happens next, Call the warden, verified).
 5. Back → the Request.
-6. (Optional) **Ask to change** → sheet → Close; **Decline** → sheet → Cancel. Tap **EN · தமிழ்** → **Language** sheet → English.
+6. (Optional) **Ask to change** → sheet → Close; **Decline** → sheet → Cancel. Tap **தமிழ்** → **Language** sheet → English.
 7. Drag the track (**Slide to approve**) → **Request · Dragging** → **Request · Approved** → moves on by itself to **G-3 · Status · Waiting for the warden** ("You approved." "The warden decides by Sat 12 PM."). "Use button instead" goes straight to Approved.
 8. Tap the status bar (time skip to Sat 10:40 AM) → **Status · Pass ready** ("Pass issued 10:40 AM · Aarav hasn't left yet").
 9. Tap the status bar (time skip to Sat 5:10 PM) → **Status · Out** (black dot at now; "Aarav left Main Gate at 2:04 PM").
@@ -135,7 +142,7 @@ States by control (present the frame): Request · Overnight (Sat 2 PM → Sun 8 
 ### Gate · Sign in (page 15) · 13 steps
 
 1. **GA-0 · Sign in** → Verifying (moves on) → **Confirm profile** (Main Gate security) → **GA-1 · Gate home**.
-2. **Scan pass** → **GA-2 · Scan** → tap the viewfinder → **GA-3 · Verify — Exit** (photo, Aarav ·0238, Block B, three checks).
+2. **Scan pass** → **GA-2 · Scan** → tap the viewfinder → **GA-3 · Verify — Exit** (photo, Aarav ••0238, Block B, three checks).
 3. **Yes, let out** → **GA-6 · Exit recorded** (lime; back by Sat 8 PM; 3 students out now) → **Scan next**.
 4. On Scan tap **Can't scan?** → **GA-4 · Pass code** (7F3K) → **Check code** → Verify — Exit.
 5. On Verify tap **Doesn't match** → **GA-9 · Report a problem** → a choice → **Sent to the duty warden** → Done → home.
