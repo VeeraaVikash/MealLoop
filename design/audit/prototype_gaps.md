@@ -1033,3 +1033,19 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 397 | 07 / 04 tab bars | 07 tab bars now link on every screen; 04 (design source) has no tab links on any frame, as before. | Info | Logged |
 
 **Status updates:** 369 (masking style) — resolved to "••0238" on 04, 07, 13, 14, 15 (P12). 371 — see 385.
+
+## Run POLISH (2026-10-16)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 398 | 04 / 07 Crowd · Main Mess (8 states) | Crowd values (wait, busiest slot, best time, bar shapes) are sample values from P03 and the Home rows, not entry-scan data. | Medium | Open (NEEDS REVIEW) |
+| 399 | Crowd · Snacks | No snacks serving time or entry scans in the file; the page uses a draft window 4:30–5:30 PM (extends 382). | Low | Open (OWNER) |
+| 400 | Home · … · Swipe revealed (4 frames) | 4 lime kinds for 0.7 s (panel, Credits star, I'm in, crowd bar) against the 3-kind budget. | Low | Open (NEEDS REVIEW) |
+| 401 | Home · Lunch row · Swipe revealed | "Remind me in 1 hr" wraps to two lines in the row-height panel at 17 pt. | Low | Open (NEEDS REVIEW) |
+| 402 | Pass · Used / Pass · Not today | P04 layout drops the "Next at your mess" card (and its Meals / Crowd links); Not today shows "Opens Wednesday 12–2 PM" instead of a code. | Low | Open (NEEDS REVIEW) |
+| 403 | Ticket · Juice and Pass · Live 1 | Both show code 7A3F (sample day: Juice 7A3F; the pass kept the file's 7A3F / K2M9 / 4XQD rotation). | Low | Open (NEEDS CHECK) |
+| 404 | Non-scrolling frames on 04 / 07 / 13–15 (list in polish/spacing.md) | Dead band above 24 pt with no safe auto-fix (lists, data-length pages, several equal cards). | Medium | Open (NEEDS REVIEW) |
+| 405 | You rows, Credits "Something wrong", Warden and Gate student rows | Two-line rows 61–106 pt high, off the 52 / 56 row rhythm. | Low | Open (NEEDS REVIEW) |
+| 406 | 05 Student Dark | None of the POLISH changes are applied (page stays stale, extends 394). | Medium | Open (next run) |
+| 407 | Crowd status-bar time skip | Demo shortcut on a 54 pt status bar (as on Home and tickets); not a product control. | Info | Logged |
+

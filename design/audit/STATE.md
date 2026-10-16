@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-15, after run STUDENT-REDESIGN)
+# MealLoop · STATE (2026-10-16, after run POLISH)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and this run's report is `redesign/report.md`.
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and the latest reports are `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st290 (2026-10-15, end of STUDENT-REDESIGN P15; 17 pages). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st298 (2026-10-16, end of POLISH Q8; 17 pages). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 10):**
   - 07: Student · Sign in.
@@ -12,19 +12,25 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
 
+## Run POLISH (2026-10-16)
+
+- **Changed (04 and 07):** Credits with the original coupon cards (Q1); HighlightChip centred info circle (Q3); new Crowd page per P03 with Busy, Packed, Closed, Offline, Breakfast, Snacks, Dinner (Q2); Notifications cards with type circles per P01 (Q4); swipe to remind on the Home breakfast card and lunch row, 6 frames (Q5); ticket pages per P04 (Pass · Live 1–3, Reduce Motion, Used, Not today, Juice, Juice Used) (Q6); spacing audit on every student, Guardian, Warden and Gate frame (Q7, polish/spacing.md).
+- **Health after POLISH:** contrast 0 real failures; targets 0 under 44 pt; truncation 0; overflow 0; mono words 0; 04 / 07 parity 291 / 291; reach8 07 160 / 305, 0 dead ends; flow starts 10.
+- **Reports:** polish/report.md, polish/decisions.md (1–31), polish/spacing.md; exports export_polish/ (17 at 2×); tools q2crowd, q4notif, q5swipe, q6ticket, q7audit, q7fix.
+
 ## Frames
 
 | Page | Phone frames | Role |
 |---|---|---|
-| 04 Student Light | 285 | Student design source (rebuilt in STUDENT-REDESIGN; Orbit backdrop) |
+| 04 Student Light | 294 | Student design source (rebuilt in STUDENT-REDESIGN; Orbit backdrop) |
 | 05 Student Dark | 333 | **Stale**: every frame named " · stale" (not rebuilt; redesign/stale_05.md) |
-| 07 Prototype & QA | 296 | Student prototype and state gallery (no start other than Student · Sign in) |
+| 07 Prototype & QA | 305 | Student prototype and state gallery (no start other than Student · Sign in) |
 | 09 Mess Staff | 77 | Staff design and prototype (unchanged) |
 | 10 Admin | 187 | Admin; Menu (AD-5a, + Snacks) and Dishes rebuilt in this run |
 | 13 Guardian | 30 | Guardian mobile web (Orbit backdrop; dates Aug 2024) |
 | 14 Warden | 18 | Warden (Orbit backdrop) |
 | 15 Gate | 23 | Main Gate security (Orbit backdrop except Scan and results) |
-| 99 Archive | 455 | Replaced frames, links stripped |
+| 99 Archive | 471 | Replaced frames, links stripped |
 
 ## Health (STUDENT-REDESIGN P14, 2026-10-15)
 
@@ -52,7 +58,7 @@ Contrast 0 real failures (lowest 4.88:1); mono words 0; lime ≤ 3 kinds per fra
 
 ## Where things are
 
-- **Gaps:** `prototype_gaps.md`; the latest is 397.
+- **Gaps:** `prototype_gaps.md`; the latest is 407.
 - **Controls with no destination yet:** `still_absent.md`.
 - **Demo walks:** `DEMO.md`.
 - **iOS checklist:** `ios_checklist.md`.

@@ -5973,3 +5973,17 @@ The sections above are the contract as it was written, run by run, and are kept 
 **Reachability (reach8, P13):** 07 147 / 296 from Student · Sign in, 0 dead ends; 13 26 / 30; 14 15 / 18; 15 16 / 23; 10 107 / 187. Unreached: states shown by control and the legacy frames in gap 388.
 
 **Components added (page 03):** OrbitBackdrop, DietMark, OrbitMark, AppIcon, DishPictogram, ProblemGlyph, HighlightChip, DishTile, MealSegments4, TicketStrip, CrowdRow, HeroCard, AnswerRow, FaceButton, ProblemTile, SeveritySegmented, ProofCard, ProofChecks, EntryQRCard, IssueCard (redesign). Tokens `veg`, `non-veg`.
+
+## Run POLISH (2026-10-16) · Credits coupons, Crowd page, Notifications, swipe to remind, tickets, spacing audit
+
+**Flow starts: exactly 10** (unchanged). Automatic "Flow N" starts removed after every link edit.
+
+**Links added or changed (04 and 07):**
+- Credits (Q1): coupon cards Juice / Ice cream **Get** → Getting a ticket → Ticket · Juice; Biryani coupon locked ("80 more", no link); Back returns to the previous screen.
+- Crowd (Q2): Home crowd row on every Home variant → Crowd · Main Mess (lunch); Home · Breakfast open → Crowd · Breakfast; Home · Mess closed → Crowd · Closed; Home · Offline → Crowd · Offline; Back → Back. Status bar time skip (Q8) Closed 6:30 → Breakfast 8:10 → Main Mess 12:10 → Busy 12:35 → Packed 12:50 → Snacks 4:35 → Dinner 7:40.
+- Notifications (Q4): the four cards keep their old destinations (Guardian approved → You · Outings; Breakfast today? → Answer · Breakfast; Feedback seen → My feedback; Special pass → Pass · Available).
+- Swipe to remind (Q5): On drag (Smart animate) on the Home · Not answered hero card and on the Home lunch row → Swipe revealed → after 0.7 s → Reminder set; Undo → the normal frame; Reminder set status bar → Reminder fired; I'm in, Skip, Entry QR and Answer unchanged on the normal frames.
+- Tickets (Q6): Pass · Live 1 → 2 → 3 → Used timers, Back destinations and the Juice time skip restored after the rebuild; Pass · Used has no "Next at your mess" card (its Meals / Crowd links are gone).
+
+**Reachability (reach8, Q8):** 07 160 / 305 from Student · Sign in, 0 dead ends; Crowd (all 7 non-offline states), Notifications, the 6 swipe frames, Credits and Special pass Live / Used are reached from Home. 13 26 / 30, 14 15 / 18, 15 16 / 23 (unchanged). Unreached: states shown by control and the legacy frames in gaps 387–388.
+

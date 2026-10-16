@@ -47,3 +47,14 @@ This file did not exist before run OUTINGS (2026-10-13). The full master context
 **Tools.** design/audit/tools/ (srh, srarc, srhome, srmeals, srmealswire, srp5–srp9 and wires, srlight, oust, menu_tiers.py); stored in the file's shared plugin data under the same keys. The builders clone the archived "Help (before redesign)" frame 2174:33148 on page 99 — do not move or delete it.
 
 **Owner items.** Gaps 381–386 (yellow highlight meaning, snacks intent, ** gravies, final logo file, Tamil text, SF Symbols), 395 (admin nutrition inputs), plus the NEEDS REVIEW list in redesign/report.md.
+
+## Run POLISH (2026-10-16)
+
+**What changed.** Fixes on the student app (04, then 07; 05 stays stale) from design/reference/polish_2026-10/ (P01–P04): Credits shows the original coupon cards again under the points hero; HighlightChip has a fixed 18 pt info circle; the Home crowd row opens a new **Crowd · Main Mess** page (black card, 15-minute chart, two tiles; states Quiet, Busy, Packed, Closed, Offline, plus Breakfast, Snacks, Dinner); Notifications cards use 36 pt type circles and no app logo (lock-screen mockups keep it); a right swipe on the Home "Not answered" card and the lunch row sets a 1-hour reminder (revealed → reminder set → reminder fired); every ticket page shares the P04 ticket layout; a spacing audit snapped gaps to 8/12/16/24, card padding to 12/16/20, single-line rows to 56 and equalised two-column pairs.
+
+**Rules added.** Crowd: the current slot is the bar containing the clock time; the bottom fade shows only when the content scrolls. Dead space: grow the main element by at most 100 pt; never grow a list card (that is filler). Swipe: On drag needs Smart animate; the revealed frame auto-advances after 0.7 s.
+
+**Tools.** design/audit/tools/q2crowd.js, q4notif.js, q5swipe.js, q6ticket.js, q7audit.js, q7fix.js (also stored in shared plugin data under the same keys).
+
+**Owner items.** Gaps 398–407 (crowd sample data, snacks window, lime budget on the revealed frames, ticket layout trade-offs, NEEDS REVIEW dead bands and two-line rows, 05 Dark) and NEEDS REVIEW in polish/report.md.
+
