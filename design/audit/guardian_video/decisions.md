@@ -36,3 +36,9 @@
 | 32 | V5 | Old guardian titles (28) now use ML/Large Title 34, the size of every other page title on Guardian, Warden and Gate. | V5 (5). |
 | 33 | V5 | Pass codes (4QZ8, 7F3K) and the "Fri 7:42 PM" lines are set in sans: the checker treats letters and day names as words. | Mono only for numbers, times and units. |
 | 34 | V5 | W-6 Alerts, the gate rail rows (79 pt) and the scrolling gate pages are left as they are and listed under NEEDS REVIEW in spacing.md. | Max 2 fix attempts; not safe to auto-fix. |
+| 35 | V5 fix | Sheet panels on Guardian and Warden are grown to fit their content: height = max(852 − y + 40, content bottom − y + 40), so no sheet ends above its last button. | No overflow; sheets reach the bottom edge. |
+| 36 | V5 fix | The Please watch transcript (Meera's card and its Escalated Watch target) reads "“I accept Meera's outing …”"; it named Aarav. | One sample per card. |
+| 37 | V5 fix | Sign in and Activate show the spec number "+91 98••• ••214" (they showed "+91 ••••• •••10"); the sign-in step list says "Accept with a short video, or reject." | Spec; no slide wording left. |
+| 38 | V6 | Exports: 2× clones 8000 pt above each frame, captured at 786 × 1704 and removed afterwards; named like the reference images (G00_…, W01_…, S01_…), with `V5_` for older Guardian and Gate frames changed only by V5. 86 files. Page 04 copies of S01 are not exported (same design without links). | V6: named like the reference images. |
+| 39 | V6 | The seven GA-6 gate results stay reachable by control only (reach 16 / 23), as in OUTINGS-FIX; no new links were added on page 15 to inflate reach. | Flow starts unchanged; no extra wiring outside the brief. |
+| 40 | V6 | DEMO.md keeps the old guardian and warden walks, retitled "before GUARDIAN-VIDEO", under the new walks; their frames are on page 99. The cross-role loop steps 2 and 3 now use the video approval and the new queue. | Never delete. |

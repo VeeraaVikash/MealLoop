@@ -1086,3 +1086,30 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 433 | 12 Safety case · Open / Closed | After R5 the safety chain is Open → Closed; the in-between steps are on page 99 (decision 25). | Low | Open (NEEDS REVIEW) |
 | 434 | 12 toasts (PDF saved, CSV saved, Deleted, Dish added, Saved, Dinner change sent) | Toasts sit over the bottom buttons for 2 s, as iOS toasts do. | Info | Logged |
 | 435 | 12 reach | 84 / 84 frames are reached from the four starts, with 0 dead ends. This replaces gap 421. | Info | Logged (closes 421) |
+
+## Run GUARDIAN-VIDEO (2026-10-16)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 436 | 13 GV-00 Before you record; 14 WV-3 Record · Video expired | **Retention days.** The video is kept for 30 days (draft), then deleted; the transcript and checks are kept with the record. Undecided: the number of days, and how long the transcript is kept. | High | Open (OWNER) |
+| 437 | 13 language pill and GV-01 · Language (sheet) | **Languages and translations.** The pill shows தமிழ் and the sheet lists English, தமிழ், हिन्दी. Only English pages are drawn. Undecided: which languages ship, who translates and reviews the phrase, consent text and SMS. | Medium | Open (OWNER) |
+| 438 | 13 GV-02 Checking, GV-03 Retry, GV-04 Send video; 14 Queue · Please watch | **Speech-to-text accuracy for Indian languages.** The phrase check depends on it. A failed check never blocks: after 3 tries the video goes to the warden as "Please watch". Undecided: the provider, the accuracy needed for Tamil and Hindi, and whether a check runs at all for some languages. | High | Open (OWNER) |
+| 439 | 13 G-0 Sign in / Verify code; EvidenceCard "Number" check | **Guardian number verification source.** The number is the one SRM has on record (+91 98••• ••214). Undecided: which SRM system is the source, who updates it, and what happens when it is wrong. | High | Open (OWNER) |
+| 440 | 13 GV-02 Camera blocked → Sent · Call requested; 14 Escalated Call, Queue · Confirmed by call | **Is the call path allowed?** It is the only way to approve without a video, and the warden records the answer. Undecided: whether SRM allows it, and whether the call must be recorded. | High | Open (OWNER) |
+| 441 | 13 GV-00 Before you record | **Consent wording approval by SRM.** The consent text (what is recorded, who sees it, 30-day draft) is a draft and needs SRM's approval, and translations if 437 is yes. | High | Open (OWNER) |
+| 442 | 14 WV-1 Queue (all four) | W01 draws "Today 8 PM"; the card says "Decide by Sat 12 PM" from the spec and the weekend rule (decision 18). | Low | Open (NEEDS REVIEW) |
+| 443 | 03 EvidenceCard, VideoRecorder; 13 GV-05 | Drawn lime checks are ink outlines; "REC", "Code" and the typed phrase are sans, only digits are mono (decisions 1–3, 11). | Low | Open (NEEDS REVIEW) |
+| 444 | 03 OutNowRow, HistoryRow, WardenTabBar4 | Rows are 56 pt (drawn about 74); warden tabs are text-only at 15 pt (decisions 4, 5). | Low | Open (NEEDS REVIEW) |
+| 445 | 03 VideoRecorder; 14 Queue card | Camera 342 pt (G02 draws about 404) and queue thumbnail 104 pt (W01 about 120) so nothing overlaps the home indicator or tab bar (decisions 17, 20). | Low | Open (NEEDS REVIEW) |
+| 446 | 14 W-6 Alerts | A 285 pt empty band above the safe area; the page has nothing to grow (spacing.md). | Low | Open (NEEDS REVIEW) |
+| 447 | 15 GA-1 Gate home, GA-8 Overdue returns | Rail rows are 79 pt (not 52 or 56) and the pages scroll; left as they are (spacing.md). | Low | Open (NEEDS REVIEW) |
+| 448 | 99 W-4 Reassign / Emergency override (archived) | The four-tab warden app has no place for Reassign and Emergency override; they are archived (decision 24). The gate's Emergency exit recorded still says "Authorised by the duty warden". | Medium | Open (NEEDS REVIEW) |
+| 449 | 04 / 07 Outing · Guardian said no | LoopTracker has no "guardian said no" state; the Rejected state marks the Warden node with the cross (decision 27). | Low | Open (NEEDS REVIEW) |
+| 450 | 04 / 07 Notifications (Wed 7:00 AM) | The older card "Guardian approved · 6:52 AM" does not match the Fri 7:42 PM video approval (decision 28). | Low | Open (NEEDS REVIEW) |
+| 451 | 14 WV-1 Queue · Photo and text, Change asked, Rejected | Arjun ••0356 is a new sample name, not in the data file (decision 19). | Low | Open (NEEDS REVIEW) |
+| 452 | 14 WV-1 Approved | The text names Aarav whichever card was approved (decision 21). | Low | Open (NEEDS REVIEW) |
+| 453 | 14 WV-2 Out now | Only Kiran's row opens the student page; "See all 12" is display only (decision 22). | Low | Open (NEEDS REVIEW) |
+| 454 | 13 G-3 · Status · Not going | Kept from the old set: "You approved" with the warden's no. The new Reject path ends on Sent · Rejected instead; Not going is reached only by the Change asked time skip. | Low | Open (NEEDS REVIEW) |
+| 455 | 13 / 14 / 07 status-bar time skips | Demo shortcuts for server outcomes: Choose → Deadline passed, Before you record → Camera blocked, Ready → Too dark, Try 1 → Too short, Uploading → Upload failed, Checking → Retry, Sent → Pass ready; Queue → Offline, Approved → Empty; 07 tracker variants. | Info | Logged |
+| 456 | 15 GA-6 results | 7 results (Already exited, Not valid, Pass withdrawn, Too early, Too late, Offline, Emergency exit recorded) are shown by control; reach 16 / 23, 0 dead ends. | Info | Logged |
+| 457 | 05 Student Dark | None of the GUARDIAN-VIDEO student changes (S01) are applied; page 05 stays stale (extends 406). | Medium | Open (next run) |

@@ -6058,3 +6058,35 @@ The sections above are the contract as it was written, run by run, and are kept 
 - Spare food → Accepted; History → AD-7d Audit log.
 
 **Reachability (R5 and R6):** 84 / 84 frames on page 12 from the four starts; 0 dead ends; 0 dangling links. This replaces the 78 / 99 of ADMIN-REDESIGN (gap 421).
+
+## Run GUARDIAN-VIDEO (2026-10-16) · guardian video approval, warden app, student tracker
+
+**Flow starts: 14** (unchanged). Guardian · Sign in (13), Warden · Sign in (14) and Gate · Sign in (15) stay the starts of their pages.
+
+**Guardian (page 13):**
+
+- G-0 · Sign in → Send code → G-0 · Verify code → Verify → **GV-01 · Choose**. Activate → G-A1 → G-A2 → G-A3 → Open the request → GV-01 · Choose.
+- Choose: **Accept** → GV-00 · Before you record (first use) → Continue → GV-02 · Record · Ready. **Reject** → GV-08 · Reject (sheet) → Reject outing → GV-06 · Sent · Rejected; Go back and Close → Choose. Ask to change → sheet → Send to Aarav → G-3 · Status · Change asked. More about this outing → About this outing (sheet) → Close. Past answers → GV-07.
+- Record: Ready → record button → Try 1 · 0:07 → record button → Uploading → (1.5 s) Checking → (1.5 s) **GV-06 · Sent** (match).
+- No match (Checking status bar) → GV-03 · Retry · try 2 of 3 → Record again → Record · Try 2 → GV-03 · Retry · try 3 of 3 → Record · Try 3 → **GV-04 · Send video to the warden** → GV-06 · Sent · Please watch.
+- Upload failed (Uploading status bar) → Try again · 1 left → Uploading; Take a photo instead → **GV-05 · Photo and code** → GV-06 · Sent · Photo and text.
+- Camera blocked (Before you record status bar) → Open Settings → Record · Ready; Ask the warden to call me → GV-06 · Sent · Call requested (goes to the warden's Escalated as No camera).
+- Too dark (Ready status bar) and Too short (Try 1 status bar) → record button → Ready. Close on every record frame → Choose.
+- Sent (video, Please watch, Photo and text): Withdraw approval → sheet → Withdraw approval → GV-06 · Withdrawn; Keep it / Close → Sent. Sent status bar → G-3 · Status · Pass ready → Out → Back (time skips; Back late from the right half on Out).
+- Choose status bar → GV-01 · Deadline passed. Past answers: first row → GV-01 · Already answered; Messages → G-5; Help → G-6; Back.
+- The language pill (தமிழ்) on every guardian page opens GV-01 · Language (sheet); its three rows and Close → Choose.
+
+**Warden (page 14):**
+
+- W-0 · Sign in → Verifying → (timer) Confirm profile → **WV-1 · Queue · Live video**.
+- Tab bar (Queue, Out now, Escalated, History) on every tab page and sheet; the WB avatar → WV-5 · Me (Back; Alerts → W-6 · Alerts; Sign out → W-0 · Sign in).
+- Queue card: Approve → WV-1 · Approved (Next: Meera → Please watch; Undo → Live video; status bar → Empty); Ask → Ask (sheet) → Send → Change asked (Next: Arjun → Photo and text); No → No (sheet) → Reject outing → Rejected (Next: Arjun). Sheets' Close and Cancel → Live video. The video → Video loading → (1.5 s) Live video. Past answers → History. Queue status bar → Offline and back.
+- Out now: Kiran's row → WV-2 · Out now · Kiran (Back).
+- Escalated: Watch (Meera) → Queue · Please watch; Call (Kiran) → Call Kiran's guardian (sheet) → Record the answer → Queue · Confirmed by call; Call (Dev) → Call Dev's guardian (sheet) → Close the request → Escalated.
+- History: Aarav → WV-3 · Record · Aarav (Back); All → History · All → Aarav Sat 13 Jul → Record · Video expired (Back); This week → History.
+
+**Student (page 07):** Outing · Waiting for guardian status bar → Notifications · Guardian answered → card → Outing · Under warden review ("Guardian approved by video · Fri 7:42 PM") → status bar → · Photo and text → status bar → · By call → status bar → Outing · Guardian said no → Ask again → Waiting for guardian.
+
+**Archive retargets (guardian_video/archive_index.md):** 16 guardian and 14 warden frames went to page 99 with links stripped. Links that pointed at them now go to the kept frame named in the index's last column, for example: Request · Ready, Dragging, Overnight, Weekday, Offline → GV-01 · Choose; Request · Approved and Status · Waiting for the warden → GV-06 · Sent; Status · Declined → Sent · Rejected; G-4 History → GV-07 · Past answers; W-1 Queue, W-2 Review request, W-3 All requests → WV-1 · Queue · Live video; W-4 Escalated, Reassign, Emergency override, Review window closed → WV-4 · Escalated; W-4 Decision recorded → WV-1 · Approved; W-5 Me → WV-5 · Me. W-0 Confirm profile now opens WV-1 · Queue · Live video.
+
+**Reachability (V6):** page 13 43 / 44 (G-M Messages is a reference, not an app screen); page 14 26 / 26; page 15 16 / 23 (the 7 GA-6 results are shown by control, as before); 07: every new frame reached. 0 dead ends and 0 dangling links on 13, 14 and 15.

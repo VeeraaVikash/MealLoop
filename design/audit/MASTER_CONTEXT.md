@@ -124,3 +124,28 @@ Plus NEEDS REVIEW in admin_redesign/report.md.
 - 424: whether menu edits need an approval step.
 
 Plus NEEDS REVIEW in fix2/report.md.
+
+## Run GUARDIAN-VIDEO (2026-10-16)
+
+**What changed.** Built from design/reference/guardian_2026-10/ (G00–G08, W01–W04, S01, data/guardian_video_spec.md, prompt COWORK_PROMPT_GUARDIAN_VIDEO.md). Pages 10 and 11 were not edited; page 05 stays stale.
+
+- **Guardian approval is a 10-second live video.** The guardian says a short phrase with a code that is new on every try; the check looks at the phrase, the code and the number. After 3 tries the video goes to the warden as "Please watch"; if the upload fails, a face photo and the typed phrase are sent instead; with no camera, the warden calls ("Confirmed by call"). The face is always captured: there is no text-only approval. Copy says "Live video only" and "checked", never "cannot be manipulated".
+- **Warden app (page 14)** has four tabs: Queue (one card at a time, closest deadline first, EvidenceCard and MethodTag), Out now, Escalated (Call and Watch) and History (record with video until it expires, then "Video deleted after 30 days. Transcript kept."). The warden sees only their block.
+- **Student** sees "Guardian approved by video · <time>" (or by photo and text, by call, or "Your guardian said no" with Ask again) and a "Guardian answered" notification; never the video.
+- **Spacing** tightened on Guardian, Warden and Gate (guardian_video/spacing.md).
+- **Language:** only the pill word தமிழ் and the three names on the language sheet are not English.
+
+**Hard rules kept.** At most 3 lime elements (checks are ink outlines); mono only for numbers, times and units; guardian and gate primary buttons at least 56 pt; targets 44 pt; text at least 12 pt; orbit backdrop on every Guardian and Warden frame except the dark recording screen and full-lime gate results; never delete (30 frames archived on 99); flow starts 14.
+
+**Tools.** design/audit/tools/gvh.js, gvarch.js, gvreach.js, gvspace.js, gvfix.js, gvchk.md, gvexp.js (also in shared plugin data under the same keys).
+
+**Owner items.**
+
+- 436: retention days (30-day draft).
+- 437: languages and translations.
+- 438: speech-to-text accuracy for Indian languages.
+- 439: guardian number verification source.
+- 440: whether the call path is allowed.
+- 441: consent wording approval by SRM.
+
+Plus NEEDS REVIEW in guardian_video/report.md.

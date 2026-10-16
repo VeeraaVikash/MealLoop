@@ -111,7 +111,42 @@ Three new flow starts, each on its own page; the owner makes one prototype link 
 
 Only Saturday's **Send** is wired (Sending, Sent and the tracker are the Saturday sample); on the other days the button is a preview. States shown by control (present the frame): Outings · Empty / Not enabled; New outing · Offline / No guardian / Duplicate (their week strips show Fri as today and Mon–Thu dashed as past); Outing · Escalated / Changes requested (Rejected and Expired open from the history rows); Outing pass · Overdue / Revoked / Expired unused. The same frames are on 04 (Light) and 05 (Dark) without links, except You → Outings.
 
-### Guardian · Sign in (page 13) · 14 steps (rebuilt OUTINGS-FIX, 2026-10-13)
+### Guardian · Sign in (page 13) · video approval · 15 steps (GUARDIAN-VIDEO, 2026-10-16)
+
+1. **G-0 · Sign in** ("We use the number SRM has on record.") → **Send code** → **G-0 · Verify code** (+91 98••• ••214) → **Verify** → **GV-01 · Choose** ("Aarav wants to go out", Express Avenue Mall, Sat 2–8 PM, reply by Fri 11 PM).
+2. **More about this outing** → sheet → Close. Tap **தமிழ்** → **Language** sheet (English, தமிழ், हिन्दी) → a row returns to Choose.
+3. **Accept** → **GV-00 · Before you record** (first use: what is recorded, who sees it, 30-day draft) → **Continue**.
+4. **GV-02 · Record · Ready** (dark; front camera, the phrase "I accept Aarav's outing" and the code 4 7 2) → record button → **Record · Try 1 · 0:07** (REC, Live video only, countdown ring) → record button.
+5. **Uploading** → (1.5 s) **Checking** → (1.5 s) **GV-06 · Sent** ("Sent to the warden", Phrase, Code and Number checked).
+6. Sent → **Withdraw approval** → sheet → **Keep it** (or Withdraw approval → **Withdrawn**).
+7. Sent → status bar (time skip to Sat 10:40 AM) → **G-3 · Status · Pass ready** → status bar → **Out** → status bar → **Back** (right half on Out → Back late).
+8. **No match path:** on Checking tap the status bar → **GV-03 · Retry · try 2 of 3** → Record again → **Record · Try 2** (code 8 1 5) → **Retry · try 3 of 3** → **Record · Try 3** (code 3 0 6) → **GV-04 · Send video to the warden** → **Sent · Please watch**.
+9. **Upload failed path:** on Uploading tap the status bar → **Upload failed** → **Take a photo instead** → **GV-05 · Photo and code** (face photo and the typed phrase) → **Sent · Photo and text**. (Try again · 1 left → Uploading.)
+10. **No camera:** on Before you record tap the status bar → **Camera blocked** → **Ask the warden to call me** → **Sent · Call requested** (Open Settings → Record · Ready).
+11. Record · Ready status bar → **Too dark** ("Find more light"); Try 1 status bar → **Too short** (under 4 s); the record button returns to Ready.
+12. **Reject:** on Choose → **Reject** → **GV-08 · Reject (sheet)** (Exam soon, Not safe, Other, optional) → **Reject outing** → **Sent · Rejected** ("You said no. Aarav is told.").
+13. **Ask to change** on Choose → sheet → Send to Aarav → **G-3 · Status · Change asked**.
+14. Choose status bar → **Deadline passed** ("This request has expired"). **Past answers** (from Choose or Sent) → first row → **Already answered**; Messages, Help and Back.
+15. Activation path: Sign in → **First time here? Activate** → Activate account → Confirm link → Done → **Open the request** → Choose.
+
+There is no way to approve without a face (video or photo) or the warden's call. **Messages (reference, not an app screen)** shows the SMS; its bubble opens Choose.
+
+### Warden · Sign in (page 14) · queue · 12 steps (GUARDIAN-VIDEO, 2026-10-16)
+
+1. **W-0 · Sign in** → Sign in with SRM → Verifying (moves on) → Confirm profile → **WV-1 · Queue · Live video** (Block B · 1 of 14; Aarav; decide by Sat 12 PM; tab bar Queue, Out now, Escalated, History).
+2. The card: the guardian's 10-second video (Live 0:09), transcript, checks Phrase, Code, Number. Tap the video → **Video loading** → (1.5 s) back.
+3. **Approve** → **WV-1 · Approved** (Undo for 10 seconds) → **Next: Meera** → **Queue · Please watch** (no checks; the warden watches the video).
+4. **Ask** → **Ask (sheet)** (what to change) → Send → **Change asked** → **Next: Arjun** → **Queue · Photo and text** (face photo and typed phrase).
+5. **No** → **No (sheet)** (reason) → Reject outing → **Rejected** (or Cancel).
+6. **Escalated** tab → **WV-4 · Escalated**: **Watch** (Meera) → Please watch card; **Call** (Kiran, No camera) → **Call Kiran's guardian (sheet)** → **Record the answer** → **Queue · Confirmed by call** (the warden's note); **Call** (Dev, past deadline) → sheet → **Close the request**.
+7. **Out now** tab → **WV-2 · Out now** (Late black chip, Due outlined) → Kiran → **Out now · Kiran** (pass 4QZ8, gate times, Call) → Back.
+8. **History** tab → **WV-3 · History** → Aarav → **Record · Aarav** (decision and evidence; video until Mon 16 Sep) → Back.
+9. History → **All** → Aarav Sat 13 Jul → **Record · Video expired** ("Video deleted after 30 days. Transcript kept.") → Back.
+10. WB avatar → **WV-5 · Me** → **Alerts** → W-6 · Alerts → Back; **Sign out** → Sign in.
+11. Queue status bar → **Offline** (and back); Approved status bar → **Empty** ("Nothing to decide").
+12. The warden sees only Block B.
+
+### Guardian · Sign in (page 13) · before GUARDIAN-VIDEO (OUTINGS-FIX, 2026-10-13; slide-to-approve frames archived on page 99, kept for history)
 
 1. **G-0 · Sign in** ("We use the number SRM has on record.") → **Send code**.
 2. **G-0 · Verify code** (6 digits) → **Verify** → **G-2 · Request · Ready** (the opened SMS link; demo shortcut).
@@ -130,7 +165,7 @@ Only Saturday's **Send** is wired (Sending, Sent and the tracker are the Saturda
 
 States by control (present the frame): Request · Overnight (Sat 2 PM → Sun 8 PM, "+1 day"), Request · Weekday (Wed 6 → 9 PM, "Reply by Wed 11 AM"), Request · Offline, Request · Expired (time skip on Ready); Status · Declined and Change asked (after the sheets). **Messages (reference, not an app screen)** shows the four SMS from SRM Hostels; it has no links.
 
-### Warden · Sign in (page 14) · 12 steps
+### Warden · Sign in (page 14) · before GUARDIAN-VIDEO (W-1 … W-5 archived on page 99, kept for history)
 
 1. **W-0 · Sign in** → **Sign in with SRM** → **Verifying** (moves on) → **Confirm profile** (Block B warden) → **Yep, that's me**.
 2. **W-1 · Queue — Decide next** (Block B · 1 of 14; top card Student ·5841, decide by Fri 8 PM, 2 h).
@@ -162,8 +197,8 @@ States by control (present the frame): Request · Overnight (Sat 2 PM → Sun 8 
 ### The cross-role loop (present in this order; each role on its own page)
 
 1. **Student sends** — 07 New outing → Sent (Fri 6:00 PM, reply by Fri 11 PM).
-2. **Guardian approves** — 13 Sign in → Verify → Request → Slide to approve → Status · Waiting for the warden (Fri 7:42 PM); later the guardian's Status page follows the outing by time skip (Pass ready → Out → Back).
-3. **Warden approves** — 14 Queue: Aarav is the third card (decide by Sat 12 PM); open it from All requests → Review request → Approve (Sat 10:40 AM).
+2. **Guardian approves** — 13 Sign in → Verify → Choose → Accept → Before you record → Record → Sent (Fri 7:42 PM, video checked); 07 Notifications · Guardian answered → Outing · Under warden review ("Guardian approved by video · Fri 7:42 PM"); later the guardian's Status page follows the outing by time skip (Pass ready → Out → Back).
+3. **Warden approves** — 14 Queue · Live video: Aarav's card with the video and checks (decide by Sat 12 PM) → Approve (Sat 10:40 AM).
 4. **Pass issued** — 07 Outing · Approved → Open pass → Outing pass · Valid (7F3K).
 5. **Gate exit** — 15 Scan → Verify — Exit → Exit recorded (Sat 2:04 PM).
 6. **Gate return** — 15 Out now → Verify — Return → Return recorded (7:41 PM); 07 Outing pass · Returned.
