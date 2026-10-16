@@ -1,0 +1,10 @@
+# Run POLISH · decisions and conflicts log
+
+| # | Stage | Decision | Rule followed |
+|---|---|---|---|
+| 1 | Q0 | The reference pack `design/reference/polish_2026-10/` (P01–P04) is not in the repo (any branch) or the session uploads. Q2 Crowd (P03), Q4 Notifications (P01), Q5 Swipe to remind (P02) and Q6 Special pass (P04) are built "exactly as" those images, so they are blocked; Q7–Q9 audit and document their results. Q1 and Q3 do not use the pack and were done. | STOP rule: missing pack. |
+| 2 | Q1 | The original coupon cards are the "Ticket · Juice / Ice cream / Biryani coupon" frames of the archived pre-redesign frames on 99 (CouponCard Live / Awaiting + a Get button + a mono points stub). Each state takes the card from its own archived state: Credits ← "Rewards (before redesign)", Getting a ticket ← "Offer · Sending" (label kept as "Getting…"), Failed ← "Offer · Failed" ("Try again"), Offline ← "Rewards · Offline" (outlined Get pills). | Original look, one state per state. |
+| 3 | Q1 | The black points hero, title, "Tickets" heading and History / balance rows of the redesign are kept; only the three ticket cards were swapped. The redesign cards were removed from those frames; each frame was copied to 99 first (links stripped). | Never delete (frame copies on 99). |
+| 4 | Q1 | Get links moved from the redesign buttons onto the original Get buttons (Juice and Ice cream → Credits · Getting a ticket; Failed Try again → Getting a ticket). Getting a ticket → (auto) Ticket · Juice and the Back buttons are unchanged. | Re-wire Get, ticket open and Back. |
+| 5 | Q1 | Wide labels ("Getting…", "Try again") overlapped the card subtitle; every button is right-aligned at x 240 (the original's position) and the wide ones use 14 pt side padding. | No overlap. |
+| 6 | Q1 | "Rewards · Balance issue" (sheet) showed an even older Credits layout ("BALANCE · OFFERS · Get it") behind the scrim; the background is now the current Credits content and header (links stripped; the sheet's Close → Back and Send → Credits kept). | "Wherever the Credits tickets appear". |

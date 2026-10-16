@@ -165,3 +165,10 @@
 | P14 Checks | done | st289: 04 −20 ~54 L−2, 07 ~54 L+31 L−18, 15 ~2, 99 +20; starts 10 | Contrast 0 real failures (lowest 4.88), mono words 0, lime ≤ 3 kinds, backdrop on all app frames (exceptions listed), targets 0 small, truncation 0, overflow 0, detached 0, raw paints only on Gallery, 04 / 07 parity 282 / 282, banned words 0, key facts consistent. Report: redesign/checks.md. Decisions 70–74. |
 | P15 Exports and docs | done | st290 = st289 (the P15 edits are size / visibility only, which the snapshot does not compare; the stage-start snapshot was skipped by mistake and is logged here); starts 10 | 34 PNGs at 2× in export_redesign/ (reference names). Fixed while rendering: check circles (11 + 2), scroll fade over SOS actions (8 frames per page), Recheck Home waste tile (6 frames). prototype_contract, prototype_gaps (381–397), STATE.md, MASTER_CONTEXT.md updated. |
 | P16 Report | done | st290 (no Figma changes); starts 10 | redesign/report.md: stages, decisions, conflicts, gaps 381–397, components, archive counts, NEEDS CHECK menu items, stale 05, NEEDS REVIEW by frame. |
+
+## Run POLISH (2026-10-16)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| Q0 Preflight | partly | st291 start = st290 | Reference pack design/reference/polish_2026-10 (P01–P04) missing from the repo and uploads: Q2, Q4, Q5, Q6 blocked (and Q7–Q9 after them). polish/decisions.md 1. |
+| Q1 Credits coupons | done | st291: 04 ~5 L+4 L−4, 07 ~5 L+4 L−5 (old Back behind the Balance issue scrim), 99 +10 (before-Q1 copies); starts 10 | Original CouponCard ticket cards (Juice, Ice cream, Biryani coupon locked "80 more") back on Credits, Getting a ticket, Failed, Offline (04, 07); points hero kept; Get links moved; Balance issue background = current Credits. Mono 0, targets 0 small on 07. Decisions 2–6. |
