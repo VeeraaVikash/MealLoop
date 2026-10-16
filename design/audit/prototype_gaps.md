@@ -1067,3 +1067,22 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 419 | 12 status-bar time skips | Demo shortcuts on the 54 pt status bar: Today → Safety case, North sent → replied, Headcount Sent → Vendor replied, Live Serving → Rice low → Rice ran out. | Info | Logged |
 | 420 | 10 Admin and 12 Admin Redesign | Both admins have flow starts: 5 on page 10 and 4 on page 12. Which one is the product admin, and when should page 10 be archived? | Medium | Open (OWNER) |
 | 421 | 12 reach | 78 / 99 frames are reached from the four starts. The other 21 are states shown by control (Loading, Offline, Empty, Failed and the like); none of them is a dead end. | Info | Logged |
+
+## Run FIX-2 (2026-10-16)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 422 | 12 Weekly report · Report ready, Report PDF · Page 1 / 2 | **PDF branding and sharing route.** The PDF uses the MealLoop wordmark and "All data is sample". Undecided: the college's own logo or letterhead, and where Share goes (mail, WhatsApp, the college drive). Share only closes the sheet for now. | Medium | Open (OWNER) |
+| 423 | 12 Tell the vendor (sheet) · Weekly summary | **Who receives the vendor summary.** The sheet uses the one vendor contact. Undecided: the vendor owner, the site manager, or both; and whether the food committee gets a copy. | Medium | Open (OWNER) |
+| 424 | 12 Edit day (all states), Change today's dinner | **Do menu edits need an approval step?** Saving and Send take effect at once. Undecided: whether a second person (food head or warden) approves edits before students see them. | Medium | Open (OWNER) |
+| 425 | 12 Meal report · Tue dinner, Weekly report · Last week / Month, Edit day · Copied last Thursday | Sample data not in the data file: Tue dinner numbers (640 sent, 691 came, 11 kg), Last week and Month totals, and "Thu 8 Aug" (the board's own Thursday is copied) (decisions 6, 12, 19). | Medium | Open (NEEDS REVIEW) |
+| 426 | 12 To check, Meal report · Tue dinner, Report PDF · Page 1 | F01 / F03 say the Tue dinner rice ran out "about 1:34 PM". Set to **8:34 PM** so it falls in dinner (decision 8). | Low | Open (NEEDS REVIEW) |
+| 427 | 12 Headcount, Live meal · Rice low, Safety case → Tell the vendor (sheet) · Meal report | After R5 the archived Headcount, Rice low and Safety case vendor sheets point to the Meal report sheet, whose prepared message is about Wed lunch leftovers (decision 25). | Low | Open (NEEDS REVIEW) |
+| 428 | 12 Change today's dinner (sheet) | The message preview always reads "Dinner changed: Chicken Biryani added (limited)." It is not redrawn after a swap or a removal (decision 21). | Low | Open (NEEDS REVIEW) |
+| 429 | 12 Weekly menu · Published | Only Thu 15 opens Edit day; the other day rows are not linked (decision 20). | Low | Open (NEEDS REVIEW) |
+| 430 | 12 Weekly report · Report ready (sheet) | Share does not draw the iOS share sheet; it closes the sheet (decision 13). | Info | Logged |
+| 431 | 12 Edit day · Thu 15 Snacks | The board has 3 snack items, so the Add a dish suggestions on Snacks are the same earlier-week chips as Lunch. | Low | Open (NEEDS REVIEW) |
+| 432 | 12 Weekly report (3 periods) | No tab bar, as F02 draws it; it is a drill-in and the buttons sit where the tab bar would be (decision 10). | Low | Open (NEEDS REVIEW) |
+| 433 | 12 Safety case · Open / Closed | After R5 the safety chain is Open → Closed; the in-between steps are on page 99 (decision 25). | Low | Open (NEEDS REVIEW) |
+| 434 | 12 toasts (PDF saved, CSV saved, Deleted, Dish added, Saved, Dinner change sent) | Toasts sit over the bottom buttons for 2 s, as iOS toasts do. | Info | Logged |
+| 435 | 12 reach | 84 / 84 frames are reached from the four starts, with 0 dead ends. This replaces gap 421. | Info | Logged (closes 421) |

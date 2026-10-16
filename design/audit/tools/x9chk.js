@@ -4,7 +4,7 @@
 // unbound solid paints, banned content (kcal, nutrition, cook instructions, "or" between dishes).
 // Known miss (X10): the mono-word filter strips units first, so a mono "of 3,500" passed; fixed by hand in StatBars (decision 36).
 figma.skipInvisibleInstanceChildren = true;
-const pg = await figma.getNodeByIdAsync('2237:2'); const frames = pg.children.filter(n => n.type === 'FRAME' && Math.abs(n.width - 393) < 1).slice(args.from, args.to);
+const pg = await figma.getNodeByIdAsync('2237:2'); const frames = pg.findAll(n => n.type === 'FRAME' && Math.abs(n.width - 393) < 1 && n.parent && (n.parent.type === 'PAGE' || n.parent.type === 'SECTION') && !/^Moment/.test(n.name)).slice(args.from, args.to); // FIX-2: page 12 frames now sit in sections
 const V = {}; for (const c of await figma.variables.getLocalVariableCollectionsAsync()) if (/^ML /.test(c.name)) for (const id of c.variableIds) { const v = await figma.variables.getVariableByIdAsync(id); V[v.id] = v; }
 const col = p => { if (!p || p.type !== 'SOLID' || p.visible === false) return null; const b = p.boundVariables && p.boundVariables.color; if (b) { const v = V[b.id]; if (v) { const val = v.valuesByMode[Object.keys(v.valuesByMode)[0]]; if (val && val.r !== undefined) return { c: val, name: v.name, a: (val.a === undefined ? 1 : val.a) * (p.opacity === undefined ? 1 : p.opacity) }; } } return { c: p.color, name: null, a: p.opacity === undefined ? 1 : p.opacity }; };
 const lum = c => { const f = x => x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };

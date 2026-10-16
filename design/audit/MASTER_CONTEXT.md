@@ -100,3 +100,27 @@ The admin has four tabs:
 - 420: page 10 or page 12 as the product admin.
 
 Plus NEEDS REVIEW in admin_redesign/report.md.
+
+## Run FIX-2 (2026-10-16)
+
+**What changed.** Built from design/reference/fix2_2026-10/ (F01–F05, prompt COWORK_PROMPT_FIX2.md). Pages 10 and 11 were not edited; page 05 stays stale.
+
+- **Student start:** the prototype now starts with an unanswered breakfast (Home · Not answered); Skip opens Home · Skipped; the answered Home is Home · You're in.
+- **Results · To check (F01):** quiet rows "Review these meals" and "Changes being tested", each opening its own page.
+- **Weekly report (F02):** three periods; Export PDF → Preparing → Report ready (Save to Files, Share); Export CSV; Send to vendor prepares a summary with meal counts and reasons only, no names or IDs.
+- **Report PDF (F03):** two A4 pages in section "Export" on page 12.
+- **Edit day (F04):** star to highlight, veg mark, drag to reorder, swipe to delete with Undo, check a word, add a dish, copy last Thursday, Tell students switch, Save.
+- **Change today's dinner (F05):** Swap a dish, Add a special, Remove a dish → Send to students → the student notification "Dinner changed".
+- **Clean-up:** page 12 keeps 84 frames in 9 sections; 52 loading / empty / in-between states are archived on page 99 with links stripped. Every kept frame is reachable (84 / 84).
+
+**Hard rules kept.** The vendor is a contact; only meal counts and reasons go to the vendor; no dish quantities; live is never final; mono only for numbers, times and units; targets at least 44 pt; text at least 12 pt; at most 3 lime elements; one calendar (Tue dinner rice ran out at 8:34 PM).
+
+**Tools.** design/audit/tools/fx2arch.js (archive), fx2menu.js (Edit day builder), snaptool.js and x9chk.js (section-aware). Also in shared plugin data under the same keys.
+
+**Owner items.**
+
+- 422: PDF branding and sharing route.
+- 423: who receives the vendor summary.
+- 424: whether menu edits need an approval step.
+
+Plus NEEDS REVIEW in fix2/report.md.

@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-16, after run ADMIN-REDESIGN)
+# MealLoop · STATE (2026-10-16, after run FIX-2)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and the latest reports are `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and the latest reports are `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st305 (2026-10-16, end of ADMIN-REDESIGN X10; 18 pages with 12 Admin Redesign). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st312 (2026-10-16, end of FIX-2 R6; 18 pages). Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,14 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run FIX-2 (2026-10-16)
+
+- **Student start (04, 07):** Getting your details → Home · Not answered; Skip → Home · Skipped; "Home" renamed Home · You're in.
+- **Page 12 now holds 84 frames in 9 sections** (Today, Headcount, Meal pages, Students, Results, Report, Export, Menu, More). 52 frames are archived on page 99, section "Admin · archived states" (admin_redesign/archive_index.md).
+- **New on page 12:** Results · To check (F01) with Tue dinner report and North scanner page; Weekly report This week / Last week / Month with Preparing, Report ready sheet, CSV / PDF toasts and the vendor summary sheet (F02); Report PDF · Page 1 / 2 as A4 frames (F03); Edit day · Thu 15 (4 meals, 13 states, 2 sheets) (F04); Change today's dinner with Swap / Add a special / Remove / Send (F05). Student Notifications · Dinner changed on 04 and 07.
+- **Health:** contrast lowest 5.72 : 1; mono words, small text, targets under 44 pt, truncation, banned words 0; lime at most 3; 1 intentional overflow (Swipe to delete). Reach 84 / 84, 0 dead ends. Flow starts 14.
+- **Reports:** fix2/report.md, decisions.md (1–33), checks.md; exports export_fix2/ (41 at 2× + README); tools fx2arch, fx2menu, snaptool (section-aware), x9chk (section-aware); DEMO.md student (21 steps) and admin (16 steps); gaps 422–435.
 
 ## Run ADMIN-REDESIGN (2026-10-16)
 
@@ -87,7 +95,7 @@ Contrast 0 real failures (lowest 4.88:1); mono words 0; lime ≤ 3 kinds per fra
 
 ## Where things are
 
-- **Gaps:** `prototype_gaps.md`; the latest is 421.
+- **Gaps:** `prototype_gaps.md`; the latest is 435.
 - **Controls with no destination yet:** `still_absent.md`.
 - **Demo walks:** `DEMO.md`.
 - **iOS checklist:** `ios_checklist.md`.
