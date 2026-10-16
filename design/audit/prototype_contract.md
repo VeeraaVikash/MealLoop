@@ -5987,3 +5987,45 @@ The sections above are the contract as it was written, run by run, and are kept 
 
 **Reachability (reach8, Q8):** 07 160 / 305 from Student · Sign in, 0 dead ends; Crowd (all 7 non-offline states), Notifications, the 6 swipe frames, Credits and Special pass Live / Used are reached from Home. 13 26 / 30, 14 15 / 18, 15 16 / 23 (unchanged). Unreached: states shown by control and the legacy frames in gaps 387–388.
 
+## Run ADMIN-REDESIGN (2026-10-16) · page 12 Admin Redesign
+
+**Flow starts: 14.** The 10 earlier starts are unchanged. Four were added on page 12: **Admin redesign · Today** (Today · Lunch), **· Students**, **· Results** (Results · Left over) and **· More**.
+
+**Links on page 12 (x8wire; decisions 33–35):**
+
+- **Tab bar (AdminTabBar):** on every frame that is not a sheet. Today → Today · Lunch; Students → Students; Results → Results · Left over; More → More. No tab links to its own frame. The search circle opens Results · Find a meal.
+- **Today:**
+  - The DayLine nodes (80 × 56 hit areas) open Breakfast, Lunch, Snacks and Dinner.
+  - The black MessTile opens Headcount · North.
+  - Live tiles open Live meal; Done tiles open Meal report.
+  - The Safety card opens Safety case.
+  - Needs you rows go to their page; "See all 3" opens Today · Needs you (all).
+- **Headcount:**
+  - Send → Sending → (timer) Sent → (time skip) Vendor replied.
+  - Adjust headcount opens its sheet; Save returns.
+  - Tell the vendor opens its sheet. Message and Call return to the caller.
+- **Live meal:** Serving → (time skip) Rice low → Rice ran out. Tell the vendor opens its sheet.
+- **Meal report:**
+  - Check next time opens the Make it a change sheet; Save → Check next time started.
+  - Tell the vendor opens the Meal report sheet.
+- **Safety case:**
+  - Open → Hold confirmed → Vendor told (via the Safety case Tell the vendor sheet: Message or Call) → Close case sheet → Closed.
+  - Results · Safety cases also opens it.
+- **Students:**
+  - Remind opens its sheet; Send → Reminder sent.
+  - Rows open Feedback · Sambar too salty, Community · Long wait at North (Assign owner opens its sheet), Why students skip and Not answered by mess.
+- **Results:**
+  - The segments switch between Left over, Ran out and To check.
+  - Each ReasonCard or ReasonRow opens its reason page.
+  - "N more meals" → Find a meal.
+  - To check → Check next time · Wednesday lunch.
+  - Rows → Find a meal, Weekly report, Safety cases.
+- **More:**
+  - Weekly menu → Uploading → Reading → Check Thu 15 → Publish (sheet) → Published.
+  - People and access → Kitchen staff, Invite (sheet), Vendor contact (sheet).
+  - Outings → the restyled Policy and Outing audit.
+  - Announce → Write → Confirm (sheet) → Sent.
+  - The Passes, Votes, Rewards, Spare food and History rows open the restyled copies. The copies keep their internal links where the target was also copied.
+- **Back and Close:** Back is on every drill-in. Each sheet's Close returns to the page under it.
+
+**Reachability (reach8, X8):** 78 of 99 frames on page 12 are reached from the four starts. There are 0 dead ends; the 21 frames not reached are states shown by control (gap 421).

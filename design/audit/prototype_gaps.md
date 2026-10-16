@@ -1049,3 +1049,21 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 406 | 05 Student Dark | None of the POLISH changes are applied (page stays stale, extends 394). | Medium | Open (next run) |
 | 407 | Crowd status-bar time skip | Demo shortcut on a 54 pt status bar (as on Home and tickets); not a product control. | Info | Logged |
 
+## Run ADMIN-REDESIGN (2026-10-16)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 408 | 12 Tell the vendor (4 sheets), People · Vendor contact, Headcount Sent / Vendor replied / No reply | **Vendor channel and reply.** The headcount and messages go from the admin's phone (Message / Call); MealLoop sends nothing itself. Still undecided: the channel (SMS, WhatsApp or call), and how a vendor reply gets recorded (who marks "Replied", "Not acknowledged" or "No reply", and when). | High | Open (OWNER) |
+| 409 | 12 Headcount, Results, reason pages, Check next time | **Draft margin and thresholds.** All of these are drafts in design_intent.md: headcount range 660–740 around 700; fewer / more came 5%; didn't like a dish 3 "not good" answers; last 30 minutes 40% of entries; reported late 15 minutes; Results need 8 closed meals; a change closes after 2 comparable meals. | Medium | Open (OWNER) |
+| 410 | 12 Meal report · Data missing, Can't tell why (×2), MealCards | **Does the vendor share the amount cooked?** For now "Vendor cooked: not shared" shows as Missing, and Can't tell why depends on it. If the vendor never shares it, those reasons stay Can't tell. | Medium | Open (OWNER) |
+| 411 | 12 Announce · Write / Confirm / Sent, More row | **Announce to students, in or out.** It is built as described in the brief (audience chips, 140 characters, Now, confirm, sent) but it is not confirmed for the product. | Medium | Open (OWNER) |
+| 412 | 12 Live meal (usual by now ~690, Behind pace, Not enough history), Reason · Last 30 minutes | **Arrival history for the usual pace.** Undecided: how many weeks of entry scans the "usual by now" line needs before it shows. Below that, "Not enough history yet" shows. | Medium | Open (OWNER) |
+| 413 | 12 Today Breakfast / Snacks / Dinner, Live Behind pace, Students Why skip / Not answered by mess, reason pages More came / Last 30 minutes / Reported late | Sample numbers that are not in the data file (decisions 11, 18, 22, 24). | Medium | Open (NEEDS REVIEW) |
+| 414 | 12 Today · Lunch (A01) | At 11:10 AM it shows the drawn "Needs you" rows (Rice running low, Sambar left over), which happen later in the day (decision 10). | Low | Open (NEEDS REVIEW) |
+| 415 | 12 MessTile, Today avatar, Live meal, Meal report, ReportTicket | Fewer lime elements than drawn, and the ReportTicket gets an ink outline (decisions 4, 5, 13, 17, 19). | Low | Open (NEEDS REVIEW) |
+| 416 | 12 Results · Left over | The rows to Find a meal, Weekly report and Safety cases sit under the reasons; the images give them no place (decision 23). | Low | Open (NEEDS REVIEW) |
+| 417 | 12 restyled copies (14) | Page-10 content is unchanged apart from the backdrop, tab bar and mono spacing (decision 38). On AD-6b, Approve and Decline are display only; their result frames are still on page 10. | Low | Open (NEEDS REVIEW) |
+| 418 | 12 tab bar search circle | It opens Find a meal, because the brief has no admin search page. | Low | Open (NEEDS REVIEW) |
+| 419 | 12 status-bar time skips | Demo shortcuts on the 54 pt status bar: Today → Safety case, North sent → replied, Headcount Sent → Vendor replied, Live Serving → Rice low → Rice ran out. | Info | Logged |
+| 420 | 10 Admin and 12 Admin Redesign | Both admins have flow starts: 5 on page 10 and 4 on page 12. Which one is the product admin, and when should page 10 be archived? | Medium | Open (OWNER) |
+| 421 | 12 reach | 78 / 99 frames are reached from the four starts. The other 21 are states shown by control (Loading, Offline, Empty, Failed and the like); none of them is a dead end. | Info | Logged |

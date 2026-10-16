@@ -6,11 +6,11 @@ const AF = Object.getPrototypeOf(async function(){}).constructor;
 const A = await new AF('figma', 'args', figma.root.getSharedPluginData('mealloop', 'adm'))(figma, {});
 const pg = await figma.getNodeByIdAsync('2237:2'); const out = [];
 for (const it of args.items) {
-  const { f, c } = await A.screen(pg, it.name, it.x, it.y, { noNav: true, tab: 'Today', time: it.time || '11:10', gap: 16, moment: it.moment });
-  c.paddingTop = 4;
+  const { f, c } = await A.screen(pg, it.name, it.x, it.y, { noNav: true, tab: 'Today', time: it.time || '11:10', gap: 12, moment: it.moment });
+  c.paddingTop = 0;
   const top = A.frame(c, 'Brand row', { dir: 'H', gap: 8 }); top.layoutSizingHorizontal = 'FILL'; top.counterAxisAlignItems = 'CENTER';
   const om = await A.v(A.ID.orbit, { Size: '24' }, null, top); om.name = 'OrbitMark';
-  await A.t(top, 'MealLoop', 'ML/Body Semibold', 'ink'); const sp = A.frame(top, 'Space', {}); sp.layoutGrow = 1;
+  await A.t(top, 'MealLoop', 'ML/Body Semibold', 'ink'); const sp = A.frame(top, 'Space', {}); sp.resize(1, 1); sp.layoutGrow = 1;
   const av = A.frame(top, 'Avatar · DR', { dir: 'H', radius: 22, fill: 'hero-bg' }); av.resize(44, 44); av.primaryAxisSizingMode = 'FIXED'; av.counterAxisSizingMode = 'FIXED'; av.primaryAxisAlignItems = 'CENTER'; av.counterAxisAlignItems = 'CENTER';
   await A.t(av, 'DR', 'ML/Tag', 'on-hero');
   const gr = A.frame(c, 'Greeting', { dir: 'H', gap: 8 }); gr.layoutSizingHorizontal = 'FILL'; gr.counterAxisAlignItems = 'BASELINE';
@@ -28,7 +28,7 @@ for (const it of args.items) {
   if (it.nothing) { const nb = A.card(c, 'Nothing needs you', { gap: 4, pad: 20 }); await A.t(nb, 'Nothing needs you.', 'ML/Body Semibold', 'ink', { fill: true }); await A.t(nb, it.nothing, 'ML/Secondary', 'ink-secondary', { fill: true }); }
   if (it.needs === 'loading') { await A.label(c, 'Needs you'); for (let k = 0; k < 2; k++) { const sk = A.frame(c, 'Skeleton row', { radius: 8, fill: 'fill-quiet' }); sk.layoutSizingHorizontal = 'FILL'; sk.counterAxisSizingMode = 'FIXED'; sk.primaryAxisSizingMode = 'FIXED'; sk.resize(353, 44); } }
   else if (it.needs && it.needs.length) { const nl = A.frame(c, 'Needs you', { gap: 0 }); nl.layoutSizingHorizontal = 'FILL'; await A.label(nl, 'Needs you'); const g = A.frame(nl, 'Space', {}); g.resize(1, 8);
-    for (const [title, sub, sty, lab] of it.needs) await A.row(nl, title, sub, async r => { await A.use(r, 'chip', { Style: sty }, { Label: lab }); });
+    for (const [title, sub, sty, lab] of it.needs) await A.row(nl, title, sub, async r => { await A.use(r, 'chip', { Style: sty }, { Label: lab }); }, { py: 10 });
     if (it.seeAll) await A.row(nl, it.seeAll, null, undefined, { titleStyle: 'ML/Body Semibold' });
     const last = A.sep(nl); }
   if (it.loadingNote) await A.t(c, it.loadingNote, 'ML/Secondary', 'ink-secondary');
