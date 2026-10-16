@@ -10,29 +10,32 @@ All data is sample. Each role has exactly one flow start, and admin has four ext
 
 Each walk below was traced link by link on 2026-10-05 (reachability_final.md).
 
-## Student · Sign in (page 07) · 18 steps (STUDENT-REDESIGN 2026-10-15; POLISH 2026-10-16)
+## Student · Sign in (page 07) · 21 steps (STUDENT-REDESIGN 2026-10-15; POLISH 2026-10-16; FIX-2 2026-10-16)
 
 Sample day: **Wed 14 Aug 2024, 7:00 AM**, Aarav ••0238, Main Mess, 120 pts. Every tab bar on page 07 now works (Home, Meals, Community, You, Search). Traced link by link on 2026-10-15 and again on 2026-10-16 after run POLISH (reach8: 160 of 305 frames reached from the start, 0 dead ends; the rest are states shown by control, listed below).
 
-1. **Onboarding · Sign in** → **Sign in with SRM** → **Onboarding · Getting your details** moves on by itself → **Home** ("Hey Aarav", Wednesday 14 Aug, "You're in for breakfast").
-2. Hero **Show entry QR** → **Entry QR** (live code) → tap the card (demo: the door scanned it) → **Entry QR · Scanned** → **Home** tab.
-3. Lunch row **You in for lunch?** → **Answer · Lunch** (Bhindi Aloo Bujjiya highlight) → **I'm in** → Sending moves on → **Answer · Lunch · I'm in** → **Home** tab.
-4. **Special pass** strip → **Pass · Available** → **Use pass** → **Pass · Confirm (holding)** → **Hold to use** → **Pass · Live 1 → 2 → 3** (moves on) → **Pass · Used**.
-5. **Meals** tab → **Meals · Wed 14 · Lunch** → date strip **Thu 15** → **Meals · Thu 15 · Lunch**; on any day the segments **Breakfast / Snacks / Dinner** switch the meal; **Highlight** chip → info sheet.
-6. Meals · Wed 14 · Lunch → Wednesday ticket strip (Chicken Briyani · Panneer Briyani) → **Pass · Available** → **Home** tab.
-7. On Home tap the status bar (time skip) → **Home · Breakfast open** (8:10) → status bar again → **Home · After a meal** (9:40, "How was breakfast?").
-8. **Not good** → **Feedback · Which dish** (Most reported: Sambar · Too salty) → tile **Sambar** → **What's wrong · Sambar** → **Send** → Sending moves on → **Feedback · Sent** ("The kitchen saw it") → **See it in My feedback** → **My feedback**.
-9. Back on **Feedback · Which dish**: **Me too** → **Community · Issue** → **Me too** → Sending moves on → **Backed**; **4 comments** → **Community · Comments**. (**Service › Community** on the same sheet → **Community**.)
-10. **Community** tab → **Community** (Open / Fixed) → **Fixed** → Community · Fixed → **Open**; ⓘ → **Community · Info sheet**.
-11. Home → **SOS** → **SOS** (choose) → **I feel unwell after eating** → **Next: add a photo** → **SOS · Camera** → shutter → **SOS · Review** (proof checks) → **Send SOS** → **SOS · Sent** → **Done** → **Home**.
-12. Home feedback row **You said the sambar was too salty** → **My feedback** → **Better** → **My feedback · Better saved**.
-13. Bell → **Notifications** (type circles: lime check, fork and knife, bubble, ticket) → **Guardian approved** → **You · Outings** (the outing walk below starts here).
-14. **You** tab → **You** → **Credits** (120 pts) → Juice **Get** → Getting a ticket moves on → **Ticket · Juice** (7A3F) → status bar (time skip) → **Ticket · Juice · Used**.
-15. You → **Attendance** / **Spending** (tap Food delivery → **Edit expense**) / **My feedback** / **Help**; the profile row → **Request correction**.
-16. Search circle on the tab bar → **Search** → recent **sambar** → **Search · Typing** → **Sambar · Wed · Breakfast** → **Search · Menu result** → the dish card → **Meals · Dish detail** (Sambar, Breakfast · Wed 14 Aug) → **Rate a dish** → **How was breakfast?**; finally You → **Sign out** → **Onboarding · Sign in**.
+1. **Onboarding · Sign in** (the flow start) → **Sign in with SRM** → **Onboarding · Getting your details** moves on by itself → **Home · Not answered** ("Hey Aarav", Wednesday 14 Aug, 7:00 AM; the top card asks **Breakfast today?** with **I'm in**, **Skip** and **Entry QR**).
+2. **Entry QR** → **Entry QR** (live code) → **Back** → Home · Not answered.
+3. **I'm in** → **Home · You're in** ("You're in for breakfast", lime "I'm in" chip, Show entry QR).
+4. Hero **Show entry QR** → **Entry QR** → tap the card (demo: the door scanned it) → **Entry QR · Scanned** → **Home** tab (Home · You're in).
+5. To see the other answer, restart from Sign in and tap **Skip** on Home · Not answered → **Home · Skipped** ("You skipped breakfast · Changed your mind? You can still eat", Show entry QR still works).
+6. Lunch row **You in for lunch?** → **Answer · Lunch** (Bhindi Aloo Bujjiya highlight) → **I'm in** → Sending moves on → **Answer · Lunch · I'm in** → **Home** tab.
+7. **Special pass** strip → **Pass · Available** → **Use pass** → **Pass · Confirm (holding)** → **Hold to use** → **Pass · Live 1 → 2 → 3** (moves on) → **Pass · Used**.
+8. **Meals** tab → **Meals · Wed 14 · Lunch** → date strip **Thu 15** → **Meals · Thu 15 · Lunch**; on any day the segments **Breakfast / Snacks / Dinner** switch the meal; **Highlight** chip → info sheet.
+9. Meals · Wed 14 · Lunch → Wednesday ticket strip (Chicken Briyani · Panneer Briyani) → **Pass · Available** → **Home** tab.
+10. On Home tap the status bar (time skip) → **Home · Breakfast open** (8:10) → status bar again → **Home · After a meal** (9:40, "How was breakfast?").
+11. **Not good** → **Feedback · Which dish** (Most reported: Sambar · Too salty) → tile **Sambar** → **What's wrong · Sambar** → **Send** → Sending moves on → **Feedback · Sent** ("The kitchen saw it") → **See it in My feedback** → **My feedback**.
+12. Back on **Feedback · Which dish**: **Me too** → **Community · Issue** → **Me too** → Sending moves on → **Backed**; **4 comments** → **Community · Comments**. (**Service › Community** on the same sheet → **Community**.)
+13. **Community** tab → **Community** (Open / Fixed) → **Fixed** → Community · Fixed → **Open**; ⓘ → **Community · Info sheet**.
+14. Home → **SOS** → **SOS** (choose) → **I feel unwell after eating** → **Next: add a photo** → **SOS · Camera** → shutter → **SOS · Review** (proof checks) → **Send SOS** → **SOS · Sent** → **Done** → **Home**.
+15. Home feedback row **You said the sambar was too salty** → **My feedback** → **Better** → **My feedback · Better saved**.
+16. Bell → **Notifications** (type circles: lime check, fork and knife, bubble, ticket) → **Guardian approved** → **You · Outings** (the outing walk below starts here).
+17. **You** tab → **You** → **Credits** (120 pts) → Juice **Get** → Getting a ticket moves on → **Ticket · Juice** (7A3F) → status bar (time skip) → **Ticket · Juice · Used**.
+18. You → **Attendance** / **Spending** (tap Food delivery → **Edit expense**) / **My feedback** / **Help**; the profile row → **Request correction**.
+19. Search circle on the tab bar → **Search** → recent **sambar** → **Search · Typing** → **Sambar · Wed · Breakfast** → **Search · Menu result** → the dish card → **Meals · Dish detail** (Sambar, Breakfast · Wed 14 Aug) → **Rate a dish** → **How was breakfast?**; finally You → **Sign out** → **Onboarding · Sign in**.
 
-17. **Swipe to remind (POLISH Q5).** On Home drag the **You in for lunch?** row to the right → **Home · Lunch row · Swipe revealed** (lime "Remind me in 1 hr") → moves on by itself after 0.7 s → **Home · Lunch row · Reminder set** ("We'll ask again at 8:00 AM") → **Undo** returns to Home; or tap the status bar (time skip) → **Home · Lunch row · Reminder fired** (the row is back with a "Reminder" chip). The same works on the breakfast card: Home → status bar ×3 → **Home · Not answered** → drag the card right → Swipe revealed → Reminder set → status bar → Reminder fired.
-18. **Crowd page (POLISH Q2).** On Home tap **Crowd at Main Mess** → **Crowd · Main Mess** (Lunch · 12:10 PM, "Quiet now", Best time 1:30 PM; chart every 15 minutes) → tap the status bar to step through the day: **Busy** (12:35) → **Packed** (12:50) → **Snacks** (4:35) → **Dinner** (7:40). Back → Home. From **Home · Breakfast open** the crowd row opens the **Breakfast** crowd page (8:10), which steps on to lunch.
+20. **Swipe to remind (POLISH Q5).** On Home drag the **You in for lunch?** row to the right → **Home · Lunch row · Swipe revealed** (lime "Remind me in 1 hr") → moves on by itself after 0.7 s → **Home · Lunch row · Reminder set** ("We'll ask again at 8:00 AM") → **Undo** returns to Home; or tap the status bar (time skip) → **Home · Lunch row · Reminder fired** (the row is back with a "Reminder" chip). The same works on the breakfast card: Home → status bar ×3 → **Home · Not answered** → drag the card right → Swipe revealed → Reminder set → status bar → Reminder fired.
+21. **Crowd page (POLISH Q2).** On Home tap **Crowd at Main Mess** → **Crowd · Main Mess** (Lunch · 12:10 PM, "Quiet now", Best time 1:30 PM; chart every 15 minutes) → tap the status bar to step through the day: **Busy** (12:35) → **Packed** (12:50) → **Snacks** (4:35) → **Dinner** (7:40). Back → Home. From **Home · Breakfast open** the crowd row opens the **Breakfast** crowd page (8:10), which steps on to lunch.
 
 **States by control** (present the frame; no link leads there in the sample day): Onboarding errors (Sign in failed, SRM down, Session expired, Not eligible, Offline); Home · Mess closed / After cutoff / Skipped / Empty / Offline / Loading / No Special pass; Answer · Cutoff passed (×4), Answer · Dinner family (the sample day's Home has no dinner row yet); Entry QR · Refreshing / Wrong mess / Walk-in / Already scanned, Entry · Discrepancy family; Pass · Expired / Not today · new / Not eligible / Already used / Wrong mess / Unavailable / Confirm (failed); Meals · Menu changed / Service ended / Not published / No menu; Crowd · Main Mess · Closed (from Home · Mess closed) and Offline (from Home · Offline); Community · Issue · Hidden / Me too failed; all Offline, Loading, Error, Empty, Failed variants; Outings states listed below. **Legacy frames kept without an entry** (no row on the new You): Notification settings, Quiet hours, Reminder prompt, Settings · System off, About MealLoop, Report · From feedback (NEEDS REVIEW in redesign/report.md).
 
