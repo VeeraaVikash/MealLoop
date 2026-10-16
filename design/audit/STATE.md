@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-16, after run FIX-2)
+# MealLoop · STATE (2026-10-16, after run GUARDIAN-VIDEO)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and the latest reports are `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "GUARDIAN VIDEO APPROVAL 2026-10"), the run logs are in `run_status.md`, and the latest reports are `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st312 (2026-10-16, end of FIX-2 R6; 18 pages). Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st319 (2026-10-16, end of GUARDIAN-VIDEO V6; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,16 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run GUARDIAN-VIDEO (2026-10-16)
+
+- **Guardian (page 13):** slide-to-approve replaced by a 10-second live video approval: GV-00 Before you record (first use), GV-01 Choose (Accept / Reject; About, Ask to change, Language, Deadline passed, Already answered), GV-02 Record (Ready, Try 1–3, Too short, Too dark, Camera blocked, Uploading, Checking, Upload failed), GV-03 Retry, GV-04 Send video to the warden, GV-05 Photo and code, GV-06 Sent (video, Please watch, Photo and text, Call requested, Rejected, Withdraw sheet, Withdrawn), GV-07 Past answers, GV-08 Reject sheet. 16 old frames archived. No text-only approval anywhere.
+- **Warden (page 14):** four tabs (Queue, Out now, Escalated, History). Queue cards for the four methods (Live video, Please watch, Photo and text, Confirmed by call) with Video loading, Empty, Offline, Ask / No sheets and Approved / Change asked / Rejected; Out now + student; Escalated + two call sheets; History + All + Record + Video expired; Me as a drill-in. 14 old frames archived (Reassign and Emergency override are NEEDS REVIEW).
+- **Student (04, 07):** tracker "Guardian approved by video · Fri 7:42 PM", variants by photo and text and by call, Guardian said no with Ask again, Notifications · Guardian answered. No video is shown to the student. Page 05 stays stale.
+- **Spacing (V5):** one margin, bands ≤ 24 pt on non-scrolling frames, titles 34 pt across Guardian / Warden / Gate, gate buttons 56 pt at one y, GateVerify photo 352 pt. Details in guardian_video/spacing.md.
+- **Components (page 03):** MethodTag, StepList, WardenTabBar4, OutNowRow, HistoryRow, PhraseCard, DecisionButtons, VideoRecorder, EvidenceCard (IDs in plugin data `mealloop/gv_ids`).
+- **Health:** contrast lowest 4.61 : 1 (G-3 Back late, older); mono words, small text, targets under 44 pt, truncation and overflow 0 on 13 / 14 / 15; backdrop missing only where allowed (dark recording, full-colour gate results). Reach: 13 43 / 44, 14 26 / 26, 15 16 / 23 (results by control), 0 dead ends. Flow starts 14.
+- **Reports:** guardian_video/report.md, decisions.md (1–40), spacing.md, archive_index.md, preflight.md; exports export_guardian_video/ (86 at 2× + README); tools gvh, gvarch, gvreach, gvspace, gvfix, gvchk, gvexp; DEMO.md guardian (15 steps) and warden (12 steps); gaps 436–457 (OWNER 436–441).
 
 ## Run FIX-2 (2026-10-16)
 

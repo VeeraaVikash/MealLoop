@@ -46,3 +46,15 @@ The old `filltool.js` and `densitytool.js` were page-10 only and are kept for hi
 | `oustaff` / `ouadmin` (file only) | Staff base (large-title header or inline Back, StaffTabBar relabelled) and admin base (clone of AD-7a People). |
 | `ou_rework` (file only) | The owner-reference rework applied by the same operation to 04, 05 and 07. |
 | `snapb` (file only) | Runs snaptool over a list of pages and prints per-page differences, links and starts. |
+
+## GUARDIAN-VIDEO run tools (2026-10-16)
+
+| Tool | What it does |
+|---|---|
+| `gv1comp.js` | Summary of the V1 component builder (MethodTag, StepList, WardenTabBar4, OutNowRow, HistoryRow, PhraseCard, DecisionButtons, VideoRecorder, EvidenceCard on page 03; IDs in plugin data `mealloop/gv_ids`). |
+| `gvh.js` (`mealloop/gvh`) | Helpers on top of `adm`: guardian and warden page bases (backdrop, logo row or WB header, WardenTabBar4), dark recording page, titles, links, notes, timers. |
+| `gvarch.js` (`mealloop/gvarch`) | Archive to page 99 with links stripped and links on the source page retargeted; logs to `mealloop/gv_archive`. |
+| `gvreach.js` (`mealloop/gvreach`) | Reachability for one page: reached / total, unreached, dead ends, dangling links. |
+| `gvspace.js`, `gvfix.js` (`mealloop/gvspace`, `mealloop/gvfix`) | V5 spacing audit (margins, bands, gaps, paddings, rows, centre axes, title sizes, gate buttons) and the fixes (anchor, band, grow). |
+| `gvchk.md` (`mealloop/gvchk`) | x9chk with a `pageId` argument (contrast, mono words, lime, backdrop, small text, targets, truncation, overflow). |
+| `gvexp.js` (`mealloop/gvexp`) | 2× export clones for the plan in `mealloop/gv_export_plan`; `{from:0,to:0}` removes them. |
