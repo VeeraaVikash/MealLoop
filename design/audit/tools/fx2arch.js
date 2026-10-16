@@ -2,7 +2,7 @@
 // args: { items: [{ id, reason }], retarget: { archivedId: keptId } }
 // Moves each page-12 frame (with its "Label / …" text, Sample note and Moment note) into the section "Admin · archived states" on
 // page 99, renames it "<name> (before FIX-2)", strips every reaction inside it, and on page 12 retargets links that pointed at it
-// (retarget map) or removes them. Appends { frame, id, reason, from } to shared plugin data mealloop/fx2_archive.
+// (retarget map; a retarget that would point a frame at itself is dropped) or removes them. Appends { frame, id, reason, from } to shared plugin data mealloop/fx2_archive.
 figma.skipInvisibleInstanceChildren = false;
 const p12 = await figma.getNodeByIdAsync('2237:2'); const p99 = await figma.getNodeByIdAsync('221:2'); await p99.loadAsync();
 let sec = p99.children.find(n => n.type === 'SECTION' && n.name === 'Admin · archived states');
@@ -13,10 +13,10 @@ const retarget = args.retarget || {};
 const gone = new Set(args.items.map(i => i.id));
 // 1. fix links on page 12 that point at frames being archived
 for (const n of p12.findAll(x => x.reactions && x.reactions.length)) {
-  if (gone.has(n.id) || (() => { let q = n; while (q && q.parent !== p12) q = q.parent; return q && gone.has(q.id); })()) continue;
+  let topN = n; while (topN && topN.parent !== p12) topN = topN.parent; if (gone.has(n.id) || (topN && gone.has(topN.id))) continue; const topId = topN ? topN.id : null;
   let changed = false; const rs = [];
   for (const r of JSON.parse(JSON.stringify(n.reactions))) { if (r.action) delete r.action; const acts = [];
-    for (const a of (r.actions || [])) { if (a.destinationId && gone.has(a.destinationId)) { changed = true; if (retarget[a.destinationId]) { a.destinationId = retarget[a.destinationId]; acts.push(a); } } else acts.push(a); }
+    for (const a of (r.actions || [])) { if (a.destinationId && gone.has(a.destinationId)) { changed = true; if (retarget[a.destinationId] && retarget[a.destinationId] !== topId) { a.destinationId = retarget[a.destinationId]; acts.push(a); } } else acts.push(a); }
     if (acts.length) { r.actions = acts; rs.push(r); } }
   if (changed) { await n.setReactionsAsync(rs); out.push('relinked ' + n.name.slice(0, 24)); } }
 // 2. move frames and companions
