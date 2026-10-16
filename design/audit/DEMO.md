@@ -171,3 +171,22 @@ States by control (present the frame): Request · Overnight (Sat 2 PM → Sun 8 
 - **States:** Empty, Offline, Failed and other states are reached only from their own control, or only on the canvas. reachability_final.md lists them.
 - **Weekly report:** the 13 AD-4f frames sit inside the "AD-4f Weekly report" section on page 10. They are reached from AD-4d, but the reachability tool counts only top-level frames.
 - **Controls that lead nowhere:** listed in still_absent.md.
+
+## Admin redesign (page 12, 2026-10-16) · 14 steps
+
+Flow starts on page 12: **Admin redesign · Today**, **· Students**, **· Results**, **· More** (Figma: Present → pick the start). All data is sample: Wed 14 Aug 2024, food head Devi. reach8: 78 of 99 frames from the four starts, 0 dead ends; the rest are states shown by control (offline, loading, empty, failed, low data, behind pace, scanner offline, mess closed, all sent, nothing needs you, forecast pending, data missing, reviewed, and restyled sub-pages).
+
+1. **Admin redesign · Today** → **Today · Lunch** (11:10): DayLine, four mess tiles (North is the black action tile), Needs you. Tap a DayLine node to see Breakfast, Snacks or Dinner.
+2. Tap the **North** tile → **Headcount · North** (700, range 660–740, 2,310 said yes, usual Wed 692).
+3. **Send 700 to vendor** → **Sending** moves on → **Sent** (Waiting for the vendor).
+4. Tap the status bar (time skip) → **Vendor replied** (Replied 11:20). (On Today, the tile's own Send does the same in place: Sending → Sent → Replied.)
+5. **Today** tab → Needs you **Rice running low** → **Live meal · Main · Rice low** (712 of 860 expected, "This is not the final count").
+6. **Tell the vendor** → **Tell the vendor (sheet)**: prepared message, vendor contact (not a login), **Message** / **Call** → back to the live meal.
+7. **Today** tab → **Sambar left over** → **Meal report** (860 sent → 786 came in · final, Sambar 4 L, plate waste 18 kg, Vendor cooked: not shared).
+8. **Results** tab → **Results · Left over** (9 of 56 meals) → black card **Fewer students came than we planned for** → reason page (Sure · 5 meals).
+9. **Foods left over**: Sambar in 3 meals, Rice in 2, Dal in 2; tap **Wed 14 · lunch · Main** → Meal report.
+10. **Check next time** → **Make it a change (sheet)** (use the 4-week average unless an event is confirmed; owner Devi; check after 2 comparable meals) → **Save** → **Meal report · Check next time started**.
+11. Row **Check next time started** → **Check next time · Wednesday lunch** (Open → Testing → Result; Close as worked opens after 2 comparable meals).
+12. **Students** tab → **Remind 630 students** → sheet → **Send to 630 students** → **Reminder sent**.
+13. **More** tab → **Weekly menu** (published Mon 8:10 AM; Thu 15 · Check 2) → **Thu 15** → **Check Thu 15** → **Confirm 2 words** → **Publish (sheet)** → **Publish**.
+14. **Today** tab → tap the status bar (1:40 PM) → **Today · Safety case open** → **Open case** → **Safety case** → **Call Ravi** (hold confirmed) → **Tell vendor** → **Message** (vendor told) → **Close case** → note → **Close case** → **Closed**.
