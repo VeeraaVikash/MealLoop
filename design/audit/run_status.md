@@ -212,3 +212,9 @@
 | R4 Menu editing (F04, F05) | done | st310 vs st309: page 12 +104 (26 frames × 4 with notes), ~1 (Weekly menu Published button), L+286 L−1; auto "Flow 1" gone; 04 +1, 07 +1 L+8; 99 0; starts 14 | Edit day Thu 15 (4 meal tabs + 13 lunch states + 2 sheets), Change today's dinner sheet + 6 sub-sheets + toast, student Notifications · Dinner changed. Tool fx2menu. Decisions 17–22. |
 | R5 Admin cleanup | done | st311 vs st310 (section-aware snapshot): page 12 +3 −201 ~336 L+27 L−419; 99 +208 −1; other pages 0; starts 14 | 84 frames kept in 9 sections; 52 archived (archive_index.md); links retargeted to kept equivalents; reach 84 / 84, 0 dead ends. Decisions 23–27. |
 | R6 Checks, export, docs | done | st312 vs st311: page 12 ~2 L+13 L−13 (fixes); 99, 04, 07 0; 10 / 03 / 00 Before section-listing artifact only (checks.md); starts 14 | x9chk on 84 frames: 0 failures apart from the intentional swipe overflow; thumbnails rasterized, 44 pt hit areas, Remove confirm title. 41 exports in export_fix2/ + README. Contract, gaps 422–435, STATE, MASTER_CONTEXT, DEMO (16 admin steps). Decisions 28–33. |
+
+## Run GUARDIAN-VIDEO (2026-10-16)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| V0 Preflight | done | st313 = st312 (18 pages, 0 differences); starts 14 | Pack guardian_2026-10 committed (f636ca5, 14 images). Inventory in guardian_video/preflight.md: 13 Guardian 30 frames, 14 Warden 18, 15 Gate 23, student outing 33 + 33. |
