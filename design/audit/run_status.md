@@ -175,3 +175,5 @@
 | Q3 Highlight chip | done | st292: 04 ~50, 07 ~50, 10 ~5, 03 ~1; links 0; starts 10 | HighlightChip: equal padding, 6 pt gap, fixed 18 pt Info circle with the i centred; 112 student instances verified, none detached. Decisions 7–8. |
 | Q2, Q4, Q5, Q6 | skipped | — | Blocked: reference images P01–P04 (design/reference/polish_2026-10) missing. |
 | Q7, Q8, Q9 | not started | — | Stopped after Q3 under the missing-pack rule; they audit and document Q2–Q6. |
+| Q0b Pack | done | — | Reference pack added from the upload (commit "Add polish reference pack"); its prompt matches the brief. |
+| Q2 Crowd page | done | st293: 04 +30 −17 ~2 L+17, 07 +30 −5 ~2 L+60 L−38, 99 +13; starts 10 (1 automatic start removed) | Crowd · Main Mess (Quiet) + Busy, Packed, Closed, Offline + Breakfast, Snacks, Dinner on 04 and 07 per P03; Home crowd rows wired (18); parity 8 / 8; mono 0; targets 0 small. Decisions 9–15. |
