@@ -200,3 +200,10 @@
 | X9 Checks | done | page 12 text change only (1 reword) + 1 layout fix; other pages untouched (verified in X10 snapshot) | admin_redesign/checks.md: contrast lowest 5.72 : 1, 0 under 4.5; mono words 0; lime ≤ 3 on every frame; backdrop 99 / 99; small text 0; targets 0 under 44; truncation 0; overflow 1 fixed; raw paints 0; banned content 0; no cause percentages; counts labelled meals; key numbers consistent. |
 | X10 Export and docs | done | st305 vs st304: page 12 ~8 (fixes found during export review), 0 added / removed, links 0; all other pages 0; starts 14 | 99 exports at 2× in export_admin_redesign/ (+ README). Fixes: "1 meal" (5 rows); 99 mono space / dot ranges in Inter on 10 restyled copies; Weekly menu "Check 2" chip no longer clipped; Announce confirm title on one line. x9chk re-run: all zero. Docs: decisions 36–41, checks.md X10 re-check, gaps 408–421 (OWNER 408–412, 420), contract section, STATE.md, MASTER_CONTEXT.md, tools x3head / x4meal / x6res / x8wire / x9chk in the repo. |
 | X11 Report | done | st305 (no Figma change) | admin_redesign/report.md: stage table, decisions 1–41, conflicts, gaps 408–421, components added, NEEDS REVIEW by frame name, end checks. |
+
+## Run FIX-2 (2026-10-16)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| R0 Start | done | st306 = st305 (18 pages, 0 differences); starts 14 | Reference pack fix2_2026-10 committed (d3dd996). |
+| R1 Student prototype start | done | st307 vs st306: 04 ~1 (rename) L±14, 07 ~1 L±18 (renamed link labels + 4 retargets per page); all other pages 0; starts 14 | Getting your details → Home · Not answered; Skip → Home · Skipped (3 frames per page); "Home" renamed Home · You're in. DEMO.md student steps 1–6 rewritten (21 steps). Decisions 1–4. |
