@@ -18,7 +18,7 @@
 | Manage | AD-5-0 hub, AD-5a Menu, AD-5b Edit dish, AD-5c / 5c2 / 5d Votes, AD-6a / 6b Passes, AD-6c / 6c3 Rewards, AD-6d / 6d2 Spare food, AD-7a–7d People and Audit log, AD-9a–9g Outings | 104 |
 | Secondary | AD-8a Profile sheet, AD-8b Notifications, AD-8c Search, AD-8d Help | 9 |
 
-(Counts are from the frame-name prefixes; the exact list is in the X0 query output, kept in plugin data `x0_fams`.)
+(Counts are from the frame-name prefixes.)
 
 ## Sources for the restyle in X7 (content unchanged, new backdrop and header only)
 

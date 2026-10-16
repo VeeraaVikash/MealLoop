@@ -299,3 +299,29 @@ Source: design/reference/redesign_2026-10 (34 screens drawn 292 pt wide; × 1.34
 **Orbit (brand rule V2).** Background art on one fixed layer (OrbitBackdrop): canvas, 7% dot texture, a lime disc top right with four hairline rings and one black dot, a fainter ring pair bottom left. On a light card, lime appears only as an ink-outlined chip or arc; never lime text on white; at most three lime elements per frame beyond the backdrop. Mono only for numbers, times and units. Exceptions: SOS camera (dark) and the gate result (full lime) have no backdrop.
 
 **Sample calendar.** Week Mon 12 – Sun 18 Aug 2024; today Wed 14 Aug (matches the real menu board, data/mess_menu_2024-08-12.md). Home at 7:00 AM; Meals at any time. Student Aarav ••0238, Main Mess, 120 points. Sample outing on Sat 17 Aug 2024 (Express Avenue Mall, pass 7F3K).
+
+## ADMIN REDESIGN 2026-10 (run ADMIN-REDESIGN, 2026-10-16)
+
+Source: design/reference/admin_redesign_2026-10 (A01–A14 drawn 292 pt wide; × 1.346 for 393 pt) and its data file `data/admin_sample_data.md` (numbers, wording, tag rules). The new admin app lives on page **12 Admin Redesign**; page 10 Admin and page 11 Admin Dark stay as they were.
+
+**Hard constraints.**
+- Management sends the vendor **only a headcount**. MealLoop has no dish-quantity plan, no ingredient data and no vendor login. Never show a planned dish quantity or a "cook X litres" instruction.
+- The vendor is a contact (call or message), drawn dashed. "Vendor cooked" is **Missing** unless staff typed it in.
+- **Live is never final.** Every live count says "not the final count" until the meal closes; final attendance exists only after close.
+- Staff record: stock low or running out, food left over by dish (L or kg), plate waste (kg), held or checked actions.
+
+**Four tabs.** Today, Students, Results, More (+ the search circle). No Meals tab and no date strip: a meal is reached from Today (send, live) or from Results (needs review, Find a meal).
+
+**Today = one tile per mess.** Main, North, South, Annexe as MessTiles in a 2 × 2 grid. Each tile has one big number, a four-step bar (1 forecast ready, 2 headcount sent, 3 vendor replied, 4 meal served and counted) and one bottom line. Exactly one tile is black at a time: the most urgent action. Other ready tiles are cream with an outlined Send; a mess with no data is dashed. The DayLine (Breakfast, Lunch, Snacks, Dinner; done, now, next) switches the meal. "Needs you" shows at most two rows, then "See all".
+
+**Reasons in plain words.** Results segments Left over, Ran out, To check. Each reason is a sentence with a count labelled **meals** and a tag: **Sure** (measured from records; lime chip), **Probably** (indirect evidence; outlined), **Can't tell** (key data missing; dashed). A meal can have more than one reason, so counts can add up to more than the total. Never a percentage split of causes. "Planned for" = the headcount sent.
+
+**Draft tag rules (owner to confirm the numbers).** Fewer / more came than planned for: final entries more than 5% below / above the headcount sent. Didn't like a dish: the left-over dish has at least 3 "not good" feedbacks for that meal. Raised the headcount late: raised after the forecast froze and entries ended below the raised number. Most came in the last 30 minutes: at least 40% of entries in the final 30 minutes. Reported late: low stock reported more than 15 minutes after the first sign. Can't tell why: vendor amount cooked, scanner records or waste record missing.
+
+**A meal has one page that changes with its phase.** Before sending: Headcount (forecast, send, vendor reply). During service: Live meal (came in so far, food left by staff, "not the final count"). After close: Meal report ticket (headcount sent → came in · final, left over, plate waste, data completeness, "Vendor cooked: not shared"). A safety case sits above all of these until closed.
+
+**Check next time.** A change is Open → Testing → Result; it cannot be closed as "worked" until 2 comparable meals are recorded, and it is also checked for running out.
+
+**Sample calendar.** Wed 14 Aug 2024 (week Mon 12 – Sun 18, the student week). Food head Devi (DR). Lunch headcount due 11:30; Today at 11:10 AM; live lunch 1:40 PM; lunch closes 2:00 PM; dinner headcount due 4:30 PM. Safety case reported 12:45 PM (open 55 min at 1:40 PM). Staff Ravi (kitchen); student Aarav ••2231 (the safety case reporter, from the data file).
+
+**Brand.** OrbitBackdrop on every admin frame; Brand rule V2 (lime on light only as an ink-outlined chip or arc, never lime text on white, at most three lime elements per frame beyond the backdrop); mono only for numbers, times and units; readability standard; BackButton standard; sheets have a grab handle and Close.
