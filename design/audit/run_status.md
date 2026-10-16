@@ -207,3 +207,4 @@
 |---|---|---|---|
 | R0 Start | done | st306 = st305 (18 pages, 0 differences); starts 14 | Reference pack fix2_2026-10 committed (d3dd996). |
 | R1 Student prototype start | done | st307 vs st306: 04 ~1 (rename) L±14, 07 ~1 L±18 (renamed link labels + 4 retargets per page); all other pages 0; starts 14 | Getting your details → Home · Not answered; Skip → Home · Skipped (3 frames per page); "Home" renamed Home · You're in. DEMO.md student steps 1–6 rewritten (21 steps). Decisions 1–4. |
+| R2 To check (F01) | done | st308 vs st307: page 12 +12 −4 (new To check, Tue dinner report, North scanner page and their notes; old To check moved), L+30 L−13; 99 +1 (section "Admin · archived states"); other pages 0; starts 14 | Rows wired: Review → Meal report (Wed lunch / Tue dinner), Testing → Check next time · Wednesday lunch, Open → Check next time · North scanner, Weekly report, Find an older meal; segments retargeted from the old frame. Decisions 5–9. |
