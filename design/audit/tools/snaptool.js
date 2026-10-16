@@ -27,8 +27,8 @@ const sigOf = function (n) {
     'overflowDirection' in n ? n.overflowDirection : '', 'numberOfFixedChildren' in n ? n.numberOfFixedChildren : '',
     kids ? H(kids.map(function (c) { return c.id; }).join(',')) : ''].join('|');
 };
-const sigs = page.children.map(sigOf);
-const topOf = function (n) { let p = n; while (p.parent && p.parent.type !== 'PAGE') p = p.parent; return p; };
+const tops = []; for (const c of page.children) { if (c.type === 'SECTION') tops.push(...c.children); else tops.push(c); } const sigs = tops.map(sigOf); // FIX-2: frames inside sections count as top level
+const topOf = function (n) { let p = n; while (p.parent && p.parent.type !== 'PAGE' && p.parent.type !== 'SECTION') p = p.parent; return p; };
 const tr = function (t) { return t ? [t.type, t.direction || '', t.duration, t.easing ? t.easing.type : ''].join(':') : 'none'; };
 const links = [], legacy = [];
 let reactions = 0, actions = 0;
