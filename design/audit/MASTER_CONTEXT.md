@@ -58,3 +58,45 @@ This file did not exist before run OUTINGS (2026-10-13). The full master context
 
 **Owner items.** Gaps 398–407 (crowd sample data, snacks window, lime budget on the revealed frames, ticket layout trade-offs, NEEDS REVIEW dead bands and two-line rows, 05 Dark) and NEEDS REVIEW in polish/report.md.
 
+## Run ADMIN-REDESIGN (2026-10-16)
+
+**What changed.** The new admin is on page **12 Admin Redesign**. It was built from design/reference/admin_redesign_2026-10/ (images A01–A14, data file and prompt). Page 10 Admin and the student, staff, guardian, warden and gate pages were not edited.
+
+The admin has four tabs:
+
+- **Today:** DayLine (Breakfast / Lunch / Snacks / Dinner), four MessTiles with one black "act now" tile, and Needs you.
+- **Students:** answer bars (2,870 of 3,500), Remind, feedback and community issues, why students skip.
+- **Results:** Left over / Ran out / To check, eight reason pages, Check next time, Find a meal, Weekly report and Safety cases.
+- **More:** Weekly menu upload → read → check → publish, People and access, Outings, Announce, and restyled Passes, Votes, Rewards, Spare food and History.
+
+**Hard rules.**
+
+- Only a headcount goes to the vendor.
+- No dish quantities.
+- No "cook X".
+- No vendor login: Tell the vendor opens the admin's phone with a prepared message.
+- "Vendor cooked" shows as Missing.
+- Live counts always say "not the final count".
+- Fixed wording:
+  - Left over / Ran out / To check.
+  - Sure / Probably / Can't tell.
+  - Every count is labelled meals.
+  - No percentage split of causes.
+- Brand rule V2: OrbitBackdrop on every frame; at most 3 lime elements; mono only for numbers, times and units.
+
+**Sample day.** Wed 14 Aug 2024. Devi is the food head; Ravi is the kitchen supervisor. Today is at 11:10 AM, with the lunch headcount due at 11:30. The live lunch is at 1:40 PM. Main lunch: 860 sent, 786 came. The forecast is 700 (range 660–740) for North. The safety case was reported at 12:45 PM.
+
+**Components (page 03, flagged).** AdminTabBar, DayLine, ChainStepper, AdminChip, TagChip, VendorChip, MessTile (12 phases), ReasonCard, ReasonRow, FoodTile, FoodChip, MealCard, ReportTicket (3), SafetyRailStep, SafetyRail (4), StatBars (2); ProofCard is reused.
+
+**Tools.** design/audit/tools/adm.js (helper library), x2today.js, x3head.js, x4meal.js, x6res.js, x8wire.js, x9chk.js. They are also stored in shared plugin data under the same keys.
+
+**Owner items.**
+
+- 408: vendor channel and reply.
+- 409: draft margin and thresholds.
+- 410: whether the vendor shares the amount cooked.
+- 411: Announce, in or out.
+- 412: arrival history needed for the usual pace.
+- 420: page 10 or page 12 as the product admin.
+
+Plus NEEDS REVIEW in admin_redesign/report.md.

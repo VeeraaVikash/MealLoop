@@ -1,0 +1,18 @@
+// ADMIN-REDESIGN X6 Results helpers (stored as mealloop/x6res). Body of async function(figma, args); returns the adm helper A extended with:
+// A.seg (Left over / Ran out / To check segments), A.reasonRow / A.reasonCard (ReasonRow / ReasonCard instances with the TagChip swapped
+// to Sure / Probably / Can't tell), A.results (Results page shell), A.reasonPage (inline header + wrapping title + tag meta), A.mealCard
+// (MealCard with FoodChips; a chip marked dashed shows missing data such as "Vendor cooked: not shared").
+const AF = Object.getPrototypeOf(async function(){}).constructor;
+const A = await new AF('figma', 'args', figma.root.getSharedPluginData('mealloop', 'adm'))(figma, {});
+A.pg = await figma.getNodeByIdAsync('2237:2');
+A.seg = async (parent, labels, sel) => { const s = A.frame(parent, 'Segments', { dir: 'H', gap: 0, radius: 999, fill: 'fill-quiet' }); s.layoutSizingHorizontal = 'FILL'; s.paddingLeft = s.paddingRight = s.paddingTop = s.paddingBottom = 4;
+  for (const l of labels) { const b = A.frame(s, 'Segment · ' + l, { dir: 'H', radius: 999 }); b.layoutGrow = 1; b.counterAxisSizingMode = 'FIXED'; b.resize(100, 44); b.primaryAxisAlignItems = 'CENTER'; b.counterAxisAlignItems = 'CENTER'; if (l === sel) b.fills = [A.paint('hero-bg')]; await A.t(b, l, 'ML/Secondary Medium', l === sel ? 'on-hero' : 'ink-secondary'); } return s; };
+A.reasonRow = async (parent, count, reason, tag, detail) => { const r = await A.use(parent, 'reasonRow', {}, { Count: count, Reason: reason, Detail: detail || '', 'Show detail': !!detail }); r.layoutSizingHorizontal = 'FILL'; r.name = 'ReasonRow / ' + reason;
+  const tg = r.findOne(n => n.type === 'INSTANCE' && n.name.indexOf('TagChip') >= 0 || (n.type === 'INSTANCE' && n.mainComponent && n.mainComponent.parent && n.mainComponent.parent.name === 'TagChip')); const v = await A.comp('tag', { Tag: tag, Style: 'Chip' }); tg.swapComponent(v); return r; };
+A.reasonCard = async (parent, count, reason, tag) => { const r = await A.use(parent, 'reasonCard', {}, { Count: count, Reason: reason }); r.layoutSizingHorizontal = 'FILL'; r.name = 'ReasonCard / ' + reason; const tg = r.findOne(n => n.type === 'INSTANCE' && n.mainComponent && n.mainComponent.parent && n.mainComponent.parent.name === 'TagChip'); tg.swapComponent(await A.comp('tag', { Tag: tag, Style: 'Inline on dark' })); return r; };
+A.results = async (name, x, y, seg, o) => { const { f, c } = await A.screen(A.pg, name, x, y, { title: 'Results', subtitle: 'Last 4 weeks · all messes', tab: 'Results', time: o.time || '3:30', moment: o.moment }); await A.seg(c, ['Left over', 'Ran out', 'To check'], seg); return { f, c }; };
+A.reasonPage = async (name, x, y, title, tag, meta) => { const { f, c } = await A.screen(A.pg, name, x, y, { title: '', back: true, tab: 'Results', time: '3:30', inline: true }); c.itemSpacing = 16;
+  await A.t(c, title, 'ML/Large Title', 'ink', { fill: true, name: 'Title' }); const m = A.frame(c, 'Meta', { dir: 'H', gap: 6 }); m.counterAxisAlignItems = 'CENTER'; await A.use(m, 'tag', { Tag: tag, Style: 'Inline on light' }); await A.t(m, meta, 'ML/Secondary', 'ink-secondary'); return { f, c }; };
+A.mealCard = async (parent, meal, nums, chips) => { const m = await A.use(parent, 'mealCard', {}, { Meal: meal, Numbers: nums }); m.layoutSizingHorizontal = 'FILL'; m.name = 'MealCard / ' + meal; const cs = m.findAll(n => n.type === 'INSTANCE' && n.mainComponent && n.mainComponent.parent && n.mainComponent.parent.name === 'FoodChip');
+  for (let i = 0; i < cs.length; i++) { if (chips[i]) { if (chips[i][1]) cs[i].swapComponent(await A.comp('foodChip', { Style: 'Dashed' })); cs[i].findOne(n => n.type === 'TEXT').characters = chips[i][0]; } else cs[i].visible = false; } return m; };
+return A;

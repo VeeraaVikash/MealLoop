@@ -1,16 +1,44 @@
-# MealLoop · STATE (2026-10-16, after run POLISH)
+# MealLoop · STATE (2026-10-16, after run ADMIN-REDESIGN)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and the latest reports are `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "STUDENT REDESIGN 2026-10"), the run logs are in `run_status.md`, and the latest reports are `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st298 (2026-10-16, end of POLISH Q8; 17 pages). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st305 (2026-10-16, end of ADMIN-REDESIGN X10; 18 pages with 12 Admin Redesign). Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
-- **Flow starts (exactly 10):**
+- **Flow starts (exactly 14):**
   - 07: Student · Sign in.
   - 09: Mess staff · Sign in.
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
+  - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run ADMIN-REDESIGN (2026-10-16)
+
+- **New page 12 Admin Redesign** (99 phone frames, built from design/reference/admin_redesign_2026-10/, A01–A14):
+  - Four tabs: Today, Students, Results and More.
+  - Today: DayLine, MessTiles and Needs you.
+  - Headcount: only a headcount goes to the vendor.
+  - Live meal: "not the final count".
+  - Meal report with a ticket; Safety case with a rail.
+  - Students: answers and reminders.
+  - Results: Left over, Ran out and To check, with 8 reason pages and Check next time.
+  - More: Weekly menu, People and access, Outings, Announce, and 14 restyled page-10 copies.
+  - Page 10 and the other role pages are unchanged.
+- **Components (page 03):** AdminTabBar, DayLine, ChainStepper, AdminChip, TagChip, VendorChip, MessTile, ReasonCard, ReasonRow, FoodTile, FoodChip, MealCard, ReportTicket, SafetyRailStep, SafetyRail and StatBars.
+- **Health:**
+  - Contrast: lowest 5.72 : 1.
+  - Mono words: 0.
+  - Lime: at most 3 elements per frame.
+  - Backdrop: 99 / 99 frames.
+  - Small text, targets under 44 pt, truncation, overflow and raw paints: 0 each.
+  - Reach: 78 / 99 frames, 0 dead ends.
+- **Reports:**
+  - admin_redesign/report.md, decisions.md (1–41), checks.md and preflight.md.
+  - Exports: export_admin_redesign/ (99 at 2×).
+  - Tools: adm, x2today, x3head, x4meal, x6res, x8wire and x9chk.
+  - DEMO.md admin walkthrough (14 steps).
+  - Gaps 408–421.
 
 ## Run POLISH (2026-10-16)
 
@@ -26,7 +54,8 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 | 05 Student Dark | 333 | **Stale**: every frame named " · stale" (not rebuilt; redesign/stale_05.md) |
 | 07 Prototype & QA | 305 | Student prototype and state gallery (no start other than Student · Sign in) |
 | 09 Mess Staff | 77 | Staff design and prototype (unchanged) |
-| 10 Admin | 187 | Admin; Menu (AD-5a, + Snacks) and Dishes rebuilt in this run |
+| 10 Admin | 187 | Admin (old); Menu (AD-5a, + Snacks) and Dishes rebuilt in STUDENT-REDESIGN; unchanged since |
+| 12 Admin Redesign | 99 | New admin (ADMIN-REDESIGN): 85 new frames and 14 restyled copies of page-10 frames; 4 flow starts |
 | 13 Guardian | 30 | Guardian mobile web (Orbit backdrop; dates Aug 2024) |
 | 14 Warden | 18 | Warden (Orbit backdrop) |
 | 15 Gate | 23 | Main Gate security (Orbit backdrop except Scan and results) |
@@ -58,7 +87,7 @@ Contrast 0 real failures (lowest 4.88:1); mono words 0; lime ≤ 3 kinds per fra
 
 ## Where things are
 
-- **Gaps:** `prototype_gaps.md`; the latest is 407.
+- **Gaps:** `prototype_gaps.md`; the latest is 421.
 - **Controls with no destination yet:** `still_absent.md`.
 - **Demo walks:** `DEMO.md`.
 - **iOS checklist:** `ios_checklist.md`.
