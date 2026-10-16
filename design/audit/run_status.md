@@ -183,3 +183,11 @@
 | Q7 Spacing and alignment audit | done (NEEDS REVIEW listed) | st297 = st296 on names, text and links (the snapshot does not record sizes or padding); starts 10 | tools/q7audit.js + q7fix.js on 04, 07, 13, 14, 15: gaps snapped 116 / 113 frames, card padding 36 / 35, rows → 56 on 7 / 7, two columns equalised 8 / 7, Attendance dead band 25 → 20; list-card grows reverted (filler). Margin 0 off, centre axis 0 off, type-role sizes 0 off (tab labels exempt). Re-checks: contrast 0 real, targets 0 small, truncation 0, overflow 0; parity 291 / 291. polish/spacing.md; decisions 25–30. |
 | Q8 Wiring, export and docs | done | st298 vs st297: 04 L+6, 07 L+6 (Crowd time skip), all else 0 (17 temporary ×2 export clones on 99 made and removed); starts 10 | reach8: 07 160 / 305, 0 dead ends; Crowd (7 states), Notifications, 6 swipe frames, Credits, Pass Live / Used reached from Home (paths traced); 13 26 / 30, 14 15 / 18, 15 16 / 23. 17 exports at 2× in export_polish/ (README). Contract, gaps 398–407, STATE, MASTER_CONTEXT, DEMO (18-step student walk with swipe and Crowd) updated. Decision 31. |
 | Q9 Final report | done | st298 (no Figma change); starts 10 | polish/report.md: stage table, decisions 1–31, gaps 398–407, NEEDS REVIEW by frame. |
+
+## Run ADMIN-REDESIGN (2026-10-16)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| X0 Preflight | done | st299 = st298 (17 pages, 0 differences); starts 10 | HEAD 3b9d3ee, push dry-run ok, contract ids resolve, pack present (14 images) and committed. Page 10 by family and the restyle sources in admin_redesign/preflight.md. |
+| X1 Foundation | done | st300 vs st299: 03 +17 (16 components + label), all other pages 0; page 12 created (baseline st300, empty); starts 10 | Page "12 Admin Redesign" (after 11). design_intent.md section ADMIN REDESIGN 2026-10. Components on page 03 (flagged): AdminTabBar, DayLine, ChainStepper, AdminChip, TagChip, VendorChip, MessTile (12 phases), ReasonCard, ReasonRow, FoodTile, FoodChip, MealCard, ReportTicket (3), SafetyRailStep, SafetyRail (4 stages), StatBars (2); ProofCard reused. Tools: tools/adm.js. Decisions 1–9. |
+
