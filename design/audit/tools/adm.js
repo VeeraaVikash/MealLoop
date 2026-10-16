@@ -3,7 +3,7 @@
 // A.screen (S.screen + AdminTabBar swap + notes), A.sheet (GlassSheet + grab handle + Close), A.tabSet / A.comp lookups.
 const AF = Object.getPrototypeOf(async function(){}).constructor;
 const S = await new AF('figma', 'args', figma.root.getSharedPluginData('mealloop', 'srh'))(figma, {});
-const A = S;
+const A = S; const baseScreen = S.screen, baseSheet = S.sheet;
 for (const f of [['Inter', 'Regular'], ['Inter', 'Medium'], ['Inter', 'Semi Bold'], ['Inter', 'Bold'], ['JetBrains Mono', 'Medium'], ['JetBrains Mono', 'Bold']]) await figma.loadFontAsync({ family: f[0], style: f[1] });
 A.CID = JSON.parse(figma.root.getSharedPluginData('mealloop', 'adm_ids') || '{}');
 A.t = async (parent, chars, style, colour, o) => { o = o || {}; const t = await S.text(parent, chars, style, colour || 'ink', {}); t.name = o.name || chars.slice(0, 40);
@@ -60,12 +60,13 @@ A.hero = (parent, name, o) => A.card(parent, name, Object.assign({ fill: 'hero-b
 A.comp = async (key, vp) => { const id = A.CID[key]; const n = await figma.getNodeByIdAsync(id); if (n.type !== 'COMPONENT_SET') return n; return n.children.find(c => Object.entries(vp || {}).every(([k, v]) => c.variantProperties[k] === v)) || n.defaultVariant; };
 A.use = async (parent, key, vp, texts) => { const c = await A.comp(key, vp); const i = c.createInstance(); if (parent) parent.appendChild(i); if (texts) { const set = {}; for (const [k, v] of Object.entries(texts)) { const kk = Object.keys(i.componentProperties).find(x => x.split('#')[0] === k); if (kk) set[kk] = v; } if (Object.keys(set).length) i.setProperties(set); } return i; };
 // Admin screen: S.screen with the student tab bar swapped to AdminTabBar (Selected = o.tab).
-A.screen = async (pg, name, x, y, o) => { o = o || {}; const r = await S.screen(pg, name, x, y, { title: o.title, subtitle: o.subtitle, back: o.back, time: o.time || '11:10', noTab: o.noTab, noNav: o.noNav, inline: o.inline });
+A.screen = async (pg, name, x, y, o) => { o = o || {}; const r = await baseScreen(pg, name, x, y, { title: o.title, subtitle: o.subtitle, back: o.back, time: o.time || '11:10', noTab: o.noTab, noNav: o.noNav, inline: o.inline });
   const tb = r.f.findOne(n => n.name === 'Tab Bar'); if (tb && !o.noTab) { const v = await A.comp('tab', { Selected: o.tab || 'Today' }); tb.swapComponent(v); tb.name = 'Tab Bar'; }
   r.c.itemSpacing = o.gap === undefined ? 16 : o.gap;
   if (o.notes !== false) await S.notes(r.f, name, o.moment || ('Wed 14 Aug 2024, ' + (o.time || '11:10')));
   return r; };
 // Sheet over a frame: scrim + GlassSheet (grab handle and Close come with the component) + content stack.
-A.sheet = async (f, title, detent) => { const r = await S.sheet(f, title, detent || 'Medium'); r.c.itemSpacing = 16; return r; };
+A.sheet = async (f, title, detent) => { const r = await baseSheet(f, title, detent || 'Medium'); r.c.itemSpacing = 16; return r; };
 A.fade = (f) => { const tb = f.findOne(n => n.name === 'Tab Bar'); const fd = f.findOne(n => n.name === 'Scroll edge fade'); const c = f.findOne(n => n.name === 'Content'); if (!c) return; const cb = c.y + c.height - (c.paddingBottom || 0); if (fd && tb) fd.visible = cb > tb.y - 19.5; };
+A.fitSheet = (f) => { const sh = f.findOne(n => n.name === 'Sheet'); const sc = f.findOne(n => n.name === 'Sheet Content'); if (!sh || !sc) return; const y = Math.max(60, Math.round(852 - (sc.height + 72 + 44))); sh.y = y; sc.y = y + 72; };
 return A;
