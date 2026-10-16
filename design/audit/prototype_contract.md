@@ -6029,3 +6029,32 @@ The sections above are the contract as it was written, run by run, and are kept 
 - **Back and Close:** Back is on every drill-in. Each sheet's Close returns to the page under it.
 
 **Reachability (reach8, X8):** 78 of 99 frames on page 12 are reached from the four starts. There are 0 dead ends; the 21 frames not reached are states shown by control (gap 421).
+
+## Run FIX-2 (2026-10-16) · student start, To check, report export, menu editing, admin clean-up
+
+**Flow starts: 14** (unchanged). Page 12 keeps its 4 starts. Figma's automatic "Flow N" starts, added while linking, were removed each time.
+
+**R1 · Student start (04 and 07):** Onboarding · Getting your details → (timer) **Home · Not answered**. Skip on Home · Not answered, · Swipe revealed and · Reminder fired → **Home · Skipped**. I'm in → **Home · You're in** (renamed from "Home"). Entry QR → Entry QR, Back returns.
+
+**R2 · Results · To check (F01):** segments Left over / Ran out / To check switch between the three Results frames. Review (Wed lunch) → Meal report · Main · Wed lunch; Review (Tue dinner) → **Meal report · Main · Tue dinner**; Testing → Check next time · Wednesday lunch; Open (North scanner) → **Check next time · North scanner**; Weekly report → Weekly report · This week; Find an older meal → Find a meal.
+
+**R3 · Weekly report (F02, F03):** Back is the prototype Back action (to To check or Left over). Period chips This week / Last week / Month switch between the three frames. Export PDF → **Preparing** → (after 1.2 s) **Report ready (sheet)**; Save to Files → **PDF saved (toast)** → (2 s) report; Share and Close → report. Export CSV → **CSV saved (toast)** → (2 s) report. Send to vendor → **Tell the vendor (sheet) · Weekly summary**; Message, Call and Close → report. The A4 pages **Report PDF · Page 1 / 2** sit in section "Export" and are not linked (they are the file).
+
+**R4 · Edit day (F04):** Weekly menu · Published → Thu 15 → **Edit day · Thu 15 Lunch**. Meal tabs switch Breakfast / Lunch / Snacks / Dinner. On Lunch: star → Highlight changed; veg mark → Veg changed; drag handle (On drag, Smart animate) → Reordering → (1.2 s) Reordered; row drag left → Swipe to delete → Delete → Deleted (toast with Undo); Check word ring → Check this word (sheet) → suggestion → Word checked; Add a dish → Add a dish (sheet) → Curd Rice → Dish added; Copy last Thursday → Copied last Thursday; Tell students switch → Tell students off (and back); Save changes → Saved (or Saved quietly when off) → (2 s) Weekly menu · Published. Every Undo returns to Edit day · Thu 15 Lunch. Back is the prototype Back action (returns to Weekly menu · Published).
+
+**R4 · Change today's dinner (F05):** Weekly menu · Published → **Change today's dinner (sheet)**. Swap a dish → Pick → Replacement → back to the sheet; Add a special → back to the sheet; Remove a dish → Pick → Confirm → back to the sheet. Continue → **Send to students (sheet)** → Send → **Dinner change sent (toast)** → (2 s) Weekly menu · Published. Close on the main sheet → Weekly menu · Published; Close on a sub-sheet → the main sheet; Back on a sub-sheet is the prototype Back action.
+
+**R4 · Student side (07):** the Notifications status bar (demo time skip) → **Notifications · Dinner changed** (11:20 AM); its card → Meals · Wed 14 · Dinner.
+
+**R5 · Retargets after archiving 50 frames (archive_index.md):**
+
+- Headcount Send now → Sent (Sending archived).
+- Headcount, Rice low and Safety case Tell the vendor → Tell the vendor (sheet) · Meal report.
+- Meal report Make it a change · Save → Check next time · Wednesday lunch (Check next time started archived).
+- Safety case Open → Closed (Hold confirmed, Vendor told and the Close case sheet archived).
+- Weekly menu Upload chain (Uploading, Reading, Check Thu 15, Publish sheet) archived; Thu 15 opens Edit day.
+- Today · Dinner status bar → Today · Offline (time skip); Offline status bar → Today · Lunch.
+- Reason · Can't tell why · Left over Wed 14 MealCard → Meal report · Data missing.
+- Spare food → Accepted; History → AD-7d Audit log.
+
+**Reachability (R5 and R6):** 84 / 84 frames on page 12 from the four starts; 0 dead ends; 0 dangling links. This replaces the 78 / 99 of ADMIN-REDESIGN (gap 421).
