@@ -22,3 +22,21 @@ Frames replaced in this run are moved, never deleted, with their label and notes
 | G-3 · Status · Withdrawn | Rebuilt | 2838, 2184 | GV-06 · Withdrawn |
 | G-3 · Status · Declined | Replaced | 3311, 2184 | GV-06 · Sent · Rejected |
 | G-4 · History | Replaced | 0, 4368 | GV-07 · Past answers |
+
+## Section "Warden · archived states" (V3, from page 14)
+
+| Frame | Reason | Links now go to |
+|---|---|---|
+| W-1 · Queue — Decide next | Queue rebuilt around the guardian evidence (W01) | WV-1 · Queue · Live video |
+| W-1 · Queue — Approved | Rebuilt | WV-1 · Approved |
+| W-1 · Ask (sheet), W-1 · No (sheet) | Rebuilt over the new queue | WV-1 · Ask (sheet), WV-1 · No (sheet) |
+| W-2 · Review request | Merged into the queue card | WV-1 · Queue · Live video |
+| W-3 · All requests | Replaced by the queue and History | WV-1 · Queue · Live video |
+| W-1 · Queue (Empty), (Offline) | Rebuilt | WV-1 · Queue · Empty, · Offline |
+| W-1 · Review window closed | Now Escalated · Past deadline | WV-4 · Escalated |
+| W-4 · Escalated | Rebuilt (W04) | WV-4 · Escalated |
+| W-4 · Reassign (sheet), W-4 · Emergency override (sheet) | Not in the new warden app (NEEDS REVIEW) | WV-4 · Escalated |
+| W-4 · Decision recorded | Replaced by the result states | WV-1 · Approved |
+| W-5 · Me | Rebuilt as a drill-in from the WB avatar | WV-5 · Me |
+
+Kept on page 14: W-0 Sign in, Verifying, Confirm profile (now opens WV-1 · Queue · Live video), W-6 Alerts (from Me).
