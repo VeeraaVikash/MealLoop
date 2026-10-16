@@ -172,3 +172,6 @@
 |---|---|---|---|
 | Q0 Preflight | partly | st291 start = st290 | Reference pack design/reference/polish_2026-10 (P01–P04) missing from the repo and uploads: Q2, Q4, Q5, Q6 blocked (and Q7–Q9 after them). polish/decisions.md 1. |
 | Q1 Credits coupons | done | st291: 04 ~5 L+4 L−4, 07 ~5 L+4 L−5 (old Back behind the Balance issue scrim), 99 +10 (before-Q1 copies); starts 10 | Original CouponCard ticket cards (Juice, Ice cream, Biryani coupon locked "80 more") back on Credits, Getting a ticket, Failed, Offline (04, 07); points hero kept; Get links moved; Balance issue background = current Credits. Mono 0, targets 0 small on 07. Decisions 2–6. |
+| Q3 Highlight chip | done | st292: 04 ~50, 07 ~50, 10 ~5, 03 ~1; links 0; starts 10 | HighlightChip: equal padding, 6 pt gap, fixed 18 pt Info circle with the i centred; 112 student instances verified, none detached. Decisions 7–8. |
+| Q2, Q4, Q5, Q6 | skipped | — | Blocked: reference images P01–P04 (design/reference/polish_2026-10) missing. |
+| Q7, Q8, Q9 | not started | — | Stopped after Q3 under the missing-pack rule; they audit and document Q2–Q6. |
