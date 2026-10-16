@@ -325,3 +325,41 @@ Source: design/reference/admin_redesign_2026-10 (A01–A14 drawn 292 pt wide; ×
 **Sample calendar.** Wed 14 Aug 2024 (week Mon 12 – Sun 18, the student week). Food head Devi (DR). Lunch headcount due 11:30; Today at 11:10 AM; live lunch 1:40 PM; lunch closes 2:00 PM; dinner headcount due 4:30 PM. Safety case reported 12:45 PM (open 55 min at 1:40 PM). Staff Ravi (kitchen); student Aarav ••2231 (the safety case reporter, from the data file).
 
 **Brand.** OrbitBackdrop on every admin frame; Brand rule V2 (lime on light only as an ink-outlined chip or arc, never lime text on white, at most three lime elements per frame beyond the backdrop); mono only for numbers, times and units; readability standard; BackButton standard; sheets have a grab handle and Close.
+
+## GUARDIAN VIDEO APPROVAL 2026-10 (run GUARDIAN-VIDEO, 2026-10-16)
+
+Source: design/reference/guardian_2026-10 (G00–G08, W01–W04, S01 drawn 292 pt wide; × 1.346 for 393 pt) and `data/guardian_video_spec.md`. It replaces slide-to-approve on page 13 and rebuilds page 14 Warden around the evidence.
+
+**The flow.**
+1. The guardian opens the SMS link (mobile web, OTP). First use only: **Before you record** (consent).
+2. **Choose:** "I accept" (record a 10-second video) or "I reject" (one tap, optional reason chips Exam soon / Not safe / Other, no video).
+3. **Record:** live front camera only (no upload, no gallery), at most 10 s, at least 4 s ("Too short, try again"). A phrase and a random 3-digit code are shown: "I accept Aarav's outing. Code 4 7 2." A new code for every request and every try. Countdown ring 0–10 s. The server stores the time.
+4. **Check (server):** speech-to-text in the chosen language (English, Tamil, Hindi first). The phrase must match (tolerant of accent) and the 3 digits must match exactly. Match → sent as **Video, checked**.
+5. **No match:** "We couldn't hear that", up to 3 tries. After the third: **Send video to the warden** → the last video goes as **Video, please watch** (no checks).
+6. **Upload fails** (camera works, network doesn't, after 2 retries): **Take a photo of your face instead** → live photo, type "I accept <code>", and the 6-digit code sent to the guardian's phone → **Photo and text, no video**.
+7. **No working camera:** the guardian cannot approve in the app. "Ask the warden to call me" puts the request in Escalated as **No camera**; the warden phones the guardian and records **Confirmed by call** with a note.
+8. **Never text-only.** The guardian's face is always captured (video or live photo). The only exception is the call path, which the warden records.
+9. **Sent:** the answer, the method and the time; Withdraw approval, Call the warden, Past answers.
+
+**Four evidence methods (MethodTag).**
+
+| Method | Tag | Checks shown to the warden |
+|---|---|---|
+| Video, auto-checked | Live · 0:09 (lime, ink outline) | Phrase, Code, Number |
+| Video, not matched after 3 tries | Please watch (outlined) | none |
+| Photo and text (upload failed) | Photo and text (dashed) | Code, Number (typed phrase shown) |
+| Phone call by the warden | Confirmed by call (dashed) | none; the warden's note |
+| Rejected by the guardian | No video (quiet) | none |
+
+**What the warden sees (own block only).** Queue, one card at a time, closest deadline first: decide-by ring, student (initials, name, masked ID), outing (day, times, place), the evidence block with its MethodTag, transcript and checks, "Past answers: N by video". Actions: Approve (signs the pass), Ask (sheet: what to change), No (sheet: reason). Out now (count, due back, late; rows with Late first), Escalated (past deadline, please watch, no camera → Call / Watch), History (own decisions with the method).
+**Not visible to the warden:** other blocks, meals, credits, spending, feedback, the raw video after 30 days. **Not visible to the student:** any video or photo; the student sees only "Guardian approved by video · <time>" (or by photo and text, by call) or "Your guardian said no".
+
+**Privacy and retention (draft, OWNER).** Recording a guardian's face and voice needs SRM approval and written consent wording. Retention draft **30 days**; after that only the transcript and a fingerprint stay ("Video deleted after 30 days. Transcript kept."). Access: warden role only, audit-logged.
+
+**Wording.** "Live video only", "Live photo only", "checked", "please watch". Never claim a video "cannot be manipulated": the random code, live-only capture, server time and 10-second cap make a replay fail, but it is evidence, not proof.
+
+**Languages.** The language pill shows one word (தமிழ்). The language sheet lists the three names (English, தமிழ், हिन्दी). No other Tamil or Hindi text in frames; translations need a fluent writer (OWNER).
+
+**Brand.** OrbitBackdrop on every Guardian and Warden frame except the dark recording screen; Gate full-lime results keep no backdrop. Lime on light only as an ink-outlined chip or arc; at most 3 lime elements per frame. Mono only for numbers, times and units (the code digits, REC 0:07, 0:09). Guardian and Gate primary buttons 56 pt; all targets at least 44 pt; text at least 12 pt.
+
+**Sample.** Aarav ••0238, Express Avenue Mall, Sat 17 Aug 2024, 2–8 PM, Shopping. Guardian +91 98••• ••214, reply by Fri 11 PM; video sent Fri 7:42 PM, code 4 7 2, 0:09. Warden WB, Block B, decides by Sat 12 PM.

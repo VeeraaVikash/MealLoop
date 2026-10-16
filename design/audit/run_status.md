@@ -218,3 +218,4 @@
 | Stage | Status | Snapshot | Notes |
 |---|---|---|---|
 | V0 Preflight | done | st313 = st312 (18 pages, 0 differences); starts 14 | Pack guardian_2026-10 committed (f636ca5, 14 images). Inventory in guardian_video/preflight.md: 13 Guardian 30 frames, 14 Warden 18, 15 Gate 23, student outing 33 + 33. |
+| V1 Foundation | done | st314 vs st313: 03 +10 (9 component sets + label); all other pages 0; starts 14 | design_intent section GUARDIAN VIDEO APPROVAL 2026-10. Components on 03 (flagged): MethodTag, StepList, WardenTabBar4, OutNowRow, HistoryRow, PhraseCard, DecisionButtons, VideoRecorder, EvidenceCard. Reused: OrbitBackdrop, AppWordmark, GlassSheet, StatusBar, symbols. |
