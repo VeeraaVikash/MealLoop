@@ -22,3 +22,13 @@ Frames replaced in this run are moved, never deleted, with their label and notes
 | MS-A10 · Sent to Ravi | Replaced by the Sent to Ravi toast and Open problems | DS-5 · Report a problem — Sent to Ravi (toast) |
 
 Kept on page 09 and shared with the other roles: MS-0 Sign in, Verifying, Confirm profile; MS-1 (rebuilt as Choose your role); MS-2 Start shift for Pass desk, Kitchen, Supervisor; MS-E Alerts; MS-G Me.
+
+## Pack v2 (D6, 2026-10-17)
+
+Moved to the same section on page 99, renamed "(before DOOR-SCANNER v2)", links stripped. Every link on page 09 that pointed at them was retargeted first (38 links, 0 left dangling).
+
+| Frame | Reason | Links now go to |
+|---|---|---|
+| DS-8 · Alerts | Replaced by the D17 Alerts pages (SOS card + at most three quiet rows; the extra footnote and the SOS row are gone) | By the page's state: DS-8 · Alerts — SOS active / SOS claimed by you / SOS checked by you / During the meal / After the meal |
+| DS-8 · Alerts — Empty | Replaced (new empty text "Nothing new. Alerts from your supervisor show here.") | DS-8 · Alerts — Empty (pack v2) |
+| DS-8 · Me | Replaced by D18 (the black profile card and the row hints are gone; tiles and Language added) | DS-8 · Me (pack v2) |
