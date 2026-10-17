@@ -257,3 +257,9 @@ The brief was resent with an 18-image pack. D01–D16 are the same drawings as t
 | D7 Spacing and checks | partly | st333 vs st332: all pages 0 (row padding and the empty-state height are not seen by the snapshot); starts 14 | door_scanner/checks_r2.md: 8 new frames: contrast ≥ 5.72, mono 0, lime > 3 0, small 0, targets 0, truncation 0, overflow 0, raw 0, banned 0. Fixed: Me rows 57 / 58 → 56; Alerts — Empty band 46 → 24. Partly: bands 89–368 on the Alerts lists and Me (short by spec; NEEDS REVIEW, as decision 38). |
 | D8 Wiring, export and docs | done | st334 vs st333: all pages 0 (8 temporary export clones made and removed); starts 14 | Reach: Door Scanner 44 / 44 from Mess staff · Sign in, 0 dead ends, 0 dangling (page 09: 97 / 107, the 10 unreached are other roles' states by control). 8 exports at 2× (D17_* ×7, D18_me); the 3 superseded DS_ files moved to export_door_scanner/archive_before_v2/. Contract section, gaps 478–485, STATE, MASTER_CONTEXT, DEMO (step 14), tools README. |
 | D9 Report | done | st334 (no Figma change) | door_scanner/report_r2.md: stage table, FUNCTIONAL / SIMULATED / NEEDS BACKEND for Alerts and Me, decisions 42–53, conflicts, gaps 478–485, NEEDS REVIEW by frame name, end checks. |
+
+## Run PASS-DESK (2026-10-17)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| Q0 Preflight | done | st335 = st334 (18 pages, 0 differences); starts 14 | HEAD 25413e3; push dry run up to date. Pack pass_desk_2026-10 copied from the upload and committed (14ec9ea, 17 images). Inventory in pass_desk/preflight.md: Pass Desk family 12 frames on page 09 (MS-2 ×1, MS-H ×1, MS-B ×10); shared: sign-in ×3, role selection, the Pass Desk password page, MS-E ×3, MS-G ×6. |
