@@ -225,3 +225,9 @@
 | V5 Spacing and alignment | done | st318 vs st317: 03 ~1 (DecisionButtons, EvidenceCard constraints, GateVerify); 13 / 14 / 15 0 (snapshot sees text and links only; sizes changed); all other pages 0; starts 14 | spacing.md: bands ≤ 24 on every non-scrolling frame except W-6 Alerts (NEEDS REVIEW); paddings, rows, gate buttons and photo, titles 34. Checks clean on 13 / 14 / 15. Decisions 30–34. |
 | V6 Wiring, export and docs | done | st319 vs st318: 13 ~2, 14 ~1 (post-V5 text fixes: Meera transcript, guardian number, sign-in steps, sheet heights); all other pages 0; starts 14 | Reach: 13 43 / 44 (G-M reference), 14 26 / 26, 15 16 / 23 (7 GA-6 results by control), 07 all new frames; 0 dead ends, 0 dangling on 13 / 14 / 15. 86 exports at 2× in export_guardian_video/ + README (temp clones removed). Contract section, gaps 436–457 (OWNER 436–441), STATE, MASTER_CONTEXT, DEMO (guardian 15 steps, warden 12 steps), tools README + gvexp.js. Decisions 35–40. |
 | V7 Report | done | st319 (no Figma change) | guardian_video/report.md: stage table, decisions 1–40, conflicts, gaps 436–457, NEEDS REVIEW by frame name, end checks. |
+
+## Run DOOR-SCANNER (2026-10-17)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| D0 Preflight | done | st320 = st319 (18 pages, 0 differences); starts 14 | Pack door_scanner_2026-10 committed (4ffe625, 16 images). Inventory in door_scanner/preflight.md: Door Scanner family 14 frames on page 09; 13 shared frames (sign-in, role selection, Alerts, Me). |
