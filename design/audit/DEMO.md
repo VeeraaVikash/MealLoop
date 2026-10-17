@@ -59,7 +59,7 @@ Demo shortcut (2026-10-07): every MS-H home has a round Back at the top left tha
 13. **Alerts** tab → **MS-E1 · Alerts** → "Devi approved Sambar 50 L" → **MS-E2 · Alert detail**.
 14. Home → **End shift** → **MS-G6 · End shift summary** → **Done** → MS-0 · Sign in.
 
-### Door Scanner (page 09, from Mess staff · Sign in) · 14 steps (DOOR-SCANNER, 2026-10-17)
+### Door Scanner (page 09, from Mess staff · Sign in) · 14 steps (DOOR-SCANNER, 2026-10-17; step 14 updated for pack v2)
 
 Hidden hotspots are SIMULATED server or device events; every Door Scanner frame has a "Simulated:" note under its Sample note. Sample: Main Mess, Lunch 12–2 PM, Wed 14 Aug 2024; door staff SK; supervisor Ravi.
 
@@ -76,7 +76,7 @@ Hidden hotspots are SIMULATED server or device events; every Door Scanner frame 
 11. **Report a problem** → any choice → **Sent to Ravi** (toast) → (2 s) **Open problems — After your report** (Waiting, Seen, Fixed).
 12. MealLoop wordmark (**an SOS starts**) → SOS tab appears → tap it → **SOS panel — Not claimed** → **I'll go and check** → **Claimed by you** → **Mark as checked** → toast "Marked as checked. Ravi will close it." → Home. (Back to scanning → lime tab; I can't go after all → Not claimed.)
 13. Status bar, left part (**Supervisor ends the meal**) → **Home — After the meal** (774; Entered without voting 6; Open problems 1; Report a problem).
-14. **Alerts** tab → SOS card + normal alerts (status bar → Alerts — Empty); **Me** tab → Switch role / Help / Sign out.
+14. **Alerts** tab (pack v2, D17): from Home during the meal → **Alerts — During the meal** (Earlier: three rows; tap the status bar = an SOS starts → **Alerts — SOS active** with the SOS card → **I'll go and check** → SOS panel — Claimed by you). After the meal → **Alerts — After the meal** → **See all · 5 alerts** → **All alerts** → Back. Before the meal → **Alerts — Empty**. **Me** tab (D18) → Switch role → Choose your role; Language; Help; Sign out → Sign in.
 
 ## Admin · Sign in (page 10)
 

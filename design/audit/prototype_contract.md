@@ -6120,3 +6120,27 @@ The sections above are the contract as it was written, run by run, and are kept 
 **Archive retargets:** 14 old Door Scanner frames went to page 99 "Door Scanner · archived states" (door_scanner/archive_index.md). No link outside them pointed at them after MS-1 was rebuilt.
 
 **Reachability (D8):** Door Scanner family 40 / 40 reached from Mess staff · Sign in, 0 dead ends, 0 dangling links. Page 09 overall 92 / 102; the 10 unreached are Pass Desk, Kitchen and Supervisor states shown by control, unchanged by this run.
+
+## Run DOOR-SCANNER · pack v2 (2026-10-17) · Alerts (D17) and Me (D18)
+
+**Flow starts: 14** (unchanged; no automatic start was created).
+
+**Alerts tab, by the page it is tapped from** (every Door Scanner page has the StaffTabBar3):
+
+| From | Alerts tab opens |
+|---|---|
+| Home — Before the meal | **Alerts — Empty** ("Nothing new. Alerts from your supervisor show here.") |
+| Home — During, Camera denied, Low light, Offline; Type the last 4 digits (4 sheets); Open problems — After your report; Entered without voting — During | **Alerts — During the meal** (Earlier: three rows) |
+| Home — After the meal; Open problems (D16); Entered without voting (D15) | **Alerts — After the meal** (three rows + See all · 5 alerts) |
+| Home — During · SOS active; SOS panel — Not claimed | **Alerts — SOS active** (D17) |
+| SOS panel — Claimed by you; Home — During · SOS claimed by you | **Alerts — SOS claimed by you** |
+| Home — Marked as checked (toast) | **Alerts — SOS checked by you** |
+
+**On the Alerts pages:** SOS active: I'll go and check → SOS panel — Claimed by you; the card → SOS panel — Not claimed; Home tab → Home — During · SOS active. Claimed: card and Open the SOS → SOS panel — Claimed by you; Home tab → Home — During · SOS claimed by you. Checked: no card action; Home tab → Home — During · SOS active (the case stays open). Problem seen → Open problems — After your report (during) or Open problems (after). After the meal: See all · 5 alerts → **All alerts** (Back → Alerts — After the meal). During the meal: status bar = an SOS starts → Alerts — SOS active. Empty: status bar = the supervisor starts the meal → Alerts — During the meal. Me tab → Me from every Alerts page.
+
+**Me (D18):** Switch role → MS-1 · Choose your role; Language → MS-G4 · Language (shared); Help → MS-G5 · Help (shared); Sign out → MS-0 · Sign in; Home tab → Home — During the meal; Alerts tab → Alerts — During the meal. Me tab on every Door Scanner page → this Me.
+
+**Archive retargets:** DS-8 · Alerts, Alerts — Empty and Me (first run) went to page 99 "Door Scanner · archived states" with links stripped; 38 links on page 09 were retargeted first (door_scanner/archive_index.md).
+
+**Reachability (pack v2 D8):** Door Scanner family: all 44 frames in the five Door Scanner sections and the new Alerts and Me section reached from Mess staff · Sign in; 0 dead ends; 0 dangling links. Page 09 overall 97 / 107; the 10 unreached are the same Pass Desk, Kitchen and Supervisor states shown by control.
+

@@ -69,3 +69,11 @@ The old `filltool.js` and `densitytool.js` were page-10 only and are kept for hi
 | `dschk` (plugin data only) | gvchk / x9chk on a list of frame IDs (`{ ids }`). |
 | `dsspace` (plugin data only) | gvspace on a list of frame IDs; tolerates mixed corner radius and mixed font size. |
 | `dsexp` (plugin data only) | gvexp reading `mealloop/ds_export_plan` (40 Door Scanner exports). |
+
+## DOOR-SCANNER pack v2 tools (2026-10-17)
+
+| Tool | What it does |
+|---|---|
+| `ds2comp.js` | D1 builder: SOSAlertCard (Not claimed / Claimed by you / Checked by you) and AlertRow (Done / Seen / Reminder / See all; Title, Time, Line) on page 03; IDs in `mealloop/ds_ids` (alertCard, alertRow). Run once. |
+| `ds2b.js` (`mealloop/ds2b`) | Page builders on top of `dsb`: `sec2()` section "Door Scanner · Alerts and Me (pack v2)", `alerts(sec, name, x, {card, rows, seeAll, empty, back})`, `me(sec, name, x)`, `tabLinks(f, {Home, Alerts, Me})`, `fixChrome(f)` (keeps chrome and hotspots fixed). Frame IDs in `mealloop/ds_frames` (a2Sos, a2Claimed, a2Checked, a2During, a2After, a2All, a2Empty, me2). |
+| `ds2_export_plan` (plugin data) | The 8 pack-v2 exports. The figma.com asset host is blocked here, so captures are taken with `get_screenshot` (base64) and the saved PNG copied. |

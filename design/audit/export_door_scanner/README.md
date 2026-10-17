@@ -43,6 +43,15 @@ How they were made: the stored tool `dsexp` (gvexp reading `mealloop/ds_export_p
 | D15_entered_without_voting_during@2x.png | DS-6 · Entered without voting — During the meal | 2474:3886 |
 | D16_open_problems@2x.png | DS-6 · Open problems | 2474:3490 |
 | D16_open_problems_after_report@2x.png | DS-6 · Open problems — After your report | 2474:3613 |
-| DS_alerts@2x.png | DS-8 · Alerts | 2476:4229 |
-| DS_alerts_empty@2x.png | DS-8 · Alerts — Empty | 2476:4385 |
-| DS_me@2x.png | DS-8 · Me | 2476:4501 |
+| D17_alerts@2x.png | DS-8 · Alerts — SOS active (pack v2) | 2512:3778 |
+| D17_alerts_sos_claimed@2x.png | DS-8 · Alerts — SOS claimed by you | 2512:172793 |
+| D17_alerts_sos_checked@2x.png | DS-8 · Alerts — SOS checked by you | 2512:172948 |
+| D17_alerts_during_meal@2x.png | DS-8 · Alerts — During the meal | 2512:173100 |
+| D17_alerts_after_meal@2x.png | DS-8 · Alerts — After the meal (See all) | 2512:173241 |
+| D17_alerts_all@2x.png | DS-8 · All alerts | 2512:173386 |
+| D17_alerts_empty@2x.png | DS-8 · Alerts — Empty | 2512:173545 |
+| D18_me@2x.png | DS-8 · Me (pack v2) | 2512:173663 |
+
+## Pack v2 (2026-10-17)
+
+The pack was resent with D17 Alerts and D18 Me. The three `DS_` files (old Alerts, Alerts empty, Me, now archived on page 99) moved to `archive_before_v2/`; eight new files replace them (`D17_…`, `D18_me`), 45 PNGs in the folder's top level in all. The figma.com asset host is blocked by this session's network policy, so each 2× clone was captured inline and the saved PNG copied here (786 × 1704 px); the clones were removed afterwards (plan in `mealloop/ds2_export_plan`).
