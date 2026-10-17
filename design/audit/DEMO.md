@@ -46,12 +46,11 @@ Sample day: **Wed 14 Aug 2024, 7:00 AM**, Aarav ••0238, Main Mess, 120 pts. 
 Demo shortcut (2026-10-07): every MS-H home has a round Back at the top left that returns to **MS-1 · Pick your job**, so the presenter can switch jobs in one tap. Its link sits on a 56 pt hit area. Re-checked hop by hop in the 2026-10-08 brand audit: all 91 hops in the three walks pass.
 
 1. **MS-0 · Sign in**: tap **Sign in with SRM**. **MS-0 · Verifying** moves on by itself to **MS-0 · Confirm profile** (Ravi, "Mess staff · Main Mess").
-2. **Yep, that's me** → **MS-1 · Pick your job** (Door scanner, Pass desk, Kitchen, Supervisor).
-3. **Door scanner** → **MS-2 · Start shift — Door scanner** → **Start shift** → **MS-H · Home — Door scanner** → **Scan** → **MS-A1 · Scan** → tap the viewfinder → **MS-A2 · Welcome** (Aarav ·0238) → Scan next.
-4. On Scan tap **Can't scan?** → **MS-A7** keypad → **Check ID** → Welcome (Wednesday pass). Keys 1 / 2 / 3 / 0 show Already in / Not valid / Wrong meal / Offline.
-5. **Me** tab → **MS-G1 · Me** → **Switch job** → Pick your job → **Pass desk** → Start shift → **MS-H · Home — Pass desk** → **Pass check** → **MS-B1 · Pass check (Live)** (7A3F, lime) → it changes by itself to K2M9, blue.
+2. **Yep, that's me** → **MS-1 · Choose your role** (Door Scanner, Pass Desk, Kitchen Staff, Supervisor; rebuilt in DOOR-SCANNER 2026-10-17).
+3. **Door Scanner** → see the Door Scanner walk below (the old MS-2 / MS-H / MS-A door frames are archived on page 99).
+4–5. **Me** tab → **MS-G1 · Me** → **Switch job** → Choose your role → **Pass Desk** → **Password — Pass Desk** → any digit → Start shift → **MS-H · Home — Pass desk** → **Pass check** → **MS-B1 · Pass check (Live)** (7A3F, lime) → it changes by itself to K2M9, blue.
 6. **Check ID** → **MS-B2** → **MS-B3 · Has a Wednesday pass**. Then home → **Pass problem** → **MS-B6** → **Ask for a reissue** → **MS-B7 · Sent to Devi**.
-7. Me → Switch job → **Supervisor** → Start shift → **MS-H · Home — Supervisor** → **How much to cook** → **MS-C1 (Plan ready)** → **Sambar** → **MS-C2 · Dish detail — Sambar** → Back → **Got it, cooking** → **MS-C1 (Confirmed)**.
+7. Me → Switch job → **Supervisor** → **Password — Supervisor** → any digit → Start shift → **MS-H · Home — Supervisor** → **How much to cook** → **MS-C1 (Plan ready)** → **Sambar** → **MS-C2 · Dish detail — Sambar** → Back → **Got it, cooking** → **MS-C1 (Confirmed)**.
 8. Home → **Change the plan** → **MS-D1** → stepper + → **Save** → **MS-D2 · Waiting for Devi** (big change) or **Change saved — Devi told**.
 9. Home → **Running out?** → **MS-C3** → Sambar, 12 L → **Send alert** → **MS-C3 · Running out? — Sent**.
 10. Home → tap the status bar (time skip to 1:41 PM) → **MS-H · Home — Supervisor (Alert)** → **Open alert** → **MS-F1 · Confirm hold — 1 Stop** → **I've stopped serving** → **MS-F2 · 2 Check** → **MS-F3 · 3 Done** → Home.
@@ -59,6 +58,25 @@ Demo shortcut (2026-10-07): every MS-H home has a round Back at the top left tha
 12. Home → **Spare food** → **MS-C8 (Accepted)** → **Log pickup** → **MS-C8 (Collected)**.
 13. **Alerts** tab → **MS-E1 · Alerts** → "Devi approved Sambar 50 L" → **MS-E2 · Alert detail**.
 14. Home → **End shift** → **MS-G6 · End shift summary** → **Done** → MS-0 · Sign in.
+
+### Door Scanner (page 09, from Mess staff · Sign in) · 14 steps (DOOR-SCANNER, 2026-10-17)
+
+Hidden hotspots are SIMULATED server or device events; every Door Scanner frame has a "Simulated:" note under its Sample note. Sample: Main Mess, Lunch 12–2 PM, Wed 14 Aug 2024; door staff SK; supervisor Ravi.
+
+1. **MS-0 · Sign in** → Sign in with SRM → Verifying → Confirm profile → **Yep, that's me** → **MS-1 · Choose your role**.
+2. **Door Scanner** → **What you do (sheet)** → **Continue** (or **Don't show this again**) → **Password — Door Scanner**. (Tap the status bar = a wrong try → **Wrong** "2 tries left"; status bar again → **Locked** "Ask your supervisor to reset it".)
+3. Tap any digit → **Home — Before the meal** ("Scanning opens at 12:00 PM", no count).
+4. Tap the status bar (**Supervisor starts the meal**) → **Home — During the meal** (Meal in progress · 55 min, camera card, Recorded in 714, Type ID, Report a problem).
+5. Camera card, top-left → **Entry recorded** (full lime, Aarav ••0238, 715 +1) → back to the camera after 1 s (or Scan next).
+6. Camera card, top-middle → **Entry recorded — No meal response** (Dev ••0190, same screen) → **See the list** → **Entered without voting — During the meal** (3 so far) → Back.
+7. Camera card, top-right → **Already scanned** (first scanned 12:55 PM, count stays 715) → Scan next. Bottom-left → **QR not recognised**; bottom-middle → **Wrong meal** ("This QR is for Dinner.").
+8. **Type the last 4 digits** (from Type ID or a result page) → sheet: key **2** → One match (Aarav) → **Record entry** → Entry recorded; key **1** → Several matches → **Dev**; key **9** → No match → Try again. Tap the sheet's status bar → **Meal ended during a scan** → Back to Home.
+9. Camera card, bottom-right → **Can't check right now** ("This entry is NOT recorded") → Try again → **Home — Offline** (banner) → Type ID → **Type the last 4 digits — Offline** (Record entry disabled) → tap the status bar = connection back.
+10. Torch → **Low light** (torch on); the meal chip → **Camera denied** → Open Settings → back to During.
+11. **Report a problem** → any choice → **Sent to Ravi** (toast) → (2 s) **Open problems — After your report** (Waiting, Seen, Fixed).
+12. MealLoop wordmark (**an SOS starts**) → SOS tab appears → tap it → **SOS panel — Not claimed** → **I'll go and check** → **Claimed by you** → **Mark as checked** → toast "Marked as checked. Ravi will close it." → Home. (Back to scanning → lime tab; I can't go after all → Not claimed.)
+13. Status bar, left part (**Supervisor ends the meal**) → **Home — After the meal** (774; Entered without voting 6; Open problems 1; Report a problem).
+14. **Alerts** tab → SOS card + normal alerts (status bar → Alerts — Empty); **Me** tab → Switch role / Help / Sign out.
 
 ## Admin · Sign in (page 10)
 

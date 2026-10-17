@@ -40,3 +40,6 @@
 | 36 | D7 | The torch-on state is a white button (was lime): with the MealLoop mark, the meal chip and the brackets, a lime torch made 4 lime elements. | At most 3 lime elements. |
 | 37 | D7 | New frame **DS-2 · Type the last 4 digits — Offline** (sheet over Home offline): the typed ID cannot be checked, Record entry is disabled, "This entry is NOT recorded". Home (offline) Type ID and Can't check right now → Type the last 4 digits now open it; tap the status bar = connection back. Without it, the offline path could reach Entry recorded. | Never show success for an unverified entry. |
 | 38 | D7 | Lists, Alerts, Me and Report a problem keep their natural height (bands 38–295) and are listed under NEEDS REVIEW instead of growing cards. | Max 2 fix attempts; not safe to auto-fix. |
+| 39 | D8 | Code boxes on the password and Type sheets now fill the row (they were 70 pt wide and left a 38 pt gap on the right); found while reviewing the exports. | Visual check against D03 / D06. |
+| 40 | D8 | Exports: 40 files at 2× named like the reference images (D01…D16 with a state suffix; DS_ for Alerts, Alerts empty and Me, which have no reference image). | Brief D8. |
+| 41 | D8 | DEMO.md: the Mess staff walk now goes through Choose your role and the shared password; a new 14-step Door Scanner walk covers every outcome and lists the hidden hotspots. | Brief D8. |

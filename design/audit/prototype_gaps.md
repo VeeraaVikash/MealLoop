@@ -1113,3 +1113,28 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 455 | 13 / 14 / 07 status-bar time skips | Demo shortcuts for server outcomes: Choose → Deadline passed, Before you record → Camera blocked, Ready → Too dark, Try 1 → Too short, Uploading → Upload failed, Checking → Retry, Sent → Pass ready; Queue → Offline, Approved → Empty; 07 tracker variants. | Info | Logged |
 | 456 | 15 GA-6 results | 7 results (Already exited, Not valid, Pass withdrawn, Too early, Too late, Offline, Emergency exit recorded) are shown by control; reach 16 / 23, 0 dead ends. | Info | Logged |
 | 457 | 05 Student Dark | None of the GUARDIAN-VIDEO student changes (S01) are applied; page 05 stays stale (extends 406). | Medium | Open (next run) |
+
+## Run DOOR-SCANNER (2026-10-17)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 458 | 09 DS-1 Home (Before, During, After), Meal ended during a scan | **Shared meal state needs a backend.** The supervisor's start and end of the meal must reach every staff phone in that mess (Door Scanner, Pass Desk). In Figma it is SIMULATED by invisible status-bar hotspots. | High | Open (OWNER) |
+| 459 | 09 DS-7 SOS tab and panel, DS-8 Alerts | **SOS routing needs a backend:** who receives an SOS, how a claim ("I'll go and check") and "Checked by the door" reach Ravi and the kitchen team, and how the case closes. SIMULATED. | High | Open (OWNER) |
+| 460 | 09 DS-1 Home — Offline, DS-3 Can't check right now, DS-2 Type — Offline | **Offline policy:** never record (drawn) or queue and sync later. "Entries waiting 0" is shown; there is no queue in this version. | High | Open (OWNER) |
+| 461 | 09 DS-2 Type the last 4 digits — Several matches | **Last-4-digit ambiguity:** 4 digits can match more than one of about 3,500 students; the sheet lists the matches and greys out students already recorded. Undecided: whether to show more of the ID, the block or a photo. | Medium | Open (OWNER) |
+| 462 | 09 DS-6 Entered without voting, Home after | **Who can see "Entered without voting"** (draft: the door and the supervisor). Undecided: the admin, the warden, the student. | Medium | Open (OWNER) |
+| 463 | 09 SOS tab (Door Scanner only) | **Do Pass Desk and Kitchen adopt the same SOS tab and panel?** Their screens are unchanged in this run. | Medium | Open (OWNER) |
+| 464 | 09 MS-0 Sign in → MS-1 → Password | **Shared role password after the SRM sign-in.** The flow start (SRM sign-in) is kept, so staff sign in and then type the shared role password. Undecided: whether the SRM sign-in stays, who sets, rotates and resets the role passwords. | Medium | Open (OWNER) |
+| 465 | 09 Home — SOS active / claimed, Marked as checked, both SOS panels | Lime > 3 by the checker (4–7): the spec's SOS tab has three lime parts (outline, badge, icon) and the MealLoop mark is lime. Counted as one control here (checks.md). | Low | Open (NEEDS REVIEW) |
+| 466 | 09 DS-3 Already scanned, Can't check right now | First scanned 12:55 PM (D08: 12:18 PM) and last update 12:54 PM (D10: 12:41 PM), one calendar with Entry recorded at 12:55 PM (decision 22). | Low | Open (NEEDS REVIEW) |
+| 467 | 09 DS-3 QR not recognised, Wrong meal, Can't check right now | The black primary button is at the bottom (y 754) with the outline button above it; D09 / D10 draw the black one on top (decision 23). | Low | Open (NEEDS REVIEW) |
+| 468 | 09 DS-3 Entry recorded — No meal response | One extra line and a "See the list · 3 so far" link on the otherwise identical Entry recorded screen (decision 20). | Low | Open (NEEDS REVIEW) |
+| 469 | 09 DS-1 Home — During | The Recorded in tile stays at 714 after a simulated scan; the result screens show 715 (decision 21). | Info | Logged |
+| 470 | 09 DS-5 Sent to Ravi (toast), Open problems — After your report | All three report choices share one toast frame; the list shows "Crowd at the door" as the new problem (decision 26). | Low | Open (NEEDS REVIEW) |
+| 471 | 09 Report a problem, Entered without voting (both), Alerts, Me | Empty band above the tab bar / safe area 38–295 pt on short lists (checks.md). | Low | Open (NEEDS REVIEW) |
+| 472 | 09 DS-6 Open problems | Adds Seen and Fixed rows and a Report a problem button that D16 does not draw (decision 27). | Low | Open (NEEDS REVIEW) |
+| 473 | 09 Door Scanner Homes | SK initials are white, not lime as D04 draws them (decision 7). | Low | Open (NEEDS REVIEW) |
+| 474 | 09 / 03 RoleRow, What you do sheet | Kitchen pot and Supervisor shield are drawn icons; Pass Desk uses the Symbols ticket. | Info | Logged |
+| 475 | 09 Door Scanner hotspots | Invisible hotspots (status bar left / right, wordmark, meal chip, camera zones, torch, password status bar, sheet status bars) are demo shortcuts for server and device events; each frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
+| 476 | 09 MS-E Alerts, MS-G Me | The shared Alerts and Me (kitchen content) stay for the other roles; the Door Scanner has its own Alerts, Alerts — Empty and Me. | Info | Logged |
+| 477 | 05 / 11 | Not touched (out of scope). | Info | Logged |

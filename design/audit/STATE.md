@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-16, after run GUARDIAN-VIDEO)
+# MealLoop · STATE (2026-10-17, after run DOOR-SCANNER)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "GUARDIAN VIDEO APPROVAL 2026-10"), the run logs are in `run_status.md`, and the latest reports are `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "DOOR SCANNER 2026-10"), the run logs are in `run_status.md`, and the latest reports are `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st319 (2026-10-16, end of GUARDIAN-VIDEO V6; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st328 (2026-10-17, end of DOOR-SCANNER D8; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,16 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run DOOR-SCANNER (2026-10-17)
+
+- **Page 09 Door Scanner rebuilt** from design/reference/door_scanner_2026-10/ (D01–D16) in five sections: Entry and password, Home, Scan outcomes, Report and lists, SOS / Alerts / Me (40 frames). 14 old door frames archived on page 99 ("Door Scanner · archived states").
+- **Shared pieces:** MS-1 rebuilt in place as **Choose your role** (RoleRow, one-line hints); the shared **password page** (4 digits, 3 tries, Wrong, Locked) for all four roles. Door Scanner goes straight to Home (no Start Shift); the other roles keep their Start shift.
+- **Home** in three meal states (Before, During, After) plus Camera denied, Low light, Offline, SOS active / claimed; scan outcomes Entry recorded (also for no meal response), Already scanned, QR not recognised, Wrong meal, Can't check right now; Type the last 4 digits (typing, one, several, none, offline); Report a problem with toast and Open problems; Entered without voting; SOS panel and claim flow; Alerts and Me.
+- **SIMULATED** (needs a backend): the shared meal state, scan answers, SOS routing, problem delivery, connection loss — invisible hotspots, each frame with a "Simulated:" note; DEMO.md lists them.
+- **Components (page 03):** ScannerCard, CountTile, TypeIdButton, ResultScreen, KeyPad (Regular, Compact, Tall), SOSEdgeTab, SOSPanel, RoleRow, StaffTabBar3, ProblemOption (`mealloop/ds_ids`).
+- **Health:** contrast lowest 5.51 : 1; mono words, small text, targets, truncation, overflow, banned words 0; backdrop missing only on the full-lime Entry recorded pages; lime > 3 only on the SOS frames (spec vs rule, NEEDS REVIEW). Reach 40 / 40, 0 dead ends. Flow starts 14.
+- **Reports:** door_scanner/report.md, decisions.md, checks.md, archive_index.md, preflight.md; exports export_door_scanner/ (40 at 2× + README); tools dsh, dsb, dschk, dsspace, dsexp; DEMO.md Door Scanner walk (14 steps); gaps 458–477 (OWNER 458–464).
 
 ## Run GUARDIAN-VIDEO (2026-10-16)
 
