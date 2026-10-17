@@ -6090,3 +6090,33 @@ The sections above are the contract as it was written, run by run, and are kept 
 **Archive retargets (guardian_video/archive_index.md):** 16 guardian and 14 warden frames went to page 99 with links stripped. Links that pointed at them now go to the kept frame named in the index's last column, for example: Request · Ready, Dragging, Overnight, Weekday, Offline → GV-01 · Choose; Request · Approved and Status · Waiting for the warden → GV-06 · Sent; Status · Declined → Sent · Rejected; G-4 History → GV-07 · Past answers; W-1 Queue, W-2 Review request, W-3 All requests → WV-1 · Queue · Live video; W-4 Escalated, Reassign, Emergency override, Review window closed → WV-4 · Escalated; W-4 Decision recorded → WV-1 · Approved; W-5 Me → WV-5 · Me. W-0 Confirm profile now opens WV-1 · Queue · Live video.
 
 **Reachability (V6):** page 13 43 / 44 (G-M Messages is a reference, not an app screen); page 14 26 / 26; page 15 16 / 23 (the 7 GA-6 results are shown by control, as before); 07: every new frame reached. 0 dead ends and 0 dangling links on 13, 14 and 15.
+
+## Run DOOR-SCANNER (2026-10-17) · Door Scanner role, shared role selection and password
+
+**Flow starts: 14** (unchanged). Page 09 keeps its one start, **Mess staff · Sign in** (MS-0). Figma added an automatic "Flow 1" start twice while linking; both were removed.
+
+**Entry (shared):** MS-0 Sign in → Verifying → Confirm profile → **MS-1 · Choose your role** (rebuilt in place, RoleRow × 4). Door Scanner → **What you do (sheet)** → Continue or Don't show this again → **Password — Door Scanner**; Close → Choose your role. Pass Desk / Kitchen Staff / Supervisor → their **Password** page → any digit → their existing MS-2 Start shift. Back on every entry page.
+
+**Password (simulated):** any digit = correct → **Home — Before the meal**; status bar = wrong try → **Password — Wrong** (digits → Home; status bar → **Locked**). Locked has Back only.
+
+**Home and the simulated meal state:**
+
+- Before: status bar = Supervisor starts the meal → During. Report a problem → Report.
+- During (and Low light, SOS active, SOS claimed, Marked as checked): status bar left = Supervisor ends the meal → After; status bar right = connection lost → Offline; MealLoop wordmark = an SOS starts → During · SOS active (on During and Low light); meal chip = camera permission denied → Camera denied; torch → Low light (and back). Camera card: six zones → Entry recorded, Entry recorded — No meal response, Already scanned, QR not recognised, Wrong meal, Can't check right now. Type ID → Type the last 4 digits — Typing. Report a problem → Report.
+- Camera denied: Open Settings → During; Type the last 4 digits (primary) → Typing; Report tile → Report.
+- Offline: status bar = connection back → During; camera card → Can't check right now; Type ID → **Type the last 4 digits — Offline**.
+- After: Entered without voting → list (6); Open problems → list (1); Report a problem → Report.
+
+**Type the last 4 digits (sheet):** Typing: key 2 → One match, key 1 → Several matches, key 9 → No match; Close → During; status bar = supervisor ends the meal → **Meal ended during a scan** (Back to Home → After). One match: Record entry → Entry recorded; Delete → Typing. Several: Dev → Entry recorded — No meal response (Nisha, already recorded, is greyed and not linked). No match: Try again → Typing. Offline: Record entry disabled; Close → Home offline; status bar = connection back → Typing.
+
+**Results:** Entry recorded (both) → (1 s) Home during; Scan next → Home during; No meal response: See the list → Entered without voting — During. Already scanned: Scan next → During. QR not recognised / Wrong meal: Scan again → During; Type the last 4 digits → Typing; Report a problem → Report. Can't check right now: Try again → Home offline; Type the last 4 digits → Type — Offline; Report a problem → Report. Back on every result page with a nav header.
+
+**Report and lists:** Report a problem: each choice → Sent to Ravi (toast) → (2 s) Open problems — After your report. Lists: Back; Report a problem button → Report; Home tab → After (D15, D16) or During (during-meal lists).
+
+**SOS:** SOS tab (active) → SOS panel — Not claimed: I'll go and check → Claimed; Not now / Close → Home SOS active. Claimed: Mark as checked → Marked as checked (toast) → (2.5 s) Home SOS active; Back to scanning / Close → Home SOS claimed (lime tab → Claimed panel); I can't go after all → Not claimed.
+
+**Alerts and Me (Door Scanner):** tab bar Home / Alerts / Me on every Door Scanner page. Alerts: SOS card → SOS panel; Ravi saw your problem → Open problems; status bar → Alerts — Empty (and back). Me: Switch role → Choose your role; Help → MS-G5 Help (shared); Sign out → Sign in.
+
+**Archive retargets:** 14 old Door Scanner frames went to page 99 "Door Scanner · archived states" (door_scanner/archive_index.md). No link outside them pointed at them after MS-1 was rebuilt.
+
+**Reachability (D8):** Door Scanner family 40 / 40 reached from Mess staff · Sign in, 0 dead ends, 0 dangling links. Page 09 overall 92 / 102; the 10 unreached are Pass Desk, Kitchen and Supervisor states shown by control, unchanged by this run.

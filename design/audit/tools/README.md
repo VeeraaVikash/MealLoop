@@ -58,3 +58,14 @@ The old `filltool.js` and `densitytool.js` were page-10 only and are kept for hi
 | `gvspace.js`, `gvfix.js` (`mealloop/gvspace`, `mealloop/gvfix`) | V5 spacing audit (margins, bands, gaps, paddings, rows, centre axes, title sizes, gate buttons) and the fixes (anchor, band, grow). |
 | `gvchk.md` (`mealloop/gvchk`) | x9chk with a `pageId` argument (contrast, mono words, lime, backdrop, small text, targets, truncation, overflow). |
 | `gvexp.js` (`mealloop/gvexp`) | 2× export clones for the plan in `mealloop/gv_export_plan`; `{from:0,to:0}` removes them. |
+
+## DOOR-SCANNER run tools (2026-10-17)
+
+| Tool | What it does |
+|---|---|
+| `dsh.js` (`mealloop/dsh`) | Helpers on top of `adm`: drawn icons (keyboard, torch, backspace, person check, QR, QR slash, shield check, pot, camera slash, check), camera brackets, ds component instances (`mealloop/ds_ids`), logo row with the SK avatar, code boxes, Door Scanner page base (StaffTabBar3), invisible hotspots, links, timers, "Simulated:" notes, toasts. |
+| `dsb.js` (`mealloop/dsb`) | Page builders: sections on page 09, Home in three meal states, info cards, result pages with buttons at y 754 / 682; frame IDs in `mealloop/ds_frames`. |
+| `ds1comp.md` | Summary of the D1 component builder (10 component sets on page 03). |
+| `dschk` (plugin data only) | gvchk / x9chk on a list of frame IDs (`{ ids }`). |
+| `dsspace` (plugin data only) | gvspace on a list of frame IDs; tolerates mixed corner radius and mixed font size. |
+| `dsexp` (plugin data only) | gvexp reading `mealloop/ds_export_plan` (40 Door Scanner exports). |

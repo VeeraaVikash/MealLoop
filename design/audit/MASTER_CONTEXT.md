@@ -149,3 +149,31 @@ Plus NEEDS REVIEW in fix2/report.md.
 - 441: consent wording approval by SRM.
 
 Plus NEEDS REVIEW in guardian_video/report.md.
+
+## Run DOOR-SCANNER (2026-10-17)
+
+**What changed.** Built from design/reference/door_scanner_2026-10/ (D01–D16, data/door_scanner_spec.md, prompt COWORK_PROMPT_DOOR_SCANNER.md). Only the Door Scanner family on page 09 plus two shared pieces (role selection, shared password page). Pass Desk, Kitchen and Supervisor screens are not redesigned; pages 05, 10 and 11 were not edited.
+
+- **One primary action, scanning first.** Home during the meal is the scanner (inline camera card); the "Recorded in" count is a small tile and counts recorded entries only.
+- **No decline, no approval step.** A student with no meal response gets the same Entry recorded screen and is added to "Entered without voting" (masked ID, first name, time).
+- **Never success for an unverified entry.** Offline: "Can't check right now · This entry is NOT recorded", the offline banner, and an offline Type sheet with Record entry disabled. No offline queue in this version.
+- **Meal states** Before / During / After are set by the supervisor; in Figma they are SIMULATED by invisible hotspots (status bar).
+- **Report a problem** (three choices, one tap, "Sent to Ravi", Open problems Waiting / Seen / Fixed) is reachable before, during and after the meal and from the offline and error screens.
+- **SOS** shows only while active: a right-edge tab, a compact panel, I'll go and check → Mark as checked ("Checked by the door"; the case stays open for Ravi).
+- **Shared role password** (4 digits, 3 tries, then "Ask your supervisor to reset it"); Door Scanner goes straight to Home.
+
+**Hard rules kept.** OrbitBackdrop everywhere except the full-lime Entry recorded; mono only for numbers, times and units; staff primary buttons 56 pt (result pages at y 754); targets 44 pt; text at least 12 pt; never delete (14 frames archived on 99); flow starts 14. Lime at most 3 except the SOS frames (spec vs rule, NEEDS REVIEW).
+
+**Tools.** design/audit/tools/dsh.js, dsb.js, ds1comp.md; dschk, dsspace, dsexp in shared plugin data.
+
+**Owner items.**
+
+- 458: shared meal state needs a backend.
+- 459: SOS routing needs a backend.
+- 460: offline policy (never record vs queue).
+- 461: last-4-digit ambiguity.
+- 462: who sees Entered without voting.
+- 463: whether Pass Desk and Kitchen adopt the SOS tab.
+- 464: shared role password after the SRM sign-in.
+
+Plus NEEDS REVIEW in door_scanner/report.md.

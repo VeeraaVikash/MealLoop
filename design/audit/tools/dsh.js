@@ -44,7 +44,7 @@ D.ds = async (parent, key, variant, texts) => { const s = await figma.getNodeByI
 D.logoRow = async (parent) => { const src = await figma.getNodeByIdAsync('1853:125831'); const lr = src.findOne(n => n.name === 'Logo row').clone(); if (parent) parent.appendChild(lr); if (parent && parent.layoutMode) lr.layoutSizingHorizontal = 'FILL';
   const av = lr.findOne(n => n.name.startsWith('Avatar')); av.name = 'Avatar · SK'; const t = av.findOne(n => n.type === 'TEXT'); await D.setText(t, 'SK'); t.name = 'SK'; t.fills = [D.paint('on-hero')]; return lr; };
 D.boxes = async (parent, items, o) => { o = o || {}; const r = D.frame(parent, 'Code boxes', { dir: 'H', gap: o.gap || 12 }); r.layoutSizingHorizontal = 'FILL';
-  for (let i = 0; i < 4; i++) { const it = items[i] || ''; const b = D.frame(r, 'Box ' + (i + 1), { dir: 'H', radius: 18, fill: o.fill || 'surface' }); b.layoutGrow = 1; b.counterAxisSizingMode = 'FIXED'; b.resize(70, o.h || 72); b.primaryAxisAlignItems = 'CENTER'; b.counterAxisAlignItems = 'CENTER';
+  for (let i = 0; i < 4; i++) { const it = items[i] || ''; const b = D.frame(r, 'Box ' + (i + 1), { dir: 'H', radius: 18, fill: o.fill || 'surface' }); b.counterAxisSizingMode = 'FIXED'; b.resize(70, o.h || 72); b.layoutSizingHorizontal = 'FILL'; b.primaryAxisAlignItems = 'CENTER'; b.counterAxisAlignItems = 'CENTER';
     if (o.stroke !== false) { b.strokes = [D.paint(o.error ? 'urgent' : (it ? 'border-control' : 'border'))]; b.strokeWeight = o.error ? 2 : 1.5; b.strokeAlign = 'INSIDE'; }
     if (it === '•') { const d = figma.createEllipse(); d.name = 'Dot'; d.resize(18, 18); d.fills = [D.paint('ink')]; b.appendChild(d); }
     else if (it) await D.t(b, it, 'ML/Metric', 'ink', { name: 'Digit' }); }
