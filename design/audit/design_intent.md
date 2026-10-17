@@ -363,3 +363,32 @@ Source: design/reference/guardian_2026-10 (G00–G08, W01–W04, S01 drawn 292 p
 **Brand.** OrbitBackdrop on every Guardian and Warden frame except the dark recording screen; Gate full-lime results keep no backdrop. Lime on light only as an ink-outlined chip or arc; at most 3 lime elements per frame. Mono only for numbers, times and units (the code digits, REC 0:07, 0:09). Guardian and Gate primary buttons 56 pt; all targets at least 44 pt; text at least 12 pt.
 
 **Sample.** Aarav ••0238, Express Avenue Mall, Sat 17 Aug 2024, 2–8 PM, Shopping. Guardian +91 98••• ••214, reply by Fri 11 PM; video sent Fri 7:42 PM, code 4 7 2, 0:09. Warden WB, Block B, decides by Sat 12 PM.
+
+## DOOR SCANNER 2026-10 (run DOOR-SCANNER, 2026-10-17)
+
+Source: design/reference/door_scanner_2026-10/ (D01–D16, data/door_scanner_spec.md). Scope: the Door Scanner role on page 09 plus two pieces shared by every staff role (role selection, shared password page). Pass Desk, Kitchen and Supervisor screens are not redesigned.
+
+**Principles.**
+
+1. **One primary action.** During the meal the door has one job: scan. Every Door Scanner page has at most one black primary button (56 pt).
+2. **QR scanning first.** Home during the meal *is* the scanner: an inline camera card, not a tile that opens a camera page. Type ID is the fallback, never the lead (except when the camera is denied).
+3. **The count is supporting information.** "Recorded in N" is a small tile beside Type ID; it counts **recorded entries only** (verified and saved). It is never the hero of the page.
+4. **Recorded entries only.** A success screen appears only after an entry is verified and saved. Offline or unavailable data shows "Can't check right now · This entry is NOT recorded." There is no offline queue in this version (OWNER).
+5. **No decline, no approval step.** The door never refuses a student for not answering and never waits for a supervisor's approval. A student with **no meal response** gets the same "Entry recorded" screen; the count goes up and the student is added automatically to **"Entered without voting"** (masked ID, first name, time) for that mess and meal. It is not a vote and is never mixed with responses.
+6. **Exceptions are quick.** Already scanned (grey, "Count stays N"), QR not recognised / Wrong meal (cream), Can't check right now (cream). Each has Scan next or Scan again, and Type the last 4 digits where it helps.
+7. **Report a problem** is always reachable (before, during and after the meal; from the offline and error screens): three categories, one tap sends to the supervisor (Ravi), a "Sent to Ravi" toast, and the problem shows under Open problems (Waiting, Seen, Fixed).
+8. **SOS** shows on Home only while an SOS is active: a right-edge tab under the avatar opens a compact panel. Claiming ("I'll go and check") and "Mark as checked" record that the door looked ("Checked by the door"); the case still closes with the supervisor or food head. Normal alerts stay in the Alerts tab, never on Home.
+9. **Shared role password.** One password per role, 4 digits, 3 tries, then "Ask your supervisor to reset it". A correct Door Scanner password goes straight to Home: no Start Shift page.
+
+**Meal states (set by the Supervisor).** Before: black card with a dimmed QR and "Scanning opens at 12:00 PM", no count. During: lime chip "Meal in progress · N min", camera card, Recorded in tile, Type ID, Report a problem. After: "Lunch has ended", final recorded entries, Entered without voting N, Open problems N, Report a problem.
+
+**SIMULATED in the Figma prototype (needs a backend; OWNER).**
+
+- Shared meal state: invisible hotspots "Supervisor starts the meal" / "Supervisor ends the meal" move the Door Scanner pages between Before, During and After. In the product, the supervisor's action must reach every staff phone in that mess (Door Scanner, Pass Desk).
+- Scan outcomes: invisible hotspots on the camera card stand in for the server's answer (recorded, no response, already scanned, not recognised, wrong meal, can't check).
+- SOS routing and claiming, the "Sent to Ravi" delivery, and connection loss.
+- Nothing in the frames implies real synchronisation: notes on each frame say "Simulated".
+
+**Brand.** OrbitBackdrop on every Door Scanner frame except the full-lime Entry recorded screen. At most 3 lime elements per frame (lime chip, camera brackets, SOS tab). Mono only for numbers, times and units (counts, 12:18 PM, digits on the keypad). Staff primary buttons 56 pt; targets 44 pt; text at least 12 pt.
+
+**Sample.** Main Mess, Lunch, Wed 14 Aug 2024, 12–2 PM. Door staff SK; supervisor Ravi. Aarav ••0238 (recorded 12:18 PM; 715 recorded). Final: 774 recorded, 6 entered without voting, 1 open problem. SOS 12:45 PM "Found something in food", Main Mess · Block A.

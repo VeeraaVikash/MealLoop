@@ -231,3 +231,4 @@
 | Stage | Status | Snapshot | Notes |
 |---|---|---|---|
 | D0 Preflight | done | st320 = st319 (18 pages, 0 differences); starts 14 | Pack door_scanner_2026-10 committed (4ffe625, 16 images). Inventory in door_scanner/preflight.md: Door Scanner family 14 frames on page 09; 13 shared frames (sign-in, role selection, Alerts, Me). |
+| D1 Foundation | done | st321 vs st320: 03 +11 (10 component sets + label); all other pages 0; starts 14 | design_intent section "DOOR SCANNER 2026-10". Components flagged on 03: ScannerCard, CountTile, TypeIdButton, ResultScreen, KeyPad, SOSEdgeTab, SOSPanel, RoleRow, StaffTabBar3, ProblemOption. Helper dsh (tools/dsh.js). Decisions 1–6. |
