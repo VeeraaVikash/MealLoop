@@ -54,7 +54,7 @@ D.screen = async (pg, name, x, y, o) => { o = o || {}; const r = await baseA(pg,
   if (o.tab) { const tb = await D.ds(r.f, 'tab', 'Selected=' + o.tab); tb.name = 'Tab Bar'; tb.x = Math.round((393 - tb.width) / 2); tb.y = 852 - 34 - tb.height; r.c.paddingBottom = 124; }
   const names = ['Status Bar', 'Nav Header', 'Tab Bar', 'Home Indicator']; const ch = r.f.children.filter(n => names.includes(n.name)); for (const n of ch) r.f.appendChild(n); r.f.numberOfFixedChildren = ch.length;
   return r; };
-D.hot = async (f, name, x, y, w, h, id) => { const h0 = figma.createFrame(); h0.name = 'Hotspot · ' + name; h0.fills = []; h0.resize(w, h); f.appendChild(h0); h0.x = x; h0.y = y; f.numberOfFixedChildren = (f.numberOfFixedChildren || 0) + 1; if (id) await D.go(h0, id); return h0; };
+D.hot = async (f, name, x, y, w, h, id) => { const h0 = figma.createFrame(); h0.name = 'Hotspot · ' + name; h0.fills = []; h0.resize(w, h); f.appendChild(h0); h0.x = x; h0.y = y; if (id) await D.go(h0, id); return h0; };
 D.go = async (node, id, o) => { const rs = (node.reactions || []).filter(r => r.trigger.type !== 'ON_CLICK'); rs.push({ trigger: { type: 'ON_CLICK' }, actions: [D.nav(id, o)] }); await node.setReactionsAsync(rs); return node; };
 D.goBack = async node => { await node.setReactionsAsync([{ trigger: { type: 'ON_CLICK' }, actions: [{ type: 'BACK' }] }]); return node; };
 D.after = async (f, id, s) => { const rs = (f.reactions || []).filter(r => r.trigger.type !== 'AFTER_TIMEOUT'); rs.push({ trigger: { type: 'AFTER_TIMEOUT', timeout: s || 1 }, actions: [D.nav(id)] }); await f.setReactionsAsync(rs); };
