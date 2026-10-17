@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-17, after run DOOR-SCANNER)
+# MealLoop · STATE (2026-10-17, after run DOOR-SCANNER pack v2)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "DOOR SCANNER 2026-10"), the run logs are in `run_status.md`, and the latest reports are `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "DOOR SCANNER 2026-10"), the run logs are in `run_status.md`, and the latest reports are `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st328 (2026-10-17, end of DOOR-SCANNER D8; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st334 (2026-10-17, end of DOOR-SCANNER pack v2 D8; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,14 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run DOOR-SCANNER · pack v2 (2026-10-17)
+
+- **Pack resent with D17 Alerts and D18 Me** (D01–D16 unchanged: only a signed metadata block). Stages D2–D5 skipped.
+- **Alerts rebuilt as D17** in a new section "Door Scanner · Alerts and Me (pack v2)": SOS active, SOS claimed by you, SOS checked by you, During the meal, After the meal (See all), All alerts, Empty. **Me rebuilt as D18** (SK avatar, Door Scanner, Main Mess, On shift chip, Recorded in 714 / Problems reported 1, Switch role, Language, Help, Sign out). Old Alerts, Alerts — Empty and Me archived; 38 tab links retargeted by page state.
+- **Components (page 03, flagged):** SOSAlertCard (3 states), AlertRow (Done / Seen / Reminder / See all).
+- **Health (8 new frames):** contrast ≥ 5.72; mono words, lime > 3, small text, targets, truncation, overflow, raw paints, banned words 0. Bands on the short lists are NEEDS REVIEW. Reach 44 / 44 Door Scanner frames, 0 dead ends, 0 dangling. Flow starts 14.
+- **Reports:** door_scanner/report_r2.md, decisions_r2.md (42–53), checks_r2.md, preflight_r2.md; exports D17_* and D18_me in export_door_scanner/; tools ds2comp.js, ds2b.js; gaps 478–485.
 
 ## Run DOOR-SCANNER (2026-10-17)
 

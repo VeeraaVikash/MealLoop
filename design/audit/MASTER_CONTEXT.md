@@ -150,6 +150,17 @@ Plus NEEDS REVIEW in fix2/report.md.
 
 Plus NEEDS REVIEW in guardian_video/report.md.
 
+## Run DOOR-SCANNER · pack v2 (2026-10-17)
+
+**What changed.** The pack came back with **D17 Alerts** and **D18 Me** (and the spec section "Alerts and Me (kept short)"); D01–D16 are the same drawings. Only Alerts and Me were rebuilt.
+
+- **Alerts:** title and "Main Mess · Lunch"; one black **SOSAlertCard** on top only while an SOS is active (Not claimed → lime "I'll go and check"; Claimed by you → "Open the SOS"; Checked by you → no action, the case stays with Ravi); **Earlier** with at most three quiet **AlertRow**s (44 pt circle: lime check, ink bell, outlined clock; title; mono time; one line); **See all** only when more than 3 alerts; Empty "Nothing new. Alerts from your supervisor show here." Seven pages, one per state; every Door Scanner page's Alerts tab opens the one for its state.
+- **Me:** SK initials avatar (lime on black), Door Scanner, Main Mess, lime "On shift · since 11:40 AM" chip with an ink outline; tiles Recorded in 714 and Problems reported 1 (CountTile); Switch role, Language, Help, Sign out (→ MS-0 Sign in).
+- **New flagged components:** SOSAlertCard, AlertRow (`mealloop/ds_ids` alertCard, alertRow).
+- **SIMULATED:** the alerts feed and shift numbers (gap 478), with status-bar hotspots for "an SOS starts" and "the supervisor starts the meal" on the Alerts pages.
+
+**Tools.** design/audit/tools/ds2comp.js (components) and ds2b.js (pages; also `mealloop/ds2b`).
+
 ## Run DOOR-SCANNER (2026-10-17)
 
 **What changed.** Built from design/reference/door_scanner_2026-10/ (D01–D16, data/door_scanner_spec.md, prompt COWORK_PROMPT_DOOR_SCANNER.md). Only the Door Scanner family on page 09 plus two shared pieces (role selection, shared password page). Pass Desk, Kitchen and Supervisor screens are not redesigned; pages 05, 10 and 11 were not edited.

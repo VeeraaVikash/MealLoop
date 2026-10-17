@@ -1138,3 +1138,17 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 475 | 09 Door Scanner hotspots | Invisible hotspots (status bar left / right, wordmark, meal chip, camera zones, torch, password status bar, sheet status bars) are demo shortcuts for server and device events; each frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
 | 476 | 09 MS-E Alerts, MS-G Me | The shared Alerts and Me (kitchen content) stay for the other roles; the Door Scanner has its own Alerts, Alerts — Empty and Me. | Info | Logged |
 | 477 | 05 / 11 | Not touched (out of scope). | Info | Logged |
+
+## Run DOOR-SCANNER · pack v2 (2026-10-17)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 478 | 09 DS-8 Alerts (all states), Me | **The alerts feed and the shift numbers need a backend** (what the supervisor sends, "Problem seen", meal started / ended, Recorded in, Problems reported). SIMULATED in Figma; extends 459. | Medium | Open (backend) |
+| 479 | 09 DS-8 Alerts (After the meal, All alerts) vs DS-6 Open problems (D16) | The reference images disagree: D17 says "Problem seen · 12:24 PM" while D16 (after the meal) shows "Scanner not working" as **Waiting**. Both kept as drawn (decision 50). | Low | Open (NEEDS REVIEW) |
+| 480 | 09 DS-8 Alerts (SOS active, claimed, checked, During) | The third Earlier row is "Breakfast closed · 10:00 AM" instead of D17's "Meal ends soon · 1:50 PM", which would be in the future at 12:50 PM; "Meal ends soon" is used after the meal (decision 49). Rows are newest first. | Low | Open (NEEDS REVIEW) |
+| 481 | 09 DS-8 Alerts lists, Me | Empty band above the tab bar 89–368 pt (short by spec: one SOS card, at most three rows; Me four rows). Supersedes 471 for Alerts and Me. | Low | Open (NEEDS REVIEW) |
+| 482 | 09 DS-8 Me | SK initials lime (as D18) while the Home avatar keeps white initials (decision 7); 2 lime elements on Me. | Low | Open (NEEDS REVIEW) |
+| 483 | 09 DS-8 Me → Sign out | "Returns to the splash": there is no separate staff splash frame; Sign out opens MS-0 · Sign in (the flow start). | Info | Logged |
+| 484 | 09 DS-8 Me → Language, Help | Open the shared MS-G4 Language and MS-G5 Help (built for the other roles; not redesigned in this run). | Info | Logged |
+| 485 | 09 DS-8 Alerts — SOS claimed / checked by you | Two Alerts states beyond D17 so the SOS card matches the panel state (decision 46); "Checked by the door · Ravi will close it" has no action. | Low | Open (NEEDS REVIEW) |
+
