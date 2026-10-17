@@ -366,7 +366,7 @@ Source: design/reference/guardian_2026-10 (G00–G08, W01–W04, S01 drawn 292 p
 
 ## DOOR SCANNER 2026-10 (run DOOR-SCANNER, 2026-10-17)
 
-Source: design/reference/door_scanner_2026-10/ (D01–D16, data/door_scanner_spec.md). Scope: the Door Scanner role on page 09 plus two pieces shared by every staff role (role selection, shared password page). Pass Desk, Kitchen and Supervisor screens are not redesigned.
+Source: design/reference/door_scanner_2026-10/ (D01–D18, data/door_scanner_spec.md; D17 Alerts and D18 Me added in pack v2). Scope: the Door Scanner role on page 09 plus two pieces shared by every staff role (role selection, shared password page). Pass Desk, Kitchen and Supervisor screens are not redesigned.
 
 **Principles.**
 
@@ -390,5 +390,11 @@ Source: design/reference/door_scanner_2026-10/ (D01–D16, data/door_scanner_spe
 - Nothing in the frames implies real synchronisation: notes on each frame say "Simulated".
 
 **Brand.** OrbitBackdrop on every Door Scanner frame except the full-lime Entry recorded screen. At most 3 lime elements per frame (lime chip, camera brackets, SOS tab). Mono only for numbers, times and units (counts, 12:18 PM, digits on the keypad). Staff primary buttons 56 pt; targets 44 pt; text at least 12 pt.
+
+**Alerts and Me (pack v2, D17 / D18, added 2026-10-17).**
+
+- **Alerts** (D17): title "Alerts" and "Main Mess · Lunch". While an SOS is active, one black **SOSAlertCard** sits on top (SOS · time · minutes ago, the title, the place, a status chip and one action: lime "I'll go and check" when nobody has taken it; "Open the SOS" when you took it; no action once you marked it checked). Under it the group **"Earlier"**: at most three quiet **AlertRow**s (44 pt circle on one axis: lime check = done, ink bell = seen, outlined clock = reminder or closed; short title; time on the right in mono; one short line). Nothing else: no filters, no settings, no repeated cards, no footnote. A **"See all"** row appears only when more than 3 alerts exist and opens the full list. Empty: "Nothing new. Alerts from your supervisor show here."
+- **Me** (D18): title "Me"; an initials avatar (SK, lime initials on black; no invented name), the role, the mess and a lime chip with an ink outline "On shift · since 11:40 AM"; two tiles "Recorded in" and "Problems reported" (CountTile); four quiet rows: Switch role (opens role selection), Language (English), Help, Sign out (back to the first sign-in page, the staff splash). No profile card, no extra rows.
+- The alerts feed and the shift numbers are SIMULATED in Figma (needs a backend).
 
 **Sample.** Main Mess, Lunch, Wed 14 Aug 2024, 12–2 PM. Door staff SK; supervisor Ravi. Aarav ••0238 (recorded 12:18 PM; 715 recorded). Final: 774 recorded, 6 entered without voting, 1 open problem. SOS 12:45 PM "Found something in food", Main Mess · Block A.
