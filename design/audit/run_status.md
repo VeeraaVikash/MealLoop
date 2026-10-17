@@ -263,3 +263,4 @@ The brief was resent with an 18-image pack. D01–D16 are the same drawings as t
 | Stage | Status | Snapshot | Notes |
 |---|---|---|---|
 | Q0 Preflight | done | st335 = st334 (18 pages, 0 differences); starts 14 | HEAD 25413e3; push dry run up to date. Pack pass_desk_2026-10 copied from the upload and committed (14ec9ea, 17 images). Inventory in pass_desk/preflight.md: Pass Desk family 12 frames on page 09 (MS-2 ×1, MS-H ×1, MS-B ×10); shared: sign-in ×3, role selection, the Pass Desk password page, MS-E ×3, MS-G ×6. |
+| Q1 Foundation | done | st336 vs st335: 03 +5 (5 component sets); all other pages 0; starts 14 | design_intent section "PASS DESK 2026-10". Flagged on 03: CodeCard, HomeKeypad, PassResultScreen (from ResultScreen), RequestRow, ShortageChips (`mealloop/pd_ids`). Builder tools/pd1comp.js. Decisions 1–8 (pass_desk/decisions.md). |
