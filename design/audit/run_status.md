@@ -240,3 +240,11 @@
 | D7 Spacing and checks | partly | st327 vs st326: 09 +5 (Type the last 4 digits — Offline) ~1 L+54 L−52 (keypad swap kept the links; offline retargets); 03 ~1 (KeyPad Tall, torch white); 99 0; other pages 0; starts 14 | door_scanner/checks.md: bands fixed on 12 frames (role selection, 6 password pages, Home before / after / camera denied, Alerts empty), rows 52 / 56, paddings 12–20, gaps 12 / 16 / 24, result buttons at y 754. Checks: contrast ≥ 5.51, mono 0, small 0, targets 0, truncation 0, overflow 0, banned 0. Partly: lime > 3 on the 5 SOS frames (spec vs rule) and short lists left with a band (NEEDS REVIEW). Decisions 35–38. |
 | D8 Wiring, export and docs | done | st328 vs st327: all pages 0 (code-box width only, not seen by the snapshot); starts 14 | Reach: Door Scanner 40 / 40 from Mess staff · Sign in, 0 dead ends, 0 dangling (page 09: 92 / 102, the 10 unreached are other roles' states by control). 40 exports at 2× in export_door_scanner/ + README (clones removed). Contract section, gaps 458–477 (OWNER 458–464), STATE, MASTER_CONTEXT, DEMO (Door Scanner walk, 14 steps), tools README + dsh.js / dsb.js. Decisions 39–41. |
 | D9 Report | done | st328 (no Figma change) | door_scanner/report.md: stage table, FUNCTIONAL / SIMULATED / NEEDS BACKEND table, decisions 1–41, conflicts, gaps 458–477, NEEDS REVIEW by frame name, end checks. |
+
+## Run DOOR-SCANNER · pack v2 (2026-10-17)
+
+The brief was resent with an 18-image pack. D01–D16 are the same drawings as the first run (only a signed metadata block was added), so this pass rebuilds Alerts (D17) and Me (D18) and carries the checks, wiring, export and docs for them.
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| D0 Preflight | done | st329 = st328 (18 pages, 0 differences); starts 14 | HEAD 40fe234; push dry run up to date. Pack refreshed (18 images, 18 SVGs, spec section "Alerts and Me"). Changes and inventory: door_scanner/preflight_r2.md. |

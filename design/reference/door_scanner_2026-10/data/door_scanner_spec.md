@@ -31,6 +31,10 @@ Three categories, one tap sends immediately to the supervisor (Ravi): Scanner no
 ## SOS
 A right-edge tab below the avatar, only while an SOS is active: black with a lime outline, a lime count badge, a lime warning icon, the word SOS. Tapping it opens a compact panel "SOS · N active": the incident card (time, title, place), a status chip. Not claimed: "Nobody has taken this yet" with "I'll go and check" (primary) and "Not now"; helper: "Only if you're free. Keep scanning first if the door is busy." Claimed: lime chip "You're checking this", "Ravi and the kitchen team can see you're on your way.", "Mark as checked" (records "Checked by the door"; the case itself still closes with the supervisor or food head), "Back to scanning", "I can't go after all" (releases it). The tab turns lime when claimed by you. Normal alerts stay in the Alerts tab and history; they never appear on Home.
 
+## Alerts and Me (kept short)
+Alerts: title and "Main Mess · Lunch"; when an SOS is active one black SOS card on top (time, title, place, status chip, lime "I'll go and check"); below it a group "Earlier" of at most three quiet rows, each a 36 pt circle on one axis (lime check, ink bell, outlined clock), a short title, the time on the right (mono) and one short line. Nothing else: no filters, no settings, no repeated cards. Empty: "Nothing new. Alerts from your supervisor show here." Alerts history beyond the shown rows is a "See all" row only when more than 3 exist.
+Me: title; an initials avatar, the role name, the mess, a chip "On shift · since 11:40 AM"; two tiles "Recorded in" and "Problems reported"; four quiet rows: Switch role (opens role selection), Language, Help, Sign out. No name is invented: initials only.
+
 ## Navigation
 Bottom bar stays Home, Alerts, Me. Entry screens have Back. Result screens return to Home.
 

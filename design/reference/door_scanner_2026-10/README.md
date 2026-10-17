@@ -20,5 +20,7 @@ Images are layout and copy references (292 pt wide phones, multiply by 1.346 for
 | D14_sos_panel_claimed | SOS panel, you are checking |
 | D15_entered_without_voting | Entered without voting list |
 | D16_open_problems | Open problems list |
+| D17_alerts | Alerts: SOS card on top, three quiet rows |
+| D18_me | Me: profile, shift numbers, four rows |
 
 Rules and wording: data/door_scanner_spec.md. Prompt: prompt/COWORK_PROMPT_DOOR_SCANNER.md.
