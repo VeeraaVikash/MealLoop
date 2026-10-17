@@ -1152,3 +1152,25 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 484 | 09 DS-8 Me → Language, Help | Open the shared MS-G4 Language and MS-G5 Help (built for the other roles; not redesigned in this run). | Info | Logged |
 | 485 | 09 DS-8 Alerts — SOS claimed / checked by you | Two Alerts states beyond D17 so the SOS card matches the panel state (decision 46); "Checked by the door · Ravi will close it" has no action. | Low | Open (NEEDS REVIEW) |
 
+## Run PASS-DESK (2026-10-17)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 486 | 09 Pass Desk (all checks) | **Camera scanning would need a QR on the student pass.** The desk types the last 4 digits and compares code and colour; the student pass has no QR. | Medium | Open (OWNER) |
+| 487 | 09 Pass Desk Home, Check this pass, outcomes | **The pass service and the shared meal state need a backend:** lookups, the expected code and colour, re-fetch and expiry, duplicate prevention, recording, and the supervisor's start / end of the meal for every staff role. SIMULATED by hidden hotspots. | High | Open (OWNER) |
+| 488 | 09 Request a new pass, New pass requests | **Reissue approval link:** requests must connect to the existing admin pass-exception flow (Waiting → Approved → Done / Rejected) and the student's Special pass page must show the new pass only when Done. SIMULATED. | High | Open (OWNER) |
+| 489 | 09 No special pass, Look up — No pass | **Special meal without a pass** (draft: not allowed; the student has the regular meal at the door). | Medium | Open (OWNER) |
+| 490 | 09 Home — Offline, Can't check right now | **Offline policy** (never record, as drawn, vs queue and sync later). | High | Open (OWNER) |
+| 491 | 09 Pass Desk | **Who sees the list of special-meal entries** (draft: the desk and the supervisor). | Medium | Open (OWNER) |
+| 492 | 09 Check this pass vs 04 / 07 Special pass | Sample codes follow the student pass page (7A3F · Lime, K2M9 · Blue) instead of P04's "218 · Lime"; the code format must be one (pass service). | Low | Open (NEEDS REVIEW) |
+| 493 | 04 / 07 Special pass (Live, Used) | The student pass says "Marked used when you come in at the door" and "Used 12:41 PM"; the desk records the special meal at the desk and its sample first-recorded time is 12:18 PM. Student pages were not changed in this run. | Medium | Open (NEEDS REVIEW) |
+| 494 | 09 Home — Student not found | Sample 0999 instead of the brief's 0238 (Aarav has a pass in every other frame). | Low | Open (NEEDS REVIEW) |
+| 495 | 09 Home — SOS active, SOS panels, Marked as checked | Lime 5–6 by the checker (meal chip + the SOS tab's lime parts + the mark), as gap 465. | Low | Open (NEEDS REVIEW) |
+| 496 | 09 Home after, New pass requests, Report a problem, Look up (empty), Alerts, Me | Empty band above the bottom bar 61–368 pt (short by spec; no blocks added). | Low | Open (NEEDS REVIEW) |
+| 497 | 09 Home — Student not found, Home — Offline | Taller than the screen (79 / 51 pt); the content scrolls under the tab bar. | Low | Open (NEEDS REVIEW) |
+| 498 | 09 Alerts (Pass Desk) | "Food shortage seen" at 12:55 PM (P14 draws 1:20 PM) to fit one calendar; P14's footnote left out. | Low | Open (NEEDS REVIEW) |
+| 499 | 09 Pass Desk result pages | Primary button at y 754 under the outline one (P06 / P08 draw the black button above), as DOOR-SCANNER decision 23. | Low | Open (NEEDS REVIEW) |
+| 500 | 09 MS-E1 Kitchen Staff Alerts | The shared kitchen Alerts page now scrolls (one added card); no other kitchen change. | Info | Logged |
+| 501 | 09 Shortage chips | Dish names use the day's menu spelling (Chicken Briyani, Panneer Briyani) instead of P12's "Biryani". | Low | Open (NEEDS REVIEW) |
+| 502 | 09 Pass Desk hotspots | Hidden hotspots stand in for server and supervisor events; every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
+

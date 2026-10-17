@@ -48,7 +48,7 @@ Demo shortcut (2026-10-07): every MS-H home has a round Back at the top left tha
 1. **MS-0 · Sign in**: tap **Sign in with SRM**. **MS-0 · Verifying** moves on by itself to **MS-0 · Confirm profile** (Ravi, "Mess staff · Main Mess").
 2. **Yep, that's me** → **MS-1 · Choose your role** (Door Scanner, Pass Desk, Kitchen Staff, Supervisor; rebuilt in DOOR-SCANNER 2026-10-17).
 3. **Door Scanner** → see the Door Scanner walk below (the old MS-2 / MS-H / MS-A door frames are archived on page 99).
-4–5. **Me** tab → **MS-G1 · Me** → **Switch job** → Choose your role → **Pass Desk** → **Password — Pass Desk** → any digit → Start shift → **MS-H · Home — Pass desk** → **Pass check** → **MS-B1 · Pass check (Live)** (7A3F, lime) → it changes by itself to K2M9, blue.
+4–5. **Me** tab → **Switch role** → Choose your role → **Pass Desk** → see the Pass Desk walk below (the old MS-2 / MS-H / MS-B desk frames are archived on page 99).
 6. **Check ID** → **MS-B2** → **MS-B3 · Has a Wednesday pass**. Then home → **Pass problem** → **MS-B6** → **Ask for a reissue** → **MS-B7 · Sent to Devi**.
 7. Me → Switch job → **Supervisor** → **Password — Supervisor** → any digit → Start shift → **MS-H · Home — Supervisor** → **How much to cook** → **MS-C1 (Plan ready)** → **Sambar** → **MS-C2 · Dish detail — Sambar** → Back → **Got it, cooking** → **MS-C1 (Confirmed)**.
 8. Home → **Change the plan** → **MS-D1** → stepper + → **Save** → **MS-D2 · Waiting for Devi** (big change) or **Change saved — Devi told**.
@@ -78,6 +78,25 @@ Hidden hotspots are SIMULATED server or device events; every Door Scanner frame 
 13. Status bar, left part (**Supervisor ends the meal**) → **Home — After the meal** (774; Entered without voting 6; Open problems 1; Report a problem).
 14. **Alerts** tab (pack v2, D17): from Home during the meal → **Alerts — During the meal** (Earlier: three rows; tap the status bar = an SOS starts → **Alerts — SOS active** with the SOS card → **I'll go and check** → SOS panel — Claimed by you). After the meal → **Alerts — After the meal** → **See all · 5 alerts** → **All alerts** → Back. Before the meal → **Alerts — Empty**. **Me** tab (D18) → Switch role → Choose your role; Language; Help; Sign out → Sign in.
 
+### Pass Desk (page 09, from Mess staff · Sign in) · 14 steps (PASS-DESK, 2026-10-17)
+
+Hidden hotspots are SIMULATED server or supervisor events; every Pass Desk frame has a "Simulated:" note. Codes and colours are sample values from the pass service (the same as the student's Special pass page). Sample: Main Mess, Lunch special, Wed 14 Aug 2024; desk staff SK; supervisor Ravi; Aarav ••0238.
+
+1. **MS-0 · Sign in** → Verifying → Confirm profile → **Choose your role** → **Pass Desk** → **What you do (sheet)** → **Continue** → **Password — Pass Desk** → any digit → **Home — Before the meal** ("Checking opens at 12:00 PM").
+2. **Look up a student** → key **0** (types 0238) → **Valid** ("This does not count as an entry."); tap digit box 2 / 3 / 4 for **Used** / **No pass** / **Wrong meal** → Look up another → Back → Home.
+3. Tap the status bar (**Supervisor starts the meal**) → **Home — During the meal** (41 of 214, keypad on Home).
+4. Keys **0 2 3** → Typing 1 / 2 / 3 → key **8** → **Check this pass** (7A3F · Lime, Changes in 7 s).
+5. On the sheet, tap the status bar left third (**code changes**) → **Code changed** (K2M9 · Blue, "Just changed"); middle third → **Code expired** → Check again.
+6. **Matches · record entry** → **Pass verified** (full lime, 42 of 214, +1) → after 1 s **Home — During · 42 of 214**.
+7. On 42 of 214, tap digit box 1 (**Aarav again**) → **Already recorded** (12:18 PM, count stays 42) → Check next student.
+8. Back on Typing · 3 digits: digit box 1 → **No special pass**; box 2 → **Wrong meal**; box 3 → **Can't check right now**; the card label → **Student not found** (0999) → Try again. From Check this pass: **Doesn't match** → Check again.
+9. Status bar right half (**connection lost**) → **Home — Offline** (banner) → digit box → Can't check right now → Try again → tap the status bar = connection back.
+10. **Request a new pass** → **Send request** → toast → **New pass requests** (Waiting, Approved, Done, Rejected; Approved is not Done).
+11. **Report a problem** → **Crowd at the desk** → Sent to Ravi → **Open problems**; **Food running short** → **Which food is short?** → Send to the kitchen → **Open problems — Food short** (the Kitchen Staff Alerts show "Food short at the pass desk").
+12. On Home — During, tap the **MealLoop** mark (**an SOS starts**) → SOS tab → **SOS panel** → **I'll go and check** → **Claimed by you** → **Mark as checked** → toast "Marked as checked. Ravi will close it." ("Checked by the desk").
+13. **Alerts** tab → SOS card or three quiet rows; **Me** tab → Pass Desk, Passes checked 41, Problems reported 1; Switch role / Sign out.
+14. Status bar left half (**Supervisor ends the meal**) → **Home — After the meal** (196 of 214, New pass requests · 1 waiting, Open problems · 0).
+
 ## Admin · Sign in (page 10)
 
 1. **AD-0 · Sign in**: tap **Sign in with SRM**. **AD-0 · Verifying** moves on by itself to **AD-0 · Confirm profile** (Devi, "Food head · 4 messes").
@@ -104,7 +123,7 @@ Run two prototype links side by side, on two phones or two windows. The prototyp
 |---|---|---|---|
 | **Notify kitchen → Confirm hold** | AD-3b · Safety case → **Notify kitchen** (changes in place to Notified) | Supervisor or Kitchen home (Alert) → **Open alert** → MS-F1 Stop → F2 Check → F3 Done ("Held 1:48 PM, checked 1:50 PM") | Admin: AD-8b Notifications → "Kitchen confirmed the hold 1:48 PM" → AD-3b (Confirmed) → Verify and close |
 | **Running out? → Alerts** | AD-1f · Today — Watch → **Shortages**, or a mess detail's dish card → **AD-2c · Shortage alerts** | MS-C3 Running out? → **Send alert** → Sent | AD-2c lists the dishes at risk across messes ("4 dishes at risk"); the kitchen's own alerts show on MS-E1 |
-| **Pass problem → pass exception** | AD-1c To do → **Karan pass reissue** → **AD-6b · Pass exception (Open)** → Approve → Approved | Pass desk → **Pass problem** → **Ask for a reissue** → MS-B7 Sent to Devi | Student: Special pass → Pass · Live (the reissued pass) |
+| **Pass problem → pass exception** | AD-1c To do → **Karan pass reissue** → **AD-6b · Pass exception (Open)** → Approve → Approved | Pass Desk → **Request a new pass** → Send request → **New pass requests** (Waiting → Approved → Done) | Student: Special pass → Pass · Live (the reissued pass) |
 
 ## Outing Pass module (run OUTINGS, 2026-10-13)
 

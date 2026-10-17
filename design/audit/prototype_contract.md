@@ -6144,3 +6144,31 @@ The sections above are the contract as it was written, run by run, and are kept 
 
 **Reachability (pack v2 D8):** Door Scanner family: all 44 frames in the five Door Scanner sections and the new Alerts and Me section reached from Mess staff · Sign in; 0 dead ends; 0 dangling links. Page 09 overall 97 / 107; the 10 unreached are the same Pass Desk, Kitchen and Supervisor states shown by control.
 
+## Run PASS-DESK (2026-10-17) · Pass Desk role
+
+**Flow starts: 14** (unchanged; automatic "Flow 1" starts created while linking were removed). Page 09 keeps **Mess staff · Sign in**.
+
+**Entry:** MS-0 Sign in → Verifying → Confirm profile → MS-1 · Choose your role → **Pass Desk** → **PD-0 · What you do (sheet)** → Continue or Don't show this again → shared **Password — Pass Desk** → any digit → **Home — Before the meal** (no Start Shift). Close → Choose your role.
+
+**Home and the simulated meal state:** Before: status bar = the supervisor starts the meal → During; Look up a student → Look up; Request a new pass → form; Report a problem → Report. During (and Typing, Not found, 42 of 214, SOS homes): status bar left half = the supervisor ends the meal → After; right half = connection lost → Offline; MealLoop mark (During) = an SOS starts → Home SOS active. Offline: status bar = connection back → During; digit boxes → Can't check right now. After: New pass requests → list; Open problems → None; Report a problem → Report.
+
+**Typing (sample 0238):** During: key 0 → Typing 1; 2 → Typing 2; 3 → Typing 3; **8 → Check this pass (fresh)**; Delete steps back. Typing 3 hidden zones: card label → Student not found (0999; Try again → During); box 1 → No special pass; box 2 → Wrong meal; box 3 → Can't check right now. During · 42 of 214: box 1 → Already recorded.
+
+**Check this pass (sheet):** Matches · record entry → **Pass verified** (+1, 42 of 214) → (1 s) or Check next → Home — During · 42 of 214. Doesn't match → Doesn't match (Check again → sheet; Back to Home → During). Close → During. Status bar thirds: code changes → Code changed; window runs out → Code expired (Check again → Code changed; Back to Home); supervisor ends the meal → Meal ended while checking (Back to Home → After).
+
+**Outcomes:** No special pass / Wrong meal: Check next student → During; Request a new pass → form; Back → During. Already recorded: Check next student / Back → 42 of 214. Can't check right now: Try again / Back to Home / Back → Offline; Report a problem → Report.
+
+**Look up a student (status only):** from Home before; key 0 → Valid; boxes 2 / 3 / 4 → Used / No pass / Wrong meal; Look up another and Back → Look up; Back → Home before. Nothing is recorded.
+
+**Reissue:** Request a new pass → Send request → Sent (toast) → (2 s) **New pass requests** (Waiting / Approved / Done / Rejected). Back actions return to the previous page.
+
+**Report and shortage:** Report a problem: Can't check passes, Crowd at the desk, Something else → Sent to Ravi (toast) → (2 s) Open problems — After your report; Food running short → **Which food is short?** → Send to the kitchen → toast → (2 s) Open problems — Food short. Kitchen Staff Alerts (MS-E1) shows "Food short at the pass desk" (→ MS-C4 Add a batch).
+
+**SOS:** Home SOS active: SOS tab → panel Not claimed: I'll go and check → Claimed; Not now / Close → Home SOS active. Claimed: Mark as checked → Marked as checked (toast) → (2.5 s) Home SOS active; Back to checking passes / Close → Home SOS claimed (tab → Claimed panel); I can't go after all → Not claimed.
+
+**Alerts and Me:** tab bar on every Pass Desk page. Alerts tab: Before → Empty (status bar → Alerts); SOS active / panel → Alerts — SOS active (card → panel; I'll go and check → Claimed); claimed → Alerts — SOS claimed; marked → Alerts — SOS checked; all other pages → Alerts (status bar = an SOS starts). New pass approved → New pass requests; Food shortage seen → Open problems — Food short. Me: Switch role → MS-1; Language → MS-G4; Help → MS-G5; Sign out → MS-0.
+
+**Archive retargets:** the 12 old Pass Desk frames (MS-2 Start shift, MS-H Home, MS-B1–B7) went to page 99 "Pass Desk · archived states" with links stripped after retargeting (pd_archive in plugin data; pass_desk/report.md).
+
+**Reachability (Q8):** Pass Desk family 46 / 46 reached from Mess staff · Sign in; 0 dead ends; 0 dangling links. Page 09 overall 132 / 141; the 9 unreached are Kitchen and Supervisor states shown by control (unchanged).
+

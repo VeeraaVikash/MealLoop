@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-17, after run DOOR-SCANNER pack v2)
+# MealLoop · STATE (2026-10-17, after run PASS-DESK)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "DOOR SCANNER 2026-10"), the run logs are in `run_status.md`, and the latest reports are `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "DOOR SCANNER 2026-10"), the run logs are in `run_status.md`, and the latest reports are `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st334 (2026-10-17, end of DOOR-SCANNER pack v2 D8; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st343 (2026-10-17, end of PASS-DESK Q8; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,16 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run PASS-DESK (2026-10-17)
+
+- **Page 09 Pass Desk rebuilt** from design/reference/pass_desk_2026-10/ (P01–P17) in four sections: Entry and Home, Checking and outcomes, Reissue / report / shortage, SOS / Alerts / Me (46 frames). The 12 old desk frames (MS-2, MS-H, MS-B1–B7) are archived on page 99 ("Pass Desk · archived states").
+- **No camera:** the keypad is on Home; the 4th digit opens **Check this pass** (code + colour + "Changes in N s"); only **Matches · record entry** records (+1). Lookup is status only. Outcomes: Pass verified, No special pass, Wrong meal, Already recorded, Doesn't match, Can't check right now, Student not found, Meal ended while checking.
+- **Reissue:** Request a new pass → New pass requests (Waiting / Approved / Done / Rejected; Approved is not Done). **Report:** four options; Food running short → Which food is short? → kitchen ("Food short at the pass desk" on Kitchen Staff Alerts). SOS, Alerts (P14) and Me as the Door Scanner.
+- **SIMULATED:** pass service, shared meal state, reissue link, SOS routing, delivery, connection (hidden hotspots, "Simulated:" notes; DEMO.md Pass Desk walk, 14 steps).
+- **Components (page 03, flagged):** CodeCard, HomeKeypad, PassResultScreen, RequestRow, ShortageChips (`mealloop/pd_ids`); ProblemOption + Pass check / Food short; AlertRow + Food.
+- **Health:** contrast ≥ 5.72; small text, targets, truncation, overflow, banned words 0; no scan / camera wording; no success on an unverified entry. NEEDS REVIEW: lime 5–6 on SOS frames, short-list bands, two scrolling Home states. Reach 46 / 46, 0 dead ends. Flow starts 14.
+- **Reports:** pass_desk/report.md, decisions.md, checks.md, preflight.md; exports export_pass_desk/ (47 at 2× + README); tools pd1comp.js, pdb.js, pdarch.js; gaps 486–502 (OWNER 486–491).
 
 ## Run DOOR-SCANNER · pack v2 (2026-10-17)
 

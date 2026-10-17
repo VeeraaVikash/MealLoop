@@ -150,6 +150,21 @@ Plus NEEDS REVIEW in fix2/report.md.
 
 Plus NEEDS REVIEW in guardian_video/report.md.
 
+## Run PASS-DESK (2026-10-17)
+
+**What changed.** Built from design/reference/pass_desk_2026-10/ (P01–P17, data/pass_desk_spec.md). Only the Pass Desk family on page 09 (plus one added card on the shared Kitchen Staff Alerts and a canvas note beside the student Special pass page on 04 / 07). Door Scanner, Kitchen and Supervisor screens are not redesigned.
+
+- **The desk does not scan.** Staff type the last 4 digits on the keypad on Home; the 4th digit opens **Check this pass** with the code and colour the student's phone should show now (sample 7A3F · Lime, from the pass service; never real credentials). **Matches · record entry** records (+1); Doesn't match records nothing. The sheet re-fetches when the code changes; an expired window asks to check again.
+- **Lookup never records.** Look up a student (before the meal) shows the status only.
+- **Never success for an unverified entry.** No special pass, Wrong meal, Already recorded (count stays), Doesn't match, Can't check right now ("This pass is NOT checked") and Student not found all say nothing was recorded. No supervisor approval step.
+- **Approved is not Done** for new-pass requests (admin pass-exception flow; the student sees the new pass only when Done).
+- **Report a problem** (Can't check passes, Crowd at the desk, Food running short, Something else); food shortage goes to the kitchen team ("Food short at the pass desk").
+- **SOS, Alerts, Me** reuse the Door Scanner patterns ("Checked by the desk").
+
+**Tools.** design/audit/tools/pd1comp.js, pdb.js (`mealloop/pdb`), pdarch.js (`mealloop/pdarch`).
+
+**Owner items.** 486 camera scanning needs a QR on the student pass; 487 pass service and shared meal state need a backend; 488 reissue approval link to the admin pass-exception flow; 489 special meal without a pass (draft: not allowed); 490 offline policy; 491 who sees the special-meal entry list. Plus NEEDS REVIEW in pass_desk/report.md.
+
 ## Run DOOR-SCANNER · pack v2 (2026-10-17)
 
 **What changed.** The pack came back with **D17 Alerts** and **D18 Me** (and the spec section "Alerts and Me (kept short)"); D01–D16 are the same drawings. Only Alerts and Me were rebuilt.

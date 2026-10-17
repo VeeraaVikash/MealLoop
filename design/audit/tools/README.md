@@ -77,3 +77,12 @@ The old `filltool.js` and `densitytool.js` were page-10 only and are kept for hi
 | `ds2comp.js` | D1 builder: SOSAlertCard (Not claimed / Claimed by you / Checked by you) and AlertRow (Done / Seen / Reminder / See all; Title, Time, Line) on page 03; IDs in `mealloop/ds_ids` (alertCard, alertRow). Run once. |
 | `ds2b.js` (`mealloop/ds2b`) | Page builders on top of `dsb`: `sec2()` section "Door Scanner · Alerts and Me (pack v2)", `alerts(sec, name, x, {card, rows, seeAll, empty, back})`, `me(sec, name, x)`, `tabLinks(f, {Home, Alerts, Me})`, `fixChrome(f)` (keeps chrome and hotspots fixed). Frame IDs in `mealloop/ds_frames` (a2Sos, a2Claimed, a2Checked, a2During, a2After, a2All, a2Empty, me2). |
 | `ds2_export_plan` (plugin data) | The 8 pack-v2 exports. The figma.com asset host is blocked here, so captures are taken with `get_screenshot` (base64) and the saved PNG copied. |
+
+## PASS-DESK run tools (2026-10-17)
+
+| Tool | What it does |
+|---|---|
+| `pd1comp.js` | Q1 builder: CodeCard, HomeKeypad, PassResultScreen (from ResultScreen), RequestRow, ShortageChips on page 03 (`mealloop/pd_ids`). Run once. |
+| `pdb.js` (`mealloop/pdb`) | Page builders on top of `ds2b`: `psec`, `pbase`, `phome(sec, name, x, {state, kp, digits, count, offline, sos})`, `presult` (PassResultScreen pages, primary at y 754), `navCard`, `qrow`, `kp` / `key` (keypad keys inside the HomeKeypad instance), `closeOf` (GlassSheet Close), `note`. Frame IDs in `mealloop/pd_frames`. |
+| `pdarch.js` (`mealloop/pdarch`) | Archive frames from page 09 (page level or sections) to a page-99 section, retargeting links first; logs to `mealloop/pd_archive`. |
+| `pd_export_plan` (plugin data) | The 47 Pass Desk exports (captured inline; the figma.com asset host is blocked here). |
