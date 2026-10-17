@@ -248,3 +248,8 @@ The brief was resent with an 18-image pack. D01–D16 are the same drawings as t
 | Stage | Status | Snapshot | Notes |
 |---|---|---|---|
 | D0 Preflight | done | st329 = st328 (18 pages, 0 differences); starts 14 | HEAD 40fe234; push dry run up to date. Pack refreshed (18 images, 18 SVGs, spec section "Alerts and Me"). Changes and inventory: door_scanner/preflight_r2.md. |
+| D1 Foundation | done | st331 vs st330: 03 +2 (2 component sets); all other pages 0; starts 14 (start snapshot st330 = st329) | design_intent "DOOR SCANNER 2026-10": new block "Alerts and Me (pack v2)". Flagged on 03: SOSAlertCard (Not claimed / Claimed by you / Checked by you), AlertRow (Done / Seen / Reminder / See all; Title, Time, Line). Reused: CountTile, StaffTabBar3, OrbitBackdrop. Builder tools/ds2comp.js. Decisions 42–46 (door_scanner/decisions_r2.md). |
+| D2 Entry flow | skipped | no Figma change | D01–D03 unchanged in pack v2 (metadata only); built in the first run (st322). |
+| D3 Home | skipped | no Figma change | D04, D05, D12 unchanged; built in the first run (st323). |
+| D4 Scan outcomes | skipped | no Figma change | D06–D10 unchanged; built in the first run (st324). |
+| D5 Report and lists | skipped | no Figma change | D11, D15, D16 unchanged; built in the first run (st325). |
