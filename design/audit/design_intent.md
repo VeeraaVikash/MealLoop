@@ -398,3 +398,27 @@ Source: design/reference/door_scanner_2026-10/ (D01–D18, data/door_scanner_spe
 - The alerts feed and the shift numbers are SIMULATED in Figma (needs a backend).
 
 **Sample.** Main Mess, Lunch, Wed 14 Aug 2024, 12–2 PM. Door staff SK; supervisor Ravi. Aarav ••0238 (recorded 12:18 PM; 715 recorded). Final: 774 recorded, 6 entered without voting, 1 open problem. SOS 12:45 PM "Found something in food", Main Mess · Block A.
+
+## PASS DESK 2026-10 (run PASS-DESK, 2026-10-17)
+
+Source: design/reference/pass_desk_2026-10/ (P01–P17, data/pass_desk_spec.md). Scope: the Pass Desk role on page 09. Shared with the Door Scanner and not redrawn: role selection (MS-1, Pass Desk row), the shared password page (role chip "Pass Desk"), the offline screen pattern and Me. Door Scanner, Kitchen and Supervisor screens are not redesigned (Kitchen Staff Alerts only gains one "Food short at the pass desk" card).
+
+**Principles.**
+
+1. **One primary task: check a special-meal pass, then record it.** Nothing else lives on Home: no analytics, waste or vendor tasks.
+2. **No camera.** The desk does not scan. Staff type the student's last 4 digits on the **keypad on Home** (during the meal). On the 4th digit the sheet **Check this pass** shows the code and colour the student's phone should show right now, with "Changes in N s".
+3. **Check, then record.** The staff compare with the student's phone and tap **Matches · record entry** or **Doesn't match**. Only "Matches" records an entry (+1). A lookup alone never records anything ("Look up a student" is status only: "This does not count as an entry.").
+4. **The code is live.** The sheet re-fetches when the code changes (a brief "Just changed" highlight); an expired window says "Code expired. Check again."; an old screenshot cannot match. Duplicates for the same student and meal are prevented ("Already recorded · Count stays N").
+5. **Never success for an unverified entry.** No pass, Wrong meal, Doesn't match and Can't check right now all say what was recorded: nothing. No offline queue in this version.
+6. **No supervisor approval step.** A student with no special pass is told they can still have the regular meal (the Door Scanner handles normal entry).
+7. **Approved is not Done.** A new-pass request moves Waiting → Approved (the admin said yes) → Done (the student actually has the new pass) or Rejected (ask the pass admin). The student's Special pass page shows the new pass only when it is Done. Requests go to the existing admin pass-exception flow; there is no separate approval system.
+8. **Report a problem** (always reachable): Can't check passes, Crowd at the desk, Food running short, Something else. One tap sends to Ravi; Food running short asks which dish (chips from the day's menu) and goes to the kitchen team of that mess ("Food short at the pass desk" in Kitchen Staff Alerts). After sending: a toast and the item under Open problems.
+9. **SOS, Alerts, Me** as the Door Scanner: SOS tab only while active; "Keep checking passes first if the desk is busy."; Mark as checked records "Checked by the desk" and does not close the case.
+
+**Codes and colours are sample.** The expected code and colour come from the pass service; frames use the student pass page's sample values (7A3F · Lime, K2M9 · Blue; live colour tokens). There is no verification algorithm in the design and no real credentials.
+
+**SIMULATED in the Figma prototype (needs a backend; OWNER).** Shared meal state (hidden "Supervisor starts / ends the meal" hotspots move every Pass Desk page between Before, During and After); the pass service (lookups, the expected code, re-fetch, expiry, duplicates); the reissue approval link to the admin pass-exception flow; SOS routing; problem and shortage delivery; connection loss. Every Pass Desk frame carries a "Simulated:" note.
+
+**Brand and layout.** OrbitBackdrop on every frame except the full-lime Pass verified page. Mono only for numbers, times, units and codes. Staff primary buttons 56 pt (result pages at y 754); targets 44 pt; text at least 12 pt. Lime: at most 3 elements per frame.
+
+**Sample.** Main Mess, Lunch special (Wednesday special meal), Wed 14 Aug 2024, 12–2 PM. Staff SK; supervisor Ravi. Aarav ••0238. 214 passes; 41 checked, 42 after Aarav; 196 final. Requests: Aarav ••0238 Waiting (sent 12:20 PM), Meera ••0412 Approved (12:08 PM), Kiran ••0377 Done (11:52 AM), Dev ••0190 Rejected.
