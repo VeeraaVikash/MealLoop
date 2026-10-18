@@ -272,3 +272,9 @@ The brief was resent with an 18-image pack. D01–D16 are the same drawings as t
 | Q7 Spacing and checks | partly | st342 vs st341: 09 ~2 (text styles; row paddings and sizes are not seen by the snapshot); other pages 0; starts 14 | pass_desk/checks.md: contrast ≥ 5.72; mono 3 (codes, accepted); small 0; targets 0; truncation 0; overflow 0; raw 0; banned 0; no scan / camera wording; no success on an unverified entry; Approved ≠ Done. Fixed rows 56, "of 214", hotspot 44. Partly: lime 5–6 on SOS frames, bands on short lists, two scrolling Home states (NEEDS REVIEW). Decision 39. |
 | Q8 Wiring, export and docs | done | st343 vs st342: 09 ~2 (two text fixes found in the exports); other pages 0; starts 14 (47 temporary export clones made and removed) | Reach: Pass Desk 46 / 46 from Mess staff · Sign in, 0 dead ends, 0 dangling (page 09: 132 / 141; 9 unreached are Kitchen / Supervisor states by control). 47 exports at 2× in export_pass_desk/ + README. Contract section, gaps 486–502 (OWNER 486–491), STATE, MASTER_CONTEXT, DEMO (Pass Desk walk, 14 steps), tools README. Decisions 40–42. |
 | Q9 Report | done | st343 (no Figma change) | pass_desk/report.md: stage table, FUNCTIONAL / SIMULATED / NEEDS BACKEND, decisions 1–42, conflicts, gaps 486–502, NEEDS REVIEW by frame name, end checks. |
+
+## Run KITCHEN (2026-10-18)
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| W0 Preflight | done | st344 = st343 (18 pages, 0 differences); starts 14 | HEAD 7fe94a1; push dry run up to date. Pack kitchen_2026-10 copied from the upload and committed (9ac468e, 17 images). Inventory in kitchen/preflight.md: Kitchen family 24 frames on page 09 (MS-2 ×1, MS-H ×3 Kitchen only; MS-C1–C8 ×20 shared with the Supervisor Home); shared: sign in, role selection, the Kitchen Staff password page, MS-E ×3, MS-F ×5, MS-G ×6. |
