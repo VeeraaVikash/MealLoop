@@ -1,0 +1,15 @@
+# KITCHEN · decisions made without asking
+
+| # | Stage | Decision | Rule or reason |
+|---|---|---|---|
+| 1 | W0 | The pack was copied from the upload (the brief's fallback) and committed before W0. | Brief: copy and continue. |
+| 2 | W0 | Only the 4 Kitchen-only frames (MS-2 Start shift — Kitchen, MS-H Home — Kitchen ×3) will be archived once replaced. The 20 MS-C frames and the shared MS-E / MS-F / MS-G frames stay: the Supervisor Home still links to them. | Do not redesign other roles; never delete. |
+| 3 | W1 | Eight new flagged sets on page 03 under the Pass Desk components: LiveCard, HeadcountCard, ShortageRow, ReportStatusChip, DishRow, QuantitySheet, HistoryRow, KitchenAlertRow (cloned from AlertRow). KeyPad gains an additive variant **Size=Decimal** (Compact with "." in the blank key) for kg and L. | Reuse first; flag new ones. |
+| 4 | W1 | The live count, the headcount and the quantity use ML/Hero Metric (52 pt); K01 / K02 draw the number at about 100 pt. No new text style. | Existing fonts and sizes; no new tokens. |
+| 5 | W1 | "LIVE ·", "HEADCOUNT SENT ·", "MEAL CLOSED" and "students entered" are in sans (the images draw the eyebrows in mono); the times and numbers are mono. | Mono only for numbers, times and units. |
+| 6 | W1 | Stale samples keep one calendar: the live card says "Updated 1:40 PM · reconnecting" with 714 (the spec's example says 1:12 PM, but 714 was recorded at 1:40 PM); the headcount chip says "Updated 9:00 AM, may be out of date" (the spec's 8:50 AM is before the 9:00 AM send). | One calendar; never invent data. |
+| 7 | W1 | Offline live card: the last count in grey, "OFFLINE · last count 1:40 PM", "No connection. The count updates when you are back online."; the lime pill stays (a report made offline shows "Couldn't send" with Retry). | Never imply live sync. |
+| 8 | W1 | Card padding 20 (the images draw about 24 pt); rows 56 pt (K06 / K11 draw 56–78 pt). | Card padding 12 / 16 / 20; rows 52 or 56. |
+| 9 | W1 | Validation errors under the field (urgent outline, warning icon, ink text): Over limit "Enter a number up to 99.9.", Not a number "Enter a number, like 2.5.", Negative "Can't be less than 0. Tap None left if nothing is left." Pieces use the Compact keypad (whole numbers, up to 999). | Spec validation; text in ink for contrast. |
+| 10 | W1 | Per-variant samples (status labels, dish names and values, history rows, alert rows) are text overrides, not text properties: a text property has one default for every variant and erased the samples. LiveCard Count and ShortageRow Title stay properties. | Correct samples in the component sheet. |
+| 11 | W1 | Shortage seen in Alerts uses an outlined check circle (K12); Meal ended keeps AlertRow's Done circle; Report returned the clock; Food short the pot. Unread titles use ML/Body Semibold (the spec says medium; no medium 17 pt style exists). | Existing styles. |
