@@ -94,3 +94,10 @@ The old `filltool.js` and `densitytool.js` were page-10 only and are kept for hi
 | `kt1comp.js` | Builds the flagged Kitchen sets on page 03 (args.part 1: LiveCard, HeadcountCard, ShortageRow, ReportStatusChip; part 2: DishRow, KeyPad + Size=Decimal, QuantitySheet, HistoryRow, KitchenAlertRow). IDs in `mealloop/kt_ids`. |
 | `ktb.js` (`mealloop/ktb`) | Page builders on top of `pdb`: `ksec`, `kinst`, `mix` (sans words + mono times), `ak`, `kbase`, `khome(sec, name, x, {state, hc, live, short, seeAll, waste, offline, sos})`, `closedCard`, `wasteCard`, `kpage`, `bar` (K06 bottom bar). Frame IDs in `mealloop/kt_frames`. |
 | `ktw.js` (`mealloop/ktw`) | Record waste builders on top of `ktb`: `DISH`, `vals`, `waste(sec, name, x, {vals, done, plate, extra, sos})`, `qsheet`, `checkSheet` (o.blocked), `dialog`. |
+
+## Run SUPERVISOR (2026-10-19)
+
+| Tool | What it does |
+|---|---|
+| `sv1comp.js` (one-off) | U1 components on page 03: MealCard, FollowUpRow, SupervisorShortageRow, WasteRow, ConfirmDialog, SOSCard, SOSPanel · Supervisor; adds StatusText Status=Active (its Time layer must keep the "Show time" reference, re-linked in U3). Ids in `mealloop/sv_ids`. |
+| `svb.js` (`mealloop/svb`) | Supervisor builders on top of `ktw`: `ssec`, `sinst`, `rv`, `stx`, `offDot`, `followRows`, `svhome(sec, name, x, {state, unavailable, waste, short, sos, offline, time})`, `dlg(f, lines, texts)` (ConfirmDialog at x 16, centred), `svpage`, `group`, `svalerts`, `svpanel(f, state)` (GlassSheet stretched to the bottom), `svme`. Frame ids in `mealloop/sv_frames`; all SV frame ids in `mealloop/sv_all`; export plan in `mealloop/sv_exp`. |

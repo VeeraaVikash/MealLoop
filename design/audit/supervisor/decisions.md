@@ -38,3 +38,5 @@
 | 34 | U7 | Mon 12 · Dinner is "Unavailable" here (S18) while the Kitchen history shows 577 entered for the same meal. Kept as the pack draws it; NEEDS REVIEW (cross-role sample data). | Reference image; flagged. |
 | 35 | U8 | Dialogs: ConfirmDialog Lines=1 gets the Lines=2 body height (centred), so Start, Close, Mark resolved and Sign out are all 361 × 189 at x 16, y 332. | Brief U8: dialogs identical in size and position. |
 | 36 | U8 | The large empty band above the tab bar on Homes, Alerts, Me and history pages is kept as the pack draws it (NEEDS REVIEW), as in the Kitchen run. | Reference images. |
+| 37 | U9 | The 41 v1 Supervisor frames nothing reached any more were archived to page 99 "Supervisor v1 · archived states" with `pdarch` (links stripped, names suffixed "(before SUPERVISOR)"); Language and Help stay. A hidden "Later: the kitchen saves both reports" hotspot on Alerts — Shortage resolved makes All caught up reachable. | Never delete; every frame reachable. |
+| 38 | U9 | Exports: 45 PNGs at 2× named after S00–S19 with letter suffixes for extra states; the empty Meal history list rule on Empty / Error was hidden before export. | Brief U9. |

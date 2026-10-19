@@ -118,6 +118,27 @@ Hidden hotspots are SIMULATED server or supervisor events; every Kitchen frame h
 15. On Home — During, tap the **MealLoop** mark (**an SOS starts**) → SOS tab → **SOS panel** ("Keep cooking first if the kitchen is busy") → **I'll go and check** → **Mark as checked** → toast.
 16. **Alerts** tab → Meal ended (unread) → Home — After · Not started; **Food short** (from the pass desk) → **Food short at the pass desk**; **Waste not recorded** (Tue 13 Dinner · add it) → Past meal — Not recorded. **Me** tab → Kitchen Staff, On shift · since 11:00 AM; **Meal history**; **Switch role** / **Sign out**.
 
+### Supervisor (page 09, from Mess staff · Sign in) · 16 steps (SUPERVISOR, 2026-10-19)
+
+Hidden hotspots (all "(simulated)"): **status bar, left** = time skip on the Homes (Not started → In service at 12:00 PM → Closed at 2:05 PM), History fails to load (Meal history), The door marks it checked (SOS panel — Not taken), Kitchen saves the report (Waste report — Lunch Wed 14 · Not recorded), Later: the kitchen saves both reports (Alerts — Shortage resolved → All caught up); **status bar, centre** = Connection lost / back (In service ↔ Offline), Final count did not arrive / arrives (Closed ↔ Unavailable); **status bar, right** = An SOS starts (In service), A new mess with no meals (Meal history). The time skip only moves the Supervisor; to show the other roles in the same state, use their own "Supervisor starts / ends the meal (simulated)" hotspots on the Door Scanner, Pass Desk and Kitchen Homes. Real sync needs a backend (gap 540).
+
+1. **MS-0 · Sign in** → Verifying → Confirm profile → **Choose your role** → **Supervisor** → **What you do (sheet)** (Start and close the meal · Follow up shortages · Look after SOS alerts) → **Continue**.
+2. **Password — Supervisor** (chip "Supervisor") → any digit → **Home — Not started**: "Not started", FORECASTED ATTENDANCE 860 expected diners, Waste not recorded 1, Active shortages 0.
+3. **Start meal** → **Start this meal?** (Lunch · Main Mess, "Door scanner and pass desk will open.") → **Start meal**.
+4. **Home — In service**: "In service · 1 h 40 min", LIVE · 1:40 PM, 714 students entered (no forecast), Close meal. Rows 1 / 1.
+5. **Active shortages** → **Alerts — During the meal** → **Steamed Rice** (Almost out · posted 1:30 PM, Active) → **Shortage details**.
+6. Back → status bar right on Home: **An SOS starts** → SOS tab → **SOS panel — Not taken** ("Only if you're free. Keep the meal running first if it is busy.").
+7. **I'll go and check** → **Claimed by you** ("You're checking this") → **Mark as checked** → **Checked by the supervisor · 1:48 PM**.
+8. **Close case** → **Home — Case closed** (toast "Case closed", the tab is gone). Alternative: on the Not taken panel, the hidden "The door marks it checked" hotspot opens **Checked by the door · 12:52 PM** → Close case.
+9. **Close meal** → **Close this meal?** ("Door scanner and pass desk will stop.") → **Close meal** → **Home — Closed**: Closed · 2:00 PM, MEAL CLOSED, Final entries 774; Waste not recorded 2, Active shortages 1 (closing resolved nothing). Hidden: Final count did not arrive → "Unavailable".
+10. **Alerts** tab → **Alerts — After the meal** (S07) → **Steamed Rice** → **Mark resolved** → **Mark shortage as resolved?** → **Mark resolved**.
+11. **Alerts — Shortage resolved** (toast; only the two waste rows) → Home tab → Active shortages **0**; Me tab → Follow-ups 0 / 2.
+12. Back in Alerts: **Dinner · Tue 13** → **Waste report — Not recorded** (Final entries 598, "The kitchen has not saved this report yet. Nothing to do here."). No buttons.
+13. **Lunch · Wed 14** → Not recorded (774); hidden "Kitchen saves the report at 2:40 PM" → **Waste report — Lunch Wed 14 · Recorded** (8 dishes, 0 kg · none left, Tomato Dal not made, plate waste 18 kg; read only). The Kitchen's Report saved page has the same hidden link.
+14. **Me** → **Meal history** (Loading → list; after resolving: "Shortage resolved · Waste not recorded" on Wed 14 · Lunch). Hidden: load error → Retry; empty mess.
+15. **Tue 13 · Lunch** → **Past meal** (Closed, 806, Steamed Rice Resolved · 1:52 PM, Recorded by the kitchen 2:40 PM) → **View report** → **Waste report — Tue 13 Lunch** (4 dishes, 21 kg; Report details opens and closes). **Mon 12 · Dinner** → Final entries "Unavailable".
+16. **Me** → **Sign out** → **Sign out?** → **Sign out** → **Choose your role**.
+
 ## Admin · Sign in (page 10)
 
 1. **AD-0 · Sign in**: tap **Sign in with SRM**. **AD-0 · Verifying** moves on by itself to **AD-0 · Confirm profile** (Devi, "Food head · 4 messes").

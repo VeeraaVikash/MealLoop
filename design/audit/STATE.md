@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-19, after run KITCHEN · pack v2)
+# MealLoop · STATE (2026-10-19, after run SUPERVISOR)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "KITCHEN STAFF 2026-10"), the run logs are in `run_status.md`, and the latest reports are `kitchen/report_v2.md` (KITCHEN pack v2), `kitchen/report.md` (KITCHEN), `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "SUPERVISOR 2026-10"), the run logs are in `run_status.md`, and the latest reports are `supervisor/report.md` (SUPERVISOR), `kitchen/report_v2.md` (KITCHEN pack v2), `kitchen/report.md` (KITCHEN), `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st363 (2026-10-19, end of KITCHEN pack v2 W9; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st374 (2026-10-19, end of SUPERVISOR U9; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,19 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run SUPERVISOR (2026-10-19)
+
+- **Supervisor role rebuilt** on page 09 from design/reference/supervisor_2026-10/ (S00–S19) in four sections: Entry and Home (11), Alerts, shortages and waste (13), SOS (6), Me and history (16) = 45 SV-* frames (one is the What you do sheet). The v1 Supervisor dashboard (41 frames: MS-2, MS-H, MS-C, MS-D, MS-E, MS-F, MS-G1/2/3/6) is archived on page 99 "Supervisor v1 · archived states".
+- **Flow:** role → What you do sheet → shared password → Home (no Start Shift). Home Not started (FORECASTED ATTENDANCE 860, lime Start meal) → Start this meal? → In service (LIVE 714 students entered, outlined Close meal; never the forecast) → Close this meal? → Closed (Final entries 774 or Unavailable).
+- **Follow-ups:** Waste not recorded and Active shortages are the same tasks and counts on Home, Alerts and Me (four moments: before, during, after, shortage resolved). Shortage details → Mark shortage as resolved? → gone from Alerts; history says "Shortage resolved".
+- **Waste read only:** two values (Unserved food N dishes; Plate waste one total), Report details with each dish in its unit, "0 kg · none left", no actions; Not recorded pages say "Nothing to do here." Linked from the Kitchen's Report saved (hidden hotspot).
+- **SOS:** the Supervisor closes cases: Not taken → Claimed by you → Mark as checked ("Checked by the supervisor") → Close case → toast "Case closed", tab gone; or Checked by the door → Close case. "Close case" appears on no other role.
+- **Me and history:** Me (RV, Ravi, Supervisor · Main Mess; Meal history; Follow-ups; Sign out → Sign out? → role selection); Meal history list, Shortage resolved, Loading, Empty, Error + Retry; six read-only past-meal summaries.
+- **Components (page 03, flagged):** MealCard, FollowUpRow, SupervisorShortageRow, WasteRow, ConfirmDialog (side-by-side actions, 361 × 189 at x 16, y 332), SOSCard, SOSPanel · Supervisor; StatusText + Active (`mealloop/sv_ids`).
+- **SIMULATED:** meal state across roles, entries, forecast, shortages and resolving, waste data, SOS routing and closing, alerts, history, connection (hidden hotspots, "Simulated:" notes; DEMO.md Supervisor walk, 16 steps).
+- **Health:** contrast ≥ 5.72; small text, targets, truncation, overflow, raw, banned words 0; meaning checks 0. NEEDS REVIEW: SOS chips vs no-pill rule, sample clocks, lime, bands (gaps 545–556). Reach page 09 209 / 209, 0 dead ends. Flow starts 14.
+- **Reports:** supervisor/report.md, preflight.md, decisions.md (1–38), checks.md, archive_index.md; exports export_supervisor/ (45 at 2× + README); tools sv1comp.js, svb.js; gaps 537–556 (OWNER 537–544). Kitchen pack v3 (K19, K20) committed, not yet drawn (gap 553).
 
 ## Run KITCHEN · pack v2 (2026-10-19)
 

@@ -150,6 +150,18 @@ Plus NEEDS REVIEW in fix2/report.md.
 
 Plus NEEDS REVIEW in guardian_video/report.md.
 
+## Run SUPERVISOR (2026-10-19)
+
+**What changed.** Built from design/reference/supervisor_2026-10/ (S00–S19, data/supervisor_spec.md). Only the Supervisor family on page 09 (four "Supervisor · …" sections, 45 frames) plus two hidden demo hotspots elsewhere (KS-3 · Report saved → the Supervisor's read-only report; nothing else in other roles changed). The v1 Supervisor dashboard is archived on page 99.
+
+- **Four jobs:** start and close the meal (centred dialogs, Cancel left, action right), follow up shortages (Mark resolved), read the kitchen's waste report (read only, no forward / approve / edit / return), close SOS cases once checked.
+- **Rules of meaning:** forecast only before the meal, never beside the live count; entries are not meals served; missing data is "Unavailable" or "Not recorded", never 0; unserved food per dish in its unit, plate waste one total; closing a meal resolves nothing; the same task has the same count on Home, Alerts and Me; status is a dot plus text.
+- **SOS:** the other roles mark a case checked; only the Supervisor sees Close case.
+
+**Tools.** sv1comp.js (components), svb.js (`mealloop/svb`, page builders: svhome, dlg, svalerts, svpanel, svme).
+
+**Owner items.** 537 when Start meal unlocks; 538 reminder for a missing waste report; 539 who else can close an SOS case; 540–544 backend (meal state, shortages, waste data, SOS, history). Plus NEEDS REVIEW in supervisor/report.md.
+
 ## Run KITCHEN · pack v2 (2026-10-19)
 
 **What changed.** A delta pass from the refreshed pack (K01–K18). Only the Kitchen Staff family on page 09 and its page-03 components; other roles are not touched.

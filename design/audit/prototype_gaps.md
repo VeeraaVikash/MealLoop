@@ -1221,3 +1221,30 @@ Pack v2 resolves v1 gaps 503 (the card is now FORECASTED ATTENDANCE), 504 (the s
 | 534 | 09 Alerts — SOS active, SOS Homes | At 12:50 PM the Alerts list shows Food short at 12:53 PM and the SOS Homes show LIVE · 1:40 PM (v1 samples, see 514). | Low | Open (NEEDS REVIEW) |
 | 535 | 09 Edit report — Wed 14 Lunch | Review and save opens the existing Check and save, whose Back to edit returns to the first-save form (Record waste — All entered), not the edit form. | Low | Open (NEEDS REVIEW) |
 | 536 | 09 Kitchen hotspots | Hidden hotspots stand in for server and supervisor events (meal start and end, feeds, receipts, SOS); every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
+
+## Run SUPERVISOR (2026-10-19)
+
+Gap 526 (Kitchen: whether the Supervisor sees recorded waste read-only) is answered in the draft by this run: yes, read only, no actions (SV-4 pages). It stays OWNER for confirmation.
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 537 | 09 SV-1 Home — Not started | **When Start meal unlocks** (draft: always available; spec open item 1). | Medium | Open (OWNER) |
+| 538 | 09 SV-4 Waste report — Not recorded | **Whether the Supervisor can remind the kitchen about a missing waste report** (draft: no action, "Nothing to do here."; open item 2). | Medium | Open (OWNER) |
+| 539 | 09 SV-5 SOS panel — Checked | **Who else can close an SOS case** (draft: the Supervisor only; the food head in the admin app; open item 3). | Medium | Open (OWNER) |
+| 540 | 09 SV-1 Start / Close dialogs | **Backend:** shared meal state, so Start and Close open and stop the door scanner and pass desk on every staff phone of the mess. SIMULATED by the time skip and the other roles' "Supervisor starts / ends the meal" hotspots. | High | Open (OWNER) |
+| 541 | 09 SV-2 / SV-3 | **Backend:** shortage reports from the kitchen and Mark resolved back to the kitchen and history; the counts on Home, Alerts and Me. SIMULATED. | High | Open (OWNER) |
+| 542 | 09 SV-4 | **Backend:** waste report data and status from the kitchen's saved report (the KS-3 → SV-4 link is a hidden hotspot). SIMULATED. | High | Open (OWNER) |
+| 543 | 09 SV-5 | **Backend:** SOS routing, claiming, "Checked by …" and closing across roles and back to the student. SIMULATED. | High | Open (OWNER) |
+| 544 | 09 SV-7, SV-1 | **Backend:** meal history, final entries and the "Unavailable" case; live entries and the forecast. SIMULATED. | High | Open (OWNER) |
+| 545 | 09 SOSCard, SV-2 Alerts — SOS active, SV-5 panels | The pack draws the SOS case state as chips ("Nobody has taken this yet", lime "Checked by the door · 12:52 PM"); the brief says status is never a pill. Kept as drawn (shared SOS card). | Low | Open (NEEDS REVIEW) |
+| 546 | 09 SV-5, SV-2 Alerts — SOS active | SOS frames sit on the 1:40 PM Home while the card says "12:45 PM · 5 min ago", as on the Door Scanner, Pass Desk and Kitchen. | Low | Open (NEEDS REVIEW) |
+| 547 | 09 SV-1 In service | "In service · 1 h 40 min" beside LIVE · 1:40 PM; S02 draws "55 min". | Low | Open (NEEDS REVIEW) |
+| 548 | 09 SV-2 Alerts — SOS active | S08 lists "Lunch · Wed 14, Closed 2:00 PM" during the meal; the frame lists Dinner · Tue 13 (598 entered) instead. | Low | Open (NEEDS REVIEW) |
+| 549 | 09 SV-7 Meal history | Mon 12 · Dinner is "Unavailable" (S18) but 577 entered in the Kitchen history. | Low | Open (NEEDS REVIEW) |
+| 550 | 09 SV-7 Past meal — Wed 14 · Breakfast | The shortage item is not in the pack ("1 shortage · Resolved"); its waste report has no Supervisor page, so no View report. | Low | Open (NEEDS REVIEW) |
+| 551 | 09 SV-1 Home — In service · Offline | Offline is a header dot only; Start / Close while offline are not drawn (the card keeps LIVE · 1:40 PM). | Low | Open (NEEDS REVIEW) |
+| 552 | 09 SV-4 Waste report — Lunch Wed 14 · Recorded | Taller than the phone (8 dishes); the frame scrolls; the export shows the first screen. | Low | Logged |
+| 553 | 09 Kitchen (pack v3) | K19 (SOS tab on the Kitchen Home before and after the meal) and K20 ("Checked by the kitchen") are not drawn; Kitchen frames were not changed in this run. | Medium | Open (Kitchen pass) |
+| 554 | 09 Supervisor frames | Lime above 3 elements on in-service and SOS frames (4–8); empty bands above the tab bar as drawn in the pack. | Low | Open (NEEDS REVIEW) |
+| 555 | 09 Supervisor hotspots | Hidden hotspots stand in for server events (time skip, connection, final count, SOS start and door check, kitchen saves the report, history errors); every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
+| 556 | 09 SV-1 Home | The meal numbers use ML/Hero Metric (52 pt); the pack draws them near 90 pt. No new text style. | Low | Logged |

@@ -6214,3 +6214,23 @@ The sections above are the contract as it was written, run by run, and are kept 
 **Archive retargets:** ten approval-loop pages went to page 99 "Kitchen · archived states (pack v1 approval loop)" with links stripped; their 29 incoming links were retargeted first (kitchen/archive_index.md, "Pack v2").
 
 **Reachability (W9):** page 09 197 / 205 reached; every Kitchen frame (68) reached; 0 dead ends; 0 dangling links. The 8 unreached are the same old Supervisor / shared states as in v1.
+
+## Run SUPERVISOR (2026-10-19) · Supervisor role
+
+**Flow starts: 14** (unchanged; automatic "Flow N" starts removed at every stage).
+
+**Entry:** Mess staff · Sign in → Verifying → Confirm profile → Choose your role → **Supervisor** → **SV-0 · What you do (sheet)** (Continue or Don't show this again) → **Password — Supervisor** (chip "Supervisor") → any digit → **SV-1 · Home — Not started**. No Start Shift page (MS-2 archived).
+
+**Home and meal lifecycle:** Not started → **Start meal** → Start this meal? (Cancel → Not started; Start meal → In service). In service → **Close meal** → Close this meal? (Cancel → In service; Close meal → Closed). Hidden hotspots: status bar left = time skip (Not started → In service → Closed); status bar centre = Connection lost (In service → Offline; Offline → Connection back), Final count did not arrive (Closed ↔ Closed · Unavailable); status bar right = An SOS starts (In service → In service · SOS). Follow-up rows and the Alerts tab → the Alerts frame for the same moment; avatar and Me tab → the Me frame for the same moment.
+
+**Alerts and shortages:** Steamed Rice row → Shortage details (Back → Alerts after the meal) → **Mark resolved** → Mark shortage as resolved? (Cancel → details; Mark resolved → **Alerts — Shortage resolved**, toast). Home — Closed · Shortage resolved and Me — Shortage resolved show Active shortages 0. Alerts — Shortage resolved: hidden "Later: the kitchen saves both reports" → All caught up.
+
+**Waste (read only):** Waste not recorded rows → Waste report — Lunch Wed 14 · Not recorded / Dinner Tue 13 · Not recorded (Back = prototype Back). Lunch Wed 14 · Not recorded: hidden "Kitchen saves the report at 2:40 PM" → Lunch Wed 14 · Recorded. KS-3 · Report saved (Kitchen): hidden "Supervisor sees this report" → the same page. Tue 13 Lunch: Report details row toggles open / closed. No action buttons.
+
+**SOS:** In service · SOS tab or the Alerts SOS card → Panel — Not taken (I'll go and check → Claimed by you; Not now / × → Home with tab; hidden "The door marks it checked at 12:52 PM" → Checked by the door). Claimed by you: Mark as checked → Checked by the supervisor; Back to meal / × → Home — SOS claimed by you (tab → panel). Checked (supervisor or door): **Close case** → Home — Case closed (toast, no tab); Not yet / × → the Home with the tab.
+
+**Me and history:** Me → Meal history (through Loading 1 s; from Me — Shortage resolved straight to Meal history — Shortage resolved); rows → Past meal summaries (Back → history); View report → the matching waste page. Hidden on the list: History fails to load → Error (Retry → Loading); A new mess with no meals → Empty. Sign out → Sign out? (Cancel → Me; Sign out → Choose your role).
+
+**Archive:** 41 v1 Supervisor frames (MS-2 Start shift — Supervisor, MS-H ×2, MS-C ×20, MS-D ×6, MS-E ×3, MS-F ×5, MS-G1/G2/G3/G6) went to page 99 "Supervisor v1 · archived states" with labels and notes, renamed "(before SUPERVISOR)", links stripped (supervisor/archive_index.md). MS-G4 Language and MS-G5 Help stay (shared).
+
+**Reachability (U9):** page 09 **209 / 209** reached from Mess staff · Sign in; 0 dead ends; 0 dangling links.
