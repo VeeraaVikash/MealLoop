@@ -288,3 +288,11 @@ The brief was resent with an 18-image pack. D01–D16 are the same drawings as t
 | W8 Spacing and checks | partly | st352 vs st351: all pages 0 (row sizes are not seen by the snapshot); starts 14 | kitchen/checks.md, 67 frames: contrast ≥ 5.72; small 0; targets 0; truncation 0; overflow 0; raw 0; banned 0; mono = units only; no Needs attention, Remind, meals-served label, forecast beside the live count, remaining count, approve or supervisor action, or success without evidence. Fixed: 42 rows → 56, 3 info rows → 52, "8 of 8" in sans. Partly: lime 4–9 on During and SOS frames and bands on short pages, both as drawn (NEEDS REVIEW). |
 | W9 Wiring, export and docs | done | st353 vs st352: 09 ~1 L+8 (pill links re-set on 9 Home frames; one simulated hotspot to Two shortage reports); other pages 0; starts 14 (67 temporary export clones made and removed; no automatic start left) | Reach: Kitchen 67 / 67 from Mess staff · Sign in, 0 dead ends, 0 dangling (page 09: 196 / 204; the 8 unreached are old Supervisor / shared states by control). 67 exports at 2× in export_kitchen/ + README. Contract section, gaps 503–522 (OWNER 503–510), STATE, MASTER_CONTEXT, DEMO (Kitchen walk, 15 steps), tools README. Decisions 45–46. |
 | W10 Report | done | st353 (no Figma change) | kitchen/report.md: stage table, FUNCTIONAL / SIMULATED / NEEDS BACKEND, decisions 1–46, conflicts, gaps 503–522, NEEDS REVIEW by frame name, end checks. |
+
+## Run KITCHEN · pack v2 (2026-10-19)
+
+The pack was resent with 18 images and a changed model: no approval loop (the waste report is just Recorded), a 6-hour edit window, forecasted attendance, plain dot statuses, no "recorded at the door". This pass changes the v1 Kitchen family in place, rebuilds the past-meal pages and archives the approval-loop pages.
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| W0 Preflight | done | st354 = st353 (18 pages, 0 differences); starts 14 | HEAD e8b9bc3; push dry run up to date. Pack refreshed (1432935, 18 images; v1 kept in archive_v1/). Inventory and plan in kitchen/preflight_v2.md: 67 Kitchen frames (16 / 8 / 17 / 13 / 13). |
