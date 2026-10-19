@@ -43,3 +43,45 @@ Scope: the 67 Kitchen frames in the five page 09 sections "Kitchen · …". Tool
 4. KitchenAlertRow Meal ended circle black as K12 (W7).
 
 Snapshot st352 vs st351: all pages 0 (row heights and fills are not seen by the snapshot); starts 14.
+
+---
+
+# Pack v2 · W8 spacing and checks (2026-10-19)
+
+Scope: the 68 Kitchen frames now in the five page 09 sections (Entry and Home 16, Shortage 8, Record waste 17, Past meals and history 14, SOS, Alerts and Me 13). Tools: `dschk` and `dsspace` as in v1, plus a pack v2 rule scan run inline over every visible text, instance and link of those frames.
+
+## Results
+
+| Check | Result | Notes |
+|---|---|---|
+| Contrast | min **5.72 : 1** (ink-secondary on canvas) | No text below 4.5 : 1 |
+| Text under 12 pt | 0 | |
+| Targets under 44 pt | 0 | Primary buttons 56 pt; Edit report and Add a dish links 44 pt; history rows 56 pt |
+| Truncation / overflow | 0 / 0 | |
+| Raw paints | 0 | No new tokens |
+| Missing OrbitBackdrop | 1 accepted | KS-3 · Report saved, the full-lime result page (as v1) |
+| Mono words | units only | "pieces" in 12 places (6 / 12 / 20 pieces) |
+| Banned words (dschk list) | 0 | |
+| "Needs attention", "Remind" | 0 / 0 | |
+| "recorded at the door" | 0 | Frames, components and canvas notes |
+| "approved", "returned", "waiting for Ravi", "for review" (waste) | 0 | One canvas note said "No review or approval follows"; reworded to "Saved means Recorded; nothing else follows." |
+| "meals served" as a count label | 0 | The only use, the old LiveCard note, was removed in W1 |
+| Forecast beside the live count | 0 | No frame with a LiveCard shows "FORECASTED", "expected diners" or 860 |
+| Remaining count | 0 | |
+| Record waste before the meal ends | 0 | No Before or During frame shows Record waste or links into the KS-3 family |
+| Units on the menu list | 0 | Menu for Lunch has names only |
+| Pill-style status | 0 | No Kitchen frame uses ReportStatusChip, HeadcountCard or HistoryRow (v1); status is StatusText (dot + text) |
+| Supervisor actions | 0 | No Approve, Reject, Return, Start / End the meal. Meal start and end are hidden hotspots named "(simulated)" |
+| Success without evidence | 0 | "Sent" only after a simulated server accept; "Ravi saw it" only after the simulated receipt; "Report saved" only after Save report; Couldn't send never says Sent |
+| Lime > 3 elements | 23 frames, NEEDS REVIEW | As v1 (During Homes and the shortage sheet 4–5, SOS frames 6–9); new: the three Meal history pages (4–5: StatusText dots + backdrop) |
+
+## Spacing
+
+| Rule | Result | Notes |
+|---|---|---|
+| One left margin | 20 | Other x values are hotspots, the SOS tab and the bottom bar (16) |
+| Gaps | 0 / 12 / 16 | Past meal and history pages use explicit spacers (4 / 8 / 12 / 16 / 20 / 24) |
+| List rows 52 or 56 | **fixed** | HistoryRow v2 came out at 57–58 pt; the component and the last row are now fixed at 56 (padding 5 / 5). Past meal entry lines are summary lines (44 pt rows), as K10 / K18 draw them |
+| Dead space above the bottom bar ≤ 24 | NEEDS REVIEW | As drawn: Meal history 289–301 pt, Past meal Not recorded 422, Recorded 182, Editing closed 238. Scrolling pages: Record waste — Tue 13 Dinner, Edit report — Wed 14 Lunch |
+
+Snapshot st362 vs st361: 03 ~1 (HistoryRow padding), 09 ~1 (note text); other pages 0; starts 14.
