@@ -306,3 +306,11 @@ The pack was resent with 18 images and a changed model: no approval loop (the wa
 | W8 Spacing and checks | done | st362 vs st361: 03 ~1, 09 ~1; other pages 0; starts 14 | 68 frames. dschk: contrast min 5.72, 0 small text, 0 small targets, 0 truncation, 0 overflow, 0 raw, 0 banned. Rule scan: 0 for every pack v2 rule. Fixes: HistoryRow 56 pt, one canvas note reworded. Lime and bottom band NEEDS REVIEW as in v1. kitchen/checks.md "Pack v2". |
 | W9 Wiring, export and docs | done | st363 = st362 (0 differences); starts 14 | Reach: page 09 197 / 205, all 68 Kitchen frames, 0 dead ends, 0 dangling (the 8 unreached are the v1 Supervisor states). export_kitchen/: 68 PNG at 786 × 1704 + README; v1 set in archive_v1/. Contract "Run KITCHEN · pack v2"; gaps 523–536 (OWNER 523–528); STATE, MASTER_CONTEXT; DEMO Kitchen walk rewritten (16 steps, with the 6-hour edit window). Decision 72. |
 | W10 Report | done | — | kitchen/report_v2.md: stage table, FUNCTIONAL / SIMULATED / NEEDS BACKEND, decisions 47–72, gaps 523–536, NEEDS REVIEW by frame. |
+
+## Run SUPERVISOR (2026-10-19)
+
+Brief: the Supervisor role on page 09 from design/reference/supervisor_2026-10/ (S00–S19). Builders: dsh, dsb, ds2b, pdb, ktb, ktw, then svb (this run).
+
+| Stage | Status | Snapshot | Notes |
+|---|---|---|---|
+| U0 Preflight | done | st364 = st363 (18 pages, 0 differences); starts 14 | HEAD 1014e9b after pulling 41 commits; pack missing in the repo, copied from the attached zip and committed (dfc87f6, 20 images). Kitchen pack v3 (K19, K20) committed, v2 docs in archive_v2/. Inventory in supervisor/preflight.md: 48 v1 Supervisor-only frames, 8 shared. |
