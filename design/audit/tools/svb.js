@@ -57,7 +57,7 @@ D.svalerts = async (sec, name, x, o) => { o = o || {}; const time = o.time || '2
   if (o.waste && o.waste.length) { const g = await D.group(c, 'Waste not recorded'); out.wasteGroup = g.g;
     for (const w of o.waste) { const i = await D.sinst(g.list, 'wasteRow', 'Line=' + w); i.layoutSizingHorizontal = 'FILL'; i.name = 'WasteRow / ' + (w === 'Closed' ? 'Lunch · Wed 14' : 'Dinner · Tue 13'); out.waste.push(i); } }
   D.fixChrome(r.f); return out; };
-D.svpanel = async (f, state) => { const s = await D.sheet(f, 'SOS · 1 active'); const p = await D.sinst(s.c, 'sosPanel', 'State=' + state); p.name = 'SOSPanel · Supervisor'; p.layoutSizingHorizontal = 'FILL'; D.fitSheet(f);
+D.svpanel = async (f, state) => { const s = await D.sheet(f, 'SOS · 1 active'); const p = await D.sinst(s.c, 'sosPanel', 'State=' + state); p.name = 'SOSPanel · Supervisor'; p.layoutSizingHorizontal = 'FILL'; D.fitSheet(f); s.sh.resize(393, Math.max(760, 852 - s.sh.y + 300));
   const btn = l => p.findOne(n => n.name === 'Button / ' + l); return { s, p, btn, close: D.closeOf(f) }; };
 D.svme = async (sec, name, x, o) => { o = o || {};
   const r = await D.screen(sec, name, x, 150, { title: 'Me', tab: 'Me', time: o.time || '2:05', gap: 24, moment: 'Wed 14 Aug 2024, ' + (o.moment || ((o.time || '2:05') + ' PM')) }); const c = r.c; const out = { f: r.f, c };
