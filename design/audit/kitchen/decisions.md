@@ -48,3 +48,14 @@
 | 44 | W7 | Tab bars on 24 Kitchen frames: Home goes to the Home for the current state (Before / During / SOS / After), Alerts to the matching Alerts page (Empty / During / SOS active / Alerts), Me to Me. A tab never links a frame to itself. | No dead ends. |
 | 45 | W9 | Reachability found the shortage chain unreached: the W4 links on the "Report food running short" pill (a sublayer of the LiveCard instance) had not been kept. They were set again on 9 Home frames and read back as present. "Two shortage reports" also had no way in, so a simulated hotspot on the Shortage sent live card ("two more reports later") now leads to it. After that: Kitchen 67 / 67 reached, 0 dead ends, 0 dangling. | Every frame reachable; no dead ends. |
 | 46 | W9 | 67 exports at 2× in export_kitchen/, named after the reference images (K01–K17, letter suffixes for extra states, K00 for the What you do sheet), with "@2x" as in export_pass_desk/. | Brief W9. |
+
+## Pack v2 (2026-10-19)
+
+| # | Stage | Decision | Rule or reason |
+|---|---|---|---|
+| 47 | W0 | Pack v2 is handled as a delta pass, as in DOOR-SCANNER pack v2. v1 frames whose content still fits are changed in place, keeping their links. Pages that only make sense with the approval loop are archived (W6). The v1 pack is kept in design/reference/kitchen_2026-10/archive_v1/. | Never delete; one family, no duplicates. |
+| 48 | W1 | LiveCard: the "Recorded at the door. Not meals served." note is removed from the Live and Stale variants, so every During Home updates through the component (19 frames). The Offline note ("No connection. The count updates when you are back online.") stays. | NEVER write "recorded at the door". |
+| 49 | W1 | New flagged **ForecastCard** (Ready / Loading / Stale / Not ready). The stale note sits under the card, as the spec asks. Not ready shows "—" in the number style plus "Forecast not ready yet". HeadcountCard is kept, renamed "(v1, superseded)". | Forecasted attendance; missing data never becomes zero. |
+| 50 | W1 | New flagged **StatusText** (dot + text; Recorded filled lime, Not recorded / Not started empty, Draft dashed; optional mono time via "Show time"). It replaces the pill ReportStatusChip, which is kept, renamed "(v1, superseded)". | Status is a small dot plus plain text, never a pill. |
+| 51 | W1 | New flagged **HistoryRow** (Recorded / Not recorded) with StatusText. The v1 set is renamed "HistoryRow (v1, superseded)" and kept for the archived frames. | No approval statuses. |
+| 52 | W1 | KitchenAlertRow "Report returned" becomes "Waste not recorded" ("Tue 13 Dinner · add it"). Its time is the day word "Tue", set in sans (ML/Footnote), because a word is not a number. | K12; mono only for numbers and times. |

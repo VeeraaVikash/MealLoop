@@ -296,3 +296,4 @@ The pack was resent with 18 images and a changed model: no approval loop (the wa
 | Stage | Status | Snapshot | Notes |
 |---|---|---|---|
 | W0 Preflight | done | st354 = st353 (18 pages, 0 differences); starts 14 | HEAD e8b9bc3; push dry run up to date. Pack refreshed (1432935, 18 images; v1 kept in archive_v1/). Inventory and plan in kitchen/preflight_v2.md: 67 Kitchen frames (16 / 8 / 17 / 13 / 13). |
+| W1 Foundation | done | st355 vs st354: 03 +3 ~3 (ForecastCard, StatusText, HistoryRow v2; LiveCard, KitchenAlertRow, renamed v1 sets); 09 ~19 (LiveCard note and alert-row text through instances); other pages 0; starts 14 | design_intent "KITCHEN STAFF 2026-10" rewritten for pack v2 (no approval loop, forecasted attendance, dot status, 6-hour edit window, Record waste only after the meal). Builder tools/kt2comp.js. Decisions 47–52. |
