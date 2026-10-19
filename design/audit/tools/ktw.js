@@ -9,7 +9,7 @@ D.vals = over => Object.assign({ 'Bhindi Aloo Bujjiya': 'v:2 kg', 'Steamed Rice'
 D.waste = async (sec, name, x, o) => { o = o || {}; const vals = o.vals || D.vals();
   const r = await D.kpage(sec, name, x, { title: 'Record waste', sub: 'Lunch · Main Mess · Wed 14 Aug', time: o.time || '2:05', gap: 12 }); const c = r.c; const out = { f: r.f, c, rows: {} };
   const ch = await D.chip(c, o.done, 'outline', { px: 16, py: 8 }); ch.name = 'Chip · progress';
-  if (o.sos) { const tab = await D.ds(r.f, 'sostab', 'State=' + o.sos); tab.name = 'SOSEdgeTab'; tab.x = 335; tab.y = 196; out.sos = tab; }
+  if (o.sos) { const tab = await D.ds(r.f, 'sostab', 'State=' + o.sos); tab.name = 'SOSEdgeTab'; tab.x = 335; tab.y = 118; out.sos = tab; }
   await D.t(c, 'Food left over · each dish in its own unit', 'ML/Secondary', 'ink-secondary', { fill: true, name: 'Section · Food left over' });
   const list = D.frame(c, 'Dish rows', { gap: 0 }); list.layoutSizingHorizontal = 'FILL'; let last;
   for (const [d, u] of D.DISH.concat(o.extra || [])) { const v = vals[d] === undefined ? null : vals[d];
