@@ -1174,3 +1174,28 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 501 | 09 Shortage chips | Dish names use the day's menu spelling (Chicken Briyani, Panneer Briyani) instead of P12's "Biryani". | Low | Open (NEEDS REVIEW) |
 | 502 | 09 Pass Desk hotspots | Hidden hotspots stand in for server and supervisor events; every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
 
+
+## Run KITCHEN (2026-10-18)
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 503 | 09 KS-1 Home — Before the meal | **Headcount sent vs raw forecast** (draft: the approved headcount the management sent the vendor, labelled a forecast; never a dish quantity). | Medium | Open (OWNER) |
+| 504 | 09 KS-1 Home — During | **Omit the shortage row when none** (draft: omit; no "No shortages reported" line). | Low | Open (OWNER) |
+| 505 | 09 Menu for Lunch, Record waste, shortage chips | **Dishes and units come from the day's menu** (draft: yes). The unit per dish needs an owner. The board's sides (Pickle, Poriyal, Butter Milk, Fryums) are not in the kitchen list, so Home says "8 dishes" (K01: 12). | Medium | Open (OWNER) |
+| 506 | 09 Check and send, report states | **Reviewer for the waste report** (draft: the Supervisor, Ravi). | Medium | Open (OWNER) |
+| 507 | 09 Past meal — Waiting | **Editing a Waiting report** (draft: editable until the Supervisor starts reviewing). | Medium | Open (OWNER) |
+| 508 | 09 Enter a quantity | **Maximum quantities per unit** (draft: 99.9 kg or L with one decimal; 999 pieces, whole numbers). | Low | Open (OWNER) |
+| 509 | 09 Kitchen (all) | **Backend:** shared meal state, the headcount feed, live entry counts and their staleness, shortage routing and the seen receipt, waste report review, returned reasons and approval, meal history, the alerts feed, SOS routing. All SIMULATED by hidden hotspots with "Simulated:" notes; nothing implies live sync. | High | Open (OWNER) |
+| 510 | 09 Shortage couldn't send, drafts | **Offline policy for kitchen reports** (draft: a shortage report never queues silently: "Couldn't send" with Retry; waste drafts save locally and on the server). | Medium | Open (OWNER) |
+| 511 | 09 LiveCard, HeadcountCard, Final recorded entries, Enter a quantity | Numbers use ML/Hero Metric 52 pt; K01 / K02 draw about 100 pt (no new text style). | Low | Open (NEEDS REVIEW) |
+| 512 | 09 Record waste, Home After · Draft | All 8 menu dishes in menu order with "Done 6 of 8" (K06 / K16: 6 dishes, "4 of 6"); "Done N of M" counts dishes, Not made counts as answered, plate waste is separate. | Low | Open (NEEDS REVIEW) |
+| 513 | 09 LiveCard / HeadcountCard stale | Stale samples changed to one calendar: "Updated 1:40 PM · reconnecting" (spec 1:12 PM) and "Updated 9:00 AM, may be out of date" (spec 8:50 AM). | Low | Open (NEEDS REVIEW) |
+| 514 | 09 shortage frames at 1:30 / 1:36 PM, SOS frames at 12:50 PM | These reuse the live card's 1:40 PM sample (714); no count for earlier times is in the pack. | Low | Open (NEEDS REVIEW) |
+| 515 | 09 Kitchen During, sheet and SOS frames | Lime 4–9 by the checker (chip, dot, pill, backdrop, AK initials as drawn; SOS tab and panel chips). | Low | Open (NEEDS REVIEW) |
+| 516 | 09 Kitchen short pages; scrolling pages | Empty bands above the bottom bar 65–442 pt on short pages (as drawn); Two shortage reports, Shortage couldn't send, Record waste (×12), Past meal — Waiting and Edit and resubmit scroll. | Low | Open (NEEDS REVIEW) |
+| 517 | 09 Meal history, Edit and resubmit | Tue 13 · Lunch (Waiting) is not wired (no menu or entries in the pack). Tuesday dinner dishes follow the board, but the values and units other than K09's three are sample. | Low | Open (NEEDS REVIEW) |
+| 518 | 09 KS-5 Alerts | Rows newest first (K12 is not in order); Food short at 12:53 PM (the Pass Desk report time) instead of K12's 1:20 PM; the K12 footnote is left out. | Low | Open (NEEDS REVIEW) |
+| 519 | 09 Home During | "Meal in progress · 1 h 40 min" at 1:40 PM (K02: 55 min). | Low | Open (NEEDS REVIEW) |
+| 520 | 09 MS-C1–C8, MS-E1–E2, MS-F1–F5, MS-G1–G6 | Kept for the Supervisor Home, which still links to them; the Kitchen no longer reaches them. MS-E1's "Food short at the pass desk" card still opens MS-C4 (the Kitchen uses KS-5 · Food short at the pass desk). | Info | Logged |
+| 521 | 09 Kitchen hotspots | Hidden hotspots stand in for server and supervisor events; every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
+| 522 | tools/pdarch.js | The archive tool dropped reactions stored as a single `action` (e.g. keys inside instances). Fixed in KITCHEN W3; page 09 reachability after the run shows 0 dangling links and 0 dead ends. | Info | Logged |

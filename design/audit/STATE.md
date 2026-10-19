@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-17, after run PASS-DESK)
+# MealLoop · STATE (2026-10-19, after run KITCHEN)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "DOOR SCANNER 2026-10"), the run logs are in `run_status.md`, and the latest reports are `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "KITCHEN STAFF 2026-10"), the run logs are in `run_status.md`, and the latest reports are `kitchen/report.md` (KITCHEN), `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st343 (2026-10-17, end of PASS-DESK Q8; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st353 (2026-10-19, end of KITCHEN W9; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,18 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run KITCHEN (2026-10-18 – 19)
+
+- **Page 09 Kitchen Staff rebuilt** from design/reference/kitchen_2026-10/ (K01–K17) in five sections: Entry and Home, Shortage, Record waste, Reports and history, SOS / Alerts / Me (67 frames). MS-2 Start shift — Kitchen and MS-H Home — Kitchen ×3 are archived on page 99 ("Kitchen · archived states"); the MS-C / E / F / G frames stay for the Supervisor.
+- **Counting rule:** before the meal the headcount SENT to the vendor (860, a forecast); during it students ENTERED at the door (714, "Not meals served"); never a forecast beside the live count, never a remaining count; after it the final 774.
+- **Shortage:** one-tap sheet (dish chips from the menu, How bad, note, Send to Ravi); slim row Sent / Ravi saw it / Couldn't send + Retry; no row when none; duplicate prompt.
+- **Record waste:** all 8 menu dishes in their units, four row states (entered, None left, Not made, Enter …), one plate-waste total, quantity sheet with validation, Check and send (blocked "Enter 2 more"), Sent for review. Report states Draft, Waiting, Returned (Edit and resubmit), Approved (locked); no approve action. Meal history with Empty, Loading, Error.
+- **SOS, Alerts (K12), Me (K13)** as the Door Scanner; "Keep cooking first if the kitchen is busy"; Food short at the pass desk is the Pass Desk report's kitchen target.
+- **SIMULATED:** meal state, headcount and entries feeds, shortage routing and receipt, review, history, alerts, SOS, connection (hidden hotspots, "Simulated:" notes; DEMO.md Kitchen walk, 15 steps).
+- **Components (page 03, flagged):** LiveCard, HeadcountCard, ShortageRow, ReportStatusChip, DishRow, QuantitySheet, HistoryRow, KitchenAlertRow (`mealloop/kt_ids`); KeyPad + Size=Decimal.
+- **Health:** contrast ≥ 5.72; small text, targets, truncation, overflow, raw, banned words 0; Kitchen word checks 0. NEEDS REVIEW: lime 4–9, short-page bands, sample times. Reach 67 / 67, 0 dead ends. Flow starts 14.
+- **Reports:** kitchen/report.md, decisions.md (1–44), checks.md, preflight.md, archive_index.md; exports export_kitchen/ (67 at 2× + README); tools kt1comp.js, ktb.js, ktw.js (pdarch.js fixed); gaps 503–522 (OWNER 503–510).
 
 ## Run PASS-DESK (2026-10-17)
 

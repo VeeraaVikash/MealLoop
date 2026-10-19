@@ -84,5 +84,13 @@ The old `filltool.js` and `densitytool.js` were page-10 only and are kept for hi
 |---|---|
 | `pd1comp.js` | Q1 builder: CodeCard, HomeKeypad, PassResultScreen (from ResultScreen), RequestRow, ShortageChips on page 03 (`mealloop/pd_ids`). Run once. |
 | `pdb.js` (`mealloop/pdb`) | Page builders on top of `ds2b`: `psec`, `pbase`, `phome(sec, name, x, {state, kp, digits, count, offline, sos})`, `presult` (PassResultScreen pages, primary at y 754), `navCard`, `qrow`, `kp` / `key` (keypad keys inside the HomeKeypad instance), `closeOf` (GlassSheet Close), `note`. Frame IDs in `mealloop/pd_frames`. |
-| `pdarch.js` (`mealloop/pdarch`) | Archive frames from page 09 (page level or sections) to a page-99 section, retargeting links first; logs to `mealloop/pd_archive`. |
+| `pdarch.js` (`mealloop/pdarch`) | Archive frames from page 09 (page level or sections) to a page-99 section, retargeting links first; logs to `mealloop/pd_archive`. KITCHEN W3: now keeps reactions stored as a single `action` (normalised to `actions` before editing). |
 | `pd_export_plan` (plugin data) | The 47 Pass Desk exports (captured inline; the figma.com asset host is blocked here). |
+
+## Run KITCHEN (2026-10-18)
+
+| Tool | What it does |
+|---|---|
+| `kt1comp.js` | Builds the flagged Kitchen sets on page 03 (args.part 1: LiveCard, HeadcountCard, ShortageRow, ReportStatusChip; part 2: DishRow, KeyPad + Size=Decimal, QuantitySheet, HistoryRow, KitchenAlertRow). IDs in `mealloop/kt_ids`. |
+| `ktb.js` (`mealloop/ktb`) | Page builders on top of `pdb`: `ksec`, `kinst`, `mix` (sans words + mono times), `ak`, `kbase`, `khome(sec, name, x, {state, hc, live, short, seeAll, waste, offline, sos})`, `closedCard`, `wasteCard`, `kpage`, `bar` (K06 bottom bar). Frame IDs in `mealloop/kt_frames`. |
+| `ktw.js` (`mealloop/ktw`) | Record waste builders on top of `ktb`: `DISH`, `vals`, `waste(sec, name, x, {vals, done, plate, extra, sos})`, `qsheet`, `checkSheet` (o.blocked), `dialog`. |

@@ -38,7 +38,7 @@ Scope: the 67 Kitchen frames in the five page 09 sections "Kitchen · …". Tool
 ## Fixes made
 
 1. Rows to 56 and 52 (above).
-2. Sent for review: "Dishes entered · 8 of 8" in sans.
+2. Sent for review: "Dishes · 8 of 8" in sans.
 3. Record waste — SOS tab: the tab moved from y 196 (over the first row's value) to y 118 (W7).
 4. KitchenAlertRow Meal ended circle black as K12 (W7).
 

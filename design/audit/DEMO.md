@@ -97,6 +97,26 @@ Hidden hotspots are SIMULATED server or supervisor events; every Pass Desk frame
 13. **Alerts** tab → SOS card or three quiet rows; **Me** tab → Pass Desk, Passes checked 41, Problems reported 1; Switch role / Sign out.
 14. Status bar left half (**Supervisor ends the meal**) → **Home — After the meal** (196 of 214, New pass requests · 1 waiting, Open problems · 0).
 
+### Kitchen Staff (page 09, from Mess staff · Sign in) · 15 steps (KITCHEN, 2026-10-18)
+
+Hidden hotspots are SIMULATED server or supervisor events; every Kitchen frame has a "Simulated:" note. Sample: Main Mess, Lunch, Wed 14 Aug 2024, 12–2 PM; kitchen staff AK; supervisor Ravi; headcount sent 860 (9:00 AM); 714 entered at 1:40 PM; final 774.
+
+1. **MS-0 · Sign in** → Verifying → Confirm profile → **Choose your role** → **Kitchen Staff** → **What you do (sheet)** → **Continue** → **Password — Kitchen Staff** → any digit → **Home — Before the meal** (HEADCOUNT SENT · 9:00 AM, 860 expected diners).
+2. Tap the headcount card's top left / middle / right third (**the feed**): **Loading** (back after 1.5 s), **Stale** ("Updated 9:00 AM, may be out of date"), **Not sent** (no number); tap the card → Before. **Menu for Lunch** → 8 dishes with units → Back.
+3. Tap the status bar (**Supervisor starts the meal**) → **Home — During the meal** (LIVE · 1:40 PM, 714 students entered, "Not meals served"). Tap the card's top (**feed stale**) → Entries stale → back after 2 s.
+4. **Report food running short** → **Which food is short?** → **Steamed Rice** (Almost out) → **Send to Ravi** → toast → **Home — Shortage sent** (slim row "Sent 1:30 PM").
+5. Tap the row (**Ravi saw it**) → **Home — Shortage seen**. Back on Shortage sent, tap the card's top (**two more reports**) → **See all 3 reports** → Shortage reports.
+6. On Shortage sent, the pill again → the sheet at 1:36 PM → **Send to Ravi** → **Already reported at 1:30 PM** → Cancel.
+7. On the K04 sheet, tap the status bar right half (**connection lost while sending**) → **Couldn't send** + Retry → Sent. On Home, the status bar right half → **Offline** → status bar = connection back.
+8. Status bar left half (**Supervisor ends the meal**) → **Home — After · Not started** (MEAL CLOSED, 774) → **Record waste** → Not started (0 of 8) → tap any row → **Draft** (6 of 8).
+9. **Review and send** → **Check and send — Enter 2 more** → Back to edit.
+10. **Veg Pulao** → **Enter a quantity** (2.5 kg); tap the field's thirds for **Over limit** / **Not a number** / **Negative**, then the field → corrected → **Save** (7 of 8). Back → **Save this as a draft?** → Keep editing.
+11. **Chappathi** → 6 pieces → **Save** (8 of 8) → **Review and send** → **Check and send** → **Send to Ravi for review** → **Sent for review** → Back to Home → **After · Waiting** → **View report** (read-only, Edit report).
+12. **Past meals** → **Meal history** (status bar thirds = loading / empty / error) → **Tue 13 · Dinner** → **Returned** (reason) → **Edit and resubmit** (entries kept) → **Resubmit** → "Sent to Ravi again."; **Wed 14 · Breakfast** → **Approved** (locked).
+13. On Home — During, tap the **MealLoop** mark (**an SOS starts**) → SOS tab → **SOS panel** ("Keep cooking first if the kitchen is busy") → **I'll go and check** → **Mark as checked** → toast.
+14. **Alerts** tab → Meal ended (unread), Shortage seen, **Food short** (from the pass desk) → **Food short at the pass desk**, Report returned → Returned.
+15. **Me** tab → Kitchen Staff, On shift · since 11:00 AM; **Meal history**; **Switch role** / **Sign out**.
+
 ## Admin · Sign in (page 10)
 
 1. **AD-0 · Sign in**: tap **Sign in with SRM**. **AD-0 · Verifying** moves on by itself to **AD-0 · Confirm profile** (Devi, "Food head · 4 messes").

@@ -150,6 +150,20 @@ Plus NEEDS REVIEW in fix2/report.md.
 
 Plus NEEDS REVIEW in guardian_video/report.md.
 
+## Run KITCHEN (2026-10-18 – 19)
+
+**What changed.** Built from design/reference/kitchen_2026-10/ (K01–K17, data/kitchen_spec.md). Only the Kitchen Staff family on page 09 (five "Kitchen · …" sections, 67 frames), plus a canvas note beside the Pass Desk food-short toast. Door Scanner, Pass Desk and Supervisor screens are not redesigned; the old MS-C / E / F / G frames stay for the Supervisor.
+
+- **Three jobs:** watch the headcount and entries, report food running short in one tap, record leftovers and plate waste for Ravi's review. No dish quantities to cook, no inventory, no supervisor actions, no approve.
+- **Counting rule:** the live number is students ENTERED at the door, never meals served, never beside the forecast, never a remaining count. Before the meal Home shows the headcount SENT to the vendor (a forecast). Missing data never becomes zero.
+- **Shortage row:** omitted when none; Sent / Ravi saw it (only when confirmed) / Couldn't send + Retry; no Needs attention, no Remind; two rows then See all.
+- **Waste report:** one row per menu dish in its unit (Entered, None left, Not made, Not entered), plate waste as one total, Check and send blocked until every dish is answered; Draft → Waiting → Returned (Edit and resubmit) / Approved (locked).
+- **SOS, Alerts, Me** reuse the Door Scanner patterns; the panel says "Keep cooking first if the kitchen is busy".
+
+**Tools.** design/audit/tools/kt1comp.js (components), ktb.js (`mealloop/ktb`, Home pages), ktw.js (`mealloop/ktw`, Record waste pages); pdarch.js fixed.
+
+**Owner items.** 503 headcount sent vs raw forecast; 504 omit the shortage row when none; 505 dishes and units from the menu; 506 reviewer; 507 editing a Waiting report; 508 maximum quantities; 509 every backend item; 510 offline policy for kitchen reports. Plus NEEDS REVIEW in kitchen/report.md.
+
 ## Run PASS-DESK (2026-10-17)
 
 **What changed.** Built from design/reference/pass_desk_2026-10/ (P01–P17, data/pass_desk_spec.md). Only the Pass Desk family on page 09 (plus one added card on the shared Kitchen Staff Alerts and a canvas note beside the student Special pass page on 04 / 07). Door Scanner, Kitchen and Supervisor screens are not redesigned.
