@@ -12,7 +12,7 @@ const gone = new Map(args.items.map(i => [i.id, i.to || null]));
 const top = n => { let t = n; while (t.parent && t.parent.type !== 'SECTION' && t.parent.type !== 'PAGE') t = t.parent; return t; };
 let relinked = 0;
 for (const n of pg.findAll(x => x.reactions && x.reactions.length)) { const t = top(n); if (gone.has(t.id)) continue; let changed = false; const rs = [];
-  for (const r of JSON.parse(JSON.stringify(n.reactions))) { if (r.action) delete r.action; const acts = [];
+  for (const r of JSON.parse(JSON.stringify(n.reactions))) { if (!r.actions && r.action) r.actions = [r.action]; delete r.action; const acts = [];
     for (const a of (r.actions || [])) { if (a.destinationId && gone.has(a.destinationId)) { changed = true; const to = gone.get(a.destinationId); if (to && to !== t.id) { a.destinationId = to; acts.push(a); } } else acts.push(a); }
     if (acts.length) { r.actions = acts; rs.push(r); } }
   if (changed) { await n.setReactionsAsync(rs); relinked++; } }
