@@ -314,3 +314,4 @@ Brief: the Supervisor role on page 09 from design/reference/supervisor_2026-10/ 
 | Stage | Status | Snapshot | Notes |
 |---|---|---|---|
 | U0 Preflight | done | st364 = st363 (18 pages, 0 differences); starts 14 | HEAD 1014e9b after pulling 41 commits; pack missing in the repo, copied from the attached zip and committed (dfc87f6, 20 images). Kitchen pack v3 (K19, K20) committed, v2 docs in archive_v2/. Inventory in supervisor/preflight.md: 48 v1 Supervisor-only frames, 8 shared. |
+| U1 Foundation | done | st365 vs st364: 03 +7 ~1 (MealCard, FollowUpRow, SupervisorShortageRow, WasteRow, ConfirmDialog, SOSCard, SOSPanel · Supervisor; StatusText + Active); other pages 0; starts 14 | design_intent "SUPERVISOR 2026-10" (principles, rules of meaning, no waste approval, Supervisor closes SOS, SIMULATED list). Builder tools/sv1comp.js; ids in mealloop/sv_ids. Decisions 3–8. |

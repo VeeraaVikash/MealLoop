@@ -1,0 +1,12 @@
+# SUPERVISOR · decisions made without asking
+
+| # | Stage | Decision | Rule or reason |
+|---|---|---|---|
+| 1 | U0 | The pack was missing from the repo; it was copied from the attached zip and committed before U0. The attached kitchen pack v3 (K19, K20) was committed too, with the v2 README, spec and prompt kept in `kitchen_2026-10/archive_v2/`. The Kitchen frames are not changed in this run. | Brief: copy and continue; scope is the Supervisor only. |
+| 2 | U0 | The v1 Supervisor dashboard (MS-2, MS-H ×2, MS-D ×6, MS-F ×5 and the MS-C / E / G pages only it reaches) is replaced by new SV-* frames and archived at U9 once nothing reaches it. Language, Help, sign in, role selection and the password stay. | Never delete; do not redesign other roles. |
+| 3 | U1 | Seven new flagged sets on page 03 under the Kitchen components: MealCard, FollowUpRow, SupervisorShortageRow, WasteRow, ConfirmDialog, SOSCard, SOSPanel · Supervisor. StatusText gains an additive **Status=Active** (filled ink dot) for "Active" and "Closed"; "Resolved" reuses Status=Recorded (lime dot) with the label overridden. | Reuse first; flag new ones; no tokens. |
+| 4 | U1 | The meal numbers use ML/Hero Metric (52 pt) as on the Kitchen cards; S01 / S02 draw them at about 90 pt. | Existing fonts and sizes. |
+| 5 | U1 | ConfirmDialog is 361 wide at x 16 (S13 measures 363), actions 64 pt high, Cancel left, action right in semibold. The Kitchen dialog (stacked buttons) is not changed. | Brief: iOS-style centred cards with two side-by-side actions; same size and position everywhere. |
+| 6 | U1 | SOSCard is the Door Scanner SOSAlertCard without its button. The pack draws the case state as chips ("Nobody has taken this yet", lime "Checked by the door · 12:52 PM"); they are kept as drawn because they belong to the shared SOS card, not to report status. Logged NEEDS REVIEW against "status is never a pill". | Reference image wins for the shared SOS card; rule conflict flagged. |
+| 7 | U1 | The Claimed-by-you panel helper ("When you have seen it, mark it as checked. You can close the case after.") is written here: the pack has no image of that state. | Spec lists the state without copy for a helper. |
+| 8 | U1 | Shortage and waste rows are two-line rows at 56 pt (padding 6 / 5), like the Kitchen HistoryRow. | List rows 52 or 56. |
