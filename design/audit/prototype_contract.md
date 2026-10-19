@@ -6192,3 +6192,25 @@ The sections above are the contract as it was written, run by run, and are kept 
 **Archive retargets:** MS-2 Start shift — Kitchen and MS-H Home — Kitchen, (Alert), (Offline) went to page 99 "Kitchen · archived states" with links stripped; the password keys now open KS-1 Home — Before the meal, and 15 links from the shared MS-C / E / F / G frames now open MS-H Home — Supervisor (kitchen/archive_index.md).
 
 **Reachability (W9):** Kitchen family 67 / 67 reached from Mess staff · Sign in; 0 dead ends; 0 dangling links. Page 09 overall 196 / 204; the 8 unreached are old Supervisor / shared states shown by control (MS-C1 Offline, MS-C3 Offline, MS-C8 Offered / Late, MS-D2 Cutoff passed, MS-E1 Empty, MS-F4, MS-F5).
+
+## Run KITCHEN · pack v2 (2026-10-19) · Kitchen Staff role
+
+**Flow starts: 14** (unchanged; automatic "Flow N" starts removed at every stage). The v1 contract above still holds except where this section changes it.
+
+**Entry:** unchanged (Choose your role → Kitchen Staff → What you do (sheet) → Password — Kitchen Staff → Home — Before the meal). The sheet's third item now reads "You can edit it for 6 hours".
+
+**Home before the meal:** ForecastCard (FORECASTED ATTENDANCE · 860 · expected diners). Card top thirds = feed: forecast loading / stale / not ready (Loading → Before after 1.5 s; Stale and Not ready: tap → Before). Menu for Lunch lists dish names only. No waste action.
+
+**Home during and Shortage:** unchanged links (v1). The LiveCard no longer carries a note.
+
+**Home after the meal:** Not started → Record waste; Draft → Continue; **Recorded** (was Waiting) → View report → **KS-4 · Today · Lunch — Recorded**. Past meals on After · Not started and After · Draft → **Meal history — After Lunch, not recorded**; on After · Recorded → **Meal history — After Lunch**. Past meals on Before and During Homes and the shortage sheets → **Meal history** (1:40 PM, today's Lunch absent).
+
+**Record waste:** links unchanged; the primary bar button is **Review and save**. Check and save → **Save report** → **Report saved** (Back to Home → After · Recorded; View report → Today · Lunch — Recorded). Check and save — Enter 2 more: Back to edit → Draft.
+
+**Past meals and history:** Meal history rows: Wed 14 · Breakfast → **Past meal — Recorded** (K10); Tue 13 · Dinner → **Past meal — Not recorded** (K09); Tue 13 · Lunch → **Past meal — Editing closed** (K18); Tue 13 · Breakfast and Mon 12 · Dinner are not wired. After-Lunch history: Wed 14 · Lunch → Today · Lunch — Recorded, or → Home — After · Not started on the not-recorded version. Meal history status bar thirds → Loading / Empty / Error (unchanged states). Not recorded: Record waste → **Record waste — Tue 13 Dinner** (Back; Save draft → the past meal). Recorded (K10): Edit report → **Edit report — Wed 14 Breakfast** (Cancel / Back → the page; Review and save → **Check and save — Wed 14 Breakfast** → Save report → the page; Back to edit / Close → the form). Today · Lunch — Recorded: Edit report → **Edit report — Wed 14 Lunch** (Cancel / Back → the page; Review and save → Check and save). Editing closed: Back only.
+
+**Alerts, Me, SOS:** Meal ended → Home — After · Not started; Shortage seen → Shortage reports; Food short → Food short at the pass desk; **Waste not recorded** → Past meal — Not recorded. Me: Meal history → Meal history — After Lunch, not recorded. SOS unchanged.
+
+**Archive retargets:** ten approval-loop pages went to page 99 "Kitchen · archived states (pack v1 approval loop)" with links stripped; their 29 incoming links were retargeted first (kitchen/archive_index.md, "Pack v2").
+
+**Reachability (W9):** page 09 197 / 205 reached; every Kitchen frame (68) reached; 0 dead ends; 0 dangling links. The 8 unreached are the same old Supervisor / shared states as in v1.

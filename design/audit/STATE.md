@@ -1,10 +1,10 @@
-# MealLoop · STATE (2026-10-19, after run KITCHEN)
+# MealLoop · STATE (2026-10-19, after run KITCHEN · pack v2)
 
-The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "KITCHEN STAFF 2026-10"), the run logs are in `run_status.md`, and the latest reports are `kitchen/report.md` (KITCHEN), `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
+The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the rules are in `design_intent.md` (latest section "KITCHEN STAFF 2026-10"), the run logs are in `run_status.md`, and the latest reports are `kitchen/report_v2.md` (KITCHEN pack v2), `kitchen/report.md` (KITCHEN), `pass_desk/report.md` (PASS-DESK), `door_scanner/report_r2.md` and `door_scanner/report.md` (DOOR-SCANNER), `guardian_video/report.md` (GUARDIAN-VIDEO), `fix2/report.md` (FIX-2), `admin_redesign/report.md` (ADMIN-REDESIGN), `polish/report.md` (POLISH) and `redesign/report.md` (STUDENT-REDESIGN).
 
 - **Figma:** `nzzTAm9YnJRSdKEeYUWUEb`.
 - **Branch:** `claude/mealloop-ios-design-e9n1n5`. Commits are authored by VeeraaVikash, with no co-author line.
-- **Last snapshot:** st353 (2026-10-19, end of KITCHEN W9; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
+- **Last snapshot:** st363 (2026-10-19, end of KITCHEN pack v2 W9; 18 pages). Earlier baseline note: Since FIX-2 R5 the snapshot tool (snaptool / snapb) lists frames inside sections as top-level frames; st312 is the first like-for-like baseline. Snapshots must be taken with `figma.skipInvisibleInstanceChildren = false` (the `snapb` wrapper sets it). Snapshots are stored in shared plugin data `mealloop/st###_<page>`. Each stage must start equal to the previous stage's end. The snapshot compares frames, text and links; it does not see size or visibility changes.
 - **Sample day:** Wed 14 Aug 2024, 7:00 AM (week Mon 12 – Sun 18 Aug); Aarav ••0238, Main Mess, 120 pts; outing Sat 17 Aug, Express Avenue Mall, pass 7F3K.
 - **Flow starts (exactly 14):**
   - 07: Student · Sign in.
@@ -12,6 +12,17 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
   - 10: Admin · Sign in, Admin · Today, Admin · Issues, Admin · Insights, Admin · Manage.
   - 12: Admin redesign · Today, Admin redesign · Students, Admin redesign · Results, Admin redesign · More.
   - 13: Guardian · Sign in. 14: Warden · Sign in. 15: Gate · Sign in.
+
+## Run KITCHEN · pack v2 (2026-10-19)
+
+- **Delta pass** on the Kitchen Staff family (page 09) from the refreshed pack design/reference/kitchen_2026-10/ (K01–K18; v1 pack in archive_v1/). 68 Kitchen frames in five sections: Entry and Home 16, Shortage 8, Record waste 17, Past meals and history 14, SOS / Alerts / Me 13.
+- **No approval loop:** a saved waste report is just **Recorded**; it can be edited for **6 hours** ("You can edit until 8:40 PM."), then "Editing closed after 6 hours." (read-only). Ten approval-loop pages (Returned, Waiting, Approved, resubmit …) archived on page 99 ("Kitchen · archived states (pack v1 approval loop)").
+- **Before the meal:** FORECASTED ATTENDANCE (860, expected diners), states Loading / Stale / Not ready ("—"); Menu = dish names only. **During:** students entered (714), no note, no forecast; shortage row omitted when none. **After:** Final entries 774 and a Waste report card with plain dot status (Not started / Draft / Recorded).
+- **Record waste:** plain "Done N of M", Review and save → Check and save ("You can edit this later.", Save report) → Report saved. Only after the meal (Home after, a Not recorded past meal).
+- **Past meals:** Meal history (K11; ended meals only, today's meal absent until it ends), Not recorded (K09), Recorded with edit window (K10, Edit report keeps entries), Editing closed (K18), today's Lunch Recorded.
+- **Components (page 03):** new ForecastCard, StatusText, HistoryRow (v2); LiveCard note removed; KitchenAlertRow "Waste not recorded"; HeadcountCard, ReportStatusChip, HistoryRow (v1) kept as "(v1, superseded)".
+- **Health:** contrast ≥ 5.72; small text, targets, truncation, overflow, raw, banned words 0; every pack v2 rule check 0. NEEDS REVIEW: lime, short-page bands, sample mapping (gaps 529–535). Reach: all 68 Kitchen frames, 0 dead ends. Flow starts 14.
+- **Reports:** kitchen/report_v2.md, preflight_v2.md, decisions.md (47–72), checks.md ("Pack v2"), archive_index.md ("Pack v2"); exports export_kitchen/ (68 at 2×; v1 in archive_v1/); tools kt2comp.js, kt2waste.js, kt2hist_a.js, kt2hist_b.js, ktb.js / ktw.js updated; gaps 523–536 (OWNER 523–528).
 
 ## Run KITCHEN (2026-10-18 – 19)
 

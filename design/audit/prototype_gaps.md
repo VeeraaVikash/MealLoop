@@ -1199,3 +1199,25 @@ Found by the brand audit (final_audit/audit_summary.md). All are open; the class
 | 520 | 09 MS-C1–C8, MS-E1–E2, MS-F1–F5, MS-G1–G6 | Kept for the Supervisor Home, which still links to them; the Kitchen no longer reaches them. MS-E1's "Food short at the pass desk" card still opens MS-C4 (the Kitchen uses KS-5 · Food short at the pass desk). | Info | Logged |
 | 521 | 09 Kitchen hotspots | Hidden hotspots stand in for server and supervisor events; every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |
 | 522 | tools/pdarch.js | The archive tool dropped reactions stored as a single `action` (e.g. keys inside instances). Fixed in KITCHEN W3; page 09 reachability after the run shows 0 dangling links and 0 dead ends. | Info | Logged |
+
+
+## Run KITCHEN · pack v2 (2026-10-19)
+
+Pack v2 resolves v1 gaps 503 (the card is now FORECASTED ATTENDANCE), 504 (the shortage row is omitted when none), 506 and 507 (no reviewer and no Waiting state; a saved report can be edited for 6 hours). Those rows above stay as history.
+
+| # | Where | Gap | Severity | Status |
+|---|---|---|---|---|
+| 523 | 09 Past meal — Not recorded, Record waste — Tue 13 Dinner | **How long a missed meal's waste can still be recorded** (draft: no limit is drawn; Tue 13 Dinner is still open on Wed 1:40 PM). | Medium | Open (OWNER) |
+| 524 | 09 Enter a quantity | **Maximum quantities** (draft: 99.9 kg or L with one decimal; 999 pieces, whole numbers). | Low | Open (OWNER) |
+| 525 | 09 Record waste, Add a dish | **Who owns the unit per dish** (draft: the menu sets kg, L or pieces; Add a dish lets the kitchen pick one). | Medium | Open (OWNER) |
+| 526 | 09 Kitchen Recorded pages | **Whether the Supervisor or Admin see recorded waste, read-only** (draft: not drawn; the Kitchen UI has no supervisor action). | Medium | Open (OWNER) |
+| 527 | 09 Edit report → Save report | **Does saving an edit restart the 6-hour window** (draft: no; the window runs from the first save, so Wed 14 Breakfast stays editable until 4:05 PM). | Low | Open (OWNER) |
+| 528 | 09 Kitchen (all) | **Backend:** shared meal state, the forecast feed, live entry counts and their staleness, shortage routing and the seen receipt, saving reports and enforcing the 6-hour edit window, meal history, the alerts feed, SOS routing. All SIMULATED by hidden hotspots with "Simulated:" notes; nothing implies live sync. | High | Open (OWNER) |
+| 529 | 09 Past meal — Editing closed | K18 draws Wednesday dish names for Tue 13 Lunch; the Tue lunch board is used instead (Steamed Rice, Tomato Rasam, Meal Maker Curry, Millet Chappathi). | Low | Open (NEEDS REVIEW) |
+| 530 | 09 Past meal — Recorded | K10 draws "Idli"; the Wed breakfast board's "Millet Idli" is used. | Low | Open (NEEDS REVIEW) |
+| 531 | 09 Meal history | Tue 13 · Breakfast (391) and Mon 12 · Dinner (577) are drawn but not wired (no sample page). | Low | Open (NEEDS REVIEW) |
+| 532 | 09 Meal history, past meals | History has only Recorded and Not recorded, so a Draft shows as Not recorded; a past meal's Draft page is not drawn (Save draft on Tue 13 Dinner returns to Not recorded). | Low | Open (NEEDS REVIEW) |
+| 533 | 09 Report saved | "You can edit it until 8:40 PM." is one ResultScreen subtitle, so the time is in sans; elsewhere times are mono. | Low | Open (NEEDS REVIEW) |
+| 534 | 09 Alerts — SOS active, SOS Homes | At 12:50 PM the Alerts list shows Food short at 12:53 PM and the SOS Homes show LIVE · 1:40 PM (v1 samples, see 514). | Low | Open (NEEDS REVIEW) |
+| 535 | 09 Edit report — Wed 14 Lunch | Review and save opens the existing Check and save, whose Back to edit returns to the first-save form (Record waste — All entered), not the edit form. | Low | Open (NEEDS REVIEW) |
+| 536 | 09 Kitchen hotspots | Hidden hotspots stand in for server and supervisor events (meal start and end, feeds, receipts, SOS); every frame has a "Simulated:" note and DEMO.md lists them. | Info | Logged |

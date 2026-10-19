@@ -26,8 +26,8 @@ D.closedCard = async (c, o) => { const h = D.hero(c, 'Meal closed card'); h.corn
   const v = D.frame(h, 'Value', { dir: 'H', gap: 12 }); v.layoutSizingHorizontal = 'FILL'; v.counterAxisAlignItems = 'MAX'; await D.t(v, o && o.count || '774', 'ML/Hero Metric', 'on-hero', { name: 'Count' }); return h; };
 D.wasteCard = async (c, st) => { const k = D.card(c, 'Waste report card', { gap: 12, radius: 24 });
   const hd = D.frame(k, 'Header', { dir: 'H', gap: 12 }); hd.layoutSizingHorizontal = 'FILL'; hd.counterAxisAlignItems = 'CENTER'; const t = await D.t(hd, 'Waste report', 'ML/Card Heading', 'ink', { name: 'Title' }); t.layoutGrow = 1;
-  const ch = await D.kinst(hd, 'statusText', 'Status=' + st, st === 'Recorded' ? { Label: 'Recorded ·', Time: '2:40 PM' } : null); ch.name = 'StatusText';
-  if (st === 'Recorded') { const pk = Object.keys(ch.componentProperties).find(k => k.startsWith('Show time')); ch.setProperties({ [pk]: true }); }
+  const ch = await D.kinst(hd, 'statusText', 'Status=' + st); ch.name = 'StatusText';
+  if (st === 'Recorded') { const pk = Object.keys(ch.componentProperties).find(k => k.startsWith('Show time')); ch.setProperties({ [pk]: true }); await D.setText(ch.findOne(n => n.name === 'Label'), 'Recorded ·'); await D.setText(ch.findOne(n => n.name === 'Time'), '2:40 PM'); }
   let b;
   if (st === 'Not started') b = await D.btn(k, 'Record waste', 'black', { h: 56 });
   if (st === 'Draft') { await D.mix(k, 'Progress', [['6 of 8 done · saved', 0], ['2:05 PM', 1]], 'ML/Secondary', 'ML/Mono Body', 'ink-secondary'); b = await D.btn(k, 'Continue', 'black', { h: 56 }); }

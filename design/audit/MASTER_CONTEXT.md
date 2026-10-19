@@ -150,6 +150,21 @@ Plus NEEDS REVIEW in fix2/report.md.
 
 Plus NEEDS REVIEW in guardian_video/report.md.
 
+## Run KITCHEN · pack v2 (2026-10-19)
+
+**What changed.** A delta pass from the refreshed pack (K01–K18). Only the Kitchen Staff family on page 09 and its page-03 components; other roles are not touched.
+
+- **No supervisor approval of waste.** The report is saved by the kitchen and is just Recorded; it stays editable for 6 hours after saving, then read-only. Waiting, Returned and Approved are gone (archived on page 99).
+- **Forecasted attendance** before the meal (a number and "expected diners", nothing else); **students entered** during it (no note, no forecast, no remaining count); **Final entries** after it.
+- **Plain status:** a small dot plus text (filled lime Recorded, empty Not recorded / Not started, dashed Draft), never a pill.
+- **Record waste only after the meal:** from Home after the meal and from a Not recorded past meal. "Done N of M" plain text; Check and save; Report saved.
+- **Past meals:** Meal history (ended meals only), Not recorded, Recorded (edit window), Editing closed; Edit report keeps the entries.
+- **Alerts:** "Waste not recorded" replaces "Report returned".
+
+**Tools.** kt2comp.js (components), kt2waste.js (Record waste in place), kt2hist_a.js / kt2hist_b.js (history and past meals); ktb.js and ktw.js updated for v2.
+
+**Owner items.** 523 how long a missed meal can still be recorded; 524 maximum quantities; 525 unit owner; 526 whether Supervisor / Admin see recorded waste read-only; 527 whether an edit restarts the 6-hour window; 528 every backend item. Plus NEEDS REVIEW in kitchen/report_v2.md.
+
 ## Run KITCHEN (2026-10-18 – 19)
 
 **What changed.** Built from design/reference/kitchen_2026-10/ (K01–K17, data/kitchen_spec.md). Only the Kitchen Staff family on page 09 (five "Kitchen · …" sections, 67 frames), plus a canvas note beside the Pass Desk food-short toast. Door Scanner, Pass Desk and Supervisor screens are not redesigned; the old MS-C / E / F / G frames stay for the Supervisor.
