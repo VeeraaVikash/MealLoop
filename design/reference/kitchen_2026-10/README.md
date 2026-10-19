@@ -22,5 +22,7 @@ Images are layout and copy references (292 pt wide phones, multiply by 1.346 for
 | K16_home_meal_ended_draft | Home after the meal, draft saved |
 | K17_menu_for_lunch | Menu for Lunch (names only) |
 | K18_past_meal_edit_closed | Past meal, recorded, editing closed |
+| K19_home_during_meal_sos_tab | Home during the meal with the SOS tab |
+| K20_sos_panel | SOS panel (same as the Door Scanner, kitchen wording) |
 
 Rules and wording: data/kitchen_spec.md. Prompt: prompt/COWORK_PROMPT_KITCHEN.md.
