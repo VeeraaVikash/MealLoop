@@ -1,18 +1,18 @@
 // KITCHEN Record waste builders (stored as mealloop/ktw). Body of async function(figma, args) -> D (extends ktb).
 // D.DISH the Wed lunch dishes [name, unit] in menu order. D.vals(over) sample values: 'v:<value>' entered, 'z' none left, 'n' not made, null not entered.
-// D.waste(sec, name, x, o) Record waste page: o = { vals, done, plate: '18 kg' | null, extra: [[name, unit]], time, sos }. Returns { f, c, rows: {dish: instance}, add, plate, bar }.
-// D.qsheet(f, dish, state, o) quantity sheet over a waste page (QuantitySheet instance; o.sub, o.value). D.checkSheet(f, vals, o) Check and send sheet (o.blocked = N missing).
+// D.waste(sec, name, x, o) Record waste page: o = { vals, done, plate: '18 kg' | null, extra: [[name, unit]], time, sos, sub, dish }. Returns { f, c, rows: {dish: instance}, add, plate, bar }.
+// D.qsheet(f, dish, state, o) quantity sheet over a waste page (QuantitySheet instance; o.sub, o.value). D.checkSheet(f, vals, o) Check and save sheet (o.blocked = N missing). Pack v2: plain "Done N of M", "Review and save", "Save report", no review.
 // D.dialog(f, title, body, primary, secondary) centred dialog card over a scrim.
 const D = await new (Object.getPrototypeOf(async function(){}).constructor)('figma','args',figma.root.getSharedPluginData('mealloop','ktb'))(figma,{});
 D.DISH = [['Bhindi Aloo Bujjiya', 'kg'], ['Steamed Rice', 'kg'], ['Chappathi', 'pieces'], ['Muttar Masala', 'kg'], ['Veg Pulao', 'kg'], ['Masala Sambar', 'L'], ['Tomato Dal', 'L'], ['Garlic Rasam', 'L']];
 D.vals = over => Object.assign({ 'Bhindi Aloo Bujjiya': 'v:2 kg', 'Steamed Rice': 'v:3 kg', 'Chappathi': null, 'Muttar Masala': 'z', 'Veg Pulao': null, 'Masala Sambar': 'v:4 L', 'Tomato Dal': 'n', 'Garlic Rasam': 'v:3 L' }, over || {});
 D.waste = async (sec, name, x, o) => { o = o || {}; const vals = o.vals || D.vals();
-  const r = await D.kpage(sec, name, x, { title: 'Record waste', sub: 'Lunch · Main Mess · Wed 14 Aug', time: o.time || '2:05', gap: 12 }); const c = r.c; const out = { f: r.f, c, rows: {} };
-  const ch = await D.chip(c, o.done, 'outline', { px: 16, py: 8 }); ch.name = 'Chip · progress';
+  const r = await D.kpage(sec, name, x, { title: 'Record waste', sub: o.sub || 'Lunch · Main Mess · Wed 14 Aug', time: o.time || '2:05', moment: o.moment, gap: 12 }); const c = r.c; const out = { f: r.f, c, rows: {} };
+  await D.t(c, o.done, 'ML/Body', 'ink-secondary', { fill: true, name: 'Progress' });
   if (o.sos) { const tab = await D.ds(r.f, 'sostab', 'State=' + o.sos); tab.name = 'SOSEdgeTab'; tab.x = 335; tab.y = 118; out.sos = tab; }
   await D.t(c, 'Food left over · each dish in its own unit', 'ML/Secondary', 'ink-secondary', { fill: true, name: 'Section · Food left over' });
   const list = D.frame(c, 'Dish rows', { gap: 0 }); list.layoutSizingHorizontal = 'FILL'; let last;
-  for (const [d, u] of D.DISH.concat(o.extra || [])) { const v = vals[d] === undefined ? null : vals[d];
+  for (const [d, u] of (o.dish || D.DISH).concat(o.extra || [])) { const v = vals[d] === undefined ? null : vals[d];
     const st = v === null ? 'Not entered' : v === 'z' ? 'None left' : v === 'n' ? 'Not made' : 'Entered';
     const val = st === 'Not entered' ? 'Enter ' + u : st === 'None left' ? '0 ' + u : st === 'Not made' ? 'Not made' : v.slice(2);
     const i = await D.kinst(list, 'dishRow', 'State=' + st, { Dish: d, Value: val }); i.layoutSizingHorizontal = 'FILL'; i.name = 'DishRow / ' + d; out.rows[d] = i; last = i; }
@@ -23,12 +23,12 @@ D.waste = async (sec, name, x, o) => { o = o || {}; const vals = o.vals || D.val
   const pl = await D.t(pc, 'Plate waste', 'ML/Body Semibold', 'ink', { name: 'Label' }); pl.layoutGrow = 1;
   if (o.plate === null) { const p = D.frame(pc, 'Enter pill', { dir: 'H', radius: 999 }); p.counterAxisSizingMode = 'FIXED'; p.resize(120, 44); p.primaryAxisSizingMode = 'AUTO'; p.paddingLeft = p.paddingRight = 20; p.primaryAxisAlignItems = 'CENTER'; p.counterAxisAlignItems = 'CENTER'; p.strokes = [D.paint('ink')]; p.strokeWeight = 1.5; p.dashPattern = [5, 4]; p.strokeAlign = 'INSIDE'; await D.t(p, 'Enter kg', 'ML/Secondary Medium', 'ink', { name: 'Value' }); }
   else await D.t(pc, o.plate || '18 kg', 'ML/Code', 'ink', { name: 'Value' });
-  out.plate = pc; out.bar = await D.bar(r.f, 'Save draft', 'Review and send');
+  out.plate = pc; out.bar = await D.bar(r.f, 'Save draft', 'Review and save');
   if (out.sos) r.f.appendChild(out.sos); D.fixChrome(r.f); return out; };
 D.qsheet = async (f, dish, state, o) => { o = o || {}; const s = await D.sheet(f, dish, 'Large'); const q = await D.kinst(s.c, 'quantity', 'State=' + state); q.name = 'QuantitySheet'; q.layoutSizingHorizontal = 'FILL';
   if (o.sub) await D.setText(q.findOne(n => n.name === 'Sub'), o.sub); if (o.value) await D.setText(q.findOne(n => n.name === 'Value'), o.value);
   D.fitSheet(f); return { q, save: q.findOne(n => n.name === 'Button / Save'), none: q.findOne(n => n.name === 'Button / None left'), notMade: q.findOne(n => n.name === 'Button / Not made'), field: q.findOne(n => n.name === 'Field'), close: D.closeOf(f) }; };
-D.checkSheet = async (f, vals, o) => { o = o || {}; const s = await D.sheet(f, 'Check and send', 'Large'); const c = s.c; c.itemSpacing = 0;
+D.checkSheet = async (f, vals, o) => { o = o || {}; const s = await D.sheet(f, 'Check and save', 'Large'); const c = s.c; c.itemSpacing = 0;
   await D.t(c, 'Lunch · Main Mess', 'ML/Secondary', 'ink-secondary', { fill: true, name: 'Sub' }); const sp = D.frame(c, 'Spacer', {}); sp.resize(10, 12);
   const line = async (label, v, bold, grey) => { const r = D.frame(c, 'Line / ' + label, { dir: 'H', gap: 12 }); r.layoutSizingHorizontal = 'FILL'; r.counterAxisAlignItems = 'CENTER'; r.paddingTop = r.paddingBottom = 6;
     const l = await D.t(r, label, bold ? 'ML/Body Semibold' : 'ML/Body', grey ? 'ink-secondary' : 'ink', { name: 'Label' }); l.layoutGrow = 1; return r; };
@@ -44,9 +44,9 @@ D.checkSheet = async (f, vals, o) => { o = o || {}; const s = await D.sheet(f, '
   const sp5 = D.frame(c, 'Spacer', {}); sp5.resize(10, 16);
   const out = {};
   if (o.blocked) { await D.note(c, 'Every dish needs an amount, None left or Not made.'); const s6 = D.frame(c, 'Spacer', {}); s6.resize(10, 16);
-    const b = await D.btn(c, 'Enter ' + o.blocked + ' more to send', 'dashed', { h: 56 }); b.name = 'Button / Enter ' + o.blocked + ' more (blocked)'; const s7 = D.frame(c, 'Spacer', {}); s7.resize(10, 12); out.back = await D.btn(c, 'Back to edit', 'black', { h: 56 }); out.back.name = 'Button / Back to edit'; }
-  else { await D.note(c, 'Ravi reviews this. You can edit it until he does.'); const s6 = D.frame(c, 'Spacer', {}); s6.resize(10, 16);
-    out.send = await D.btn(c, 'Send to Ravi for review', 'black', { h: 56 }); out.send.name = 'Button / Send to Ravi for review'; const s7 = D.frame(c, 'Spacer', {}); s7.resize(10, 12); out.back = await D.btn(c, 'Back to edit', 'outline', { h: 56 }); out.back.name = 'Button / Back to edit'; }
+    const b = await D.btn(c, 'Enter ' + o.blocked + ' more', 'dashed', { h: 56 }); b.name = 'Button / Enter ' + o.blocked + ' more (blocked)'; const s7 = D.frame(c, 'Spacer', {}); s7.resize(10, 12); out.back = await D.btn(c, 'Back to edit', 'black', { h: 56 }); out.back.name = 'Button / Back to edit'; }
+  else { await D.note(c, 'You can edit this later.'); const s6 = D.frame(c, 'Spacer', {}); s6.resize(10, 16);
+    out.send = await D.btn(c, 'Save report', 'black', { h: 56 }); out.send.name = 'Button / Save report'; const s7 = D.frame(c, 'Spacer', {}); s7.resize(10, 12); out.back = await D.btn(c, 'Back to edit', 'outline', { h: 56 }); out.back.name = 'Button / Back to edit'; }
   D.fitSheet(f); out.close = D.closeOf(f); return out; };
 D.dialog = async (f, title, body, primary, secondary) => { const sc = figma.createRectangle(); sc.name = 'Scrim'; sc.resize(393, 852); sc.fills = [D.paint('scrim')]; f.appendChild(sc);
   const card = D.frame(f, 'Dialog', { gap: 12, radius: 28, fill: 'surface' }); card.primaryAxisSizingMode = 'AUTO'; card.counterAxisSizingMode = 'FIXED'; card.resize(337, 100); card.paddingLeft = card.paddingRight = card.paddingTop = card.paddingBottom = 20;

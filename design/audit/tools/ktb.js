@@ -2,7 +2,8 @@
 // D.K component IDs (mealloop/kt_ids); D.KF frame IDs (mealloop/kt_frames, D.saveK()). D.ksec(name, y, w) section on page 09.
 // D.kinst(parent, key, variant, texts) instance of a kt_ids set (texts by layer name). D.ak(logoRow) AK initials in lime.
 // D.kbase(sec, name, x, o) Kitchen page with logo row + "Lunch" title (Home family). D.khome(sec, name, x, o) Home:
-//   o = { state: 'Before'|'During'|'After', hc: HeadcountCard state, live: LiveCard state, short: [[state, title, time]], seeAll, waste: 'Not started'|'Draft'|'Waiting', offline, sos, time, moment }.
+//   o = { state: 'Before'|'During'|'After', hc: ForecastCard state, live: LiveCard state, short: [[state, title, time]], seeAll, waste: 'Not started'|'Draft'|'Recorded', offline, sos, time, moment }.
+//   Pack v2: ForecastCard before the meal, "Final entries" with no note, StatusText (dot + text) on the waste card, "You can edit until 8:40 PM." when Recorded.
 // D.kpage(sec, name, x, o) pushed page (back, large title, no tab unless o.tab). D.bar(f, left, right) the K06 bottom bar (outline + black).
 // D.mix(parent, name, parts, sans, mono, colour) words in sans and times in mono on one baseline.
 const D = await new (Object.getPrototypeOf(async function(){}).constructor)('figma','args',figma.root.getSharedPluginData('mealloop','pdb'))(figma,{});
@@ -18,26 +19,26 @@ D.ak = async lr => { const av = lr.findOne(n => n.name.startsWith('Avatar')); av
 D.kbase = async (sec, name, x, o) => { o = o || {};
   const r = await D.screen(sec, name, x, 150, { noNav: true, tab: o.tab === false ? undefined : (o.tab || 'Home'), time: o.time || '1:40', gap: 12, moment: 'Wed 14 Aug 2024, ' + (o.moment || ((o.time || '1:40') + ' PM')) });
   const lr = await D.logoRow(r.c); await D.ak(lr); await D.titles(r.c, o.title || 'Lunch', o.sub || 'Main Mess · 12–2 PM'); return r; };
-D.closedCard = async c => { const h = D.hero(c, 'Meal closed card'); h.cornerRadius = 28; h.paddingLeft = h.paddingRight = h.paddingTop = h.paddingBottom = 20; h.itemSpacing = 6;
+D.closedCard = async (c, o) => { const h = D.hero(c, 'Meal closed card'); h.cornerRadius = 28; h.paddingLeft = h.paddingRight = h.paddingTop = h.paddingBottom = 20; h.itemSpacing = 6;
   const e = D.frame(h, 'Eyebrow', { dir: 'H', gap: 8 }); e.counterAxisAlignItems = 'CENTER'; D.dot(e, 'lime', 10); await D.t(e, 'MEAL CLOSED', 'ML/Tag', 'on-hero-secondary', { name: 'Eyebrow', ls: 6 });
   await D.t(h, 'Lunch has ended', 'ML/Title', 'on-hero', { fill: true, name: 'Title' }); const sp = D.frame(h, 'Spacer', {}); sp.resize(10, 8);
-  await D.t(h, 'Final recorded entries', 'ML/Secondary', 'on-hero-secondary', { fill: true, name: 'Label' });
-  const v = D.frame(h, 'Value', { dir: 'H', gap: 12 }); v.layoutSizingHorizontal = 'FILL'; v.counterAxisAlignItems = 'MAX'; await D.t(v, '774', 'ML/Hero Metric', 'on-hero', { name: 'Count' });
-  const n = await D.t(v, 'Recorded at the door. Not meals served.', 'ML/Secondary', 'on-hero-secondary', { name: 'Note' }); n.layoutGrow = 1; n.textAutoResize = 'HEIGHT'; return h; };
+  await D.t(h, 'Final entries', 'ML/Secondary', 'on-hero-secondary', { fill: true, name: 'Label' });
+  const v = D.frame(h, 'Value', { dir: 'H', gap: 12 }); v.layoutSizingHorizontal = 'FILL'; v.counterAxisAlignItems = 'MAX'; await D.t(v, o && o.count || '774', 'ML/Hero Metric', 'on-hero', { name: 'Count' }); return h; };
 D.wasteCard = async (c, st) => { const k = D.card(c, 'Waste report card', { gap: 12, radius: 24 });
   const hd = D.frame(k, 'Header', { dir: 'H', gap: 12 }); hd.layoutSizingHorizontal = 'FILL'; hd.counterAxisAlignItems = 'CENTER'; const t = await D.t(hd, 'Waste report', 'ML/Card Heading', 'ink', { name: 'Title' }); t.layoutGrow = 1;
-  const ch = await D.kinst(hd, 'statusChip', 'Status=' + st, st === 'Waiting' ? { Label: 'Waiting for Ravi' } : null); ch.name = 'ReportStatusChip';
+  const ch = await D.kinst(hd, 'statusText', 'Status=' + st, st === 'Recorded' ? { Label: 'Recorded ·', Time: '2:40 PM' } : null); ch.name = 'StatusText';
+  if (st === 'Recorded') { const pk = Object.keys(ch.componentProperties).find(k => k.startsWith('Show time')); ch.setProperties({ [pk]: true }); }
   let b;
   if (st === 'Not started') b = await D.btn(k, 'Record waste', 'black', { h: 56 });
   if (st === 'Draft') { await D.mix(k, 'Progress', [['6 of 8 done · saved', 0], ['2:05 PM', 1]], 'ML/Secondary', 'ML/Mono Body', 'ink-secondary'); b = await D.btn(k, 'Continue', 'black', { h: 56 }); }
-  if (st === 'Waiting') { const g = D.frame(k, 'Sent', { gap: 0 }); g.layoutSizingHorizontal = 'FILL'; await D.mix(g, 'Sent line', [['Sent', 0], ['2:12 PM.', 1]], 'ML/Secondary', 'ML/Mono Body', 'ink-secondary'); await D.t(g, 'You can edit until he reviews it.', 'ML/Secondary', 'ink-secondary', { fill: true, name: 'Line' }); b = await D.btn(k, 'View report', 'outline', { h: 56 }); }
+  if (st === 'Recorded') { await D.mix(k, 'Edit window', [['You can edit until', 0], ['8:40 PM.', 1]], 'ML/Secondary', 'ML/Mono Body', 'ink-secondary'); b = await D.btn(k, 'View report', 'outline', { h: 56 }); }
   b.name = 'Button / ' + b.children[0].characters; return { k, b }; };
 D.khome = async (sec, name, x, o) => { o = o || {}; const st = o.state || 'During';
   const time = o.time || (st === 'Before' ? '11:30' : st === 'After' ? '2:05' : '1:40');
   const r = await D.kbase(sec, name, x, { time, moment: o.moment || (/^1[01]:/.test(time) ? time + ' AM' : time + ' PM'), sub: st === 'After' ? 'Main Mess · ended 2:00 PM' : 'Main Mess · 12–2 PM' }); const c = r.c; const out = { f: r.f, c, short: [] };
   if (o.offline) { const b = await D.inst(c, '75:187', {}, { Message: 'No connection. The count and reports can\'t update.' }); b.layoutSizingHorizontal = 'FILL'; b.name = 'Offline banner'; }
-  if (st === 'Before') { const h = await D.kinst(c, 'headcount', 'State=' + (o.hc || 'Ready')); h.name = 'HeadcountCard'; h.layoutSizingHorizontal = 'FILL'; out.card = h;
-    const list = D.frame(c, 'Rows', { gap: 0 }); list.layoutSizingHorizontal = 'FILL'; out.menu = await D.qrow(list, 'Menu for Lunch', '8 dishes'); out.past = await D.qrow(list, 'Past meals'); out.past.strokeBottomWeight = 1; }
+  if (st === 'Before') { const h = await D.kinst(c, 'forecast', 'State=' + (o.hc || 'Ready')); h.name = 'ForecastCard'; h.layoutSizingHorizontal = 'FILL'; out.card = h;
+    const list = D.frame(c, 'Rows', { gap: 0 }); list.layoutSizingHorizontal = 'FILL'; out.menu = await D.qrow(list, 'Menu for Lunch'); out.past = await D.qrow(list, 'Past meals'); out.past.strokeBottomWeight = 1; }
   if (st === 'During') { await D.mealChip(c, 'Meal in progress · 1 h 40 min');
     const l = await D.kinst(c, 'liveCard', 'State=' + (o.live || 'Live')); l.name = 'LiveCard'; l.layoutSizingHorizontal = 'FILL'; out.card = l; out.pill = l.findOne(n => n.name === 'Button / Report food running short');
     if (o.short && o.short.length) { const g = D.frame(c, 'Shortage reports', { gap: 8 }); g.layoutSizingHorizontal = 'FILL';
