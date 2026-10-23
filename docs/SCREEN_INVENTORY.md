@@ -16,12 +16,12 @@ Generated on 2026-10-23 from the repository only (no Figma access in this sessio
 
 | Role / feature area | Screen or state name | Figma reference (page and frame name, if documented) | Status | Shared component dependencies | SwiftUI implementation status | Assigned owner | Proposed priority |
 |---|---|---|---|---|---|---|---|
-| Shared staff entry | `D01_role_selection` | 09 Mess Staff · “MS-1 · Choose your role” (node 1508:235) | Active | OrbitBackground, RoleRow | Not started | Unassigned | P0 (proposed) |
-| Shared staff entry | `D03_password` | 09 Mess Staff · “DS-0 · Password — Door Scanner” (node 2469:2102) | Active | OrbitBackground, KeyPad, PasswordBoxes | Not started | Unassigned | P0 (proposed) |
-| Shared staff entry | `D03_password_wrong` | 09 Mess Staff · “DS-0 · Password — Wrong” (node 2469:2229) | Active | OrbitBackground, KeyPad, PasswordBoxes | Not started | Unassigned | P0 (proposed) |
-| Shared staff entry | `D03_password_locked` | 09 Mess Staff · “DS-0 · Password — Locked” (node 2469:2355) | Active | OrbitBackground, KeyPad, PasswordBoxes | Not started | Unassigned | P0 (proposed) |
+| Shared staff entry | `D01_role_selection` | 09 Mess Staff · “MS-1 · Choose your role” (node 1508:235) | Active | OrbitBackground, RoleRow | Scaffold for navigation (copy matches export; layout not compared) | Unassigned | P0 (proposed) |
+| Shared staff entry | `D03_password` | 09 Mess Staff · “DS-0 · Password — Door Scanner” (node 2469:2102) | Active | OrbitBackground, KeyPad, PasswordBoxes | Scaffold for navigation (copy matches export; layout not compared) | Unassigned | P0 (proposed) |
+| Shared staff entry | `D03_password_wrong` | 09 Mess Staff · “DS-0 · Password — Wrong” (node 2469:2229) | Active | OrbitBackground, KeyPad, PasswordBoxes | Scaffold for navigation (copy matches export; layout not compared) | Unassigned | P0 (proposed) |
+| Shared staff entry | `D03_password_locked` | 09 Mess Staff · “DS-0 · Password — Locked” (node 2469:2355) | Active | OrbitBackground, KeyPad, PasswordBoxes | Scaffold for navigation (copy matches export; layout not compared) | Unassigned | P0 (proposed) |
 | Shared staff entry | `D03_password_pass_desk` | 09 Mess Staff · “DS-0 · Password — Pass Desk” (node 2469:2480) | Active | OrbitBackground, KeyPad, PasswordBoxes | Not started | Unassigned | P0 (proposed) |
-| Shared staff entry | `D03_password_kitchen_staff` | 09 Mess Staff · “DS-0 · Password — Kitchen Staff” (node 2469:2607) | Active | OrbitBackground, KeyPad, PasswordBoxes | Not started | Unassigned | P0 (proposed) |
+| Shared staff entry | `D03_password_kitchen_staff` | 09 Mess Staff · “DS-0 · Password — Kitchen Staff” (node 2469:2607) | Active | OrbitBackground, KeyPad, PasswordBoxes | Scaffold for navigation (copy matches export; layout not compared) | Unassigned | P0 (proposed) |
 | Shared staff entry | `D03_password_supervisor` | 09 Mess Staff · “DS-0 · Password — Supervisor” (node 2469:2734) | Active | OrbitBackground, KeyPad, PasswordBoxes | Not started | Unassigned | P0 (proposed) |
 
 ### Student (38)
@@ -271,18 +271,18 @@ Generated on 2026-10-23 from the repository only (no Figma access in this sessio
 
 | Role / feature area | Screen or state name | Figma reference (page and frame name, if documented) | Status | Shared component dependencies | SwiftUI implementation status | Assigned owner | Proposed priority |
 |---|---|---|---|---|---|---|---|
-| Kitchen | `K00_what_you_do_sheet` | 09 Mess Staff · “KS-0 · What you do (sheet)” | Active | OrbitBackground, WhatYouDoSheet | Not started | Unassigned | P0 (proposed) |
-| Kitchen | `K01_home_before_meal` | 09 Mess Staff · “KS-1 · Home — Before the meal” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Not started | Unassigned | P0 (proposed) |
-| Kitchen | `K01b_home_forecast_loading` | 09 Mess Staff · “KS-1 · Home — Forecast loading” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, AsyncContentView (loading) | Not started | Unassigned | P0 (proposed) |
+| Kitchen | `K00_what_you_do_sheet` | 09 Mess Staff · “KS-0 · What you do (sheet)” | Active | OrbitBackground, WhatYouDoSheet | Scaffold for navigation (copy matches export; layout not compared) | Unassigned | P0 (proposed) |
+| Kitchen | `K01_home_before_meal` | 09 Mess Staff · “KS-1 · Home — Before the meal” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Code written, not compiled (see FOUNDATION_REPORT) | Unassigned | P0 (proposed) |
+| Kitchen | `K01b_home_forecast_loading` | 09 Mess Staff · “KS-1 · Home — Forecast loading” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, AsyncContentView (loading) | Generic loading state only (AsyncContentView) | Unassigned | P0 (proposed) |
 | Kitchen | `K01c_home_forecast_stale` | 09 Mess Staff · “KS-1 · Home — Forecast stale” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, StaleNote | Not started | Unassigned | P0 (proposed) |
 | Kitchen | `K01d_home_forecast_not_ready` | 09 Mess Staff · “KS-1 · Home — Forecast not ready” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Not started | Unassigned | P0 (proposed) |
-| Kitchen | `K02_home_during_meal` | 09 Mess Staff · “KS-1 · Home — During the meal” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Not started | Unassigned | P0 (proposed) |
+| Kitchen | `K02_home_during_meal` | 09 Mess Staff · “KS-1 · Home — During the meal” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Code written, not compiled (see FOUNDATION_REPORT) | Unassigned | P0 (proposed) |
 | Kitchen | `K02b_home_entries_stale` | 09 Mess Staff · “KS-1 · Home — Entries stale” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, StaleNote | Not started | Unassigned | P0 (proposed) |
-| Kitchen | `K02c_home_offline` | 09 Mess Staff · “KS-1 · Home — Offline” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, OfflineBanner | Not started | Unassigned | P0 (proposed) |
-| Kitchen | `K03_home_during_shortage_reported` | 09 Mess Staff · “KS-1 · Home — Shortage sent” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, ShortageRow, ShortageChips (sheet) | Not started | Unassigned | P0 (proposed) |
+| Kitchen | `K02c_home_offline` | 09 Mess Staff · “KS-1 · Home — Offline” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, OfflineBanner | Generic offline state only (AsyncContentView) | Unassigned | P0 (proposed) |
+| Kitchen | `K03_home_during_shortage_reported` | 09 Mess Staff · “KS-1 · Home — Shortage sent” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, ShortageRow, ShortageChips (sheet) | Code written, not compiled (see FOUNDATION_REPORT) | Unassigned | P0 (proposed) |
 | Kitchen | `K03b_home_two_shortage_reports` | 09 Mess Staff · “KS-1 · Home — Two shortage reports” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText, ShortageRow, ShortageChips (sheet) | Not started | Unassigned | P0 (proposed) |
 | Kitchen | `K03c_shortage_reports` | 09 Mess Staff · “KS-1 · Shortage reports” | Active | OrbitBackground, ShortageRow, ShortageChips (sheet) | Not started | Unassigned | P0 (proposed) |
-| Kitchen | `K05_home_meal_ended` | 09 Mess Staff · “KS-1 · Home — After · Not started” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Not started | Unassigned | P0 (proposed) |
+| Kitchen | `K05_home_meal_ended` | 09 Mess Staff · “KS-1 · Home — After · Not started” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Code written, not compiled (see FOUNDATION_REPORT) | Unassigned | P0 (proposed) |
 | Kitchen | `K16_home_meal_ended_draft` | 09 Mess Staff · “KS-1 · Home — After · Draft” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Not started | Unassigned | P0 (proposed) |
 | Kitchen | `K15_home_meal_ended_recorded` | 09 Mess Staff · “KS-1 · Home — After · Recorded” | Active | OrbitBackground, StaffTabBar, LiveCountCard, MealProgressChip, QuietRow, StatusText | Not started | Unassigned | P0 (proposed) |
 | Kitchen | `K17_menu_for_lunch` | 09 Mess Staff · “KS-1 · Menu for Lunch” | Active | OrbitBackground | Not started | Unassigned | P1 (proposed) |
