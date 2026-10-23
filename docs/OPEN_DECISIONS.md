@@ -32,6 +32,7 @@ For the open decisions, each row gives the options and a suggested default so wo
 | R18 | Outing eligibility (was P3) | Pilot mode: every student in the institutionally authorized cohort can use digital outings, thresholds are not enforced, guardian and warden approval stay mandatory, SRM authorization is mandatory and the bypass is an explicit configuration limited to the cohort. Post-pilot: participation and reliability are both needed; I'm in and Skip count equally; I'm in is never pushed; Not sure is not a definite response; a missing QR scan is not proof of absence; scanner failures never lower reliability; thresholds are configurable, enforced only with sufficient valid evidence and need SRM approval; students see their eligibility and can request a correction; non-qualifiers keep the existing hostel procedure. The eligibility engine and pilot bypass belong to the 13 December 2026 target; real deployment depends on SRM | Owner decision on pull request 1 (FR-OUT-024, 027, 028, 029, 030) |
 | R19 | Accuracy bonus | The conditional accuracy bonus exists: it is earned only when the answer matches reliably verified behaviour. A Skip is not verified merely by a missing scan; incomplete or unreliable scanning gives no unsupported bonus; credit corrections are auditable. Amounts, verification method and coverage are open (P1, P32) | Owner decision on pull request 1 (FR-RWD-003, FR-RWD-006) |
 | R20 | Staff access in the prototype (was T3) | A shared four-digit password per staff role is approved prototype and demo behaviour only. It is not the production security architecture, which is proposed separately (FR-ATT-015, P35) | Owner decision on pull request 1 (FR-ATT-013) |
+| R21 | Scanner offline behaviour (was P5) | In the pilot an offline scan, and an offline or unverifiable pass check, is never recorded and never shown as success. A future offline queue is deferred and is not part of the pilot. **The owner is asked to confirm this reading of NFR-REL-005** | Owner direction in the NFR round ([`NFR.md`](NFR.md), NFR-REL-005), treated as the later decision (FR-ATT-007, FR-PASS-006) |
 
 ## Open: Product
 
@@ -40,7 +41,6 @@ For the open decisions, each row gives the options and a suggested default so wo
 | P1 | Participation-credit amount, accuracy-bonus amount and eligibility window | The rule is decided (R12, R19: participation credits for definite responses; accuracy bonus only on reliably verified behaviour). Open: the two amounts, the window, and any cap | None. SRM decision; screens show "Credits soon" and no numbers are built (FR-RWD-001, 002, 003) | Student Credits screens, any reward logic | SRM approval |
 | P2 | Community "Me too" support threshold | The threshold is configurable (R11); the value is not decided | Keep `CommunityPolicy.supportThreshold = nil`. The pilot calibrates the value; no number is set here. Eligible reports publish after the configured checks regardless (R17) | Community escalation of grouped reports | Pilot validation |
 | P4 | Guardian video consent, retention and languages | SRM approves video consent and the retention period for the video, transcript and fingerprint; the supported languages (English, Tamil, Hindi were the first proposal) | None. Build behind a switch that is off until SRM approves; no retention number is approved | Guardian and Warden | SRM approval |
-| P5 | Offline policy for scanning and pass checks | Never record (draft); queue on device and sync later | Never record: show "This entry is NOT recorded" | Door Scanner, Pass Desk | Product-owner decision |
 | P6 | Vendor channel | WhatsApp; phone call; SMS | Record the headcount in MealLoop and the reply manually; choose the channel before the pilot | Admin headcount "Tell the vendor" | Product-owner decision |
 | P7 | Whether students answer for Snacks | Yes; no (menu only) | Menu only; no answer buttons for Snacks (gap 382) | Student Home and Meals | Product-owner decision |
 | P8 | Meaning of the yellow highlight on the printed menu | Chef's special; new dish; other | Show it as "Highlight" with the existing note "Marked by the mess on the menu board" (gap 381) | Student Meals | Product-owner decision |
@@ -70,6 +70,30 @@ For the open decisions, each row gives the options and a suggested default so wo
 | P33 | Post-pilot outing thresholds, evaluation period, minimum sample and exceptions | Participation and reliability thresholds are configurable (R18); the values, period, minimum sample and exceptions need SRM approval | None. SRM approval (FR-OUT-029) | Post-pilot outing eligibility | SRM approval |
 | P34 | Which cohort is the authorized pilot cohort | SRM names the cohort for which pilot mode (R18) applies; the bypass is configured for that cohort only | None. SRM authorization (FR-OUT-024, FR-OUT-027) | Pilot outings | SRM approval |
 | P35 | Production staff authentication and authorization mechanism | The requirement is proposed (FR-ATT-015: verified identity, role and mess or block scope, accountable actor, secure sessions with revocation, audit). The mechanism is chosen in the NFR, architecture and security reviews | None. Decided in technical design; the shared role password is prototype behaviour only (R20) | Staff apps in production | Technical design |
+| P36 | Target availability during meal service | A figure for the entry, meal-state and kitchen paths; Appendix A of [`NFR.md`](NFR.md) holds a candidate for discussion only | None. The owner decides after the hosting choice (NFR-PER-004) | NFR targets | Product-owner decision |
+| P37 | Recovery point objective (acceptable data loss) | A figure; a candidate is in NFR Appendix A for discussion only | None. The owner decides (NFR-PER-004) | Backup design | Product-owner decision |
+| P38 | Recovery time objective | A figure; a candidate is in NFR Appendix A for discussion only | None. The owner decides, knowing a manual fallback exists (NFR-PER-004, NFR-REL-006) | Recovery design | Product-owner decision |
+| P39 | Backup schedule | How often and where backups are taken | None. Decided in architecture work (NFR-DEP-005) | Backup design | Technical design |
+| P40 | SOS delivery time and the escalation delay for an unacknowledged SOS | Figures; a candidate for the delivery time is in NFR Appendix A for discussion only | None. The owner decides (NFR-REL-009) | SOS notification design | Product-owner decision |
+| P41 | Permitted device clock skew | A tolerance for client clocks | None. Server time in IST decides every window (NFR-REL-010); the tolerance is set in design | Time handling | Technical design |
+| P42 | Supported mobile browsers for the guardian page | A list of browsers and versions | None. Decided in design and checked on devices (NFR-PER-006) | Guardian web page | Technical design |
+| P43 | Guardian video file-size limit | A bound for a recording | None. Decided in design (NFR-PER-006) | Guardian video upload | Technical design |
+| P44 | Retention periods per data type (video, feedback, entry history, correction records, report photos, audit records, backups) | SRM sets a period per type | None. SRM decision; extends P4 and P29 (NFR-PRI-004, NFR-PRI-005) | Privacy, backups | SRM approval |
+| P45 | Rate and lockout limits for sign-in, guardian verification and other abuse-sensitive endpoints | Figures and recovery paths | None. Decided in security design and tuned in the pilot (NFR-SEC-006) | API protection | Technical design |
+| P46 | Alert thresholds for scan failures, outages, headcount delivery and notifications | Figures | None. Set from measured pilot behaviour (NFR-OBS-003) | Monitoring | Technical design |
+| P47 | Number of students in the pilot mess | A fact the owner supplies | None. Needed to size the load tests (NFR-PER-002, NFR-PER-005, NFR-SCL-001) | Load targets | Product-owner decision |
+| P48 | Hosting-cost ceiling for the pilot | A monthly ceiling set by the owner or SRM | None. The owner decides (NFR-SCL-004) | Architecture choice | Product-owner decision |
+| P49 | Scope of the pre-pilot security review | Which components, data flows and attacks the review covers | None. Decided in security design (NFR-SEC-009) | Pilot readiness | Technical design |
+| P50 | Operational owners: support contact in meal hours, incident severity classes, who may disable a feature | Named people and roles | None. The owner decides (NFR-OPS-001) | Operations | Product-owner decision |
+| P51 | Minimum acceptable signal at the Door, Pass Desk, kitchen, supervisor and Gate positions | A signal level defined by the owner | None. The owner decides after the site survey (NFR-REL-011) | Connectivity | Product-owner decision |
+| P52 | Door throughput target | Set from a realistic door rehearsal | None. Measure first (NFR-PER-007) | Door Scanner capacity | Pilot validation |
+| P53 | Which data-protection requirements apply, and the required review | SRM and legal advisers review notice, consent, rights, data location, breach handling and processors | None. SRM and legal decision; no legal conclusion is drawn here (NFR-PRI-007) | Any real-user collection | SRM approval |
+| P54 | Cloud region and data residency | Decided with SRM and legal advisers | None. Undecided architecture item (NFR section 11) | Hosting | SRM approval |
+| P55 | Guardian-video storage choice | Where evidence is stored and how access is controlled | None. Undecided architecture item (NFR section 11, NFR-SEC-003) | Guardian video | Technical design |
+| P56 | Percentile, test-network specification and device specifications for latency, synchronization and load tests | A test specification | None. Defined with the test design (NFR-REL-004, NFR-PER-001) | Performance tests | Pilot validation |
+| P57 | Accessibility measurement standard | Which contrast and touch-target checks are the pass standard | None. Decided in design (NFR-ACC-002) | Accessibility tests | Technical design |
+| P58 | SRM-approved manual attendance procedure for a digital outage, and who may reconcile | SRM defines the logging process, reconcilers and reporting treatment | None. SRM decision (NFR-REL-006) | Outage continuity | SRM approval |
+| P59 | Whether authorized institutional reviewers, besides the warden, may access guardian evidence | Warden only (FR-OUT-022 today); warden plus named reviewers (NFR-SEC-003) | None. SRM decision (Conflict C-20) | Guardian evidence access | SRM approval |
 
 ## Open: Technical
 
@@ -91,13 +115,13 @@ For the open decisions, each row gives the options and a suggested default so wo
 
 | Class | Open decisions |
 |---|---|
-| Pilot validation | 4 |
-| Product-owner decision | 23 |
-| SRM approval | 10 |
-| Technical design | 7 |
-| Resolved (R1 to R20, including P3, P26 and T3) | 20 |
+| Pilot validation | 6 |
+| Product-owner decision | 30 |
+| SRM approval | 15 |
+| Technical design | 16 |
+| Resolved (R1 to R21, including P3, P5, P26 and T3) | 21 |
 
-No open decision appears in more than one class.
+No open decision appears in more than one class. 67 decisions are open.
 
 ## Conflicts
 
@@ -123,5 +147,7 @@ Each row is a place where an existing document disagrees with [`PRD.md`](PRD.md)
 | C-16 | `design/reference/guardian_2026-10/data/guardian_video_spec.md` | "Open items" | "whether the call path is allowed" is open | FR-OUT-010: the warden phone confirmation is a designed fallback marked `SRM APPROVAL REQUIRED`; it is not authorized for real operation until the institution approves it | Resolved as a status contradiction (the PRD now agrees with the spec); the approval itself is P30 | None |
 | C-17 | `design/audit/design_intent.md` | "RULES: analytics" rule 18 (line 128) and the Privacy line (line 180) | Admin analytics exclude the private calorie and spending trackers; calorie and spending trackers are private | FR-ADM-017: only the private spending tracker is a requirement; the calorie and nutrition trackers were archived in the student redesign | Treat the calorie rule as history | Not amended in this change |
 | C-18 | `README.md`; `docs/FOUNDATION_REPORT.md`; `ios/README.md`; `docs/adr/ADR-001-ios-architecture.md`; `docs/SCREEN_INVENTORY.md` | Status statements | The foundation has "not been built", is "not compiled" or is "unverified" | The foundation was built and launched on the owner's Mac (owner-reported). The unit-test result is not yet recorded and nothing is verified beyond that | Updated to the owner-reported wording | Status text corrected |
+| C-19 | `docs/PRD.md`; `docs/backend/BACKEND_PROPOSAL.md`; `design/reference/door_scanner_2026-10/data/door_scanner_spec.md`; `design/reference/pass_desk_2026-10/data/pass_desk_spec.md` | PRD FR-ATT-007 and FR-PASS-006 notes, sections 10 and 14; backend proposal principle 3; the two specs' open items on offline policy | The offline policy is an open decision (P5): never record versus queue and sync later | NFR-REL-005: the pilot never accepts an offline scan as a verified entry; a future offline queue is deferred and not part of the pilot | Resolved (R21). **The owner is asked to confirm.** The two spec files are Figma-derived design records and were not edited; this row supersedes their open item | Superseded notes in the PRD and the backend proposal |
+| C-20 | `docs/NFR.md`; `docs/PRD.md` | NFR-SEC-003; FR-OUT-022 | Guardian evidence may be accessed by the assigned warden and explicitly authorized institutional reviewers | Access is limited to the warden role and logged | SRM decides whether named reviewers may also access evidence (P59); neither text was changed | None |
 
 **Checks that found no conflict.** A search of the active documents found no remaining Forward to Admin action, no supervisor approval of waste outside the historical Kitchen v1 sections (C-6, C-7), no Pass Desk camera scanning (the pass spec says no camera and lists it as an open item only), no Door Scanner decline step (the Door Scanner checks list "decline" as a banned word with zero hits), and no Kitchen "recorded at the door" wording outside the Kitchen v1 sections. The Pass Desk spec text "Approved is never shown as Done" matches FR-PASS-007.
