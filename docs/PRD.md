@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| Version | 0.1 |
+| Version | 0.2 |
 | Date | 2026-10-23 |
-| Status | **Draft for team review** |
+| Status | **Draft for team review.** Not owner-approved; it stays a review draft until the owner explicitly approves it |
 | Owner | VeeraaVikash (repository owner) |
 | Reviewers | The four-member development team; the owner for every item marked CHANGED |
 | Branch | `docs/prd-consolidation` (based on `feature/swiftui-foundation`) |
@@ -16,6 +16,7 @@
 
 | Version | Date | Change |
 |---|---|---|
+| 0.2 | 2026-10-23 | Corrections on pull request 1 for the owner's decisions: Community publication is automatic after configured checks (FR-FB-005, FR-AI-002, FR-AI-008, FR-FB-007); participation credits with a conditional accuracy bonus (FR-RWD-003, FR-RWD-002); outing eligibility split into pilot mode and post-pilot mode (FR-OUT-024, new FR-OUT-028 to FR-OUT-030); the warden phone fallback needs institutional approval (FR-OUT-010); the prototype's shared staff password is demo behaviour only, with proposed production authentication (FR-ATT-013, new FR-ATT-015); the archived calorie tracker is no longer named as active (FR-ADM-017). Foundation status now reads built and launched on the owner's Mac (owner-reported). Every open decision is classified. New risks R10 to R12. The PRD is still a draft for review and is not owner-approved. |
 | 0.1 | 2026-10-23 | First consolidated draft. Brings the latest owner decisions and the active design packs into one requirements document, records contradictions with older documents, and adds the requirements traceability matrix ([`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md)). |
 
 ## 2. Purpose and scope
@@ -31,7 +32,7 @@
 - Every requirement has a stable ID (`FR-<AREA>-NNN`), a statement, testable acceptance criteria, dependencies, sources and **exactly one status label** ([section 16](#16-requirement-status-legend)).
 - **Source order.** When documents disagree, the newest owner decision wins. Archived or superseded designs (Figma page 99, the archive indexes, the "(v1, superseded)" components) are never active requirements. The latest packs for the Door Scanner, Pass Desk, Kitchen, Supervisor and Guardian video override older text.
 - **Contradictions are recorded, not hidden.** The Conflicts table in [`OPEN_DECISIONS.md`](OPEN_DECISIONS.md#conflicts) lists every place where an existing document disagrees with this one.
-- **Implementation state.** Nothing is marked implemented. The iOS foundation in `ios/` has not been built or tested ([`FOUNDATION_REPORT.md`](FOUNDATION_REPORT.md)); [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) separates foundation code present (unverified) from designed only from not started.
+- **Implementation state.** No requirement is marked implemented for production. The iOS foundation in `ios/` was built and launched on the owner's Mac (owner-reported); the unit-test result is not yet recorded and no build output is in the repository ([`FOUNDATION_REPORT.md`](FOUNDATION_REPORT.md)). [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) keeps three states apart: foundation code exists; behaviour verified on a simulator or device (only what is evidenced); production functionality (unimplemented).
 - **Sample data.** The design screens use placeholder names and sample numbers (for example "Main Mess", 860, 714, 774). They illustrate behaviour and are not measured results. The pilot is planned at Meenakshi Girls' Mess; whether the screens should be renamed is an owner decision.
 
 ## 3. Background and problem
@@ -42,7 +43,7 @@ SRM Institute of Science and Technology, Kattankulathur, runs hostel messes that
 - **Today at the pilot mess.** There is no collection of meal intentions and no student entry scanning. MealLoop proposes per-meal intentions and QR-based entry verification.
 - **Out of the initial pilot.** The boys' hostel has an existing Face ID attendance system; integrating it is outside the initial pilot scope.
 - **Institution.** The institution has indicated cooperation. This is an indication, not a signed agreement.
-- **What exists.** A detailed Figma design and its audit documents, an unverified iOS foundation, and a backend proposal. No backend, no deployment and no measured result exist.
+- **What exists.** A detailed Figma design and its audit documents, an iOS SwiftUI foundation that runs on demo data and was built and launched on the owner's Mac (owner-reported; the unit-test result is not yet recorded), and a backend proposal. No production backend, no deployment and no measured result exist.
 
 MealLoop is one operational system connecting students, door and desk staff, kitchen workers, supervisors and administrators. It is not an attendance app, a form replacement, a waste dashboard, a QR scanner or a chatbot.
 
@@ -56,7 +57,7 @@ MealLoop is one operational system connecting students, door and desk staff, kit
 2. **Verified entry.** Know how many students actually entered, without denying anyone food.
 3. **Honest measurement.** Keep intention, forecast, headcount, entries, leftovers and plate waste distinct, and never turn a missing measurement into a zero.
 4. **Accountable feedback.** Turn student reports into owned corrective actions, and check whether things really improved.
-5. **A convenient digital outing option** for eligible students, with verified gate events as the only attendance-related evidence.
+5. **An earned, convenient digital outing option**, available first to an institutionally authorized pilot cohort and afterwards based on participation and reliability, with verified gate events as the only attendance-related evidence.
 
 ### Non-goals
 
@@ -73,7 +74,7 @@ MealLoop is one operational system connecting students, door and desk staff, kit
 
 | Phase | Scope | Status |
 |---|---|---|
-| Phase 0: design and foundation | Figma design, audit documents, PRD, iOS foundation, backend proposal | In progress. The foundation is unverified |
+| Phase 0: design and foundation | Figma design, audit documents, PRD, iOS foundation, backend proposal | In progress. The foundation was built and launched on the owner's Mac (owner-reported); the unit-test result is not yet recorded |
 | Phase 1: pilot | Meenakshi Girls' Mess: intentions, forecasting, verified entry, dish-wise waste measurement, feedback and Community, and digital outings if SRM authorizes them | Not started. Depends on SRM authorization (see [section 14](#14-open-decisions)) |
 | Phase 2: plate-waste reduction | Investigate an optional RFID and camera return station, only after Phase 1 shows value ([FR-KIT-018](#fr-kit-018--phase-2-optional-plate-waste-return-station)) | **PROPOSED**. Not part of the December 2026 delivery |
 
@@ -117,7 +118,7 @@ Only documented behaviour is shown. ✓ = can do; R = can see, read-only; — = 
 | See and close the Safety case in the admin app | — | — | — | — | — | ✓ (relation to the staff close is open) | — | — | — |
 | Submit feedback or an urgent report | ✓ | — | — | — | — | — | — | — | — |
 | Back an issue with Me too | ✓ | — | — | — | — | — | — | — | — |
-| Decide what reaches Community | — | — | — | — | — | ? (FR-FB-005, awaiting confirmation) | — | — | — |
+| Hide or moderate a Community report (eligible reports publish automatically; flagged ones are held for Admin) | — | — | — | — | — | ✓ | — | — | — |
 | Manage menus and send reports | — | — | — | — | — | ✓ | — | — | — |
 | Manage staff access | — | — | — | — | — | ✓ | — | — | — |
 | Request an outing | ✓ | — | — | — | — | — | — | — | — |
@@ -128,7 +129,7 @@ Only documented behaviour is shown. ✓ = can do; R = can see, read-only; — = 
 
 Notes:
 
-- Staff sign in per role with a shared role password; one login covers the four staff roles ([FR-ATT-013](#fr-att-013--staff-devices-open-a-role-with-a-shared-role-password)).
+- In the prototype, staff open a role with a shared role password (approved demo behaviour, [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password)); production authentication and authorization are proposed in [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization).
 - Staff, kitchen and door roles act within their own mess; wardens see their own hostel or block only; Admin can see all messes.
 - The vendor has no login; the headcount is sent by message.
 
@@ -153,9 +154,9 @@ These data-integrity rules apply to every requirement. A requirement that breaks
 
 ## 7. Functional requirements by area
 
-This section holds **157 requirements**. Each has an ID, a statement, acceptance criteria, dependencies, a source and exactly one status ([section 16](#16-requirement-status-legend)). The traceability matrix ([`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md)) adds the planned backend module, a test scenario and the implementation state for each.
+This section holds **161 requirements**. Each has an ID, a statement, acceptance criteria, dependencies, a source and exactly one status ([section 16](#16-requirement-status-legend)). The traceability matrix ([`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md)) adds the planned backend module, a test scenario and the implementation state for each.
 
-**Requirements that need the owner's decision first:** every `CHANGED, OWNER CONFIRMATION REQUIRED` item [FR-FB-005](#fr-fb-005--community-publication-of-non-urgent-reports), [FR-RWD-003](#fr-rwd-003--accuracy-bonuses-need-reliable-evidence).
+**No requirement is currently marked `CHANGED, OWNER CONFIRMATION REQUIRED`.** The two items marked that way in version 0.1, FR-FB-005 (Community publication) and FR-RWD-003 (accuracy bonus), were resolved by the owner's decisions recorded in version 0.2.
 
 ### Requirement counts
 
@@ -163,19 +164,19 @@ This section holds **157 requirements**. Each has an ID, a statement, acceptance
 |---|---|---|---|---|---|---|
 | `MEAL` Meal planning and student responses | 6 | 5 | 1 | 0 | 0 | 0 |
 | `HC` Headcount and forecasting | 8 | 7 | 1 | 0 | 0 | 0 |
-| `ATT` Attendance verification and the Door Scanner | 14 | 14 | 0 | 0 | 0 | 0 |
+| `ATT` Attendance verification and the Door Scanner | 15 | 14 | 1 | 0 | 0 | 0 |
 | `PASS` Special meal pass and the Pass Desk | 11 | 10 | 1 | 0 | 0 | 0 |
 | `KIT` Kitchen and waste measurement | 18 | 17 | 1 | 0 | 0 | 0 |
 | `SUP` Supervisor | 7 | 7 | 0 | 0 | 0 | 0 |
-| `FB` Feedback, Community and urgent safety | 14 | 11 | 0 | 1 | 1 | 1 |
+| `FB` Feedback, Community and urgent safety | 14 | 12 | 0 | 1 | 1 | 0 |
 | `STU` Student experience | 6 | 4 | 1 | 1 | 0 | 0 |
 | `CRD` Crowd guidance | 5 | 3 | 1 | 0 | 1 | 0 |
-| `RWD` Credits and rewards | 8 | 4 | 1 | 2 | 0 | 1 |
+| `RWD` Credits and rewards | 8 | 5 | 1 | 2 | 0 | 0 |
 | `ADM` Admin (Food head) | 19 | 16 | 1 | 1 | 1 | 0 |
 | `MENU` Menu management | 4 | 3 | 1 | 0 | 0 | 0 |
-| `OUT` Digital outings | 27 | 20 | 1 | 5 | 1 | 0 |
+| `OUT` Digital outings | 30 | 22 | 1 | 6 | 1 | 0 |
 | `AI` AI and intelligence | 10 | 9 | 0 | 0 | 1 | 0 |
-| **Total** | **157** | **130** | **10** | **10** | **5** | **2** |
+| **Total** | **161** | **134** | **11** | **11** | **5** | **0** |
 
 ### 7.1 Meal planning and student responses (`FR-MEAL`)
 
@@ -589,22 +590,23 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 
 **Source:** [`design/reference/door_scanner_2026-10/data/door_scanner_spec.md`](../design/reference/door_scanner_2026-10/data/door_scanner_spec.md) (SOS)
 
-#### FR-ATT-013 · Staff devices open a role with a shared role password
+#### FR-ATT-013 · Prototype staff entry uses a shared role password
 
 **Status:** `CONFIRMED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor
 
-**Statement.** A staff device opens a role only after that role's shared password is accepted (four digits, three tries, then locked until the Supervisor resets it), and success goes straight to the role Home.
+**Statement.** In the Figma prototype a staff member opens a role after entering a shared four-digit password for that role (three tries, then locked until the Supervisor resets it); this is approved demo behaviour for the prototype and is not an approved production security architecture.
 
 **Acceptance criteria.**
-1. Given the role is chosen, when the correct password is entered, then the role Home opens with no separate Start Shift screen.
+1. Given the prototype, when the role is chosen and the correct password is entered, then the role Home opens with no separate Start Shift screen.
 2. Given a wrong password, then the tries left are shown.
-3. Given three wrong tries, then the device is locked with Ask your supervisor to reset it.
+3. Given three wrong tries, then the prototype is locked with Ask your supervisor to reset it.
+4. Given a production build, then a shared role password alone is not accepted as the authentication mechanism (FR-ATT-015).
 
-**Dependencies:** none
+**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
 
 **Source:** [`design/reference/door_scanner_2026-10/data/door_scanner_spec.md`](../design/reference/door_scanner_2026-10/data/door_scanner_spec.md) (Flow); [`design/audit/design_intent.md`](../design/audit/design_intent.md) (DOOR SCANNER 2026-10: rule 9)
 
-**Note.** Where the password is stored and who resets it belong to the security task.
+**Note.** Approved demo behaviour only. Production authentication and authorization are proposed separately in FR-ATT-015.
 
 #### FR-ATT-014 · Staff roles share Home, Alerts and Me
 
@@ -620,6 +622,24 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 **Dependencies:** none
 
 **Source:** [`design/reference/door_scanner_2026-10/data/door_scanner_spec.md`](../design/reference/door_scanner_2026-10/data/door_scanner_spec.md) (Alerts and Me; Navigation)
+
+#### FR-ATT-015 · Production staff authentication and authorization
+
+**Status:** `PROPOSED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor, Admin
+
+**Statement.** Production staff access must provide a verified staff identity, an assigned role with mess or block scope, actions attributable to the actor, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions; the exact mechanism is decided in the NFR, architecture and security reviews.
+
+**Acceptance criteria.**
+1. Given a staff action, then it carries the actor's verified identity, role and mess or block scope.
+2. Given a staff session, then it is secure and can be revoked.
+3. Given an approval, a change, a scanning override or an SOS action, then it is recorded in an audit trail with the actor.
+4. Given the prototype's shared role password, then it is not accepted as the sole production credential.
+
+**Dependencies:** [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+
+**Source:** owner decision in task prompt
+
+**Note.** Proposed production controls. The mechanism is not chosen here (open decision P35).
 
 ### 7.4 Special meal pass and the Pass Desk (`FR-PASS`)
 
@@ -1191,7 +1211,7 @@ The Supervisor starts and closes the meal, follows up shortages, reads waste rea
 
 ### 7.7 Feedback, Community and urgent safety (`FR-FB`)
 
-Structured reports, Community, Me too and the separate urgent path. The Community publication rule is awaiting owner confirmation (FR-FB-005).
+Structured reports, Community, Me too and the separate urgent path. Eligible non-urgent reports publish automatically after configured checks; urgent reports bypass Community (FR-FB-005, FR-FB-003).
 
 #### FR-FB-001 · Students submit structured complaints
 
@@ -1235,7 +1255,7 @@ Structured reports, Community, Me too and the separate urgent path. The Communit
 1. Given an urgent category, then the flow goes to Tell the counter staff now and the SOS steps, not to Community.
 2. Given a food SOS, then a live photo with place and time and three checks are required before sending; I feel unwell may be sent without a photo.
 3. Given the camera is denied, then Send without photo is offered and flagged on the admin Safety case.
-4. Given an urgent report, then it is never held for Community support or an admin publication decision.
+4. Given an urgent report, then it is never published to Community, never held for Community support or an Admin publication decision, and it escalates through the SOS workflow.
 
 **Dependencies:** [FR-FB-004](#fr-fb-004--an-sos-reaches-staff-and-the-admin-safety-case)
 
@@ -1260,22 +1280,24 @@ Structured reports, Community, Me too and the separate urgent path. The Communit
 
 #### FR-FB-005 · Community publication of non-urgent reports
 
-**Status:** `CHANGED, OWNER CONFIRMATION REQUIRED` · **Roles:** Student, Admin
+**Status:** `CONFIRMED` · **Roles:** Student, Admin
 
-**Statement.** Eligible non-urgent reports reach Community through a publication step whose rule is awaiting owner confirmation.
+**Statement.** Eligible non-urgent student reports are published to Community automatically, without Admin action, after they pass the configured privacy, safety, abuse and spam checks; flagged or uncertain reports are held for Admin moderation.
 
 **Acceptance criteria.**
-1. Variant A, the earlier documented flow: Given a non-urgent report, when it is reviewed, then the Admin (assisted by grouping and summaries) decides what is published to Community.
-2. Variant B, the task-prompt flow: Given a non-urgent report that passes privacy, abuse and spam checks, then it is published to Community automatically; Given it is flagged or uncertain, then it goes to Admin review.
-3. Under either variant: Given an urgent report, then it never enters this flow (FR-FB-003).
-4. Under either variant: Given a report is published, then no student name is shown.
-5. Given neither variant is confirmed, then neither an automatic publication path nor an Admin publication path is enabled.
+1. Given an eligible non-urgent report that passes the configured checks, when it is submitted, then it is published to Community without any Admin action, and the record shows the approved deterministic policy (and its version) that published it.
+2. Given an urgent hygiene, contamination, illness or safety report, then it is never published to Community and it enters the urgent escalation workflow at once (FR-FB-003).
+3. Given a report that is flagged or uncertain under the checks, then it is not published and is held in a queue for Admin moderation.
+4. Given a published report, when Admin hides it, then it is no longer visible to students, the action is recorded with who, when and why, and Admin can intervene at any stage.
+5. Given any Community view, API response or export, then no student identity (name, ID or any other identifier) is exposed publicly.
+6. Given reports about the same problem, then duplicates are grouped into one issue so that supporters and Me too counts are not split.
+7. Given an issue below any Me too threshold, then Admin can investigate it without waiting for votes (FR-FB-010).
 
-**Dependencies:** [FR-FB-003](#fr-fb-003--urgent-issues-bypass-community-and-go-to-sos), [FR-AI-002](#fr-ai-002--ai-never-makes-the-decision)
+**Dependencies:** [FR-FB-003](#fr-fb-003--urgent-issues-bypass-community-and-go-to-sos), [FR-FB-007](#fr-fb-007--rules-and-categories-come-first-ai-is-optional), [FR-FB-008](#fr-fb-008--me-too-counts-once-per-student-per-issue), [FR-FB-010](#fr-fb-010--admin-can-investigate-or-intervene-before-a-threshold), [FR-AI-002](#fr-ai-002--ai-advises-and-routes-it-never-makes-sensitive-decisions)
 
-**Source:** owner decision in task prompt; [`README.md`](../README.md) (Intelligent feedback); [`design/audit/PROJECT_CONTEXT.md`](../design/audit/PROJECT_CONTEXT.md) (Admin (10): community moderation (AD-3d))
+**Source:** owner decision in task prompt; [`design/audit/PROJECT_CONTEXT.md`](../design/audit/PROJECT_CONTEXT.md) (Admin (10): community moderation (AD-3d))
 
-**Note.** Current documented behaviour is Variant A (README.md and the admin moderation screens); the task prompt states Variant B. See Conflicts C-1 and C-2 in docs/OPEN_DECISIONS.md.
+**Note.** Owner decision (confirmed in the correction notes for this PR). The exact check rules and the criteria for flagged or uncertain are implementation details for the API and security design and are not set here. Automatic publication by an approved deterministic policy is allowed; a publication decision made autonomously by an AI model is not (FR-AI-002). Resolves open decision P26 and Conflicts C-1 and C-2.
 
 #### FR-FB-006 · Community comments are checked before they show
 
@@ -1298,14 +1320,15 @@ Structured reports, Community, Me too and the separate urgent path. The Communit
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** The initial feedback approach uses structured categories, rules and semantic duplicate detection; a small or large language model is added only if evaluation shows administrative value.
+**Statement.** Feedback handling is built in this order: (1) structured complaint categories; (2) deterministic routing and publication rules; (3) semantic duplicate detection; (4) an optional small or large language model, only after testing shows useful administrative value, and then only to advise or route to human moderation.
 
 **Acceptance criteria.**
-1. Given a report, then it is grouped by category and duplicates are detected without a language model.
-2. Given a language model is later proposed, then it is added only after an evaluation shows it helps administrators.
-3. Given the model is down, then submissions and the Admin view still work.
+1. Given a report, then it is categorized with structured categories and routed and, if eligible, published by deterministic rules, without a language model.
+2. Given reports describing the same problem, then semantic duplicate detection groups them.
+3. Given a language model is proposed, then it is enabled only after testing shows useful administrative value, and it may only advise or route a report to human moderation.
+4. Given the model is down or disabled, then submission, routing, publication and the Admin view still work.
 
-**Dependencies:** [FR-AI-002](#fr-ai-002--ai-never-makes-the-decision), [FR-AI-008](#fr-ai-008--a-language-model-is-optional-and-added-only-on-evidence)
+**Dependencies:** [FR-AI-002](#fr-ai-002--ai-advises-and-routes-it-never-makes-sensitive-decisions), [FR-AI-008](#fr-ai-008--a-language-model-is-optional-and-added-only-on-evidence), [FR-FB-005](#fr-fb-005--community-publication-of-non-urgent-reports)
 
 **Source:** owner decision in task prompt
 
@@ -1550,7 +1573,7 @@ Verified arrival activity and clearly labelled estimates; never occupancy (DI-5)
 
 **Status:** `CONFIRMED` · **Roles:** Student, Admin
 
-**Statement.** MealLoop never claims current occupancy from entry scans: cumulative entries are not occupancy, exit detection is not assumed, and predicted and verified crowd are labelled separately.
+**Statement.** MealLoop never claims current occupancy from entry scans: a crowd forecast is not verified current occupancy, cumulative entries are not occupancy, exit detection is not assumed, and predicted and verified crowd are labelled separately.
 
 **Acceptance criteria.**
 1. Given entry scans, then no screen or API labels them as people currently inside.
@@ -1594,7 +1617,7 @@ Verified arrival activity and clearly labelled estimates; never occupancy (DI-5)
 
 ### 7.10 Credits and rewards (`FR-RWD`)
 
-Participation credits are confirmed behaviour; every value, bonus and reward needs SRM approval.
+Participation credits and a conditional accuracy bonus are confirmed; every amount, the verification method, the budget and the scheme need SRM approval or pilot validation.
 
 #### FR-RWD-001 · Definite responses earn small participation credits
 
@@ -1613,36 +1636,38 @@ Participation credits are confirmed behaviour; every value, bonus and reward nee
 
 **Note.** Credit values are not defined (FR-RWD-002).
 
-#### FR-RWD-002 · Credit values, budget and redemption need SRM approval
+#### FR-RWD-002 · Credit amounts, budget and redemption need SRM approval
 
 **Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student, Admin
 
-**Statement.** Credit values, bonus rules, the reward budget and redemption are decided with SRM before any real reward is offered.
+**Statement.** The exact participation-credit amount, the exact accuracy-bonus amount, the redemption budget, the reward values and the incentive scheme as a whole are approved by SRM before any real reward is offered.
 
 **Acceptance criteria.**
 1. Given no approval, then screens show Credits soon and sample values are labelled sample.
-2. Given approval, then values, budget and redemption rules are recorded with their source.
+2. Given approval, then the amounts, budget, reward values and redemption rules are recorded with their source.
 
 **Dependencies:** none
 
 **Source:** owner decision in task prompt; [`design/README.md`](../design/README.md) (Open decisions: points)
 
-#### FR-RWD-003 · Accuracy bonuses need reliable evidence
+#### FR-RWD-003 · Accuracy bonus requires reliably verified behaviour
 
-**Status:** `CHANGED, OWNER CONFIRMATION REQUIRED` · **Roles:** Student
+**Status:** `CONFIRMED` · **Roles:** Student
 
-**Statement.** An accuracy bonus for a skip is possible only where absence is reliably verified, and no bonus is paid on unreliable evidence.
+**Statement.** In addition to participation credits, a student may earn an accuracy bonus when a definite answer matches reliably verified behaviour; a bonus is awarded only on trustworthy evidence, and credit corrections are auditable.
 
 **Acceptance criteria.**
-1. Given a Skip, when verified evidence shows the student did not enter, then the skip counts as accurate.
-2. Given the verification was unreliable (for example a scanner failure), then no bonus decision is made.
-3. Given any bonus, then it never depends solely on an AI output.
+1. Given a student answered I'm in or Skip before the cutoff and reliably verified behaviour matches the answer, then an accuracy bonus can be awarded in addition to the participation credit.
+2. Given a Skip and no QR scan exists, then the Skip is not treated as verified absence merely because the scan is missing.
+3. Given scanning coverage is incomplete or unreliable (for example a scanner failure), then a missing entry is not proof of absence and no accuracy bonus is awarded for that meal.
+4. Given a credit or bonus is corrected, then the correction is recorded with who, when and why and cannot be edited silently.
+5. Given any bonus decision, then it never depends solely on an AI model.
 
-**Dependencies:** [FR-RWD-001](#fr-rwd-001--definite-responses-earn-small-participation-credits), [FR-ATT-007](#fr-att-007--an-offline-or-unverifiable-scan-is-never-shown-as-success)
+**Dependencies:** [FR-RWD-001](#fr-rwd-001--definite-responses-earn-small-participation-credits), [FR-RWD-002](#fr-rwd-002--credit-amounts-budget-and-redemption-need-srm-approval), [FR-RWD-006](#fr-rwd-006--scanner-failures-have-a-correction-process), [FR-ATT-007](#fr-att-007--an-offline-or-unverifiable-scan-is-never-shown-as-success)
 
-**Source:** owner decision in task prompt; [`design/README.md`](../design/README.md) (Rules: Points never depend on attendance or reports)
+**Source:** owner decision in task prompt; [`design/README.md`](../design/README.md) (Rules: Points never depend on attendance or reports (superseded by this decision))
 
-**Note.** The earlier design rule says points never depend on attendance or reports; accuracy bonuses depend on verified attendance (Conflicts C-11). Values also need SRM approval and pilot validation.
+**Note.** Owner decision (confirmed in the correction notes for this PR): conditional accuracy bonuses are a confirmed product direction. Still open and not decided here: the exact participation-credit amount, the exact accuracy-bonus amount, the reliable absence-verification method, the minimum verification coverage, the redemption budget and reward values, and institutional approval of the incentive scheme (open decisions P1, P22 and P32). Resolves Conflict C-11.
 
 #### FR-RWD-004 · Duplicate claims and redemptions are prevented
 
@@ -1678,13 +1703,13 @@ Participation credits are confirmed behaviour; every value, bonus and reward nee
 
 **Status:** `PROPOSED` · **Roles:** Student, Admin
 
-**Statement.** If a scanner failure prevented a student's entry from being recorded, a correction path exists so that credits are not lost or wrongly granted.
+**Statement.** If a scanner failure prevented a student's entry from being recorded, a correction path exists so that credits and reliability records are not lost or wrongly lowered, and every correction is auditable.
 
 **Acceptance criteria.**
 1. Given a scanner failure, then a student or staff can request a correction.
 2. Given a correction is accepted, then the entry and any credit are updated with an audit record.
 
-**Dependencies:** [FR-RWD-003](#fr-rwd-003--accuracy-bonuses-need-reliable-evidence)
+**Dependencies:** [FR-RWD-003](#fr-rwd-003--accuracy-bonus-requires-reliably-verified-behaviour), [FR-OUT-028](#fr-out-028--post-pilot-eligibility-needs-participation-and-reliability)
 
 **Source:** [`README.md`](../README.md) (Credits and incentives); [`design/README.md`](../design/README.md) (Open decisions: attendance correction window and reviewer)
 
@@ -1698,7 +1723,7 @@ Participation credits are confirmed behaviour; every value, bonus and reward nee
 1. Given no SRM approval, then no real reward is offered.
 2. Given approval, then the budget and redemption method are recorded.
 
-**Dependencies:** [FR-RWD-002](#fr-rwd-002--credit-values-budget-and-redemption-need-srm-approval)
+**Dependencies:** [FR-RWD-002](#fr-rwd-002--credit-amounts-budget-and-redemption-need-srm-approval)
 
 **Source:** owner decision in task prompt
 
@@ -1712,7 +1737,7 @@ Participation credits are confirmed behaviour; every value, bonus and reward nee
 1. Given credits are not launched, then Credits soon is shown.
 2. Given a ticket, then a live code and colour are shown and it can be used once.
 
-**Dependencies:** [FR-RWD-002](#fr-rwd-002--credit-values-budget-and-redemption-need-srm-approval)
+**Dependencies:** [FR-RWD-002](#fr-rwd-002--credit-amounts-budget-and-redemption-need-srm-approval)
 
 **Source:** [`design/audit/PROJECT_CONTEXT.md`](../design/audit/PROJECT_CONTEXT.md) (Student: Credits); [`design/audit/export_polish/README.md`](../design/audit/export_polish/README.md) (Q1_credits_coupons)
 
@@ -1915,7 +1940,7 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 1. Given no approved budget, then no real reward can be activated.
 2. Given redemptions, then each is traceable to one student and one use.
 
-**Dependencies:** [FR-RWD-002](#fr-rwd-002--credit-values-budget-and-redemption-need-srm-approval)
+**Dependencies:** [FR-RWD-002](#fr-rwd-002--credit-amounts-budget-and-redemption-need-srm-approval)
 
 **Source:** [`design/audit/PROJECT_CONTEXT.md`](../design/audit/PROJECT_CONTEXT.md) (Admin (10): Rewards AD-6c / 6c3); owner decision in task prompt
 
@@ -1969,15 +1994,17 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** Admin analytics never include the students' private calorie or spending trackers.
+**Statement.** Admin analytics never include the students' private spending tracker data.
 
 **Acceptance criteria.**
-1. Given any admin analytic or export, then no tracker data is present.
-2. Given the student app, then those trackers are not sent to the server for admin use.
+1. Given any admin analytic or export, then no spending-tracker data is present.
+2. Given the student app, then the spending tracker is not sent to the server for admin use.
 
 **Dependencies:** [FR-FB-013](#fr-fb-013--feedback-is-aggregate-and-never-shows-names-to-staff)
 
-**Source:** [`design/audit/design_intent.md`](../design/audit/design_intent.md) (RULES: analytics 18)
+**Source:** [`design/audit/design_intent.md`](../design/audit/design_intent.md) (RULES: analytics 18 (historical rule, names the calorie tracker)); [`design/reference/redesign_2026-10/README.md`](../design/reference/redesign_2026-10/README.md) (19_you, 24_spending_private)
+
+**Note.** The calorie and nutrition trackers were archived in the student redesign and are not requirements; the older rule in design_intent.md that names them is a historical record (Conflicts C-17).
 
 #### FR-ADM-018 · Admin outings overview
 
@@ -2074,7 +2101,7 @@ Menu photo upload with human-checked reading, publishing and change notices.
 
 ### 7.13 Digital outings (`FR-OUT`)
 
-Digital outings: Student request, Guardian decision, Warden decision, Signed pass, Gate exit, Gate return. Deployment depends on SRM (FR-OUT-027).
+Digital outings: Student request, Guardian decision, Warden decision, Signed pass, Gate exit, Gate return. Eligibility has a pilot mode and a post-pilot mode. Deployment depends on SRM (FR-OUT-027).
 
 #### FR-OUT-001 · Students request a digital outing
 
@@ -2087,7 +2114,7 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 2. Given a request that is too late for the rule, then it is shown as Too soon and cannot be sent.
 3. Given the request is sent, then its tracker shows the current step.
 
-**Dependencies:** [FR-OUT-024](#fr-out-024--outing-eligibility-and-the-existing-process)
+**Dependencies:** [FR-OUT-024](#fr-out-024--pilot-mode-digital-outings-for-the-authorized-pilot-cohort)
 
 **Source:** [`design/audit/design_intent.md`](../design/audit/design_intent.md) (OUTING PASS: Approved workflow); [`design/reference/redesign_2026-10/README.md`](../design/reference/redesign_2026-10/README.md) (25_outing_new_weekday, 26_outing_new_weekend)
 
@@ -2128,10 +2155,10 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 **Status:** `CONFIRMED` · **Roles:** Guardian
 
-**Statement.** The guardian opens the request (a link with a one-time code) and reviews the student, day, time, place and reason before deciding.
+**Statement.** The guardian opens the request (a link with a one-time code) and reviews the destination, date, timing and other details before deciding.
 
 **Acceptance criteria.**
-1. Given the link, then the guardian verifies a one-time code and sees the request details.
+1. Given the link, then the guardian verifies a one-time code and sees the request details (destination, date, timing and details).
 2. Given the deadline has passed, then the page says so and no answer can be given.
 3. Given the request was already answered, then the earlier answer is shown.
 
@@ -2139,11 +2166,11 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 > 1. Guardian opens the SMS link (mobile web, OTP). First time: consent page (G00).
 
-**Dependencies:** none
+**Dependencies:** [FR-OUT-026](#fr-out-026--the-guardian-contact-source-is-verified)
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (The flow 1)
 
-**Note.** The channel for the link is open (P4).
+**Note.** The channel for the link and the verification of the guardian contact are open (P20, FR-OUT-026).
 
 #### FR-OUT-005 · The guardian chooses Accept or Reject first; Reject needs no video
 
@@ -2193,6 +2220,7 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 **Acceptance criteria.**
 1. Given a matching phrase and digits, then the warden sees Live video with the Phrase, Code and Number checks.
 2. Given the phrase or digits do not match, then the guardian is told we couldn't hear that and may try again.
+3. Given a successful automatic check, then the request goes to the warden for final review; the automatic check is not warden approval.
 
 **Spec rule, quoted from [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md).**
 
@@ -2201,6 +2229,8 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 **Dependencies:** [FR-OUT-006](#fr-out-006--accept-starts-a-four-to-ten-second-live-video-with-a-phrase-and-fresh-code), [FR-OUT-008](#fr-out-008--retries-and-the-manual-review-fallback)
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (The flow 4)
+
+**Note.** Speech-recognition accuracy is not yet validated (FR-OUT-023, P21). This is the designed check, not a verified guarantee.
 
 #### FR-OUT-008 · Retries and the manual-review fallback
 
@@ -2219,6 +2249,8 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 **Dependencies:** [FR-OUT-006](#fr-out-006--accept-starts-a-four-to-ten-second-live-video-with-a-phrase-and-fresh-code)
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (The flow 5)
+
+**Note.** A designed fallback. Real operation depends on the consent and retention approval (FR-OUT-022) and the other SRM gates (FR-OUT-027).
 
 #### FR-OUT-009 · Upload failure falls back to a live photo and typed code
 
@@ -2239,25 +2271,29 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (The flow 6)
 
-#### FR-OUT-010 · Without a working camera the warden phones the guardian
+**Note.** A designed fallback. Real operation depends on the consent and retention approval (FR-OUT-022) and the other SRM gates (FR-OUT-027).
 
-**Status:** `CONFIRMED` · **Roles:** Guardian, Warden
+#### FR-OUT-010 · Phone confirmation by the warden is a designed fallback needing institutional approval
 
-**Statement.** If the guardian has no working camera they cannot approve in the app; the request goes to Escalated, the warden phones the guardian and records Confirmed by call with a note.
+**Status:** `SRM APPROVAL REQUIRED` · **Roles:** Guardian, Warden
+
+**Statement.** The design includes a fallback in which, if the guardian has no working camera, the request goes to Escalated and the warden phones the guardian and records Confirmed by call with a note; using it in real operation requires institutional approval.
 
 **Acceptance criteria.**
-1. Given no working camera, then Ask the warden to call me puts the request in Escalated as No camera.
-2. Given the warden phones and records the answer, then the evidence is Confirmed by call with a note.
+1. Given no working camera, then Ask the warden to call me puts the request in Escalated as No camera (designed behaviour).
+2. Given the warden phones and records the answer, then the evidence is Confirmed by call with the warden's note.
+3. Given institutional approval has not been given, then the call path is not enabled for real students.
+4. Given the call path is used, then the warden's note is the only evidence and no identity-verification guarantee is claimed.
 
 **Spec rule, quoted from [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md).**
 
 > 7. No working camera: the guardian cannot approve in the app. The request goes to Escalated; the warden phones the guardian and records "Confirmed by call".
 
-**Dependencies:** [FR-OUT-008](#fr-out-008--retries-and-the-manual-review-fallback)
+**Dependencies:** [FR-OUT-008](#fr-out-008--retries-and-the-manual-review-fallback), [FR-OUT-027](#fr-out-027--deploying-digital-outings-depends-on-srm)
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (The flow 7; Open items)
 
-**Note.** The guardian spec lists whether the call path is allowed as an open item (docs/OPEN_DECISIONS.md, P4).
+**Note.** Separates a designed fallback from a fallback authorized for real operation. The guardian spec lists whether the call path is allowed as an open item (open decision P30, Conflicts C-16).
 
 #### FR-OUT-011 · Text-only confirmation is never accepted
 
@@ -2277,6 +2313,8 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (The flow 8)
 
+**Note.** This is the designed rule. The evidence is not proof of identity and no identity-verification guarantee is claimed.
+
 #### FR-OUT-012 · The warden sees the evidence method and checks
 
 **Status:** `CONFIRMED` · **Roles:** Warden
@@ -2295,12 +2333,13 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 **Status:** `CONFIRMED` · **Roles:** Warden
 
-**Statement.** The warden receives guardian-approved requests with the evidence, sees the current request and relevant previous guardian responses, and approves, requests changes or rejects with a reason, for authorized hostel or block data only.
+**Statement.** The warden receives guardian-accepted requests with the evidence for final review, can examine the current request, the verification method, relevant previous guardian responses and the allowed evidence history, and approves, requests changes or rejects with a reason, for authorized hostel or block data only.
 
 **Acceptance criteria.**
-1. Given a guardian-approved request, then it appears in the queue closest deadline first with its evidence and past answers.
-2. Given Approve, then the pass is signed; given Ask, then the guardian is asked to change; given No, then a reason is required.
-3. Given another block's request, then the warden cannot see it.
+1. Given a guardian-accepted request, then it appears in the queue closest deadline first with its evidence, verification method and past answers.
+2. Given the automatic video check succeeded, then the warden still makes the final decision; the automatic check is not warden approval.
+3. Given Approve, then the pass is signed; given Ask, then the guardian is asked to change; given No, then a reason is required.
+4. Given another block's request, then the warden cannot see it.
 
 **Dependencies:** [FR-OUT-012](#fr-out-012--the-warden-sees-the-evidence-method-and-checks)
 
@@ -2455,20 +2494,24 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 **Source:** [`design/reference/guardian_2026-10/data/guardian_video_spec.md`](../design/reference/guardian_2026-10/data/guardian_video_spec.md) (Privacy and policy: Speech-to-text accuracy for Indian languages must be measured)
 
-#### FR-OUT-024 · Outing eligibility and the existing process
+#### FR-OUT-024 · Pilot mode: digital outings for the authorized pilot cohort
 
-**Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student
+**Status:** `CONFIRMED` · **Roles:** Student
 
-**Statement.** Digital outings are an optional alternative for students who meet participation and reliability requirements that SRM approves; other students keep using the existing outing process.
+**Statement.** In the initial institutionally authorized outing pilot, digital outings are available to every student in the authorized pilot cohort; participation and reliability thresholds are not enforced in this phase, and guardian approval and warden approval remain mandatory.
 
 **Acceptance criteria.**
-1. Given an ineligible student, then the existing process remains the only route.
-2. Given an eligible student, then Outings is available.
-3. Given the formula is undecided, then no student is made eligible by a made-up rule.
+1. Given a student in the authorized pilot cohort, then Outings is available regardless of participation or reliability.
+2. Given a student outside the cohort, then Outings is not available and the existing hostel outing approval procedure is the only route.
+3. Given the pilot bypass, then it is an explicit configuration limited to the authorized cohort and cannot apply to students outside it.
+4. Given any pilot outing, then guardian approval and warden approval are still required and no timeout approves it (FR-OUT-002, FR-OUT-003).
+5. Given the pilot, then live deployment still requires SRM authorization (FR-OUT-027).
 
-**Dependencies:** none
+**Dependencies:** [FR-OUT-002](#fr-out-002--the-outing-sequence-is-fixed), [FR-OUT-003](#fr-out-003--no-timeout-ever-grants-permission), [FR-OUT-027](#fr-out-027--deploying-digital-outings-depends-on-srm), [FR-OUT-028](#fr-out-028--post-pilot-eligibility-needs-participation-and-reliability)
 
 **Source:** owner decision in task prompt; [`README.md`](../README.md) (Digital outings)
+
+**Note.** Pilot mode only; post-pilot mode is FR-OUT-028 to FR-OUT-030. The eligibility engine and the pilot-bypass configuration belong to the 13 December 2026 integrated feature-completeness target; real deployment stays gated on SRM authorization.
 
 #### FR-OUT-025 · Outing deadline rules need institutional approval
 
@@ -2502,15 +2545,69 @@ Digital outings: Student request, Guardian decision, Warden decision, Signed pas
 
 **Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student, Guardian, Warden, Gate
 
-**Statement.** Digital outings are deployed only with SRM authorization, privacy consent, an approved evidence retention rule and a verified guardian contact source.
+**Statement.** Digital outings are deployed only with SRM authorization (including the authorized pilot cohort), privacy consent, an approved evidence retention rule and a verified guardian contact source.
 
 **Acceptance criteria.**
 1. Given any of the four is missing, then digital outings are not activated for students.
 2. Given all four are in place, then activation is a recorded Admin action.
 
-**Dependencies:** [FR-OUT-022](#fr-out-022--guardian-video-consent-retention-and-access), [FR-OUT-024](#fr-out-024--outing-eligibility-and-the-existing-process), [FR-OUT-026](#fr-out-026--the-guardian-contact-source-is-verified)
+**Dependencies:** [FR-OUT-022](#fr-out-022--guardian-video-consent-retention-and-access), [FR-OUT-024](#fr-out-024--pilot-mode-digital-outings-for-the-authorized-pilot-cohort), [FR-OUT-026](#fr-out-026--the-guardian-contact-source-is-verified)
 
 **Source:** owner decision in task prompt
+
+#### FR-OUT-028 · Post-pilot eligibility needs participation and reliability
+
+**Status:** `CONFIRMED` · **Roles:** Student
+
+**Statement.** After pilot validation, a student is eligible for digital outings only if both (1) participation and (2) reliability are met: participation is consistently submitting a definite I'm in or Skip before the cutoff; reliability is those definite responses matching actual meal behaviour where the verification evidence is trustworthy.
+
+**Acceptance criteria.**
+1. Given the post-pilot phase, then eligibility requires both participation and reliability; neither alone is enough.
+2. Given I'm in and Skip, then they count equally toward participation, and Not sure and No response are not definite responses for participation scoring.
+3. Given eligibility scoring, then no answer is favoured and students are never pushed to answer I'm in unnecessarily (FR-RWD-005).
+4. Given a missing QR scan, then it is not proof of absence, and a scanner failure never lowers a student's reliability.
+5. Given insufficient valid historical evidence, then no reliability threshold is enforced.
+6. Given a student who does not qualify, then the existing hostel outing approval procedure remains available.
+
+**Dependencies:** [FR-OUT-024](#fr-out-024--pilot-mode-digital-outings-for-the-authorized-pilot-cohort), [FR-MEAL-002](#fr-meal-002--a-meal-response-is-im-in-skip-not-sure-or-no-response), [FR-RWD-003](#fr-rwd-003--accuracy-bonus-requires-reliably-verified-behaviour), [FR-RWD-005](#fr-rwd-005--answers-are-never-pushed-and-corrections-are-allowed), [FR-ATT-007](#fr-att-007--an-offline-or-unverifiable-scan-is-never-shown-as-success)
+
+**Source:** owner decision in task prompt
+
+**Note.** Post-pilot mode. The eligibility engine belongs to the 13 December 2026 integrated feature-completeness target. Resolves the structure of open decision P3; the numeric items remain open (FR-OUT-029).
+
+#### FR-OUT-029 · Eligibility thresholds and evaluation need SRM approval
+
+**Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student, Admin
+
+**Statement.** Eligibility thresholds are configurable, and the evaluation period, the minimum sample size, the exceptions and the thresholds require SRM approval before enforcement; no value is set in this document.
+
+**Acceptance criteria.**
+1. Given thresholds, then they are configuration and can be changed without a release.
+2. Given no SRM-approved values, then no eligibility threshold is enforced.
+3. Given approved values, then they are recorded with their source.
+
+**Dependencies:** [FR-OUT-028](#fr-out-028--post-pilot-eligibility-needs-participation-and-reliability)
+
+**Source:** owner decision in task prompt
+
+**Note.** Open decision P33.
+
+#### FR-OUT-030 · Students can see their outing eligibility and request a correction
+
+**Status:** `CONFIRMED` · **Roles:** Student
+
+**Statement.** Students can see their eligibility status and request a correction, and students who do not qualify keep the existing hostel outing approval procedure.
+
+**Acceptance criteria.**
+1. Given a student, then their eligibility status (pilot access, eligible or not eligible) and the reason are visible to them.
+2. Given a student disputes the status, then they can request a correction, and the request and its outcome are recorded in an audit trail.
+3. Given a student who is not eligible, then the existing hostel outing approval procedure is still available.
+
+**Dependencies:** [FR-OUT-028](#fr-out-028--post-pilot-eligibility-needs-participation-and-reliability), [FR-RWD-006](#fr-rwd-006--scanner-failures-have-a-correction-process)
+
+**Source:** owner decision in task prompt
+
+**Note.** Not drawn in Figma. Who reviews a correction request is not decided.
 
 ### 7.14 AI and intelligence (`FR-AI`)
 
@@ -2530,15 +2627,17 @@ Principles and evaluation, not implementation.
 
 **Source:** owner decision in task prompt; [`docs/backend/BACKEND_PROPOSAL.md`](../docs/backend/BACKEND_PROPOSAL.md) (Reliability principles 1)
 
-#### FR-AI-002 · AI never makes the decision
+#### FR-AI-002 · AI advises and routes; it never makes sensitive decisions
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** AI never independently approves publication, approves or sends a headcount, resolves a safety incident, closes a corrective action, rejects a complaint, declares food safe, or decides an outing.
+**Statement.** An AI model never independently approves or sends a headcount, resolves a safety incident, closes a corrective action, rejects a complaint, declares food safe, decides an outing, or makes a publication decision on its own; it may only advise or route to human moderation. Automatic publication by an approved deterministic policy is allowed and is not an AI decision.
 
 **Acceptance criteria.**
-1. Given any such action, then it is taken by an authorized person and the actor is recorded.
-2. Given an AI suggestion, then it is labelled as a suggestion.
+1. Given any listed action, then it is taken by an authorized person or, for publication of eligible non-urgent reports, by the approved deterministic policy, and the actor or the policy version is recorded.
+2. Given an AI model output, then it is labelled as a suggestion and can only advise or route a report to human moderation.
+3. Given an eligible report is published by the deterministic policy (FR-FB-005), then the record names the policy, not a model, as the decision-maker.
+4. Given a safety-related report, then no AI model decides whether it is published, closed or declared safe.
 
 **Dependencies:** [FR-AI-001](#fr-ai-001--ai-is-advisory-and-core-dining-works-without-it)
 
@@ -2620,17 +2719,17 @@ Principles and evaluation, not implementation.
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** A small or large language model is added to feedback handling only if an evaluation shows administrative value, and then only as an aid.
+**Statement.** A small or large language model is added to feedback handling only if testing shows useful administrative value, and then it only advises or routes to human moderation.
 
 **Acceptance criteria.**
-1. Given a proposal, then an evaluation of administrative value is recorded first.
-2. Given the model is added, then it never takes the decisions in FR-AI-002.
+1. Given a proposal, then testing that shows useful administrative value is recorded first.
+2. Given the model is added, then it never takes the decisions in FR-AI-002 and may only advise or route to human moderation.
 
-**Dependencies:** [FR-AI-002](#fr-ai-002--ai-never-makes-the-decision)
+**Dependencies:** [FR-AI-002](#fr-ai-002--ai-advises-and-routes-it-never-makes-sensitive-decisions)
 
 **Source:** owner decision in task prompt
 
-**Note.** The root README currently describes the language model as part of the flow (Conflicts C-2).
+**Note.** The root README was aligned with this decision (Conflicts C-2).
 
 #### FR-AI-009 · Waste analysis shows association, not causation
 
@@ -2667,7 +2766,7 @@ AI is advisory. It supports predictions, feedback analysis and decisions, never 
 **Principles**
 
 - Core dining (intentions, headcount, entry, kitchen, supervisor, outings) works when AI is down ([FR-AI-001](#fr-ai-001--ai-is-advisory-and-core-dining-works-without-it)).
-- AI never independently approves publication, approves or sends a headcount, resolves a safety incident, closes a corrective action, rejects a complaint, declares food safe or decides an outing ([FR-AI-002](#fr-ai-002--ai-never-makes-the-decision)).
+- An AI model never independently approves or sends a headcount, resolves a safety incident, closes a corrective action, rejects a complaint, declares food safe, decides an outing or makes a publication decision on its own; it may only advise or route to human moderation. Automatic publication of an eligible report by an approved deterministic policy is allowed and is not an AI decision ([FR-AI-002](#fr-ai-002--ai-advises-and-routes-it-never-makes-sensitive-decisions)).
 - No prediction, accuracy figure or improvement is stated without a recorded evaluation ([FR-AI-010](#fr-ai-010--no-accuracy-claim-without-a-recorded-evaluation)). An AI-related screen in the design does not mean the AI exists.
 
 **Evaluation discipline (forecasting)**
@@ -2678,7 +2777,7 @@ AI is advisory. It supports predictions, feedback analysis and decisions, never 
 4. Treat attendance prediction and arrival-time prediction as separate tasks ([FR-AI-006](#fr-ai-006--attendance-prediction-and-arrival-time-prediction-are-separate)).
 5. Do not call an unvalidated model production-ready.
 
-**Where AI may help** (all optional, all advisory): demand forecasting; arrival-pattern estimates for crowd guidance; feedback grouping and duplicate detection (rules and semantic similarity first; a language model only if evaluation shows administrative value, [FR-AI-008](#fr-ai-008--a-language-model-is-optional-and-added-only-on-evidence)); waste and shortage analysis ([FR-AI-009](#fr-ai-009--waste-analysis-shows-association-not-causation)); menu extraction with human verification ([FR-MENU-001](#fr-menu-001--menu-upload-reads-a-photo-and-flags-uncertain-words)).
+**Where AI may help** (all optional, all advisory): demand forecasting; arrival-pattern estimates for crowd guidance; feedback grouping and duplicate detection (rules and semantic similarity first; a language model only if testing shows useful administrative value, [FR-AI-008](#fr-ai-008--a-language-model-is-optional-and-added-only-on-evidence)); waste and shortage analysis ([FR-AI-009](#fr-ai-009--waste-analysis-shows-association-not-causation)); menu extraction with human verification ([FR-MENU-001](#fr-menu-001--menu-upload-reads-a-photo-and-flags-uncertain-words)).
 
 ## 9. Privacy, consent and security requirements
 
@@ -2687,11 +2786,13 @@ These are requirement **inputs** to be detailed later (privacy and security task
 | Topic | Required in principle | Related requirements | Status |
 |---|---|---|---|
 | Student identity | Students sign in with their SRM identity; staff see masked student IDs only | FR-STU-001, FR-ATT-003 | SRM APPROVAL REQUIRED |
-| Staff access | One shared password per role, limited tries, then locked; role and mess checked on every request | FR-ATT-013, FR-ADM-015 | CONFIRMED (behaviour); storage and reset design to follow |
+| Staff access, prototype | A shared four-digit password per staff role (three tries, then locked) is approved demo behaviour for the Figma prototype; it is not an approved production security architecture | FR-ATT-013 | CONFIRMED (demo behaviour) |
+| Staff access, production | Verified staff identity; an assigned role with mess or block scope; actions attributable to the actor; secure sessions with revocation; auditable approvals, changes, scanning overrides and SOS actions. The mechanism is decided in the NFR, architecture and security reviews | FR-ATT-015, FR-ADM-015, FR-ADM-016 | PROPOSED |
 | Guardian video | Recorded only with SRM approval and written consent; face and voice are sensitive; access limited to the warden role and logged | FR-OUT-022 | SRM APPROVAL REQUIRED |
 | Evidence retention | A written retention period for guardian evidence (draft in the guardian spec); a retention rule for feedback, skipping reasons and report photos | FR-OUT-022, FR-FB-014 | SRM APPROVAL REQUIRED |
-| Student-private data | Spending and calorie trackers are private and never feed admin data | FR-FB-013, FR-ADM-017 | CONFIRMED |
+| Student-private data | The private spending tracker never feeds admin data (the calorie and nutrition trackers were archived in the student redesign and are not requirements) | FR-FB-013, FR-ADM-017 | CONFIRMED |
 | Feedback privacy | Feedback is aggregate; no names in Community or Admin views | FR-FB-006, FR-FB-013 | CONFIRMED |
+| Community publication checks | Eligible non-urgent reports are published automatically only after the configured privacy, safety, abuse and spam checks; flagged or uncertain reports are held for Admin moderation; Admin can hide published content; no student identity is exposed publicly. The exact check rules are details for the API and security design | FR-FB-005, FR-FB-006 | CONFIRMED (policy); rule details to follow |
 | Location and photos | SOS proof uses a live photo with place and time; handling and retention of photos is undecided | FR-FB-003 | SRM APPROVAL REQUIRED |
 | Audit | Key actions record who, when and why and cannot be edited | FR-ADM-016, FR-HC-004, FR-KIT-012 | CONFIRMED |
 | Demo data | Seeded data is labelled, kept apart from pilot data, never presented as measured results, and never included in production analytics | all | CONFIRMED |
@@ -2725,11 +2826,12 @@ Topics only. **No numbers are given here;** they are set in the non-functional r
 | D1 | SRM authorization of the pilot at Meenakshi Girls' Mess | Phase 1 |
 | D2 | SRM approval of privacy, consent and retention for guardian evidence | Digital outings |
 | D3 | A verified guardian contact source | Digital outings |
-| D4 | SRM approval of credit values, reward budget and redemption | Credits and rewards |
+| D4 | SRM approval of the participation-credit and accuracy-bonus amounts, the reward budget, reward values and redemption, and of the incentive scheme | Credits and rewards |
 | D5 | Vendor willingness to receive and reply to a headcount by an agreed channel | Headcount |
 | D6 | Staff and institutional approval to measure unserved food for a baseline | Baseline and success metrics |
 | D7 | A working backend and database | Everything beyond the design demo |
-| D8 | A verified iOS foundation build ([FOUNDATION_REPORT.md](FOUNDATION_REPORT.md)) | Implementation |
+| D8 | Recorded evidence of the foundation build and its unit-test result (the owner reports a build and launch on the owner's Mac; `docs/FOUNDATION_VERIFICATION.md` does not exist yet) | Implementation |
+| D9 | SRM authorization of the outing pilot cohort, and later of the eligibility thresholds, evaluation period, minimum sample size and exceptions | Digital outings |
 
 ### Assumptions (not facts)
 
@@ -2745,15 +2847,18 @@ Topics only. **No numbers are given here;** they are set in the non-functional r
 
 | # | Risk | Mitigation direction |
 |---|---|---|
-| R1 | The 10 November 2026 target (every approved, active screen in SwiftUI) is far larger than the team can deliver at a normal quality bar (see the effort note in [`SCREEN_INVENTORY.md`](SCREEN_INVENTORY.md)). | The owner sets the scope; proposed priority P0 first. |
-| R2 | The foundation has never been built, so compile errors may be waiting. | Verify on a Mac first. |
+| R1 | The 10 November 2026 target (every approved, active screen in SwiftUI) is large against the time left: [`SCREEN_INVENTORY.md`](SCREEN_INVENTORY.md) counts 420 active screens and states (149 distinct base screens), 20 rows needing review and 89 archived rows, and 12 weekdays from 23 October to 10 November, which its effort note puts at 8.8 states (3.1 base screens) per person per working day with four people, before review and fixes. The milestone is not weakened. | Record the risk; the owner sets the scope; proposed priority P0 first. |
+| R2 | The foundation's unit-test result is not recorded and no build output is in the repository (the owner reports a build and launch on the owner's Mac). | Record the result in `docs/FOUNDATION_VERIFICATION.md`. |
 | R3 | SRM approvals (outings, guardian video, rewards) may not arrive in time. | Keep outings and rewards behind approval; do not block dining. |
 | R4 | Forecast signals may add little value. | Baseline first; validate each signal; do not assume. |
 | R5 | A missing or late waste record weakens the baseline and the results. | Make recording simple; show Not recorded honestly; never treat missing as zero. |
 | R6 | Older documents still describe superseded behaviour and could be built by mistake. | The Conflicts table and Superseded notes in the old documents. |
 | R7 | Speech recognition for Indian languages may be too weak to auto-check guardian videos. | Measure first; fall back to warden review. |
-| R8 | Community publication behaviour is unresolved (FR-FB-005). | Owner decision before building. |
+| R8 | Automatic Community publication could publish something harmful, identifying or abusive if the configured checks are wrong. | Configured checks, a held-for-moderation queue, Admin hide, the urgent bypass (FR-FB-003) and no identity exposure; evaluate in the pilot. |
 | R9 | Staff adoption: door, desk and kitchen staff add steps to a busy service. | Keep steps minimal; test on the pilot floor. |
+| R10 | Participation credits for Skip and I'm in could be gamed by answering carelessly. | The accuracy bonus and the verification rules are the mitigation; evaluate behaviour in the pilot. |
+| R11 | The outing pilot bypass could be misconfigured and reach students outside the authorized cohort. | An explicit cohort-limited configuration with an audit trail (FR-OUT-024). |
+| R12 | A missing QR scan could be read as absence and unfairly lower credits or outing reliability. | A missing scan is not proof of absence (FR-RWD-003, FR-OUT-028); no threshold is enforced without enough valid evidence. |
 
 ## 12. Success metrics and pilot evaluation
 
@@ -2781,7 +2886,7 @@ These are targets, not commitments.
 |---|---|
 | 10 November 2026 | Every approved, active Figma screen represented in functional SwiftUI flows, with coherent navigation and demo data isolated from production |
 | 11–13 November 2026 | External Review 3 |
-| 13 December 2026 | Target for integrated iOS and backend feature completeness |
+| 13 December 2026 | Target for integrated iOS and backend feature completeness, including the outing eligibility engine and the pilot-bypass configuration (real deployment stays gated on SRM authorization) |
 | January 2027 | Stabilization and review |
 | 27–29 January 2027 | External Review 4 |
 | February–March 2027 | Pilot, where institutionally authorized |
@@ -2795,13 +2900,14 @@ These are targets, not commitments.
 
 The full list, each with options and a suggested default, is in [`OPEN_DECISIONS.md`](OPEN_DECISIONS.md), which also has a **Resolved** section and the **Conflicts** table. The decisions that most affect this PRD:
 
-- Community publication: automatic after checks, or decided by Admin ([FR-FB-005](#fr-fb-005--community-publication-of-non-urgent-reports), CHANGED).
-- Official SRM outing policy and escalation authority; outing eligibility; the verified guardian contact source.
-- Guardian video retention, consent and privacy approval; speech-recognition accuracy and the verification fallback policy.
+- **Resolved since version 0.1 by owner decisions:** Community publication (automatic after configured checks), the credits and accuracy-bonus direction, and the structure of outing eligibility (pilot mode, then participation and reliability).
+- Official SRM outing policy and escalation authority; the authorized outing pilot cohort; the post-pilot eligibility thresholds, evaluation period, minimum sample size and exceptions; the verified guardian contact source.
+- Guardian video retention, consent and privacy approval; speech-recognition accuracy; institutional approval of the warden phone-confirmation fallback.
 - Student authentication source.
 - Scanner offline behaviour (queue or never record).
 - Vendor communication channel (WhatsApp, call or SMS).
-- Reward budget, credit values and redemption; the accuracy-bonus rule.
+- The exact participation-credit and accuracy-bonus amounts, the redemption budget and reward values, and institutional approval of the incentive scheme; the reliable absence-verification method and the minimum verification coverage.
+- The production staff authentication and authorization mechanism (technical design).
 - Pilot data availability and success thresholds; the Community support threshold.
 - Whether students answer for Snacks; the meaning of the yellow menu highlight; how long a missed meal's waste can still be recorded.
 
@@ -2835,6 +2941,11 @@ The full list, each with options and a suggested default, is in [`OPEN_DECISIONS
 | Improvement verified | Evidence from follow-up that the problem actually improved |
 | Sure / Probably / Can't tell | The evidence tags on a result reason; never percentages |
 | Evidence method | How a guardian's approval was captured: Live video (auto-checked), Please watch, Photo and text, Confirmed by call |
+| Deterministic publication policy | A fixed, approved set of rules that publishes an eligible report automatically; it is not an AI decision |
+| Participation | Consistently submitting a definite I'm in or Skip before the cutoff |
+| Reliability | Definite responses that match actual meal behaviour where the verification evidence is trustworthy |
+| Accuracy bonus | An additional credit when a definite answer matches reliably verified behaviour |
+| Pilot cohort | The students the institution authorizes for the outing pilot |
 | Outing pass | A signed, time-bound pass issued after both approvals |
 | Idempotency key | A unique key sent with a write so a repeat returns the original result |
 | Demo data | Seeded, labelled sample data that never mixes with real data |
