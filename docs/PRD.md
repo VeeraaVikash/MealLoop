@@ -513,7 +513,7 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 
 **Source:** [`design/reference/door_scanner_2026-10/data/door_scanner_spec.md`](../design/reference/door_scanner_2026-10/data/door_scanner_spec.md) (Scan outcomes 5; Open items 2); owner decision in task prompt
 
-**Note.** A future offline queue is an open decision (P5); until decided the rule is never record.
+**Note.** For the pilot, an offline scan is never recorded and never shown as success. A future offline queue is deferred and is not part of the pilot. *Superseded by NFR-REL-005 in [`NFR.md`](NFR.md) (the owner is asked to confirm); resolves the former open decision P5 (now R21).*
 
 #### FR-ATT-008 · Scanning is open only while the meal is in service
 
@@ -735,7 +735,7 @@ The special-meal pass is separate from hostel outing passes. The desk does not s
 
 **Source:** [`design/reference/pass_desk_2026-10/data/pass_desk_spec.md`](../design/reference/pass_desk_2026-10/data/pass_desk_spec.md) (Outcomes 5)
 
-**Note.** Offline policy is open decision P5.
+**Note.** Pilot rule: an offline or unverifiable pass check records nothing and is never shown as success. *Superseded by NFR-REL-005 in [`NFR.md`](NFR.md) (the owner is asked to confirm); resolves the former open decision P5 (now R21).*
 
 #### FR-PASS-007 · Pass reissue goes through the admin pass-exception flow
 
@@ -2800,12 +2800,12 @@ These are requirement **inputs** to be detailed later (privacy and security task
 
 ## 10. Non-functional requirement inputs
 
-Topics only. **No numbers are given here;** they are set in the non-functional requirements task. Each row is a question that task must answer.
+Topics only. **No numbers are given here;** they are set in the non-functional requirements task. Each row is a question that task must answer. The draft non-functional requirements are in [`NFR.md`](NFR.md) (draft, owner review pending).
 
 | Topic | What the NFR task must quantify or define | Related requirements |
 |---|---|---|
 | Availability | How available the entry, meal-state and kitchen paths must be during a meal service, and how outages are communicated | FR-ATT-002, FR-SUP-001 |
-| Offline behaviour | The offline policy for scanning and pass checks (the current rule is never record; a queue is undecided); what is cached for reading | FR-ATT-007, FR-PASS-006 |
+| Offline behaviour | The pilot rule for scanning and pass checks is never record (NFR-REL-005, owner to confirm); a later offline queue is deferred; what is cached for reading | FR-ATT-007, FR-PASS-006 |
 | Performance | Responsiveness of scan-to-confirmation, live counts and screen loads; freshness of live counts before they are marked stale | FR-ATT-002, FR-KIT-002 |
 | Data integrity | Idempotency and duplicate rejection guarantees; consistency of the shared meal state across roles | FR-ATT-005, FR-SUP-001 |
 | Privacy | Handling of masked IDs, guardian video, report photos and location | section 9 |
@@ -2904,7 +2904,7 @@ The full list, each with options and a suggested default, is in [`OPEN_DECISIONS
 - Official SRM outing policy and escalation authority; the authorized outing pilot cohort; the post-pilot eligibility thresholds, evaluation period, minimum sample size and exceptions; the verified guardian contact source.
 - Guardian video retention, consent and privacy approval; speech-recognition accuracy; institutional approval of the warden phone-confirmation fallback.
 - Student authentication source.
-- Scanner offline behaviour (queue or never record).
+- Scanner offline behaviour: resolved for the pilot as never record (NFR-REL-005, owner to confirm); a future offline queue is deferred.
 - Vendor communication channel (WhatsApp, call or SMS).
 - The exact participation-credit and accuracy-bonus amounts, the redemption budget and reward values, and institutional approval of the incentive scheme; the reliable absence-verification method and the minimum verification coverage.
 - The production staff authentication and authorization mechanism (technical design).
