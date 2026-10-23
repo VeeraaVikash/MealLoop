@@ -4,7 +4,9 @@ Branch `feature/swiftui-foundation`, created from `claude/mealloop-ios-design-e9
 
 ## The most important limitation
 
-**Nothing in `ios/` has been compiled, tested or run.** This work was done in a Linux container with no macOS, no Xcode and no simulator. The Swift toolchain download (`download.swift.org`) is blocked by the environment's network policy, and apt has no Swift package. No build is claimed anywhere.
+**Update (owner-reported):** the owner reports that the foundation was built and launched on their Mac. The unit-test result is not yet recorded, and no build log is stored in this repository, so nothing beyond build and launch is claimed.
+
+**Original statement at the time of writing:** nothing in `ios/` had been compiled, tested or run. This work was done in a Linux container with no macOS, no Xcode and no simulator. The Swift toolchain download (`download.swift.org`) is blocked by the environment's network policy, and apt has no Swift package. No build is claimed anywhere.
 
 Before anyone builds features on this foundation, someone with a Mac must:
 

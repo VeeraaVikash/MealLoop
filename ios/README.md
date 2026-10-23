@@ -2,7 +2,7 @@
 
 SwiftUI app, minimum iOS 17, one app target (`MealLoop`) and one unit-test target (`MealLoopTests`), shared scheme `MealLoop`. Structure and rules: [`docs/REPOSITORY_STRUCTURE.md`](../docs/REPOSITORY_STRUCTURE.md).
 
-> **Not yet built.** This project was written in an environment without macOS or Xcode. No `xcodebuild` command below has been run yet, and no build or test result exists. The first person to build it should record the real output in `docs/FOUNDATION_REPORT.md` and fix any compile errors before starting feature work.
+> **Build status (owner-reported).** The project was written in an environment without macOS or Xcode. The owner reports that it was built and launched on their Mac. The unit-test result is not yet recorded, and no build log is stored in this repository. Record the real `xcodebuild` and test output in `docs/FOUNDATION_REPORT.md`.
 
 ## Requirements
 

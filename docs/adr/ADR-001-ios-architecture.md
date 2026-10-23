@@ -35,4 +35,4 @@ Four developers, most of them learning SwiftUI, must build many screens in paral
 - Every new screen follows the same pattern as Kitchen Home: a Screen wrapper builds the view model from `AppEnvironment`, the view model loads through repositories into `LoadState`, and the view renders `AsyncContentView`.
 - Release builds contain no demo code. Until the backend exists, a Release build shows "Not implemented" states instead of data.
 - Folder boundaries are a convention, not compiler-enforced. Code review and `docs/REPOSITORY_STRUCTURE.md` enforce them until packages are extracted.
-- **Not yet verified:** at the time of writing no Xcode build has been run on this project (no macOS in the authoring environment). See `docs/FOUNDATION_REPORT.md`.
+- **Verification status:** at the time of writing no Xcode build had been run (no macOS in the authoring environment). The owner has since reported a successful build and launch on their Mac; the unit-test result is not yet recorded. See `docs/FOUNDATION_REPORT.md`.
