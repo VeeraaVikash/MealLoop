@@ -32,7 +32,7 @@ Rules:
 
 1. **Core dining works with AI down.** No dining endpoint calls the intelligence service. Forecasts start as a statistical baseline computed inside `dining-core`; any ML model is optional and compared against that baseline.
 2. **Scans are idempotent.** `POST /meals/{mealId}/entries` requires an `Idempotency-Key`. A repeated key returns the original response. A second entry for the same student and meal returns `409 already_recorded`, and the count does not change. A unique constraint on (meal, student) backs this in the database.
-3. **Offline scans are never shown as recorded.** If the server cannot verify and save an entry, the request fails and the app shows "This entry is NOT recorded". Queueing scans offline is an open decision; the draft is "never record".
+3. **Offline scans are never shown as recorded.** If the server cannot verify and save an entry, the request fails and the app shows "This entry is NOT recorded". Queueing scans offline is deferred and not part of the pilot. *Superseded by NFR-REL-005 in [`../NFR.md`](../NFR.md) (the owner is asked to confirm): the pilot rule is never record.*
 4. **Notifications retry from durable records.** Every notification starts as an outbox row in the same transaction as the change, with retries and a visible failed state. "Seen" is stored only when the receiver confirmed it.
 5. **Missing data stays missing.** Counts are `available` or `unavailable`; leftovers are `entered`, `noneLeft`, `notMade` or `notEntered`. No column defaults a measurement to 0.
 6. **Audit trails.** Headcount adjustments, meal start and close, shortage resolution and SOS closing store who, when and why.

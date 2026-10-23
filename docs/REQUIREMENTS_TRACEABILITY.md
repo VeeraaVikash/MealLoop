@@ -1,6 +1,6 @@
 # Requirements traceability matrix
 
-Companion to [`PRD.md`](PRD.md) v0.2 (draft for team review, not owner-approved). One row per requirement. Dated 2026-10-23.
+Companion to [`PRD.md`](PRD.md) v0.2 (draft for team review, not owner-approved). One row per requirement. Dated 2026-10-23. Non-functional requirements are traced in [`NFR_TRACEABILITY.md`](NFR_TRACEABILITY.md).
 
 **How to read it**
 
