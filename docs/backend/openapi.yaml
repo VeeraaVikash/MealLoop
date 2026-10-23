@@ -1,0 +1,901 @@
+openapi: 3.0.3
+info:
+  title: MealLoop API (first slice)
+  version: 0.1.0-draft
+  description: |
+    PROPOSAL. Initial REST contracts for the first vertical slice only (student answers a meal, headcount,
+    door entry, meal state, shortage, waste report). Nothing here is implemented. See docs/backend/BACKEND_PROPOSAL.md.
+
+    Rules that every implementation must keep:
+    - Missing values are explicit (`notEntered`, `unavailable`); a missing value is never returned as 0.
+    - Writes that must not apply twice (entries, shortages) require an `Idempotency-Key` header. Repeating a request
+      with the same key returns the original response.
+    - A student is never counted twice for one meal; a second entry returns `409` with `already_recorded`.
+    - An entry that could not be verified and saved is an error, never a success.
+    - Core dining endpoints never call the intelligence service.
+
+    Versioning: the major version is in the path (`/v1`). Additive changes keep the version; breaking changes
+    move to `/v2`, and `/v1` stays available while the iOS app version that uses it is supported.
+servers:
+  - url: https://api.example.invalid/v1
+    description: Placeholder. No server exists yet.
+security:
+  - bearerAuth: []
+tags:
+  - name: Staff sessions
+  - name: Meals
+  - name: Intentions
+  - name: Headcount
+  - name: Entries
+  - name: Shortages
+  - name: Waste reports
+paths:
+  /staff/sessions:
+    post:
+      tags: [Staff sessions]
+      operationId: createStaffSession
+      summary: Exchange the shared role password for a staff session token
+      description: One password per role and mess, 4 digits, 3 tries per device, then locked until the Supervisor resets it.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffSessionRequest'
+      responses:
+        '201':
+          description: Password accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffSession'
+        '401':
+          description: Wrong password.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/WrongPasswordProblem'
+        '423':
+          description: Locked after 3 wrong tries.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+
+  /messes/{messId}/meals:
+    get:
+      tags: [Meals]
+      operationId: listMeals
+      summary: List the meals of a mess on a service date, with menu and state
+      description: 'Roles: any signed-in role of this mess.'
+      parameters:
+        - $ref: '#/components/parameters/MessId'
+        - name: date
+          in: query
+          required: true
+          description: Service date in the mess's time zone.
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Meals for the date (Breakfast, Lunch, Snacks, Dinner as published).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /meals/{mealId}/intentions/me:
+    put:
+      tags: [Intentions]
+      operationId: setMyIntention
+      summary: Set or update the signed-in student's answer for a meal
+      description: |
+        'Roles: student.' Allowed until the cutoff (two hours before the meal). The entry QR never depends on this.
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntentionRequest'
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentionResponse'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: The cutoff has passed (`cutoff_passed`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /meals/{mealId}/headcount:
+    get:
+      tags: [Headcount]
+      operationId: getHeadcount
+      summary: Forecast, headcount sent to the vendor, and the vendor reply
+      description: 'Roles: admin, supervisor, kitchenStaff (forecast only before the meal).'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Headcount.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Headcount'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /meals/{mealId}/state:
+    get:
+      tags: [Meals]
+      operationId: getMealState
+      summary: The meal's lifecycle state (drives every staff role in the mess)
+      description: 'Roles: any staff role of this mess, admin.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Current state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /meals/{mealId}/start:
+    post:
+      tags: [Meals]
+      operationId: startMeal
+      summary: Start the meal (Door Scanner and Pass Desk open)
+      description: 'Roles: supervisor.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Started.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Not in the `notStarted` state (`invalid_state`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /meals/{mealId}/close:
+    post:
+      tags: [Meals]
+      operationId: closeMeal
+      summary: Close the meal (scanning and pass checks stop)
+      description: 'Roles: supervisor. Closing does not resolve shortages or complete a waste report.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Closed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Not in the `inService` state (`invalid_state`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /meals/{mealId}/entries:
+    post:
+      tags: [Entries]
+      operationId: recordEntry
+      summary: Record a verified entry at the door (QR scan or last 4 digits)
+      description: |
+        'Roles: doorScanner.' Only while the meal is in service. There is no decline step: a student with no answer is
+        recorded and also listed under "Entered without voting". If the server cannot verify and save the entry it
+        returns an error and nothing is recorded; the app never shows success for it.
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntryRequest'
+      responses:
+        '201':
+          description: Entry recorded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntryRecorded'
+        '409':
+          description: Already recorded for this meal (`already_recorded`), or the meal is not in service (`invalid_state`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/AlreadyRecordedProblem'
+        '422':
+          description: The QR is not a MealLoop entry code (`qr_not_recognised`) or is for another meal (`wrong_meal`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meals/{mealId}/entries/count:
+    get:
+      tags: [Entries]
+      operationId: getEntryCount
+      summary: Students entered so far (live) or final entries after the meal closed
+      description: 'Roles: kitchenStaff, supervisor, doorScanner, admin. Never meals served.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - name: kind
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [live, final]
+      responses:
+        '200':
+          description: The count, or `unavailable` (never 0 for missing).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountReading'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /meals/{mealId}/shortages:
+    post:
+      tags: [Shortages]
+      operationId: reportShortage
+      summary: Report food running short (to the Supervisor of the mess)
+      description: 'Roles: kitchenStaff, passDesk.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShortageReport'
+      responses:
+        '201':
+          description: Reported. Delivery to the Supervisor is retried from a durable record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shortage'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meals/{mealId}/waste-report:
+    get:
+      tags: [Waste reports]
+      operationId: getWasteReport
+      summary: The meal's waste report (or an empty one with every field notEntered)
+      description: 'Roles: kitchenStaff; supervisor and admin read only.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Waste report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WasteReport'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Waste reports]
+      operationId: saveWasteReport
+      summary: Save a draft, or record the report (after the meal has ended only)
+      description: |
+        'Roles: kitchenStaff.' `action: record` is rejected while any field is `notEntered` or invalid.
+        A recorded report can be edited for 6 hours after it was saved; there is no approval step.
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveWasteReportRequest'
+      responses:
+        '200':
+          description: Saved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WasteReport'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: The meal has not ended (`invalid_state`) or editing closed after 6 hours (`edit_window_closed`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Role-based. The token carries the role (student, admin, doorScanner, passDesk, kitchenStaff, supervisor, guardian,
+        warden, gate) and the mess it belongs to. Every endpoint lists the roles it accepts; the server checks both role
+        and mess. Student sign-in (SRM) is an open decision and not part of this slice.
+
+  parameters:
+    MessId:
+      name: messId
+      in: path
+      required: true
+      schema:
+        type: string
+    MealId:
+      name: mealId
+      in: path
+      required: true
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: A client-generated unique key (UUID). Repeating it returns the original response.
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+
+  responses:
+    ValidationFailed:
+      description: The request is invalid (`validation_failed`); `errors` lists each field.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Unauthorized:
+      description: Missing or expired token.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Forbidden:
+      description: The role or mess is not allowed to do this.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFound:
+      description: Not found.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+  schemas:
+    Problem:
+      description: RFC 9457 problem details with a stable machine-readable `code`.
+      type: object
+      required: [type, title, status, code]
+      properties:
+        type:
+          type: string
+          format: uri-reference
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        code:
+          type: string
+          example: already_recorded
+        errors:
+          type: array
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+    WrongPasswordProblem:
+      allOf:
+        - $ref: '#/components/schemas/Problem'
+        - type: object
+          required: [triesLeft]
+          properties:
+            triesLeft:
+              type: integer
+              minimum: 0
+              maximum: 2
+
+    AlreadyRecordedProblem:
+      allOf:
+        - $ref: '#/components/schemas/Problem'
+        - type: object
+          properties:
+            firstRecordedAt:
+              type: string
+              format: date-time
+            count:
+              type: integer
+              minimum: 0
+              description: The live count, unchanged by this request.
+
+    Role:
+      type: string
+      enum: [student, admin, doorScanner, passDesk, kitchenStaff, supervisor, guardian, warden, gate]
+
+    StaffSessionRequest:
+      type: object
+      required: [messId, role, password, deviceId]
+      properties:
+        messId:
+          type: string
+        role:
+          type: string
+          enum: [doorScanner, passDesk, kitchenStaff, supervisor]
+        password:
+          type: string
+          pattern: '^[0-9]{4}$'
+        deviceId:
+          type: string
+
+    StaffSession:
+      type: object
+      required: [token, role, messId, staffInitials]
+      properties:
+        token:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        messId:
+          type: string
+        staffInitials:
+          type: string
+
+    MealSlot:
+      type: string
+      enum: [breakfast, lunch, snacks, dinner]
+
+    MealState:
+      type: string
+      enum: [notStarted, inService, closed]
+
+    WasteUnit:
+      type: string
+      enum: [kg, L, pieces]
+
+    Dish:
+      type: object
+      required: [id, name, isHighlight, diet, wasteUnit]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isHighlight:
+          type: boolean
+        diet:
+          type: string
+          enum: [veg, nonVeg]
+        wasteUnit:
+          $ref: '#/components/schemas/WasteUnit'
+
+    Meal:
+      type: object
+      required: [id, messId, slot, startsAt, endsAt, intentionCutoff, menu, state]
+      properties:
+        id:
+          type: string
+        messId:
+          type: string
+        slot:
+          $ref: '#/components/schemas/MealSlot'
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        intentionCutoff:
+          type: string
+          format: date-time
+          description: Two hours before `startsAt`.
+        menu:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+        state:
+          $ref: '#/components/schemas/MealState'
+
+    MealStatus:
+      type: object
+      required: [mealId, state]
+      properties:
+        mealId:
+          type: string
+        state:
+          $ref: '#/components/schemas/MealState'
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+        closedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    MealIntention:
+      type: string
+      enum: [in, skip, notSure]
+
+    IntentionRequest:
+      type: object
+      required: [intention]
+      properties:
+        intention:
+          $ref: '#/components/schemas/MealIntention'
+        reason:
+          type: string
+          maxLength: 200
+          nullable: true
+          description: Optional reason for skipping. How reasons are used and kept is an open decision.
+
+    IntentionResponse:
+      type: object
+      required: [mealId, response]
+      properties:
+        mealId:
+          type: string
+        response:
+          type: string
+          enum: [answered, noResponse]
+          description: '`noResponse` is its own group and never a skip.'
+        intention:
+          allOf:
+            - $ref: '#/components/schemas/MealIntention'
+          nullable: true
+        answeredAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    Forecast:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ready, notReady]
+        diners:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Present only when `status` is `ready`.
+        setAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    HeadcountAdjustment:
+      type: object
+      required: [from, to, reason, adjustedBy, adjustedAt]
+      properties:
+        from:
+          type: integer
+        to:
+          type: integer
+        reason:
+          type: string
+          minLength: 1
+        adjustedBy:
+          $ref: '#/components/schemas/Role'
+        adjustedAt:
+          type: string
+          format: date-time
+
+    Headcount:
+      type: object
+      required: [mealId, forecast, vendorReply]
+      description: The vendor receives a headcount only, never dish quantities.
+      properties:
+        mealId:
+          type: string
+        forecast:
+          $ref: '#/components/schemas/Forecast'
+        sent:
+          type: object
+          nullable: true
+          required: [count, sentAt, adjustments]
+          properties:
+            count:
+              type: integer
+              minimum: 0
+            sentAt:
+              type: string
+              format: date-time
+            adjustments:
+              type: array
+              items:
+                $ref: '#/components/schemas/HeadcountAdjustment'
+        vendorReply:
+          type: object
+          required: [status]
+          properties:
+            status:
+              type: string
+              enum: [notSent, waiting, replied, missing]
+            repliedAt:
+              type: string
+              format: date-time
+              nullable: true
+            note:
+              type: string
+              nullable: true
+
+    EntryRequest:
+      type: object
+      required: [method]
+      properties:
+        method:
+          type: string
+          enum: [qrScan, typedLastFour]
+        qrPayload:
+          type: string
+          description: Required when `method` is `qrScan`.
+        studentId:
+          type: string
+          description: Required when `method` is `typedLastFour` (chosen from the last-4-digits matches).
+
+    EntryRecorded:
+      type: object
+      required: [entryId, mealId, studentMaskedId, recordedAt, hadMealResponse, count]
+      properties:
+        entryId:
+          type: string
+        mealId:
+          type: string
+        studentMaskedId:
+          type: string
+          example: '••0238'
+        recordedAt:
+          type: string
+          format: date-time
+        hadMealResponse:
+          type: boolean
+          description: False adds the student to "Entered without voting".
+        count:
+          type: integer
+          minimum: 0
+
+    CountReading:
+      type: object
+      required: [status, kind]
+      properties:
+        status:
+          type: string
+          enum: [available, unavailable]
+        kind:
+          type: string
+          enum: [live, final]
+        count:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Present only when `status` is `available`. Never 0 for missing.
+        asOf:
+          type: string
+          format: date-time
+          nullable: true
+
+    ShortageLevel:
+      type: string
+      enum: [gettingLow, almostOut, out]
+
+    ShortageReport:
+      type: object
+      required: [dishName, level, reportedBy]
+      properties:
+        dishName:
+          type: string
+          minLength: 1
+        level:
+          $ref: '#/components/schemas/ShortageLevel'
+        note:
+          type: string
+          maxLength: 280
+          nullable: true
+        reportedBy:
+          type: string
+          enum: [kitchenStaff, passDesk]
+
+    Shortage:
+      type: object
+      required: [id, mealId, dishName, level, reportedAt, reportedBy, delivery, status]
+      properties:
+        id:
+          type: string
+        mealId:
+          type: string
+        dishName:
+          type: string
+        level:
+          $ref: '#/components/schemas/ShortageLevel'
+        note:
+          type: string
+          nullable: true
+        reportedAt:
+          type: string
+          format: date-time
+        reportedBy:
+          $ref: '#/components/schemas/Role'
+        delivery:
+          type: object
+          required: [status]
+          properties:
+            status:
+              type: string
+              enum: [sent, seen]
+              description: '`seen` only when the Supervisor confirmed it.'
+            at:
+              type: string
+              format: date-time
+        status:
+          type: string
+          enum: [active, resolved]
+
+    LeftoverMeasurement:
+      type: object
+      required: [state]
+      description: Missing data is `notEntered`, never 0. A confirmed zero is `noneLeft`.
+      properties:
+        state:
+          type: string
+          enum: [entered, noneLeft, notMade, notEntered]
+        value:
+          type: number
+          exclusiveMinimum: true
+          minimum: 0
+          nullable: true
+          description: Required, and greater than 0, only when `state` is `entered`.
+
+    DishLeftover:
+      type: object
+      required: [dishId, dishName, unit, measurement]
+      properties:
+        dishId:
+          type: string
+        dishName:
+          type: string
+        unit:
+          $ref: '#/components/schemas/WasteUnit'
+        measurement:
+          $ref: '#/components/schemas/LeftoverMeasurement'
+
+    PlateWaste:
+      type: object
+      required: [state]
+      description: One total for the whole meal, in kilograms. Never per dish.
+      properties:
+        state:
+          type: string
+          enum: [entered, notEntered]
+        kilograms:
+          type: number
+          minimum: 0
+          nullable: true
+
+    WasteReport:
+      type: object
+      required: [mealId, leftovers, plateWaste, status]
+      properties:
+        mealId:
+          type: string
+        leftovers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishLeftover'
+        plateWaste:
+          $ref: '#/components/schemas/PlateWaste'
+        status:
+          type: string
+          enum: [notStarted, draft, recorded]
+        savedAt:
+          type: string
+          format: date-time
+          nullable: true
+        editableUntil:
+          type: string
+          format: date-time
+          nullable: true
+          description: savedAt + 6 hours when recorded.
+
+    SaveWasteReportRequest:
+      type: object
+      required: [action, leftovers, plateWaste]
+      properties:
+        action:
+          type: string
+          enum: [saveDraft, record]
+        leftovers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishLeftover'
+        plateWaste:
+          $ref: '#/components/schemas/PlateWaste'
