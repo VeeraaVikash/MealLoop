@@ -227,6 +227,8 @@ There is no way to approve without a face (video or photo) or the warden's call.
 
 ### Guardian · Sign in (page 13) · before GUARDIAN-VIDEO (OUTINGS-FIX, 2026-10-13; slide-to-approve frames archived on page 99, kept for history)
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** This walk describes the slide-to-approve flow that was replaced by the guardian video approval. Use the guardian video walk above. See Conflicts C-8 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 1. **G-0 · Sign in** ("We use the number SRM has on record.") → **Send code**.
 2. **G-0 · Verify code** (6 digits) → **Verify** → **G-2 · Request · Ready** (the opened SMS link; demo shortcut).
 3. Read the request: "Aarav wants / to go out.", Express Avenue Mall, Sat 17 Aug · Shopping; the clock shows 2 → 8 PM (6 hours); "Reply by Fri 11 PM".
@@ -245,6 +247,8 @@ There is no way to approve without a face (video or photo) or the warden's call.
 States by control (present the frame): Request · Overnight (Sat 2 PM → Sun 8 PM, "+1 day"), Request · Weekday (Wed 6 → 9 PM, "Reply by Wed 11 AM"), Request · Offline, Request · Expired (time skip on Ready); Status · Declined and Change asked (after the sheets). **Messages (reference, not an app screen)** shows the four SMS from SRM Hostels; it has no links.
 
 ### Warden · Sign in (page 14) · before GUARDIAN-VIDEO (W-1 … W-5 archived on page 99, kept for history)
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** This walk describes the warden screens before the evidence queue. Use the warden queue walk above. See Conflicts C-8 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 1. **W-0 · Sign in** → **Sign in with SRM** → **Verifying** (moves on) → **Confirm profile** (Block B warden) → **Yep, that's me**.
 2. **W-1 · Queue — Decide next** (Block B · 1 of 14; top card Student ·5841, decide by Fri 8 PM, 2 h).

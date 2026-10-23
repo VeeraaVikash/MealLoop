@@ -25,6 +25,8 @@ Figma: https://www.figma.com/design/nzzTAm9YnJRSdKEeYUWUEb/MealLoop
 
 ## Rules the screens follow
 
+> **Superseded in part by [`docs/PRD.md`](../docs/PRD.md).** The rule that points never depend on attendance is under owner review, because accuracy bonuses would depend on verified evidence (unapproved). A special-pass entry is recorded only at the desk on Matches · record entry, and the cutoff is two hours before the meal. See Conflicts C-9, C-11, C-12 in [`docs/OPEN_DECISIONS.md`](../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 - Instances only. Anything unknown gets an Open decision note, and the UI shows neutral placeholders such as "Cutoff: set by mess".
 - Saved, Received, Redeemed, Checked in and Resolved appear only in server-confirmed states. Every submit has a sending state and a failed state with a retry, and a failed state never shows a receipt.
 - Silence is "No response", never "No". Points never depend on attendance or reports.

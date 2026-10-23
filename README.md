@@ -111,6 +111,8 @@ flowchart LR
 
 ### Intelligent feedback
 
+> **Under owner review.** The flow below is the earlier documented flow. The owner's latest text differs on who publishes to Community and on the role of a language model. See [`docs/PRD.md`](docs/PRD.md) (FR-FB-005, FR-AI-008) and Conflicts C-1 and C-2 in [`docs/OPEN_DECISIONS.md`](docs/OPEN_DECISIONS.md#conflicts). Neither version is final until the owner confirms.
+
 <details>
 <summary>How a report becomes corrective action</summary>
 
