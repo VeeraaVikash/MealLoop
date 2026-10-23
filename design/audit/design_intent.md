@@ -158,12 +158,16 @@ The fill floor stays (rule 25).
 
 ## Sample rules (2026-10-01)
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** The sample intent cutoffs (lunch 9:00 AM, dinner 6:00 PM) are replaced by the rule of two hours before the meal. See Conflicts C-12 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 - **Prep override cutoff: 11:30 AM** (sample; owner unassigned).
 - **A missed cutoff shows "lapsed", never "overdue".**
 - Intent cutoffs as shown to students: lunch 9:00 AM, dinner 6:00 PM. Breakfast's is not shown (gap 173).
 - **The 48-hour vote lead time is an open question for the food department.**
 
 ## Product decisions
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** The Prep Agent that recommends prep quantities is not a requirement: the vendor decides quantities and MealLoop supplies an approved headcount only. See Conflicts C-3 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 - 3 logins: student, mess staff, admin. Mess staff = permission bundles (scanner, pass checker, kitchen, supervisor). Admin = 4 tabs by intent:
   - **Today:** Now, Decisions, Messes, Watch.
@@ -217,6 +221,8 @@ On screen (pages 09 and 10), the plain word replaces the internal term. Layer an
 
 
 ## OUTING PASS (run OUTINGS, 2026-10-13)
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** Step 2 (the guardian can approve, ask to change, or decline) is replaced by the guardian video approval in the section GUARDIAN VIDEO APPROVAL 2026-10 below and in the PRD. See Conflicts C-13 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 **Approved workflow.**
 1. The student sends an outing request (day, out-between window, place, reason).

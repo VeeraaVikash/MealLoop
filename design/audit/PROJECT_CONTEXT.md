@@ -10,6 +10,8 @@ Updated 2026-10-05 by run Final-3 (H5). Figma file `nzzTAm9YnJRSdKEeYUWUEb` ("Me
 
 ## 1. What MealLoop is
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** A recommended plan for the kitchen and a Prep Agent that recommends how much to cook are not requirements: management sends the vendor a headcount only, and the vendor decides quantities. See Conflicts C-3 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 MealLoop is an iOS app for institutional hostel messes, starting with SRM. It has three logins: student, mess staff and admin.
 
 Its purpose is to cut food waste and shortages by knowing who is coming. The main parts are:
@@ -62,6 +64,8 @@ The demo admin holds every approval. In production each approval stays with its 
 
 ### Student (04 Light is the source, 05 is the Dark twin, 07 is the prototype)
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** Sample cutoffs of lunch 9 AM and dinner 6 PM are replaced by the rule of two hours before the meal. A special-pass entry is recorded only by the desk on Matches · record entry, so any student-side step that records a single use is superseded (under owner review). See Conflicts C-9, C-12 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 - **Home:** changes with the time of day. It has:
   - the meal hero with I'm in / Skip / Not sure;
   - a cutoff (lunch 9 AM, dinner 6 PM, shown to students);
@@ -101,6 +105,8 @@ The demo admin holds every approval. In production each approval stays with its 
 
 ### Mess staff (09)
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** These staff screens (Pick your job, Start shift, Welcome and Not valid results, How much to cook, Change the plan, Pass check, Log by hand) describe the frames before the Door Scanner, Pass Desk, Kitchen and Supervisor packs. Use the role packs in `design/reference/` and the PRD instead. See Conflicts C-4 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 - **Sign in and job:** Sign in → Verifying → Confirm profile → **Pick your job** (Door scanner, Pass desk, Kitchen, Supervisor) → Start shift → the job's **Home**.
 - **Homes:** at most 4 big tiles plus rows, and a shared tab bar with Home, Alerts and Me.
 - **Door scanner (A1–A10):**
@@ -116,6 +122,8 @@ The demo admin holds every approval. In production each approval stays with its 
 - **Me (G1–G6):** My shifts, Waiting to send, Language, Help (Kitchen job only), Switch job, End shift summary, Sign out.
 
 ### Admin (10)
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** The four admin tabs Today, Issues, Insights and Manage are replaced by Today, Students, Results and More on Figma page 12. Page 10 is not archived; only some of its screens (for example special-pass exceptions and Rewards) have no page-12 equivalent. See Conflicts C-5 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 - **Sign-in and chrome:** AD-0 Sign in → Verifying → Confirm profile. Four tabs plus a Search circle; the avatar opens the Profile sheet (Notifications, Help, Sign out).
 - **Today:**
@@ -301,6 +309,8 @@ Reachability (Final-3 H6) is in `final3_report.md`. There are 0 dead ends; every
 
 
 ## 13. Outing Pass module (run OUTINGS, 2026-10-13)
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** Slide-to-approve and the guardian answers approve, ask to change or decline are replaced by the guardian video approval (Accept or Reject first; text-only never accepted). See Conflicts C-13 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 - **New pages:** 13 Guardian (18 frames, start Guardian · Sign in), 14 Warden (18, Warden · Sign in), 15 Gate (23, Gate · Sign in); all Light, inserted before 99 Archive. **Approved starts: 10.**
 - **Student:** section "O · Outings" (28 frames) on 04, 05 (Dark) and 07 (wired); entry = SettingsRow "Outings" at the top of the You settings card (Home unchanged).

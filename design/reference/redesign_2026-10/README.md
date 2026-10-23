@@ -50,6 +50,8 @@ Flat canvas #EDEDE8 with a faint 14 px dot texture at 7% ink. A lime disc (#D4F2
 | 33_gate_exit_recorded | Gate: result | Full-screen lime. |
 | 34_brand_mark_and_app_icon | Brand mark | Drawn from the Home screenshot. Replace with the final logo file. |
 
+> **Superseded in part by [`docs/PRD.md`](../../../docs/PRD.md).** Rows 29 to 31 (the guardian request with slide to approve, the guardian status and the warden deck) are replaced by the guardian video approval and the warden evidence queue in [`design/reference/guardian_2026-10/`](../guardian_2026-10/README.md). Rows 32 and 33 (Gate) have newer renders in `design/audit/export_guardian_video/`. See Conflicts C-10 in [`docs/OPEN_DECISIONS.md`](../../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded rows.
+
 `overview_1.png` to `overview_5.png` show all screens in grids.
 
 ## Not shown (build them in the same style)

@@ -4,6 +4,8 @@ This file did not exist before run OUTINGS (2026-10-13). The full master context
 
 ## Outing Pass module (run OUTINGS, 2026-10-13)
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** SlideToApprove and the approve, ask to change or decline guardian answers are replaced by the guardian video approval. See Conflicts C-13 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 **What it is.** A student asks to leave the hostel for a set window; the guardian approves first, the warden next (within the review window); the system issues a signed, time-bound pass; the gate records one exit and one return; overdue returns and missed deadlines escalate — never auto-approve. An approved outing is not an absence: the meal forecast uses confirmed exits only. Definitions, status map, workflow and the draft weekend policy are in design_intent.md ("OUTING PASS").
 
 **Pages and starts (10 approved starts).**
@@ -25,6 +27,8 @@ This file did not exist before run OUTINGS (2026-10-13). The full master context
 **Where to look:** outings/outings_spec.md, outings_audit.md, outings_report.md, DEMO.md ("Outing Pass module"), prototype_contract.md (last section), export_outings/.
 
 ## Run OUTINGS-FIX (2026-10-13)
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** The guardian Request page with SlideToApprove is replaced by the guardian video approval (Accept or Reject first). See Conflicts C-13 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 - **New components (page 03, flagged NEW):** ClockDial (1902:2358; a 12-hour ring showing the outing window: Request, Request 6–9 PM, Status, Out, Returned, Late, Not going, Overnight × Large / Medium), RuleTag (1902:2194; Weekday, Weekend, Too soon), token `track` (#E1E1DA). Extended: DateChip (+ Weekend, Past; Today = ink outline), OutingRibbon (Weekday single-day axis, Weekday 2–6 PM, Too soon; Weekend-Saturday / Weekend-Sunday), RangeSlider (+ four ranges).
 - **Week strip:** New outing on 04 / 05 / 07 has one frame per day, Mon 13 – Sun 19 Oct (today Mon 13 Oct 1:40 PM); the WeekStrip is the student Menu DateStrip (M T W T F S S), the RuleTag names the rule, the ribbon shows the deadlines; Mon is "Too soon". Weekday rule (draft, gap 370): guardian by leave − 7 h, warden by leave − 3 h, not before 8 AM.
@@ -178,6 +182,8 @@ Plus NEEDS REVIEW in guardian_video/report.md.
 **Owner items.** 523 how long a missed meal can still be recorded; 524 maximum quantities; 525 unit owner; 526 whether Supervisor / Admin see recorded waste read-only; 527 whether an edit restarts the 6-hour window; 528 every backend item. Plus NEEDS REVIEW in kitchen/report_v2.md.
 
 ## Run KITCHEN (2026-10-18 – 19)
+
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** This is the pack v1 run. The headcount-sent wording and the Draft, Waiting, Returned and Approved report states were replaced by the pack v2 run above (no approval loop). See Conflicts C-7 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
 
 **What changed.** Built from design/reference/kitchen_2026-10/ (K01–K17, data/kitchen_spec.md). Only the Kitchen Staff family on page 09 (five "Kitchen · …" sections, 67 frames), plus a canvas note beside the Pass Desk food-short toast. Door Scanner, Pass Desk and Supervisor screens are not redesigned; the old MS-C / E / F / G frames stay for the Supervisor.
 

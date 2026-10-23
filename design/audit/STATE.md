@@ -39,6 +39,8 @@ The short "where are we" card. The full context is in `PROJECT_CONTEXT.md`, the 
 
 ## Run KITCHEN (2026-10-18 – 19)
 
+> **Superseded in part by [`docs/PRD.md`](../../docs/PRD.md).** This is the pack v1 run. The headcount-sent wording before the meal and the Waiting, Returned and Approved report states were replaced by the pack v2 run above (Forecasted attendance; a saved report is simply Recorded, with no approval loop). See Conflicts C-6 in [`docs/OPEN_DECISIONS.md`](../../docs/OPEN_DECISIONS.md#conflicts). Kept as design history; do not build from the superseded text.
+
 - **Page 09 Kitchen Staff rebuilt** from design/reference/kitchen_2026-10/ (K01–K17) in five sections: Entry and Home, Shortage, Record waste, Reports and history, SOS / Alerts / Me (67 frames). MS-2 Start shift — Kitchen and MS-H Home — Kitchen ×3 are archived on page 99 ("Kitchen · archived states"); the MS-C / E / F / G frames stay for the Supervisor.
 - **Counting rule:** before the meal the headcount SENT to the vendor (860, a forecast); during it students ENTERED at the door (714, "Not meals served"); never a forecast beside the live count, never a remaining count; after it the final 774.
 - **Shortage:** one-tap sheet (dish chips from the menu, How bad, note, Send to Ravi); slim row Sent / Ravi saw it / Couldn't send + Retry; no row when none; duplicate prompt.

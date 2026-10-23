@@ -4,7 +4,7 @@
 
 MealLoop is an AI-assisted institutional dining and student-engagement platform. It is designed to improve meal-demand planning, reduce avoidable food waste, manage crowding at the mess and make student feedback lead to visible corrective action. It connects students, door and desk staff, kitchen workers, supervisors and administrators through one operational system.
 
-> **Status in one line:** this repository currently contains the product design, the Figma prototype documentation and design audit records. It does not yet contain a runnable app, a backend or tests. See [Current status](#current-status).
+> **Status in one line:** this repository currently contains the product design, the Figma prototype documentation and design audit records. It also contains an iOS SwiftUI foundation in `ios/` that runs on demo data and was built and launched on the owner's Mac (owner-reported; the unit-test result is not yet recorded). There is no backend and no production functionality. See [Current status](#current-status).
 
 ---
 
@@ -98,10 +98,11 @@ flowchart LR
 
 ### Credits and incentives
 
-- Credits are planned for **participation** (a useful answer before the cutoff) and **accuracy** (the answer matched a reliably verified outcome).
+- Participation credits go to a definite response given before the cutoff: **I'm in** and **Skip** earn them; **Not sure** and no response earn none.
+- An **accuracy bonus** is earned only when the answer matches reliably verified behaviour. A Skip is not verified merely by a missing QR scan, and incomplete or unreliable scanning gives no unsupported bonus.
 - Yes and No are both valid answers. Students must not be pushed to say Yes. Genuine corrections before the cutoff are supported.
-- Scanner failures need a correction process. Credits must not depend solely on AI, and duplicate redemptions are prevented.
-- **The formula, thresholds and rewards are not finalized.** Any point values in the design are samples.
+- Scanner failures need an auditable correction process. Credits must not depend solely on AI, and duplicate redemptions are prevented.
+- **Not decided:** the participation-credit and accuracy-bonus amounts, how absence is verified, the minimum verification coverage, reward values and budget, and SRM approval. Any point values in the design are samples.
 
 ### Crowd management
 
@@ -111,16 +112,20 @@ flowchart LR
 
 ### Intelligent feedback
 
+> **Owner-confirmed publication rule.** Eligible non-urgent reports are published to Community automatically after the configured privacy, safety, abuse and spam checks. Flagged or uncertain reports are held for Admin moderation, and Admin can hide or intervene. See [`docs/PRD.md`](docs/PRD.md) (FR-FB-005, FR-AI-002).
+
 <details>
 <summary>How a report becomes corrective action</summary>
 
 ```text
-Student → Admin (with SLM assistance) → Community → support threshold
+Student → configured checks → Community (eligible, non-urgent) → support threshold
         → Admin → relevant staff → corrective action → student follow-up
+        flagged or uncertain → Admin moderation
+        urgent → SOS workflow (never published to Community)
 ```
 
-- A small language model (SLM) groups similar reports, summarizes them, separates actionable from subjective feedback and suggests actions. It **never** rejects a complaint, declares food safe or authorizes action.
-- The admin decides what is published to Community. Students back issues with **Me too**; each eligible student counts once. The support threshold is undecided.
+- Reports start with structured categories, deterministic routing and publication rules, and semantic duplicate detection. A language model is added only if testing shows administrative value. An AI model may advise or route to human moderation but never makes the publication decision, rejects a complaint, declares food safe or authorizes action.
+- Admin approval is not required for each publication. Students back issues with **Me too**; each eligible student counts once. The support threshold is configurable and its value is not decided. Student identities are never exposed.
 - Nothing is marked Fixed just because an admin pressed a button. The system records who owned the issue, what was investigated, what was done and when, and whether students later reported improvement.
 - Urgent hygiene, contamination or illness reports use the separate **SOS** workflow and never wait for voting.
 
@@ -148,7 +153,7 @@ SOS is shared across these staff roles. A right-edge tab appears only while an S
 
 ### Digital outings
 
-An optional, more convenient digital alternative to SRM's existing outing process. It is for students who meet participation and reliability requirements; that formula is not approved, and other students keep using the existing process.
+An optional, more convenient digital alternative to SRM's existing outing process. In the pilot it is available to every student in an institutionally authorized cohort, with guardian and warden approval always mandatory and SRM authorization required. After the pilot, eligibility needs both participation and reliability, with thresholds that SRM approves; students who do not qualify keep using the existing process.
 
 ```text
 request → guardian verification → warden decision → pass issued
@@ -262,7 +267,7 @@ The Figma design is a reference, not proof of implementation.
 
 ## Current status
 
-Checked against the repository contents on the current branch. No `*.xcodeproj`, `Package.swift`, `*.swift` files, backend folder, `docker-compose.yml`, `pom.xml`, `build.gradle`, tests or CI workflows exist. The `.js` and `.py` files under `design/audit/tools/` are Figma audit and build scripts, not application code.
+The iOS SwiftUI foundation in `ios/` was built and launched on the owner's Mac (owner-reported); the unit-test result is not yet recorded. It runs on demo data and nothing is verified beyond that. No backend folder, database, CI workflow or production functionality exists. The `.js` and `.py` files under `design/audit/tools/` are Figma audit and build scripts, not application code.
 
 | Area | Designed in Figma / prototype | Implemented in code | In development | Planned |
 |---|---|---|---|---|
@@ -277,7 +282,7 @@ Checked against the repository contents on the current branch. No `*.xcodeproj`,
 | AI: forecasting, crowd, feedback, menu extraction | UI surfaces only | – | – | ✓ |
 | Android app | – | – | – | ✓ |
 
-"In development" is left empty because nothing in the repository shows active implementation work. Cross-role behaviour such as shared meal state, scan results and SOS routing is **simulated** in the Figma prototype with hidden hotspots and labelled "Simulated:" notes.
+The Implemented column stays empty because no production functionality exists; the foundation code is tracked per requirement in [`docs/REQUIREMENTS_TRACEABILITY.md`](docs/REQUIREMENTS_TRACEABILITY.md). Cross-role behaviour such as shared meal state, scan results and SOS routing is **simulated** in the Figma prototype with hidden hotspots and labelled "Simulated:" notes.
 
 ## Pilot and roadmap
 
@@ -364,9 +369,9 @@ MealLoop is built by a team of four developers, most of whom are learning native
 
 **Open decisions (not yet answered; nothing here should be treated as decided):**
 
-- Credit/reward formula and eligibility window.
+- Participation-credit and accuracy-bonus amounts, absence-verification method and coverage, reward budget and values.
 - Community "Me too" support threshold.
-- Digital-outing eligibility formula.
+- Post-pilot outing thresholds, the authorized pilot cohort, and SRM authorization.
 - Guardian verification source.
 - Guardian-video policy: privacy, institutional approval, language support and the retention period (draft: 30 days).
 - Whether students answer for Snacks.
@@ -378,7 +383,7 @@ MealLoop is built by a team of four developers, most of whom are learning native
 
 **Limitations:**
 
-- No application code, backend, database, tests or CI exist in this repository yet.
+- The iOS foundation runs on demo data only; no backend, database, CI or production functionality exists, and the unit-test result is not yet recorded.
 - All cross-role behaviour in the prototype is simulated.
 - Every number in the design is sample data. Some screens and older documents show sample cutoff times (for example "Decide by 9 AM") that predate the two-hours-before-the-meal rule.
 - Some older documents in `design/` describe earlier decisions that the latest decisions replace, for example:
