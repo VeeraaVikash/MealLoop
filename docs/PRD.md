@@ -641,7 +641,7 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 
 **Status:** `PROPOSED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor, Admin, Super Admin, Warden, Gate Security, Vendor
 
-**Statement.** Production access must give every internal user an individually attributable identity: Students and Super Admins through SRM SSO (FR-ID-001) and all other internal users through individual MealLoop-managed accounts (FR-ID-002). Each user has an assigned role with mess or block scope, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions. The exact mechanism is decided in the NFR, architecture and security reviews.
+**Statement.** Production access must give every internal user an individually attributable identity: Students and Super Admins through SRM SSO (FR-ID-001; feasibility unverified) and all other internal users through individual MealLoop-managed accounts (FR-ID-002). Each user has an assigned role with mess or block scope, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions. The exact mechanism is decided in the NFR, architecture and security reviews.
 
 **Acceptance criteria.**
 1. Given any production action, then it carries the actor's individual identity, role and mess or block scope.
@@ -2872,7 +2872,7 @@ The vendor is a MealLoop user with a restricted account. It is not an external s
 
 ### 7.16 Accounts, roles and identity (`FR-ID`)
 
-MealLoop uses two internal authentication arrangements: SRM SSO for Students and Super Admins, and individual MealLoop-managed accounts (email and password) for all other internal users. These requirements are confirmed product direction except where marked. The password policy, multi-factor authentication, lockout and recovery rules, session length, who may provision which roles and the detailed Super Admin permission matrix are OPEN ([`OPEN_DECISIONS.md`](OPEN_DECISIONS.md), P60 to P63).
+MealLoop uses two internal authentication arrangements: SRM SSO for Students and Super Admins (feasibility unverified), and individual MealLoop-managed accounts (email and password) for all other internal users. These requirements are confirmed product direction except where marked. The password policy, multi-factor authentication, lockout and recovery rules, session length, who may provision which roles and the detailed Super Admin permission matrix are OPEN ([`OPEN_DECISIONS.md`](OPEN_DECISIONS.md), P60 to P63).
 
 #### FR-ID-001 · Students and Super Admins sign in through SRM SSO
 
