@@ -1,6 +1,6 @@
 # MealLoop — C4 Architecture (Review Draft)
 
-**Version:** 0.1 · **Date:** 2026-10-24 · **Status:** PROPOSED, not owner-approved or implemented  
+**Version:** 0.2 · **Date:** 2026-10-24 · **Status:** PROPOSED, not owner-approved or implemented. **C1 is revised for owner review. C2 is an UNREVIEWED DRAFT. C3 and C4 are not started.**  
 **Review sequence:** PRD → NFR → C1 → C2 → C3 → selective C4 → ADRs → data model and API contracts  
 **First pilot:** Meenakshi Girls' Mess, SRMIST Kattankulathur
 
@@ -10,8 +10,8 @@
 
 | Level | Question answered | Status in this draft |
 |---|---|---|
-| **C1 — System Context** | Who uses MealLoop, and what systems does it interact with? | **Drafted below** |
-| **C2 — Container** | Which independently deployable applications and data stores form MealLoop? | **Drafted below** |
+| **C1 — System Context** | Who uses MealLoop, and what systems does it interact with? | **Revised below for owner review (not approved)** |
+| **C2 — Container** | Which independently deployable applications and data stores form MealLoop? | **UNREVIEWED DRAFT below; not approved and not to be expanded until C1 is approved** |
 | **C3 — Component** | Which components/modules inside the backend own each business operation and boundary? | **Not yet approved or diagrammed** |
 | **C4 — Code** | How do classes, interfaces and code collaborate inside a selected component? | **Deferred; optional for complex components** |
 
@@ -21,42 +21,103 @@
 
 ### People and external systems
 
-- **Students:** View menu, submit meal intentions, display entry QR, report issues, view eligible credits, request outings.
-- **Mess operations:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor and Food Head/Admin. They act only within authorized scope, except appropriately privileged Admin operations.
-- **Hostel operations:** Warden and Gate Security, scoped to their authorized hostel/block and outgoing pass events.
-- **Guardians:** Review and accept/reject an outing request via mobile web; acceptance triggers separately handled verification evidence.
-- **SRM administrators:** Control institutional approval, identity-source policy, retention, escalation, pilot rollout and access delegation.
-- **Vendor:** Receives **approved headcount only** through the authorized management handoff. **No vendor MealLoop account** or automatic food-quantity command.
-- **SRM identity service (external, unconfirmed):** A possible source of institution-verified identity, not an integration we can assume exists.
-- **Notification delivery services (external, provider TBD):** Push, and any institution-authorized SMS/other delivery channel. Delivery is not the source of truth.
-- **Existing hostel outing procedure (external/manual):** Remains available for ineligible students and where digital outing activation is unauthorized.
+**Internal actors (MealLoop users).** Every internal actor, including the vendor, is a user of MealLoop with a MealLoop identity.
+
+- **Student:** views the menu, submits meal intentions, shows the entry QR, reports issues, views eligible credits, requests outings.
+- **Super Admin:** a separate role for system-level identity and institutional configuration: account provisioning, role assignment, scope changes, account deactivation and password-reset initiation. The detailed permission matrix is OPEN. Super Admin cannot read any user's password.
+- **Food Head / Admin:** manages operational mess workflows (headcount approval and handoff to the vendor, menus, reports). Does **not** have Super Admin privileges.
+- **Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff:** mess operations, within their assigned mess.
+- **Vendor (restricted account):** signs in to its own restricted MealLoop account, views the approved headcount for its assigned mess and any authorized update, and acknowledges receipt. The vendor is **not** an external system and there is **no direct vendor API**. The vendor receives an approved headcount only.
+- **Guardian:** reviews and accepts or rejects an outing request via mobile web; acceptance starts the separately handled verification evidence. Guardian authentication is an unresolved design problem.
+- **Warden and Gate Security:** scoped to their authorized hostel or block and outgoing pass events.
+
+**External systems and institutional authorities.**
+
+- **SRM SSO and identity infrastructure (unverified):** the intended sign-in source for Students and Super Admins. **SRM SSO feasibility is unverified.** No protocol, client registration, user attributes or administrative API is assumed to exist, and no fallback identity scheme is approved.
+- **SRM institutional guardian-contact authority (unverified):** the source of a verified guardian contact record, or of an institutionally authorized correction. A student cannot replace guardian contact information and immediately create a new approver.
+- **External notification and messaging providers (provider undecided, unverified):** deliver push or other institutionally authorized messages, including email for account invitations and password resets. MealLoop keeps the authoritative notification and event record.
+- **SRM's existing manual outing procedure:** remains available for ineligible students and wherever digital outings are not authorized.
+- **SRM policy and approval authorities:** institutional approval of identity-verification methods, video retention, consent, access delegation, outing policy, rewards and pilot rollout.
+- **Optional AI or model provider (undecided):** advisory only; shown in C1 only because the C2 draft already lists optional intelligence.
+
+**Note (not in C1).** The Phase 2 RFID and camera return station is a proposed item and is outside the scope of C1 and of the December target.
 
 ### Context diagram
 
+Solid arrows are direct use. Dashed arrows are unverified integrations or institutional dependencies. MealLoop is drawn as one system.
+
 ```mermaid
-flowchart TB
-  students["Students"] --> meal["MealLoop\nSystem of record for meal operations and digital outing workflow"]
-  staff["Mess staff, Supervisor, Food Head"] --> meal
-  hostel["Warden and Gate Security"] --> meal
-  guardians["Guardians"] --> meal
-  meal -. "Identity verification, if authorized" .-> idp["SRM identity systems\nExternal; availability unknown"]
-  meal -. "Push/delivery attempts" .-> notify["Notification provider\nExternal; TBD"]
-  staff -->|"Approved headcount handoff; no vendor login"| vendor["Mess vendor"]
-  hostel -->|"Existing procedure remains available"| manual["SRM manual outing process"]
+flowchart LR
+  subgraph users["MealLoop users"]
+    stu["Student"]
+    sa["Super Admin"]
+    fh["Food Head / Admin"]
+    sup["Supervisor"]
+    kit["Kitchen Staff"]
+    door["Door Scanner Staff"]
+    pd["Pass Desk Staff"]
+    ven["Vendor (restricted account)"]
+    gua["Guardian"]
+    war["Warden"]
+    gate["Gate Security"]
+  end
+  ml["MealLoop"]
+  subgraph ext["External systems and authorities"]
+    sso["SRM SSO and identity (unverified)"]
+    gc["SRM guardian-contact authority (unverified)"]
+    msg["Notification and email providers (undecided)"]
+    man["SRM manual outing procedure"]
+    pol["SRM policy and approval authorities"]
+    ai["Optional AI provider (undecided)"]
+  end
+  users -->|"use"| ml
+  ml -.->|"Student and Super Admin sign-in"| sso
+  ml -.->|"verified guardian contact"| gc
+  ml -.->|"push and email delivery"| msg
+  ml -.->|"optional advice"| ai
+  war -.->|"existing process stays available"| man
+  pol -.->|"approvals"| ml
 ```
+
+**Legend.** Solid line: users use MealLoop. Dashed line: integration or dependency that is unverified, undecided or institutional.
+
+| Actor or external system | What it does | How it authenticates | Status |
+|---|---|---|---|
+| Student | Meal answers, entry QR, reports, credits, outing requests | SRM SSO | Confirmed direction; SSO feasibility unverified |
+| Super Admin | Account provisioning, role assignment, scope changes, deactivation, password-reset initiation; cannot read passwords | SRM SSO | Confirmed direction (separate role); SSO feasibility unverified; detailed permission matrix open |
+| Food Head / Admin | Headcount approval and handoff, menus, reports; no Super Admin privileges | MealLoop-managed account (email and password) | Confirmed direction |
+| Supervisor | Meal start and close, shortages, SOS | MealLoop-managed account | Confirmed direction |
+| Kitchen Staff | Counts, shortages, waste reports | MealLoop-managed account | Confirmed direction |
+| Door Scanner Staff | Entry scanning | MealLoop-managed account | Confirmed direction |
+| Pass Desk Staff | Special-pass checks | MealLoop-managed account | Confirmed direction |
+| Vendor (restricted account) | Views the approved headcount and authorized updates for its assigned mess; acknowledges receipt | MealLoop-managed account | Confirmed direction; acknowledgment rules, deadline, escalation and fallback open |
+| Guardian | Accepts or rejects an outing request; video evidence | To be decided | Open; guardian authentication unresolved |
+| Warden | Final outing decision, scoped to own block | MealLoop-managed account | Confirmed direction |
+| Gate Security | Records gate exit and return | MealLoop-managed account | Confirmed direction |
+| SRM SSO and identity infrastructure | Intended sign-in for Students and Super Admins | Not applicable | Unverified |
+| SRM guardian-contact authority | Verified guardian contact records and authorized corrections | Not applicable | Unverified |
+| Notification and email providers | Deliver push, invitation and reset messages | Not applicable | Provider undecided; unverified |
+| SRM manual outing procedure | Existing outing process | Not applicable | Existing; remains available |
+| SRM policy and approval authorities | Approve identity methods, retention, consent, access delegation, outing policy, rewards | Not applicable | Approvals required |
+| Optional AI provider | Advisory computation | Not applicable | Undecided |
 
 **System boundary:** MealLoop owns its product records, authorizations, audit history, and outcomes that its server commits. It does **not** own the vendor's food-production process, guardian's real-world identity, SRM's policies, the campus network, or the external notification provider.
 
 ### Context constraints
 
 1. Student intention is not attendance; a QR entry confirms entry, not food served or consumed (PRD DI-1, DI-3, DI-7).
-2. Live forecast, Cutoff forecast, Approved headcount, Sent-to-vendor headcount, Actual entries and Final entries are separate facts (FR-HC-002).
+2. Live forecast, Cutoff forecast, Approved headcount, Sent (published-to-vendor) headcount, Actual entries and Final entries are separate facts (FR-HC-002).
 3. AI cannot independently grant safety permissions or block core dining (NFR-REL-008).
 4. No offline scan or pass check is represented as a digitally recorded success during the pilot (NFR-REL-001, NFR-REL-005); authorized manual continuity is **separate**, with audited reconciliation.
 5. Outing activation, guardian video collection, retention and real reward redemption remain subject to SRM approval (NFR-DEP-004).
 6. Initial digital outing **pilot eligibility** covers the SRM-authorized cohort without participation/reliability enforcement; post-pilot eligibility requires both based on validated evidence (FR-OUT-024, FR-OUT-028).
+7. Identity has two arrangements: SRM SSO for Students and Super Admins (feasibility unverified) and individual MealLoop-managed accounts for all other internal users, including the vendor (FR-ID-001, FR-ID-002). Production actions are individually attributable (FR-ATT-015). The shared four-digit role password is a prototype interaction only (FR-ATT-013).
+8. An external delivery result is never equivalent to human acknowledgment, and a vendor acknowledgment is never fabricated (FR-VEN-003, NFR-REL-009). If external delivery fails, the committed operation stays saved, the in-app alert stays accessible and the failure is recorded; the retry and escalation policy is OPEN.
+9. Guardian authority comes from an SRM-verified contact record or an institutionally authorized correction. A student cannot replace guardian contact information and immediately create a new approver. Control of a phone number or a successful live video is not proof of guardian identity. The guardian-first, warden-second sequence is unchanged.
 
 ## C2 — Container view
+
+> **UNREVIEWED DRAFT.** This preliminary container proposal has not been reviewed or approved by the owner, and it is not expanded in this revision. The Spring Boot and PostgreSQL choices are proposals only, not accepted decisions. Review it after C1 is approved.
 
 **Proposed shape:** one Spring Boot backend deployable with clear internal modules and one PostgreSQL database. This fits the four-person team and one-mess pilot better than mandatory microservices. The architecture remains a proposal until evaluated in ADRs.
 
@@ -111,12 +172,13 @@ flowchart TB
 5. Only the successful committed response can display **Recorded**. A timeout may require an idempotent status check before retry; it is never assumed failed or successful.
 6. Staff read models and notifications update subsequently. Stale interfaces cannot override server state.
 
-**Admin headcount and vendor handoff:**
-1. Capture the live forecast and preserve the cutoff forecast.
-2. Authorized Admin approves or adjusts a separately recorded headcount with an audit reason.
-3. Authorized Admin transmits **that approved headcount** via a documented vendor communication mechanism.
-4. Record the transmitted value, time, actor and delivery evidence/status; an unacknowledged message is not silently labelled delivered.
-5. Actual and final entry counts remain independent.
+**Admin headcount and vendor handoff (the vendor is a MealLoop user):**
+1. The Food Head reviews the forecast; the live forecast and the cutoff forecast are preserved.
+2. The Food Head approves or adjusts a separately recorded headcount with an audit reason. It is never approved automatically.
+3. MealLoop makes **that approved headcount** available to the authorized vendor account for the assigned mess. There is no direct vendor API.
+4. The vendor signs in, views the approved headcount and any later authorized update, and acknowledges receipt.
+5. MealLoop stores the publication and the acknowledgment history with actor and time. Publishing is never acknowledgment; a missing acknowledgment is shown as pending, and an acknowledgment is never fabricated.
+6. Actual and final entry counts remain independent. The existing message or call handoff remains the designed interim handoff.
 
 **Guardian outing:**
 1. Student request → verified guardian access → Accept or Reject.
@@ -129,7 +191,18 @@ flowchart TB
 1. Persist SOS case and delivery intent in authoritative records.
 2. Make it visible through server queries to assigned staff; attempt notification separately.
 3. Distinguish event persistence, UI visibility, provider delivery attempt, human acknowledgment and escalation.
-4. Failed notification delivery must not erase the SOS. Urgent real-world danger must retain institutionally approved emergency channels independent of the app.
+4. Failed notification delivery must not erase the SOS; the failure is recorded and the in-app alert stays accessible. A delivery result is never human acknowledgment. Retry and escalation policy, SOS escalation targets and provider choices are OPEN. Urgent real-world danger must retain institutionally approved emergency channels independent of the app.
+
+### Questions for the C2 review raised by the C1 decisions
+
+These are questions only. Nothing here is a design, and none is approved.
+
+- Is identity an internal module, and how does it federate with SRM SSO if SSO access is confirmed, and how are MealLoop-managed accounts handled in the meantime?
+- How is vendor-scoped authorization enforced for one assigned mess, with no access to student-level data?
+- Where is the headcount publication and acknowledgment record owned, and how are updates and re-acknowledgments represented?
+- How is the email and notification provider integrated (account invitations, password resets, push), and how are delivery failures recorded?
+- How is account administration audited (provisioning, role and scope changes, deactivation, reset initiation)?
+- How does the guardian page authenticate a guardian, given that phone control and live video are not proof of identity?
 
 ## C3 — Next design pass (NOT yet accepted)
 
@@ -179,7 +252,7 @@ Required decisions **before freezing** architecture/data schema/API contracts:
 
 ### Existing proposed OpenAPI requires follow-up
 
-The first-slice [OpenAPI draft](../backend/openapi.yaml) currently describes a shared four-digit role password as a staff session mechanism, and a simplified headcount resource. Those do **not** satisfy proposed production staff identity (FR-ATT-015, NFR-SEC-001) or the six distinct headcount quantities (FR-HC-002). **Do not deploy it as a production contract unchanged.** The first slice also does not cover Community, Rewards or all outing roles. Reconcile API only **after** module ownership and ADR review.
+The first-slice [OpenAPI draft](../backend/openapi.yaml) currently describes a shared four-digit role password as a staff session mechanism, a simplified headcount resource, and no vendor account, acknowledgment or account-administration operations. Those do **not** satisfy proposed production staff identity (FR-ATT-015, NFR-SEC-001) or the six distinct headcount quantities (FR-HC-002). **Do not deploy it as a production contract unchanged.** The first slice also does not cover Community, Rewards or all outing roles. Reconcile API only **after** module ownership and ADR review.
 
 ## Evidence and review checklist
 
