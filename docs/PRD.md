@@ -4,8 +4,8 @@
 
 | Field | Value |
 |---|---|
-| Version | 0.2 |
-| Date | 2026-10-23 |
+| Version | 0.3 |
+| Date | 2026-10-24 |
 | Status | **Draft for team review.** Not owner-approved; it stays a review draft until the owner explicitly approves it |
 | Owner | VeeraaVikash (repository owner) |
 | Reviewers | The four-member development team; the owner for every item marked CHANGED |
@@ -16,6 +16,7 @@
 
 | Version | Date | Change |
 |---|---|---|
+| 0.3 | 2026-10-24 | C1 reconciliation on pull request 3: the vendor works through a restricted MealLoop account (FR-HC-006, FR-HC-007, FR-HC-008, FR-HC-004, FR-HC-005; new FR-VEN-001 to FR-VEN-005); two authentication arrangements and a separate Super Admin role (FR-ATT-013, FR-ATT-015, FR-ADM-015, FR-ADM-016, FR-STU-001; new FR-ID-001 to FR-ID-006); stakeholder list and permission matrix gain Super Admin and Vendor; dependency D10 and risks R13 and R14. No milestone changed. |
 | 0.2 | 2026-10-23 | Corrections on pull request 1 for the owner's decisions: Community publication is automatic after configured checks (FR-FB-005, FR-AI-002, FR-AI-008, FR-FB-007); participation credits with a conditional accuracy bonus (FR-RWD-003, FR-RWD-002); outing eligibility split into pilot mode and post-pilot mode (FR-OUT-024, new FR-OUT-028 to FR-OUT-030); the warden phone fallback needs institutional approval (FR-OUT-010); the prototype's shared staff password is demo behaviour only, with proposed production authentication (FR-ATT-013, new FR-ATT-015); the archived calorie tracker is no longer named as active (FR-ADM-017). Foundation status now reads built and launched on the owner's Mac (owner-reported). Every open decision is classified. New risks R10 to R12. The PRD is still a draft for review and is not owner-approved. |
 | 0.1 | 2026-10-23 | First consolidated draft. Brings the latest owner decisions and the active design packs into one requirements document, records contradictions with older documents, and adds the requirements traceability matrix ([`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md)). |
 
@@ -61,7 +62,7 @@ MealLoop is one operational system connecting students, door and desk staff, kit
 
 ### Non-goals
 
-- Dish-quantity planning, ingredient data, procurement or a vendor login. Management sends the vendor a headcount only; the vendor decides its own buffer, quantities and batches.
+- Dish-quantity planning, ingredient data or procurement. MealLoop makes the approved headcount available to the vendor's restricted MealLoop account only; the vendor decides its own buffer, quantities and batches. There is no direct vendor API.
 - Claiming real-time occupancy from entry scans, or exact waiting times.
 - Automatic approval of a headcount or an outing.
 - A supervisor approval loop for waste reports.
@@ -86,9 +87,10 @@ MealLoop is one operational system connecting students, door and desk staff, kit
 | Door staff, pass-desk staff | Fast, honest entry recording with clear fallbacks |
 | Kitchen staff | A forecast before the meal, a live count during it, a simple way to report shortages and record waste |
 | Supervisors | Control of the meal state, shortage follow-up, SOS handling |
-| Admin (Food head) | Headcount, vendor communication, results, corrective actions, menus, reports |
+| Super Admin | System-level identity and institutional configuration: account provisioning, role assignment, scope changes, deactivation and password-reset initiation. The detailed permission matrix is OPEN |
+| Admin (Food head) | Headcount approval and the vendor handoff, results, corrective actions, menus, reports. No Super Admin privileges |
 | Guardians, wardens, gate security | A trustworthy outing approval and gate record |
-| Vendor | Receives a headcount; has no MealLoop login |
+| Vendor | A restricted MealLoop account: views the approved headcount and authorized updates for its assigned mess and acknowledges receipt |
 | SRM Institute of Science and Technology | Authorizes the pilot, privacy and consent, retention, rewards and outing policy |
 | Development team | Four developers, mostly learning native iOS |
 
@@ -96,42 +98,45 @@ MealLoop is one operational system connecting students, door and desk staff, kit
 
 Only documented behaviour is shown. ✓ = can do; R = can see, read-only; — = not offered; ? = not documented.
 
-| Capability | Student | Door | Pass Desk | Kitchen | Supervisor | Admin | Guardian | Warden | Gate |
-|---|---|---|---|---|---|---|---|---|---|
-| Answer a meal (I'm in, Skip, Not sure) | ✓ | — | — | — | — | — | — | — | — |
-| Show the entry QR | ✓ | — | — | — | — | — | — | — | — |
-| Record entry (scan or last 4 digits) | — | ✓ | — | — | — | — | — | — | — |
-| Check a special pass and record on Matches | — | — | ✓ | — | — | — | — | — | — |
-| Look up a pass status (never records) | — | — | ✓ | — | — | — | — | — | — |
-| Request a pass reissue | — | — | ✓ | — | — | — | — | — | — |
-| Approve or reject a pass reissue | — | — | — | — | — | ✓ | — | — | — |
-| See Forecasted attendance (before the meal) | — | — | — | ✓ | ✓ | ✓ | — | — | — |
-| See live students entered | — | ✓ | — | ✓ | ✓ | ✓ | — | — | — |
-| Start and close the meal | — | — | — | — | ✓ | — | — | — | — |
-| Report a shortage | — | — | ✓ | ✓ | — | — | — | — | — |
-| Resolve a shortage | — | — | — | — | ✓ | — | — | — | — |
-| Record and edit waste (six-hour window) | — | — | — | ✓ | — | — | — | — | — |
-| See a recorded waste report | — | — | — | ✓ | R | R | — | — | — |
-| Approve or adjust the headcount and send it to the vendor | — | — | — | — | — | ✓ | — | — | — |
-| Claim and check an SOS | — | ✓ | ✓ | ✓ | ✓ | — | — | — | — |
-| Close an SOS case in the staff app | — | — | — | — | ✓ | — | — | — | — |
-| See and close the Safety case in the admin app | — | — | — | — | — | ✓ (relation to the staff close is open) | — | — | — |
-| Submit feedback or an urgent report | ✓ | — | — | — | — | — | — | — | — |
-| Back an issue with Me too | ✓ | — | — | — | — | — | — | — | — |
-| Hide or moderate a Community report (eligible reports publish automatically; flagged ones are held for Admin) | — | — | — | — | — | ✓ | — | — | — |
-| Manage menus and send reports | — | — | — | — | — | ✓ | — | — | — |
-| Manage staff access | — | — | — | — | — | ✓ | — | — | — |
-| Request an outing | ✓ | — | — | — | — | — | — | — | — |
-| Accept or reject an outing with video evidence | — | — | — | — | — | — | ✓ | — | — |
-| See the guardian evidence and decide an outing (own block only) | — | — | — | — | — | ? | — | ✓ | — |
-| See the guardian video | — (never) | — | — | — | — | ? | — | ✓ | — |
-| Record gate exit and return | — | — | — | — | — | — | — | — | ✓ |
-
+| Capability | Student | Door | Pass Desk | Kitchen | Supervisor | Admin | Guardian | Warden | Gate | Super Admin | Vendor |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Answer a meal (I'm in, Skip, Not sure) | ✓ | — | — | — | — | — | — | — | — | — | — |
+| Show the entry QR | ✓ | — | — | — | — | — | — | — | — | — | — |
+| Record entry (scan or last 4 digits) | — | ✓ | — | — | — | — | — | — | — | — | — |
+| Check a special pass and record on Matches | — | — | ✓ | — | — | — | — | — | — | — | — |
+| Look up a pass status (never records) | — | — | ✓ | — | — | — | — | — | — | — | — |
+| Request a pass reissue | — | — | ✓ | — | — | — | — | — | — | — | — |
+| Approve or reject a pass reissue | — | — | — | — | — | ✓ | — | — | — | — | — |
+| See Forecasted attendance (before the meal) | — | — | — | ✓ | ✓ | ✓ | — | — | — | — | — |
+| See live students entered | — | ✓ | — | ✓ | ✓ | ✓ | — | — | — | — | — |
+| Start and close the meal | — | — | — | — | ✓ | — | — | — | — | — | — |
+| Report a shortage | — | — | ✓ | ✓ | — | — | — | — | — | — | — |
+| Resolve a shortage | — | — | — | — | ✓ | — | — | — | — | — | — |
+| Record and edit waste (six-hour window) | — | — | — | ✓ | — | — | — | — | — | — | — |
+| See a recorded waste report | — | — | — | ✓ | R | R | — | — | — | — | — |
+| Approve or adjust the headcount and publish it to the vendor account | — | — | — | — | — | ✓ | — | — | — | — | — |
+| Claim and check an SOS | — | ✓ | ✓ | ✓ | ✓ | — | — | — | — | — | — |
+| Close an SOS case in the staff app | — | — | — | — | ✓ | — | — | — | — | — | — |
+| See and close the Safety case in the admin app | — | — | — | — | — | ✓ (relation to the staff close is open) | — | — | — | — | — |
+| Submit feedback or an urgent report | ✓ | — | — | — | — | — | — | — | — | — | — |
+| Back an issue with Me too | ✓ | — | — | — | — | — | — | — | — | — | — |
+| Hide or moderate a Community report (eligible reports publish automatically; flagged ones are held for Admin) | — | — | — | — | — | ✓ | — | — | — | — | — |
+| Manage menus and send reports | — | — | — | — | — | ✓ | — | — | — | — | — |
+| See who has which role and request access | — | — | — | — | — | ✓ | — | — | — | — | — |
+| Request an outing | ✓ | — | — | — | — | — | — | — | — | — | — |
+| Accept or reject an outing with video evidence | — | — | — | — | — | — | ✓ | — | — | — | — |
+| See the guardian evidence and decide an outing (own block only) | — | — | — | — | — | ? | — | ✓ | — | — | — |
+| See the guardian video | — (never) | — | — | — | — | ? | — | ✓ | — | — | — |
+| Record gate exit and return | — | — | — | — | — | — | — | — | ✓ | — | — |
+| See the approved headcount for the assigned mess and acknowledge it | — | — | — | — | — | R (sees acknowledgment status) | — | — | — | — | ✓ |
+| Provision accounts, assign roles and scope, deactivate accounts, initiate password resets (detailed matrix OPEN) | — | — | — | — | — | — | — | — | — | ✓ | — |
 Notes:
 
 - In the prototype, staff open a role with a shared role password (approved demo behaviour, [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password)); production authentication and authorization are proposed in [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization).
 - Staff, kitchen and door roles act within their own mess; wardens see their own hostel or block only; Admin can see all messes.
-- The vendor has no login; the headcount is sent by message.
+- The vendor works through its own restricted MealLoop account and sees only the approved headcount and authorized updates for its assigned mess, never student-level data. The earlier message or call handoff remains the designed interim handoff. The vendor is not an external API integration.
+- Super Admin is a separate role from Food Head / Admin. Admin cannot provision accounts, assign roles, change scope, deactivate accounts or initiate password resets. The detailed Super Admin permission matrix is OPEN and no broader permission is implied.
+- Students and Super Admins are intended to sign in through SRM SSO (feasibility unverified); all other internal users, including the vendor, use individual MealLoop-managed accounts ([FR-ID-001](#fr-id-001--students-and-super-admins-sign-in-through-srm-sso), [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts)).
 
 ## 6. Guiding principles
 
@@ -154,7 +159,7 @@ These data-integrity rules apply to every requirement. A requirement that breaks
 
 ## 7. Functional requirements by area
 
-This section holds **161 requirements**. Each has an ID, a statement, acceptance criteria, dependencies, a source and exactly one status ([section 16](#16-requirement-status-legend)). The traceability matrix ([`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md)) adds the planned backend module, a test scenario and the implementation state for each.
+This section holds **172 requirements**. Each has an ID, a statement, acceptance criteria, dependencies, a source and exactly one status ([section 16](#16-requirement-status-legend)). The traceability matrix ([`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md)) adds the planned backend module, a test scenario and the implementation state for each.
 
 **No requirement is currently marked `CHANGED, OWNER CONFIRMATION REQUIRED`.** The two items marked that way in version 0.1, FR-FB-005 (Community publication) and FR-RWD-003 (accuracy bonus), were resolved by the owner's decisions recorded in version 0.2.
 
@@ -176,7 +181,9 @@ This section holds **161 requirements**. Each has an ID, a statement, acceptance
 | `MENU` Menu management | 4 | 3 | 1 | 0 | 0 | 0 |
 | `OUT` Digital outings | 30 | 22 | 1 | 6 | 1 | 0 |
 | `AI` AI and intelligence | 10 | 9 | 0 | 0 | 1 | 0 |
-| **Total** | **161** | **134** | **11** | **11** | **5** | **0** |
+| `VEN` Vendor account workflow | 5 | 5 | 0 | 0 | 0 | 0 |
+| `ID` Accounts, roles and identity | 6 | 4 | 1 | 1 | 0 | 0 |
+| **Total** | **172** | **143** | **12** | **12** | **5** | **0** |
 
 ### 7.1 Meal planning and student responses (`FR-MEAL`)
 
@@ -310,6 +317,8 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 
 **Note.** Foundation gap: the Domain models have a forecast, a sent headcount and live and final counts, but no separate Live forecast, Cutoff forecast or Approved headcount.
 
+**Note.** *Sent to vendor* means the approved headcount as published to the vendor account (FR-VEN-002); it is still a headcount only.
+
 #### FR-HC-003 · The cutoff forecast is preserved
 
 **Status:** `CONFIRMED` · **Roles:** Admin
@@ -334,8 +343,9 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 1. Given a forecast is ready, when Admin approves it, then the Approved headcount is set with who and when in the history.
 2. Given Admin adjusts the headcount, when the reason is empty, then saving is refused.
 3. Given an adjustment is saved, then the history shows the original value, new value, reason, actor and time, and cannot be edited.
+4. Given a vendor account or any other role, then it cannot approve or alter the headcount (FR-VEN-005); only the Food Head / Admin role can.
 
-**Dependencies:** [FR-HC-002](#fr-hc-002--headcount-quantities-are-separate-and-never-merged), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+**Dependencies:** [FR-HC-002](#fr-hc-002--headcount-quantities-are-separate-and-never-merged), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-VEN-005](#fr-ven-005--the-vendor-account-is-restricted-to-the-approved-headcount)
 
 **Source:** owner decision in task prompt; [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board)
 
@@ -348,7 +358,7 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 **Acceptance criteria.**
 1. Given a forecast awaits approval and no one responds by the reminder time, then Admin is reminded.
 2. Given the reminder is unanswered, then the request is escalated to authorized administrators and the escalation is recorded.
-3. Given no administrator responds at all, then the headcount stays not approved and nothing is sent to the vendor.
+3. Given no administrator responds at all, then the headcount stays not approved and nothing is made available to the vendor account.
 
 **Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason)
 
@@ -358,35 +368,39 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 
 #### FR-HC-006 · The vendor receives a headcount only
 
-**Status:** `CONFIRMED` · **Roles:** Admin
+**Status:** `CONFIRMED` · **Roles:** Admin, Vendor
 
-**Statement.** MealLoop sends the vendor the approved headcount and nothing else: no dish quantities, no ingredient data, no procurement and no vendor login; the vendor decides its own buffer, quantities and batches.
+**Statement.** MealLoop makes the approved headcount available to the authorized vendor account for the assigned mess and nothing else: no dish quantities, no ingredient data, no procurement, no recipes and no automatic cooking recommendations. The vendor decides its own buffer, quantities and batches. The vendor is a MealLoop user, not an external API integration.
 
 **Acceptance criteria.**
-1. Given a headcount is sent, then the message contains the headcount for the meal and no dish quantity.
-2. Given the data model and API, then no field holds a dish quantity to cook, and the vendor has no sign-in.
+1. Given a headcount is published to the vendor account, then the vendor view shows the approved headcount for the meal and no dish quantity.
+2. Given the data model and API, then no field holds a dish quantity to cook, and there is no direct vendor API.
 3. Given the vendor's cooked amount is not recorded, then Vendor cooked shows Missing.
+4. Given the vendor account, then it cannot enter production quantities, ingredients, procurement or recipes through this workflow (FR-VEN-005).
 
-**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason)
+**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-VEN-002](#fr-ven-002--the-vendor-sees-the-approved-headcount-for-its-assigned-mess-and-authorized-updates), [FR-VEN-005](#fr-ven-005--the-vendor-account-is-restricted-to-the-approved-headcount)
 
-**Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Decision 1); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (What MealLoop does and does not know); owner decision in task prompt
+**Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Decision 1; its "no vendor login" wording is superseded); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (What MealLoop does and does not know); owner decision in task prompt; owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Superseded in part: version 0.2 said the vendor has no login and receives the headcount by message. The vendor now has a restricted MealLoop account (confirmed product direction). The earlier message or call handoff (the Tell the vendor step) remains the designed interim handoff and is not removed. The vendor screens do not exist in Figma yet (docs/SCREEN_INVENTORY.md).
 
 #### FR-HC-007 · Admin sees the vendor reply status
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** For each meal Admin sees whether the headcount is not sent, waiting for the vendor, replied, or missing a reply.
+**Statement.** For each meal Admin sees whether the headcount is not sent, waiting for the vendor (pending acknowledgment), replied (acknowledged by the vendor account) or missing a reply.
 
 **Acceptance criteria.**
-1. Given a headcount was sent and no reply exists, then the status is Waiting with the time since it was sent.
-2. Given a reply was recorded, then the status shows Replied with the time.
+1. Given a headcount was published and no acknowledgment exists, then the status is Waiting (pending acknowledgment) with the time since it was published.
+2. Given the vendor account acknowledged, then the status shows Replied with the actor and the time of the acknowledgment.
 3. Given a reply is expected and absent, then the status is Missing and is never shown as an agreement.
+4. Given a headcount was published, then publishing is never shown as an acknowledgment (FR-VEN-003).
 
-**Dependencies:** [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only)
+**Dependencies:** [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only), [FR-VEN-003](#fr-ven-003--the-vendor-acknowledges-receipt-and-an-acknowledgment-is-never-fabricated)
 
-**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north)
+**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north); owner decision in the C1 review task prompt (vendor architecture)
 
-**Note.** The channel (WhatsApp, call or SMS) and whether the reply is automatic or a Mark as replied tap are open decisions (P6).
+**Note.** In the current Figma design the reply is a status the admin records after a message or call (the designed interim handoff); with a vendor account the reply is the vendor's acknowledgment. Whether acknowledgment is mandatory before a deadline, the deadline, the escalation recipients, the fallback when the vendor cannot reach MealLoop and the authorized fallback process are OPEN (docs/OPEN_DECISIONS.md, P6, P64, P65).
 
 #### FR-HC-008 · A change after sending is recorded and offered to the vendor
 
@@ -396,10 +410,10 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 
 **Acceptance criteria.**
 1. Given a sent headcount, when Admin changes it, then a reason is required and the history shows before and after with the time.
-2. Given a change after sending, then Admin can tell the vendor of the change.
+2. Given a change after sending, then the vendor account shows it as an update (FR-VEN-004) and Admin can still tell the vendor through the designed interim message or call handoff.
 3. Given the change happened late, then Results can later show it as We raised the headcount late.
 
-**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ADM-006](#fr-adm-006--results-explain-waste-and-shortages-in-plain-reasons)
+**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ADM-006](#fr-adm-006--results-explain-waste-and-shortages-in-plain-reasons), [FR-VEN-004](#fr-ven-004--a-later-update-is-shown-as-an-update)
 
 **Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Tell the vendor sheet); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Results: We raised the headcount late)
 
@@ -602,11 +616,11 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 3. Given three wrong tries, then the prototype is locked with Ask your supervisor to reset it.
 4. Given a production build, then a shared role password alone is not accepted as the authentication mechanism (FR-ATT-015).
 
-**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization), [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts)
 
 **Source:** [`design/reference/door_scanner_2026-10/data/door_scanner_spec.md`](../design/reference/door_scanner_2026-10/data/door_scanner_spec.md) (Flow); [`design/audit/design_intent.md`](../design/audit/design_intent.md) (DOOR SCANNER 2026-10: rule 9)
 
-**Note.** Approved demo behaviour only. Production authentication and authorization are proposed separately in FR-ATT-015.
+**Note.** A prototype interaction only (a Debug or Figma behaviour), not an approved production method. Production staff use individual MealLoop-managed accounts (FR-ID-002); the mechanism details are proposed in FR-ATT-015.
 
 #### FR-ATT-014 · Staff roles share Home, Alerts and Me
 
@@ -625,21 +639,21 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 
 #### FR-ATT-015 · Production staff authentication and authorization
 
-**Status:** `PROPOSED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor, Admin
+**Status:** `PROPOSED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor, Admin, Super Admin, Warden, Gate Security, Vendor
 
-**Statement.** Production staff access must provide a verified staff identity, an assigned role with mess or block scope, actions attributable to the actor, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions; the exact mechanism is decided in the NFR, architecture and security reviews.
+**Statement.** Production access must give every internal user an individually attributable identity: Students and Super Admins through SRM SSO (FR-ID-001; feasibility unverified) and all other internal users through individual MealLoop-managed accounts (FR-ID-002). Each user has an assigned role with mess or block scope, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions. The exact mechanism is decided in the NFR, architecture and security reviews.
 
 **Acceptance criteria.**
-1. Given a staff action, then it carries the actor's verified identity, role and mess or block scope.
-2. Given a staff session, then it is secure and can be revoked.
-3. Given an approval, a change, a scanning override or an SOS action, then it is recorded in an audit trail with the actor.
+1. Given any production action, then it carries the actor's individual identity, role and mess or block scope.
+2. Given a session, then it is secure and can be revoked, and a deactivated account cannot perform protected operations.
+3. Given an approval, a change, a scanning override, an SOS action, an account administration action or a vendor acknowledgment, then it is recorded in an audit trail with the actor.
 4. Given the prototype's shared role password, then it is not accepted as the sole production credential.
 
-**Dependencies:** [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+**Dependencies:** [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-ID-001](#fr-id-001--students-and-super-admins-sign-in-through-srm-sso), [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles)
 
-**Source:** owner decision in task prompt
+**Source:** owner decision in task prompt; owner decision in the C1 review task prompt (identity boundaries)
 
-**Note.** Proposed production controls. The mechanism is not chosen here (open decision P35).
+**Note.** Proposed production controls. The two authentication arrangements are confirmed direction (FR-ID-001, FR-ID-002). The password policy, multi-factor authentication, lockout and recovery rules, session length and who may provision which roles are OPEN (P61, P62); the mechanism is not chosen here (P35).
 
 ### 7.4 Special meal pass and the Pass Desk (`FR-PASS`)
 
@@ -1447,14 +1461,14 @@ The other approved student features.
 
 **Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student
 
-**Statement.** A student signs in with their SRM identity and reaches Home without extra screens; the sign-in provider and any profile-correction path are decided by SRM.
+**Statement.** A student signs in with their SRM identity through SRM's official SSO and reaches Home without extra screens. SRM SSO feasibility is unverified; the sign-in provider, access to it and any profile-correction path are decided by SRM and SRM IT.
 
 **Acceptance criteria.**
 1. Given a valid SRM identity, when the student signs in, then Getting your details leads straight to Home.
 2. Given a failed sign-in, then a clear failure and offline state are shown.
-3. Given the provider is undecided, then no real authentication is claimed as built.
+3. Given the provider or SSO access is unconfirmed, then no real authentication is claimed as built and no fallback identity scheme is described as approved.
 
-**Dependencies:** none
+**Dependencies:** [FR-ID-001](#fr-id-001--students-and-super-admins-sign-in-through-srm-sso)
 
 **Source:** [`design/reference/redesign_2026-10/README.md`](../design/reference/redesign_2026-10/README.md) (01_sign_in, 02_getting_details); [`design/README.md`](../design/README.md) (Open decisions: Sign-in provider)
 
@@ -1778,6 +1792,8 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 **Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Decisions 3); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board)
 
+**Note.** The vendor replied step is the vendor account's acknowledgment once vendor accounts exist (FR-VEN-003); until then it is the manually recorded reply of the interim handoff (FR-HC-007).
+
 #### FR-ADM-003 · Admin sends the headcount from the headcount page
 
 **Status:** `CONFIRMED` · **Roles:** Admin
@@ -1786,12 +1802,14 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 **Acceptance criteria.**
 1. Given a ready forecast, then Admin sees the forecast with its basis and a Send action.
-2. Given Admin sends, then the state moves to Sent and then Vendor replied or Waiting.
+2. Given Admin sends (publishes the approved headcount to the vendor account), then the state moves to Sent and then Vendor replied or Waiting (pending acknowledgment).
 3. Given a mess with no forecast data, then no number or range is shown (Today shows No data).
 
 **Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only)
 
 **Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board)
+
+**Note.** The existing Send and Tell the vendor design is the interim handoff; the vendor account workflow (FR-VEN-001 to FR-VEN-005) adds screens that are not in Figma.
 
 #### FR-ADM-004 · The live meal page shows entries, not the final count
 
@@ -1964,23 +1982,26 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 #### FR-ADM-015 · Staff access is managed by Admin
 
-**Status:** `CONFIRMED` · **Roles:** Admin
+**Status:** `CONFIRMED` · **Roles:** Admin, Super Admin
 
-**Statement.** Admin can see who has which role (food heads, supervisors, door staff, kitchen staff, wardens, gate security), request and give access, and see the access history.
+**Statement.** Admin can see who has which role (food heads, supervisors, door staff, kitchen staff, wardens, gate security, the vendor account) and can request access, and sees the access history. Super Admin provisions accounts, assigns roles and scope, changes scope, deactivates accounts and initiates password resets (FR-ID-003); Admin does not do these.
 
 **Acceptance criteria.**
-1. Given People and access, then counts by role and a way to give access are shown.
+1. Given People and access, then counts by role and a way to request access are shown.
 2. Given an access change, then it is recorded in history with who and when.
+3. Given the Food Head / Admin role, then it cannot provision, assign roles, change scope, deactivate or initiate a password reset (FR-ID-005).
 
-**Dependencies:** [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+**Dependencies:** [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ID-005](#fr-id-005--food-head--admin-does-not-have-super-admin-privileges)
 
-**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (People and access); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A13_people_access)
+**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (People and access); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A13_people_access); owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** Superseded in part: version 0.2 said Admin can give access. Provisioning and role assignment now belong to the separate Super Admin role. The People and access frame is a read and request surface for Admin; the Super Admin screens are not in Figma.
 
 #### FR-ADM-016 · Key decisions keep an audit history
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** Headcount adjustments, meal start and close, shortage resolution, waste edits, SOS closing, access changes and outing overrides are recorded with who, when and why.
+**Statement.** Headcount adjustments, headcount publication to the vendor account and its acknowledgment, meal start and close, shortage resolution, waste edits, SOS closing, access changes (account provisioning, role and scope changes, deactivation and password-reset initiation) and outing overrides are recorded with who, when and why.
 
 **Acceptance criteria.**
 1. Given any listed action, then the record holds actor, time and reason where one is required.
@@ -2759,6 +2780,199 @@ Principles and evaluation, not implementation.
 
 **Source:** owner decision in task prompt; [`README.md`](../README.md) (AI in MealLoop)
 
+### 7.15 Vendor account workflow (`FR-VEN`)
+
+The vendor is a MealLoop user with a restricted account. It is not an external system and there is no direct vendor API. These requirements are confirmed product direction; the screens do not exist in Figma yet, and several rules (a mandatory acknowledgment deadline, escalation, the fallback when the vendor cannot reach MealLoop, and whether an update needs a new acknowledgment) are OPEN in [`OPEN_DECISIONS.md`](OPEN_DECISIONS.md).
+
+#### FR-VEN-001 · The vendor signs in to a restricted MealLoop account
+
+**Status:** `CONFIRMED` · **Roles:** Vendor
+
+**Statement.** The vendor signs in to its own individual MealLoop-managed account (FR-ID-002), assigned to specific messes. The vendor is a MealLoop user, not an external API integration.
+
+**Acceptance criteria.**
+1. Given a vendor account assigned to a mess, when the vendor signs in, then it reaches only the vendor views for that mess.
+2. Given a mess the vendor account is not explicitly assigned to, then nothing about that mess is visible.
+3. Given the vendor account is deactivated, then protected operations are refused (FR-ID-003).
+4. Given the requirements and API, then there is no direct vendor API integration.
+
+**Dependencies:** [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Vendor sign-in screens are not in Figma (docs/SCREEN_INVENTORY.md, Needs design). Who holds the account at the vendor and how many users it has are OPEN (vendor agreement).
+
+#### FR-VEN-002 · The vendor sees the approved headcount for its assigned mess and authorized updates
+
+**Status:** `CONFIRMED` · **Roles:** Vendor, Admin
+
+**Statement.** After the Food Head approves and publishes a headcount, the vendor sees the approved headcount for its assigned mess and any later authorized update, and nothing else.
+
+**Acceptance criteria.**
+1. Given the Food Head has published the approved headcount for a meal, then the vendor sees that value for the assigned mess.
+2. Given a headcount that is a forecast or is not approved or not published, then the vendor does not see it.
+3. Given the vendor view, then it shows no individual student intention or identity and no dish quantity.
+4. Given the Food Head changes the headcount after publishing, then the vendor sees the authorized update (FR-VEN-004).
+
+**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only), [FR-VEN-001](#fr-ven-001--the-vendor-signs-in-to-a-restricted-mealloop-account)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+#### FR-VEN-003 · The vendor acknowledges receipt and an acknowledgment is never fabricated
+
+**Status:** `CONFIRMED` · **Roles:** Vendor, Admin
+
+**Statement.** The vendor acknowledges receipt of the published headcount. MealLoop stores the publication and acknowledgment history. Publishing a headcount is never the same as acknowledgment, and a vendor acknowledgment is never fabricated.
+
+**Acceptance criteria.**
+1. Given the vendor acknowledges, then the acknowledgment is recorded with the vendor account as actor and the time.
+2. Given the vendor has not acknowledged, then the interface shows pending acknowledgment to the Food Head and never shows replied or agreed.
+3. Given a headcount was published, then the history shows the publication, its actor and time separately from any acknowledgment.
+4. Given the history, then entries cannot be edited or deleted (FR-ADM-016).
+
+**Dependencies:** [FR-VEN-002](#fr-ven-002--the-vendor-sees-the-approved-headcount-for-its-assigned-mess-and-authorized-updates), [FR-HC-007](#fr-hc-007--admin-sees-the-vendor-reply-status), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Whether acknowledgment is mandatory before a deadline, the deadline, the escalation recipients and what happens when the vendor cannot reach MealLoop are OPEN (P64, P65).
+
+#### FR-VEN-004 · A later update is shown as an update
+
+**Status:** `CONFIRMED` · **Roles:** Vendor, Admin
+
+**Statement.** When an approved headcount changes after it was published, the vendor sees the change as an update with its time, and the history keeps both values.
+
+**Acceptance criteria.**
+1. Given a later authorized change, then the vendor view shows it as an update, not as a replacement without trace.
+2. Given the earlier value was acknowledged, then that acknowledgment stays in the history and is not shown as acknowledging the update.
+3. Given the update, then the Food Head sees pending acknowledgment until the vendor account acknowledges it.
+
+**Dependencies:** [FR-HC-008](#fr-hc-008--a-change-after-sending-is-recorded-and-offered-to-the-vendor), [FR-VEN-003](#fr-ven-003--the-vendor-acknowledges-receipt-and-an-acknowledgment-is-never-fabricated)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Whether a later update supersedes an earlier acknowledgment and requires a new one is OPEN (P66); the criteria above only keep the history honest and decide nothing about that rule.
+
+#### FR-VEN-005 · The vendor account is restricted to the approved headcount
+
+**Status:** `CONFIRMED` · **Roles:** Vendor
+
+**Statement.** The vendor account can sign in, view the approved headcount for its assigned mess, view authorized updates and acknowledge receipt, and can do nothing else.
+
+**Acceptance criteria.**
+1. Given the vendor account, then it cannot approve or alter a headcount.
+2. Given the vendor account, then it cannot see individual student intentions or identities, or guardian evidence.
+3. Given the vendor account, then it cannot access another mess without an explicit assignment.
+4. Given the vendor account, then it cannot manage rewards, outings, attendance corrections or accounts.
+5. Given the vendor account, then it cannot enter production quantities, ingredients, procurement or recipes through this workflow.
+
+**Dependencies:** [FR-VEN-001](#fr-ven-001--the-vendor-signs-in-to-a-restricted-mealloop-account), [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+### 7.16 Accounts, roles and identity (`FR-ID`)
+
+MealLoop uses two internal authentication arrangements: SRM SSO for Students and Super Admins (feasibility unverified), and individual MealLoop-managed accounts (email and password) for all other internal users. These requirements are confirmed product direction except where marked. The password policy, multi-factor authentication, lockout and recovery rules, session length, who may provision which roles and the detailed Super Admin permission matrix are OPEN ([`OPEN_DECISIONS.md`](OPEN_DECISIONS.md), P60 to P63).
+
+#### FR-ID-001 · Students and Super Admins sign in through SRM SSO
+
+**Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student, Super Admin
+
+**Statement.** Students and Super Admins are intended to authenticate through SRM's official SSO. This is a required architectural direction, but access to SRM's identity service must be confirmed with SRM IT, so SRM SSO feasibility is unverified. No OAuth, OIDC or SAML endpoint, approved client registration, user attributes or administrative API is assumed to exist, and no fallback identity scheme is approved.
+
+**Acceptance criteria.**
+1. Given SRM confirms access, when a Student or Super Admin signs in, then they authenticate through SRM SSO.
+2. Given SRM SSO feasibility is unverified, then no real authentication through it is claimed as built.
+3. Given any alternative sign-in for the pilot, then it is not described as approved until the owner and SRM approve it.
+
+**Dependencies:** [FR-STU-001](#fr-stu-001--students-sign-in-with-their-srm-identity), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** Open questions for SRM IT: the protocol, client registration, available attributes, a test environment, the timeline, and how pilot access works if SSO is not ready (P60).
+
+#### FR-ID-002 · Other internal users have individual MealLoop-managed accounts
+
+**Status:** `CONFIRMED` · **Roles:** Admin, Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff, Warden, Gate Security, Vendor
+
+**Statement.** Food Head / Admin, Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff, Warden, Gate Security and the Vendor each authenticate with an individual MealLoop-managed account using email and password.
+
+**Acceptance criteria.**
+1. Given any of these users, then they have their own account and no shared credential is used in production.
+2. Given a production action, then it is attributable to that individual account (FR-ATT-015).
+3. Given the shared four-digit role password of the prototype, then it is not accepted as a production method (FR-ATT-013).
+
+**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization), [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** OPEN: password policy, multi-factor authentication, lockout and recovery rules, session length, and who may provision which roles (P61, P62).
+
+#### FR-ID-003 · Super Admin manages accounts and roles
+
+**Status:** `CONFIRMED` · **Roles:** Super Admin
+
+**Statement.** Super Admin is a separate role that manages system-level identity and institutional configuration: account provisioning, role assignment, scope changes, account deactivation and password-reset initiation.
+
+**Acceptance criteria.**
+1. Given Super Admin provisions an account, assigns a role or changes scope, then the action is recorded with actor, time and reason (FR-ADM-016).
+2. Given Super Admin deactivates an account, then protected operations by that account are refused from then on.
+3. Given Super Admin initiates a password reset, then the user completes it and no password is shown to Super Admin (FR-ID-004).
+
+**Dependencies:** [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-ID-004](#fr-id-004--no-one-can-read-a-password)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** The detailed Super Admin permission matrix is OPEN and not reviewed; no broader permission is implied (P62).
+
+#### FR-ID-004 · No one can read a password
+
+**Status:** `CONFIRMED` · **Roles:** Super Admin, all MealLoop-account users
+
+**Statement.** Passwords are never stored or displayed in plaintext. Super Admin cannot read any user's password. Users establish or reset their own credentials through a secure process.
+
+**Acceptance criteria.**
+1. Given any screen, API response, log or export, then no password is shown in plaintext.
+2. Given Super Admin, then there is no way to read a user's password.
+3. Given a new account or a reset, then the user sets their own password through the secure process (FR-ID-006).
+
+**Dependencies:** [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ID-006](#fr-id-006--invitation-and-password-reset-messages-use-an-external-provider)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** The credential storage mechanism is decided in technical design (NFR-SEC-010); this requirement states the outcome only.
+
+#### FR-ID-005 · Food Head / Admin does not have Super Admin privileges
+
+**Status:** `CONFIRMED` · **Roles:** Admin, Super Admin
+
+**Statement.** Food Head / Admin continues to manage operational mess workflows (headcount approval and vendor handoff, menus, reports) and does not have Super Admin privileges. Super Admin and Food Head / Admin are separate roles.
+
+**Acceptance criteria.**
+1. Given the Food Head / Admin role, then it cannot provision accounts, assign roles, change scope, deactivate accounts or initiate password resets.
+2. Given the role and permission matrix, then Super Admin and Admin are separate columns.
+
+**Dependencies:** [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+#### FR-ID-006 · Invitation and password-reset messages use an external provider
+
+**Status:** `PROPOSED` · **Roles:** Super Admin, all MealLoop-account users
+
+**Statement.** Account invitations and password-reset messages are delivered through an external email or messaging provider. The provider is undecided and its availability is unverified.
+
+**Acceptance criteria.**
+1. Given an invitation or reset, then the user receives a message that lets them set their own password.
+2. Given delivery fails, then the failure is recorded and the account state is unchanged; a delivery result is never treated as the user completing the reset.
+3. Given no provider is chosen, then no delivery is claimed as built.
+
+**Dependencies:** [FR-ID-004](#fr-id-004--no-one-can-read-a-password)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** External integration feasibility is not verified; the provider choice is OPEN (P63).
+
 ## 8. AI and forecasting requirements
 
 AI is advisory. It supports predictions, feedback analysis and decisions, never replaces a person's decision, and must not be needed for any core dining action. The detailed, testable requirements are the `FR-AI-*` entries above; this section states the principles and the evaluation discipline.
@@ -2785,8 +2999,10 @@ These are requirement **inputs** to be detailed later (privacy and security task
 
 | Topic | Required in principle | Related requirements | Status |
 |---|---|---|---|
-| Student identity | Students sign in with their SRM identity; staff see masked student IDs only | FR-STU-001, FR-ATT-003 | SRM APPROVAL REQUIRED |
+| Student identity | Students sign in with their SRM identity (SRM SSO feasibility unverified); staff see masked student IDs only; the vendor view carries no student-level data | FR-STU-001, FR-ATT-003, FR-VEN-005 | SRM APPROVAL REQUIRED |
 | Staff access, prototype | A shared four-digit password per staff role (three tries, then locked) is approved demo behaviour for the Figma prototype; it is not an approved production security architecture | FR-ATT-013 | CONFIRMED (demo behaviour) |
+| Identity, two arrangements | Students and Super Admins authenticate through SRM SSO (feasibility unverified; no endpoint, protocol, attributes or fallback is assumed). All other internal users, including the vendor, use individual MealLoop-managed accounts with email and password | FR-ID-001, FR-ID-002, FR-STU-001 | SRM APPROVAL REQUIRED (SRM SSO), CONFIRMED (MealLoop accounts) |
+| Credentials | Passwords are never stored or displayed in plaintext; Super Admin cannot read any password; users set and reset their own through a secure process; invitations and resets need an external email provider (undecided). Password policy, multi-factor authentication, lockout and recovery rules and session length are OPEN | FR-ID-004, FR-ID-006 | CONFIRMED (outcome), PROPOSED (provider) |
 | Staff access, production | Verified staff identity; an assigned role with mess or block scope; actions attributable to the actor; secure sessions with revocation; auditable approvals, changes, scanning overrides and SOS actions. The mechanism is decided in the NFR, architecture and security reviews | FR-ATT-015, FR-ADM-015, FR-ADM-016 | PROPOSED |
 | Guardian video | Recorded only with SRM approval and written consent; face and voice are sensitive; access limited to the warden role and logged | FR-OUT-022 | SRM APPROVAL REQUIRED |
 | Evidence retention | A written retention period for guardian evidence (draft in the guardian spec); a retention rule for feedback, skipping reasons and report photos | FR-OUT-022, FR-FB-014 | SRM APPROVAL REQUIRED |
@@ -2827,11 +3043,12 @@ Topics only. **No numbers are given here;** they are set in the non-functional r
 | D2 | SRM approval of privacy, consent and retention for guardian evidence | Digital outings |
 | D3 | A verified guardian contact source | Digital outings |
 | D4 | SRM approval of the participation-credit and accuracy-bonus amounts, the reward budget, reward values and redemption, and of the incentive scheme | Credits and rewards |
-| D5 | Vendor willingness to receive and reply to a headcount by an agreed channel | Headcount |
+| D5 | Vendor agreement to use a restricted MealLoop account, to acknowledge a published headcount, and to an agreed fallback when it cannot reach MealLoop | Headcount |
 | D6 | Staff and institutional approval to measure unserved food for a baseline | Baseline and success metrics |
 | D7 | A working backend and database | Everything beyond the design demo |
 | D8 | Recorded evidence of the foundation build and its unit-test result (the owner reports a build and launch on the owner's Mac; `docs/FOUNDATION_VERIFICATION.md` does not exist yet) | Implementation |
 | D9 | SRM authorization of the outing pilot cohort, and later of the eligibility thresholds, evaluation period, minimum sample size and exceptions | Digital outings |
+| D10 | SRM IT confirmation of access to SRM SSO (protocol, client registration, attributes, test environment, timeline); SRM confirmation of the guardian-contact authority; an email or notification provider for invitations and resets | Identity, guardian access, account lifecycle |
 
 ### Assumptions (not facts)
 
@@ -2839,7 +3056,7 @@ Topics only. **No numbers are given here;** they are set in the non-functional r
 |---|---|
 | A1 | The pilot mess has the connectivity and devices that door, desk and kitchen staff need; this has not been surveyed. |
 | A2 | Enough students will answer for the forecast to be useful; participation is unknown. |
-| A3 | The vendor will accept an approved headcount as the only input. |
+| A3 | The vendor will accept an approved headcount as the only input and will use a restricted MealLoop account to see it and acknowledge it. |
 | A4 | The institution will allow QR entry scanning at a common entrance. |
 | A5 | The design's sample data is a fair picture of the real flows; real volumes are unknown. |
 
@@ -2858,6 +3075,8 @@ Topics only. **No numbers are given here;** they are set in the non-functional r
 | R9 | Staff adoption: door, desk and kitchen staff add steps to a busy service. | Keep steps minimal; test on the pilot floor. |
 | R10 | Participation credits for Skip and I'm in could be gamed by answering carelessly. | The accuracy bonus and the verification rules are the mitigation; evaluate behaviour in the pilot. |
 | R11 | The outing pilot bypass could be misconfigured and reach students outside the authorized cohort. | An explicit cohort-limited configuration with an audit trail (FR-OUT-024). |
+| R13 | Added scope: the vendor account workflow, Super Admin and account-management screens, and email and password sign-in are not in Figma, and SRM SSO feasibility is unverified. This adds work to the 10 November and 13 December targets, which are not moved or weakened. | Record the screens as Needs design (not in Figma) in [`SCREEN_INVENTORY.md`](SCREEN_INVENTORY.md); the owner decides their scope and milestone (OPEN_DECISIONS P68); keep the existing message or call handoff as the interim; do not block dining on SSO. |
+| R14 | A vendor acknowledgment could be assumed when it is only a published headcount, or fabricated by an interface. | Publishing is never acknowledgment; pending acknowledgment is always visible (FR-VEN-003). |
 | R12 | A missing QR scan could be read as absence and unfairly lower credits or outing reliability. | A missing scan is not proof of absence (FR-RWD-003, FR-OUT-028); no threshold is enforced without enough valid evidence. |
 
 ## 12. Success metrics and pilot evaluation
@@ -2903,9 +3122,12 @@ The full list, each with options and a suggested default, is in [`OPEN_DECISIONS
 - **Resolved since version 0.1 by owner decisions:** Community publication (automatic after configured checks), the credits and accuracy-bonus direction, and the structure of outing eligibility (pilot mode, then participation and reliability).
 - Official SRM outing policy and escalation authority; the authorized outing pilot cohort; the post-pilot eligibility thresholds, evaluation period, minimum sample size and exceptions; the verified guardian contact source.
 - Guardian video retention, consent and privacy approval; speech-recognition accuracy; institutional approval of the warden phone-confirmation fallback.
-- Student authentication source.
+- Resolved since version 0.2 by owner decisions: two authentication arrangements (SRM SSO for Students and Super Admins; MealLoop-managed accounts for the rest), a separate Super Admin role, and the vendor working through a restricted MealLoop account. **SRM SSO feasibility is unverified** (questions for SRM IT in OPEN_DECISIONS P60).
+- Open: password policy, multi-factor authentication, lockout and recovery rules, session length; who may provision which roles and the detailed Super Admin permission matrix; the email and notification provider; the design scope and milestone of the vendor and Super Admin screens.
+- Open: whether vendor acknowledgment is mandatory before a deadline, the deadline and escalation recipients, the fallback when the vendor cannot reach MealLoop and the authorized fallback process, and whether a later update needs a new acknowledgment.
+- Open: notification retry and escalation policy; SOS escalation targets; guardian authentication, and the authorized correction process for guardian contacts.
 - Scanner offline behaviour: resolved for the pilot as never record (NFR-REL-005, owner to confirm); a future offline queue is deferred.
-- Vendor communication channel (WhatsApp, call or SMS).
+- Vendor communication channel: partly resolved. The primary channel is the vendor's MealLoop account; the fallback channel is open.
 - The exact participation-credit and accuracy-bonus amounts, the redemption budget and reward values, and institutional approval of the incentive scheme; the reliable absence-verification method and the minimum verification coverage.
 - The production staff authentication and authorization mechanism (technical design).
 - Pilot data availability and success thresholds; the Community support threshold.
@@ -2921,6 +3143,10 @@ The full list, each with options and a suggested default, is in [`OPEN_DECISIONS
 | Live forecast | The current estimate of diners, which can still change |
 | Cutoff forecast | The forecast as it stood at the cutoff, preserved with its rule version |
 | Approved headcount | The headcount Admin approved (or adjusted with a reason) |
+| Super Admin | A separate role for account provisioning, role assignment, scope changes, deactivation and password-reset initiation; not the Food Head / Admin role |
+| Vendor account | A restricted MealLoop account for the vendor: it sees the approved headcount and authorized updates for its assigned mess and acknowledges receipt |
+| Pending acknowledgment | A published headcount that the vendor account has not acknowledged; never shown as replied |
+| SRM SSO | SRM's official single sign-on; its availability to MealLoop is unverified |
 | Sent to vendor | The approved headcount as sent to the vendor; a headcount only |
 | Actual entries | Live count of students who have entered so far; never final |
 | Final entries | The count of recorded entries after the Supervisor closes the meal |
@@ -2963,3 +3189,5 @@ The full list, each with options and a suggested default, is in [`OPEN_DECISIONS
 | **CHANGED, OWNER CONFIRMATION REQUIRED** | The task prompt differs from earlier documented behaviour; both are recorded and the owner must choose |
 
 Policy numbers, reward values, thresholds and anything depending on SRM are never CONFIRMED.
+
+In the identity and vendor requirements, **CONFIRMED** means a confirmed product direction, **PROPOSED** means a proposed technical implementation, **SRM APPROVAL REQUIRED** covers SRM and SRM IT dependencies, and an external integration whose feasibility is not verified says so in its statement.

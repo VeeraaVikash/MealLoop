@@ -1,6 +1,6 @@
 # MealLoop — Non-Functional Requirements (NFR)
-**Version:** 0.2 — Consolidated Review Draft  
-**Date:** 23 October 2026  
+**Version:** 0.3 — Consolidated Review Draft  
+**Date:** 24 October 2026  
 **Product:** MealLoop  
 **Initial deployment:** Meenakshi Girls' Mess, SRMIST Kattankulathur  
 **Status:** DRAFT — Owner review pending (not owner-approved)
@@ -11,6 +11,7 @@
 |---|---|---|
 | 0.1 | 2026-10-23 | Review draft written by the owner and ChatGPT. |
 | 0.2 | 2026-10-23 | Two fields (Status and Depends on) replace hybrid statuses; proposed milestone tags and Related PRD requirements on every requirement; Targets still pending table; offline-scan direction recorded as resolving the functional offline decision (owner to confirm); guardian localization added to NFR-ACC-003; NFR-PER-002 marked provisional; new requirements NFR-REL-009 to 011, NFR-PER-005 to 007, NFR-PRI-007, NFR-SEC-009, NFR-OPS-001, NFR-OBS-005 and NFR-SCL-004; undecided architecture items and an acceptance-evidence template; Appendix A of candidate values (not requirements). |
+| 0.3 | 2026-10-24 | C1 reconciliation on pull request 3: NFR-SEC-001 and NFR-SEC-002 name the two authentication arrangements, the vendor account scope and the Super Admin role; NFR-PRI-001 states that the vendor view carries no student-level data; NFR-REL-009 adds notification durability criteria; new NFR-SEC-010 for the credential and account lifecycle. NFR-SEC-001 moves from Direction confirmed to SRM approval required because access to SRM SSO is unverified. |
 
 Requirements without an explicit acceptance-criteria list in the 0.1 draft keep their Verification line (and, for NFR-PER-001, its Measurement line) as their only criterion until the owner adds criteria: NFR-PER-001, NFR-PRI-001, NFR-PRI-005, NFR-PRI-006, NFR-OBS-001, NFR-OBS-003, NFR-OBS-004, NFR-ACC-002, NFR-ACC-004, NFR-SCL-001, NFR-SCL-002, NFR-SCL-003, NFR-TST-001, NFR-TST-002, NFR-TST-003, NFR-TST-004, NFR-DEP-002, NFR-DEP-003, NFR-DEP-004, NFR-DEP-005.
 ## Targets still pending
@@ -251,6 +252,8 @@ Each requirement lists the functional requirements in [`PRD.md`](PRD.md) it rela
 - A failed push notification never loses the SOS: it remains visible in the app and the Admin Safety case.
 - An unacknowledged SOS escalates to a second authorized person.
 - Active, claimed, checked and closed are server states; a client cannot show a state the server has not recorded.
+- If external delivery fails, the committed operation stays saved, the in-app alert stays accessible and the delivery failure is recorded; the retry and escalation policy is pending.
+- A delivery result is never treated as human acknowledgment.
 
 **Verification:** Inject push failures and unacknowledged SOS cases; compare the server SOS state with each client; measure time to delivery once a target is set.
 
@@ -425,21 +428,24 @@ Each requirement lists the functional requirements in [`PRD.md`](PRD.md) it rela
 ## 4. Authentication, authorization and security
 
 ### NFR-SEC-001 — Production identity
-**Status:** Direction confirmed
+**Status:** SRM approval required
 
-**Depends on:** SRM integration for student sign-in; the production identity mechanism (FR-ATT-015, decided in security review)
+**Depends on:** SRM IT confirmation that SRM SSO can be used (protocol, client registration, attributes, test environment, timeline are unverified); the production mechanism for MealLoop-managed accounts (FR-ATT-015, decided in security review)
 
 **Milestone (proposed):** M2
 
-**Related PRD requirements:** [FR-STU-001](PRD.md#fr-stu-001--students-sign-in-with-their-srm-identity), [FR-ATT-013](PRD.md#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ATT-015](PRD.md#fr-att-015--production-staff-authentication-and-authorization)
+**Related PRD requirements:** [FR-STU-001](PRD.md#fr-stu-001--students-sign-in-with-their-srm-identity), [FR-ID-001](PRD.md#fr-id-001--students-and-super-admins-sign-in-through-srm-sso), [FR-ID-002](PRD.md#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ATT-013](PRD.md#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ATT-015](PRD.md#fr-att-015--production-staff-authentication-and-authorization)
 
-**Requirement:** Student access should use institution-verified identity where available. Production staff actions must be attributable to individually authenticated staff members.
+**Requirement:** There are two authentication arrangements. Students and Super Admins are intended to authenticate through SRM SSO; SRM SSO feasibility is unverified and no endpoint, protocol or fallback is assumed or approved. All other internal users (Food Head / Admin, Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff, Warden, Gate Security and Vendor) authenticate with individual MealLoop-managed accounts using email and password. Production actions must be attributable to the individual user.
 
 **Acceptance criteria:**
 - Staff sessions identify the actor and authorized role.
 - Account deactivation prevents further protected operations.
 - Debug/demo shared-role passwords are not sufficient as sole production authentication.
 - Staff role selection does not grant permissions by itself.
+- A vendor account is a MealLoop-managed account with a restricted scope, not an external API client.
+- No fallback identity scheme is used for real users until the owner and SRM approve it.
+- Super Admin is a separate role from Food Head / Admin.
 
 **Verification:** Authentication tests, disabled-account tests, impersonation attempts and staff handover tests.
 
@@ -450,9 +456,9 @@ Each requirement lists the functional requirements in [`PRD.md`](PRD.md) it rela
 
 **Milestone (proposed):** M2
 
-**Related PRD requirements:** [FR-ATT-015](PRD.md#fr-att-015--production-staff-authentication-and-authorization), [FR-ADM-015](PRD.md#fr-adm-015--staff-access-is-managed-by-admin), [FR-OUT-013](PRD.md#fr-out-013--the-warden-decides-on-guardian-approved-requests)
+**Related PRD requirements:** [FR-ATT-015](PRD.md#fr-att-015--production-staff-authentication-and-authorization), [FR-ADM-015](PRD.md#fr-adm-015--staff-access-is-managed-by-admin), [FR-OUT-013](PRD.md#fr-out-013--the-warden-decides-on-guardian-approved-requests), [FR-VEN-005](PRD.md#fr-ven-005--the-vendor-account-is-restricted-to-the-approved-headcount), [FR-ID-003](PRD.md#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ID-005](PRD.md#fr-id-005--food-head--admin-does-not-have-super-admin-privileges)
 
-**Requirement:** Every protected backend operation must validate identity, action permission, resource ownership and applicable mess/block scope.
+**Requirement:** Every protected backend operation must validate identity, action permission, resource ownership and applicable mess/block scope. Roles and mess assignments are scoped: the vendor account sees only the approved headcount for its explicitly assigned mess, and Food Head / Admin cannot perform Super Admin actions.
 
 **Acceptance criteria:**
 - Staff cannot operate on another mess without explicit authorization.
@@ -460,6 +466,8 @@ Each requirement lists the functional requirements in [`PRD.md`](PRD.md) it rela
 - Students cannot modify other students' records.
 - Client-hidden controls do not substitute for backend enforcement.
 - Default behavior is denial when authorization cannot be established.
+- A vendor account cannot approve or alter headcounts, see student-level data or guardian evidence, or reach another mess without an explicit assignment.
+- Provisioning, role assignment, scope changes, deactivation and password-reset initiation are refused for every role except Super Admin.
 
 **Verification:** Permission-matrix tests, cross-scope access attempts, manipulated-resource-ID tests.
 
@@ -599,6 +607,26 @@ Includes headcount approvals, meal lifecycle changes, attendance corrections, wa
 
 **Verification:** Inspect the threat model, the CI scan reports and the review record.
 
+### NFR-SEC-010 — Credential and account lifecycle
+**Status:** Technical design pending
+
+**Depends on:** The one-way hashing approach and algorithm (technical design); an email or messaging provider for invitations and resets (undecided); the password policy, multi-factor authentication, lockout and recovery rules and session length (OPEN, no value set)
+
+**Milestone (proposed):** M3
+
+**Related PRD requirements:** [FR-ID-003](PRD.md#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ID-004](PRD.md#fr-id-004--no-one-can-read-a-password), [FR-ID-006](PRD.md#fr-id-006--invitation-and-password-reset-messages-use-an-external-provider), [FR-ATT-015](PRD.md#fr-att-015--production-staff-authentication-and-authorization)
+
+**Requirement:** Passwords are never stored or displayed in plaintext. Credentials are stored using an approved one-way hashing approach, with the algorithm decided in the technical design. A password reset is initiated by Super Admin and completed by the user. Deactivating an account takes effect on protected operations.
+
+**Acceptance criteria:**
+- No password appears in plaintext in storage, logs, exports, screens or API responses.
+- Super Admin cannot read any user's password.
+- A reset initiated by Super Admin can be completed only by the user.
+- After deactivation, protected operations by that account are refused.
+- No value or policy is set by this requirement; the password policy and recovery rules are decided separately.
+
+**Verification:** Inspect stored credentials and telemetry for plaintext; attempt to read a password as Super Admin; complete and abuse a reset; deactivate an account during an active session and retry a protected operation.
+
 ## 5. Privacy and data governance
 
 ### NFR-PRI-001 — Data minimization
@@ -608,9 +636,9 @@ Includes headcount approvals, meal lifecycle changes, attendance corrections, wa
 
 **Milestone (proposed):** M3
 
-**Related PRD requirements:** [FR-FB-013](PRD.md#fr-fb-013--feedback-is-aggregate-and-never-shows-names-to-staff), [FR-ADM-017](PRD.md#fr-adm-017--admin-analytics-never-include-private-trackers), [FR-OUT-030](PRD.md#fr-out-030--students-can-see-their-outing-eligibility-and-request-a-correction)
+**Related PRD requirements:** [FR-FB-013](PRD.md#fr-fb-013--feedback-is-aggregate-and-never-shows-names-to-staff), [FR-ADM-017](PRD.md#fr-adm-017--admin-analytics-never-include-private-trackers), [FR-OUT-030](PRD.md#fr-out-030--students-can-see-their-outing-eligibility-and-request-a-correction), [FR-VEN-002](PRD.md#fr-ven-002--the-vendor-sees-the-approved-headcount-for-its-assigned-mess-and-authorized-updates), [FR-VEN-005](PRD.md#fr-ven-005--the-vendor-account-is-restricted-to-the-approved-headcount)
 
-**Requirement:** Each role and subsystem receives only the personal information necessary for its authorized function.
+**Requirement:** Each role and subsystem receives only the personal information necessary for its authorized function. The vendor view carries no student-level data.
 
 **Verification:** Review API responses, logs, exports and operational screens for unnecessary identity and behavioral information.
 
