@@ -1,23 +1,51 @@
 # MealLoop — C4 Architecture (Review Draft)
 
-**Version:** 0.2 · **Date:** 2026-10-24 · **Status:** PROPOSED, not owner-approved or implemented. **C1 is revised for owner review. C2 is an UNREVIEWED DRAFT. C3 and C4 are not started.**  
+**Version:** 0.3 · **Date:** 2026-10-24 · **Overall status:** the architecture is STILL UNDER REVIEW and is not implemented. Only C1 is owner approved.
+
 **Review sequence:** PRD → NFR → C1 → C2 → C3 → selective C4 → ADRs → data model and API contracts  
 **First pilot:** Meenakshi Girls' Mess, SRMIST Kattankulathur
 
-> This is an architecture proposal informed by [PRD v0.2](../PRD.md) and [NFR v0.2](../NFR.md). They are still under owner review. Do not present proposed infrastructure or external integrations as deployed, confirmed, or institutionally authorized. The existing [ADR-002](../adr/ADR-002-backend-shape.md), [backend proposal](../backend/BACKEND_PROPOSAL.md), and [first-slice OpenAPI](../backend/openapi.yaml) remain proposals, not decisions approved by this document.
+| Document control | Status |
+|---|---|
+| **C1 — System Context** | **OWNER APPROVED — 24 October 2026** (see [C1 owner approval](#c1-owner-approval)) |
+| **C2 — Container** | UNREVIEWED DRAFT |
+| **C3 — Component** | NOT STARTED |
+| **C4 — Code** | SELECTIVE / DEFERRED |
+| **Overall architecture** | STILL UNDER REVIEW |
+
+> This is an architecture proposal informed by [PRD v0.3](../PRD.md) and [NFR v0.3](../NFR.md). Both are still review drafts under owner review and are not owner-approved. Do not present proposed infrastructure or external integrations as deployed, confirmed, or institutionally authorized. The existing [ADR-002](../adr/ADR-002-backend-shape.md), [backend proposal](../backend/BACKEND_PROPOSAL.md), and [first-slice OpenAPI](../backend/openapi.yaml) remain proposals, not decisions approved by this document.
 
 ## What C1 / C2 / C3 / C4 mean
 
 | Level | Question answered | Status in this draft |
 |---|---|---|
-| **C1 — System Context** | Who uses MealLoop, and what systems does it interact with? | **Revised below for owner review (not approved)** |
-| **C2 — Container** | Which independently deployable applications and data stores form MealLoop? | **UNREVIEWED DRAFT below; not approved and not to be expanded until C1 is approved** |
-| **C3 — Component** | Which components/modules inside the backend own each business operation and boundary? | **Not yet approved or diagrammed** |
-| **C4 — Code** | How do classes, interfaces and code collaborate inside a selected component? | **Deferred; optional for complex components** |
+| **C1 — System Context** | Who uses MealLoop, and what systems does it interact with? | **Owner approved — 24 October 2026** ([record](#c1-owner-approval)) |
+| **C2 — Container** | Which independently deployable applications and data stores form MealLoop? | **UNREVIEWED DRAFT below; not approved, not reviewed and not expanded in this revision** |
+| **C3 — Component** | Which components/modules inside the backend own each business operation and boundary? | **Not started** |
+| **C4 — Code** | How do classes, interfaces and code collaborate inside a selected component? | **Selective and deferred; optional for complex components** |
 
 "C4 model" is the name for all these views. A full class-level diagram is **not** a prerequisite for every feature. A C4 *container* means an application or data store that can execute or deploy separately, not a Docker container.
 
 ## C1 — System context
+
+### C1 owner approval
+
+The repository owner explicitly approved **C1 — System Context** on **24 October 2026**. Approved diagram (editable, Eraser): [C1 — System Context](https://app.eraser.io/workspace/dtLAj6uiBc7Gl2OndSW2?diagram=mfEHZZ5nqX1EL8ZrddzQ&layout=canvas). The Mermaid diagram below is the in-repository equivalent.
+
+Approved C1 decisions:
+
+1. Students and Super Admins use SRM SSO, subject to SRM IT integration feasibility.
+2. Other operational users (Food Head / Admin, Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff, Warden, Gate Security) and the Vendor have individual MealLoop-managed accounts.
+3. Super Admin manages account provisioning and permissions; Food Head / Admin has separate operational responsibilities and no Super Admin privileges.
+4. The Vendor is a restricted MealLoop user, not an external vendor API integration.
+5. The Vendor sees approved headcounts and authorized updates for its assigned mess and acknowledges receipt.
+6. Notifications may use external providers, but MealLoop retains the authoritative event records.
+7. Guardian authority comes from institutionally verified contact information or an approved correction.
+8. The existing manual outing procedure remains available.
+
+**Limits of this approval.** Owner approval of these system boundaries is **not** SRM approval, **not** production-readiness certification and **not** verification that any external integration is available. SRM SSO feasibility, the guardian authentication mechanism, the notification provider, hosting and provider choices, vendor acknowledgment rules (deadline, escalation, fallback, and whether a later update supersedes an earlier acknowledgment) and guardian-evidence privacy policy all remain open (see [`OPEN_DECISIONS.md`](../OPEN_DECISIONS.md)). Approving C1 does not approve C2, C3, C4, ADR-002, the backend proposal, the OpenAPI draft or any backend technology.
+
+**Pending correction to the Eraser artifact (not applied).** The approved Eraser diagram labels the Supervisor relationship "Start and close meals, record shortages and SOS". The accurate wording is: the Supervisor starts and closes meals, resolves shortages and handles SOS incidents (OPEN_DECISIONS R6). This document uses the corrected wording; the Eraser diagram was deliberately not edited and still needs an owner-authorized label change. Its legend also reads "confirmed direction" versus "unverified or institutional dependency"; the legend below is the authoritative wording.
 
 ### People and external systems
 
@@ -26,7 +54,8 @@
 - **Student:** views the menu, submits meal intentions, shows the entry QR, reports issues, views eligible credits, requests outings.
 - **Super Admin:** a separate role for system-level identity and institutional configuration: account provisioning, role assignment, scope changes, account deactivation and password-reset initiation. The detailed permission matrix is OPEN. Super Admin cannot read any user's password.
 - **Food Head / Admin:** manages operational mess workflows (headcount approval and handoff to the vendor, menus, reports). Does **not** have Super Admin privileges.
-- **Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff:** mess operations, within their assigned mess.
+- **Supervisor:** starts and closes the meal for the mess, resolves shortages and handles SOS incidents, within their assigned mess.
+- **Kitchen Staff, Door Scanner Staff, Pass Desk Staff:** mess operations, within their assigned mess.
 - **Vendor (restricted account):** signs in to its own restricted MealLoop account, views the approved headcount for its assigned mess and any authorized update, and acknowledges receipt. The vendor is **not** an external system and there is **no direct vendor API**. The vendor receives an approved headcount only.
 - **Guardian:** reviews and accepts or rejects an outing request via mobile web; acceptance starts the separately handled verification evidence. Guardian authentication is an unresolved design problem.
 - **Warden and Gate Security:** scoped to their authorized hostel or block and outgoing pass events.
@@ -79,14 +108,14 @@ flowchart LR
   pol -.->|"approvals"| ml
 ```
 
-**Legend.** Solid line: users use MealLoop. Dashed line: integration or dependency that is unverified, undecided or institutional.
+**Legend.** Solid line: a confirmed relationship, where users use MealLoop. Dashed line: an unverified integration or an undecided or institutional dependency; it must not be read as an existing or available integration. "Confirmed direction" in the table below means the owner approved the boundary, not that the integration exists.
 
 | Actor or external system | What it does | How it authenticates | Status |
 |---|---|---|---|
 | Student | Meal answers, entry QR, reports, credits, outing requests | SRM SSO | Confirmed direction; SSO feasibility unverified |
 | Super Admin | Account provisioning, role assignment, scope changes, deactivation, password-reset initiation; cannot read passwords | SRM SSO | Confirmed direction (separate role); SSO feasibility unverified; detailed permission matrix open |
 | Food Head / Admin | Headcount approval and handoff, menus, reports; no Super Admin privileges | MealLoop-managed account (email and password) | Confirmed direction |
-| Supervisor | Meal start and close, shortages, SOS | MealLoop-managed account | Confirmed direction |
+| Supervisor | Starts and closes meals, resolves shortages, handles SOS incidents | MealLoop-managed account | Confirmed direction |
 | Kitchen Staff | Counts, shortages, waste reports | MealLoop-managed account | Confirmed direction |
 | Door Scanner Staff | Entry scanning | MealLoop-managed account | Confirmed direction |
 | Pass Desk Staff | Special-pass checks | MealLoop-managed account | Confirmed direction |
@@ -117,7 +146,7 @@ flowchart LR
 
 ## C2 — Container view
 
-> **UNREVIEWED DRAFT.** This preliminary container proposal has not been reviewed or approved by the owner, and it is not expanded in this revision. The Spring Boot and PostgreSQL choices are proposals only, not accepted decisions. Review it after C1 is approved.
+> **UNREVIEWED DRAFT.** This preliminary container proposal has not been reviewed or approved by the owner, and it is not expanded in this revision. The Spring Boot and PostgreSQL choices are proposals only, not accepted decisions. C1 is now owner approved; C2 still awaits owner review.
 
 **Proposed shape:** one Spring Boot backend deployable with clear internal modules and one PostgreSQL database. This fits the four-person team and one-mess pilot better than mandatory microservices. The architecture remains a proposal until evaluated in ADRs.
 
@@ -256,7 +285,7 @@ The first-slice [OpenAPI draft](../backend/openapi.yaml) currently describes a s
 
 ## Evidence and review checklist
 
-- [ ] C1: Owner confirms actors, external dependencies and institutional boundary.
+- [x] C1: Owner confirms actors, external dependencies and institutional boundary (approved 24 October 2026; not SRM approval and not verification of any external integration).
 - [ ] C2: Owner confirms candidate clients, backend/data boundaries, and what remains external.
 - [ ] PRD and NFR corrective PRs reviewed and merged in proper stacked order.
 - [ ] C3: Backend owner and module dependency contracts reviewed.

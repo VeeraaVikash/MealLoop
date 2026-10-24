@@ -86,7 +86,8 @@ flowchart LR
 - Published menus for Breakfast, Lunch, Snacks and Dinner.
 - Per-meal answers: I'm in / Skip / Not sure, with reminders and optional reasons for skipping. Cutoff two hours before the meal.
 - Admins can adjust the final headcount; every adjustment needs an explanation and is kept in the audit history.
-- The university sends the vendor a **headcount only**. There is no vendor app, no procurement module and no automatic dish-quantity plan.
+- The university sends the vendor an approved **headcount only**, through the vendor's restricted MealLoop account. There is no procurement module and no automatic dish-quantity plan.
+- The vendor sees approved headcounts and authorized updates for its assigned messes and can acknowledge receipt. The vendor cannot access individual student data or control headcount approval.
 
 ### Attendance verification
 
@@ -179,7 +180,7 @@ request → guardian verification → warden decision → pass issued
 | Pass Desk | Checks the special-meal pass (separate from hostel outing passes): types the last 4 digits, compares the code and colour shown with the student's phone, then taps "Matches · record entry"; requests pass reissues | The desk does not scan; a lookup alone never records an entry; "Approved" is never shown as "Done" |
 | Kitchen Staff | Sees forecasted attendance before the meal and the live entered count during it; reports shortages; records leftovers per dish (kg, L or pieces) and one plate-waste total after the meal | Missing data never becomes zero; a saved report is simply Recorded and can be edited for 6 hours |
 | Supervisor | Starts and closes the meal for the mess; resolves shortages; sees recorded waste read-only; closes SOS cases | Starting or closing a meal drives the meal state of every staff role in that mess; there is no "forward to Admin" action |
-| Admin / Food head | Sends the vendor a headcount; reviews results; manages menus, feedback, Community, rewards, special passes, staff access and safety cases | Headcount only to the vendor (no dish quantities, no vendor login); causes shown as Sure, Probably or Can't tell |
+| Admin / Food head | Sends the vendor a headcount; reviews results; manages menus, feedback, Community, rewards, special passes, staff access and safety cases | Headcount only to the vendor, who has a restricted MealLoop account (no dish quantities; the vendor cannot approve headcounts or see student data); causes shown as Sure, Probably or Can't tell |
 | Guardian, Warden, Gate | Guardian video approval; warden decision; gate exit and return | An approval is not proof of leaving; only gate events count |
 
 <details>
@@ -264,6 +265,22 @@ The Figma design is a reference, not proof of implementation.
 - kept apart from pilot data;
 - never presented as measured results;
 - never silently included in production analytics.
+
+### System architecture
+
+MealLoop uses the C4 model to document system context, deployment/container boundaries, internal components and selected code-level designs. Architectural decisions are reviewed progressively and recorded through ADRs.
+
+| C4 Level | Status |
+|---|---|
+| C1 — System Context | Owner approved — 24 October 2026 |
+| C2 — Container | Draft, not reviewed |
+| C3 — Component | Not started |
+| C4 — Code | Selective, deferred |
+
+- [C4 architecture document](docs/architecture/C4_ARCHITECTURE.md)
+- [Approved C1 diagram (Eraser)](https://app.eraser.io/workspace/dtLAj6uiBc7Gl2OndSW2?diagram=mfEHZZ5nqX1EL8ZrddzQ&layout=canvas)
+
+Owner approval of C1 is not SRM approval and does not verify that any external integration (such as SRM SSO) is available. The overall architecture is still under review.
 
 ## Current status
 
@@ -377,7 +394,7 @@ MealLoop is built by a team of four developers, most of whom are learning native
 - Whether students answer for Snacks.
 - The meaning of the yellow highlight on the printed menu.
 - Who the `**` gravies on the menu are for.
-- Vendor channel: WhatsApp, call or SMS.
+- Vendor acknowledgment deadline and escalation, and the fallback channel (for example WhatsApp, call or SMS) when the vendor cannot reach MealLoop.
 - Offline policy for scanning (draft: never record).
 - How long a missed meal's waste can still be recorded.
 
