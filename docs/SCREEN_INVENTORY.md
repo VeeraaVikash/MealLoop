@@ -608,6 +608,27 @@ Listed only so nobody builds them by mistake. Do not implement these.
 | Guardian | `30_guardian_status` | “13 · G-3 · Status · Waiting for the warden” | Archived | OrbitBackground, PhraseCard, VideoRecorder, StepList, MethodTag | Not started | Unassigned | P2 (proposed) | Slide-to-approve guardian page; replaced by guardian video (GUARDIAN-VIDEO) |
 | Warden | `31_warden_decide_next` | “14 · W-1 · Queue — Decide next” | Archived | OrbitBackground, WardenTabBar4, EvidenceCard, MethodTag, OutNowRow, HistoryRow | Not started | Unassigned | P2 (proposed) | Warden deck; replaced by the WV-* queue (GUARDIAN-VIDEO) |
 
+## Needs design (not in Figma)
+
+These screens follow from the owner's C1 decisions (the vendor works through a restricted MealLoop account; Super Admin is a separate role; non-student users have MealLoop-managed accounts). **None exists in Figma.** The names are proposed for tracking, the platform (iOS app or another surface) is not decided, and the owner decides scope and milestone ([`OPEN_DECISIONS.md`](OPEN_DECISIONS.md), P68). These rows are not part of the Active, Needs review or Archived counts below.
+
+| Role / feature area | Screen or state name | Figma reference | Status | Shared component dependencies | SwiftUI implementation status | Assigned owner | Proposed priority |
+|---|---|---|---|---|---|---|---|
+| Vendor | `V01_vendor_sign_in` (Vendor sign-in with a MealLoop-managed account) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Vendor | `V02_vendor_approved_headcount` (Approved headcount for the assigned mess (no dish quantities, no student data)) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Vendor | `V03_vendor_acknowledge` (Acknowledge receipt of a published headcount; pending and acknowledged states) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Vendor | `V04_vendor_updates_history` (Authorized updates and the publication and acknowledgment history) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Super Admin | `SA01_super_admin_sign_in` (Sign-in through SRM SSO (feasibility unverified)) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Super Admin | `SA02_accounts_and_roles` (List of accounts with roles, mess or block scope and status) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Super Admin | `SA03_provision_account` (Provision an account, assign a role and scope, change scope) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Super Admin | `SA04_deactivate_account` (Deactivate an account) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Super Admin | `SA05_initiate_password_reset` (Initiate a password reset; no password is ever shown) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| All MealLoop-account users | `ID01_set_or_reset_password` (The user sets or resets their own password through a secure process) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Shared staff entry | `ID02_staff_email_password_sign_in` (Production sign-in with individual email and password (the shared four-digit password stays a prototype interaction)) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+| Admin (Food head) | `A02_headcount_vendor_acknowledgment_states` (Pending acknowledgment and acknowledged states fed by the vendor account (the current frames show a manually recorded reply)) | None (not in Figma) | Needs design (not in Figma) | To be decided | Not started | Unassigned | Owner decides |
+
+**12 rows.** Admin tab changes follow the existing Admin pack; only the vendor acknowledgment states are new.
+
 ## Counts
 
 | Role / feature area | Active rows | of which P0 | P1 | P2 | P3 |
@@ -626,6 +647,7 @@ Listed only so nobody builds them by mistake. Do not implement these.
 | **Total active** | **420** | **109** | **208** | **90** | **13** |
 
 - Archived rows: **89**.
+- Rows marked Needs design (not in Figma): **12** (not counted in the totals above or below)
 - Needs-review rows: **20** (three of them stand for whole Figma pages: 294 student frames on page 04, 187 old admin frames on page 10, 333 stale Dark frames on page 05).
 
 ## Effort note against 10 November 2026
@@ -634,3 +656,4 @@ Listed only so nobody builds them by mistake. Do not implement these.
 - With four people working weekdays only, that is **8.8 exported screens or states per person per working day**, before the student page 04 remainder, before review and fixes, and while most of the team is still learning SwiftUI.
 - Many rows are state variants of one screen (loading, offline, stale, sheet open). Grouping rows by their reference-image number (for example `K02`, `K02b`, `K02c` count once) gives **149 distinct base screens**, which is still **3.1 base screens per person per working day**. Shared components and `AsyncContentView` make the state variants cheaper, but each still needs data wiring, wording and a check against the export.
 - Implementing every active frame by 10 November is **not realistic at a normal quality bar** unless the owner narrows the scope. Suggested reading: treat P0 as the 10 November commitment, P1 as stretch, and P2 and P3 as later. The owner decides.
+- The effort figures above do **not** include the Needs design (not in Figma) rows. They are added scope and are recorded as a risk in the PRD (R13). The 10 November and 13 December milestones are not moved by this document.
