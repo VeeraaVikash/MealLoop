@@ -310,6 +310,8 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 
 **Note.** Foundation gap: the Domain models have a forecast, a sent headcount and live and final counts, but no separate Live forecast, Cutoff forecast or Approved headcount.
 
+**Note.** *Sent to vendor* means the approved headcount as published to the vendor account (FR-VEN-002); it is still a headcount only.
+
 #### FR-HC-003 · The cutoff forecast is preserved
 
 **Status:** `CONFIRMED` · **Roles:** Admin
@@ -334,8 +336,9 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 1. Given a forecast is ready, when Admin approves it, then the Approved headcount is set with who and when in the history.
 2. Given Admin adjusts the headcount, when the reason is empty, then saving is refused.
 3. Given an adjustment is saved, then the history shows the original value, new value, reason, actor and time, and cannot be edited.
+4. Given a vendor account or any other role, then it cannot approve or alter the headcount (FR-VEN-005); only the Food Head / Admin role can.
 
-**Dependencies:** [FR-HC-002](#fr-hc-002--headcount-quantities-are-separate-and-never-merged), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+**Dependencies:** [FR-HC-002](#fr-hc-002--headcount-quantities-are-separate-and-never-merged), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-VEN-005](#fr-ven-005--the-vendor-account-is-restricted-to-the-approved-headcount)
 
 **Source:** owner decision in task prompt; [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board)
 
@@ -348,7 +351,7 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 **Acceptance criteria.**
 1. Given a forecast awaits approval and no one responds by the reminder time, then Admin is reminded.
 2. Given the reminder is unanswered, then the request is escalated to authorized administrators and the escalation is recorded.
-3. Given no administrator responds at all, then the headcount stays not approved and nothing is sent to the vendor.
+3. Given no administrator responds at all, then the headcount stays not approved and nothing is made available to the vendor account.
 
 **Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason)
 
@@ -358,35 +361,39 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 
 #### FR-HC-006 · The vendor receives a headcount only
 
-**Status:** `CONFIRMED` · **Roles:** Admin
+**Status:** `CONFIRMED` · **Roles:** Admin, Vendor
 
-**Statement.** MealLoop sends the vendor the approved headcount and nothing else: no dish quantities, no ingredient data, no procurement and no vendor login; the vendor decides its own buffer, quantities and batches.
+**Statement.** MealLoop makes the approved headcount available to the authorized vendor account for the assigned mess and nothing else: no dish quantities, no ingredient data, no procurement, no recipes and no automatic cooking recommendations. The vendor decides its own buffer, quantities and batches. The vendor is a MealLoop user, not an external API integration.
 
 **Acceptance criteria.**
-1. Given a headcount is sent, then the message contains the headcount for the meal and no dish quantity.
-2. Given the data model and API, then no field holds a dish quantity to cook, and the vendor has no sign-in.
+1. Given a headcount is published to the vendor account, then the vendor view shows the approved headcount for the meal and no dish quantity.
+2. Given the data model and API, then no field holds a dish quantity to cook, and there is no direct vendor API.
 3. Given the vendor's cooked amount is not recorded, then Vendor cooked shows Missing.
+4. Given the vendor account, then it cannot enter production quantities, ingredients, procurement or recipes through this workflow (FR-VEN-005).
 
-**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason)
+**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-VEN-002](#fr-ven-002--the-vendor-sees-the-approved-headcount-for-its-assigned-mess-and-authorized-updates), [FR-VEN-005](#fr-ven-005--the-vendor-account-is-restricted-to-the-approved-headcount)
 
-**Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Decision 1); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (What MealLoop does and does not know); owner decision in task prompt
+**Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Decision 1; its "no vendor login" wording is superseded); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (What MealLoop does and does not know); owner decision in task prompt; owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Superseded in part: version 0.2 said the vendor has no login and receives the headcount by message. The vendor now has a restricted MealLoop account (confirmed product direction). The earlier message or call handoff (the Tell the vendor step) remains the designed interim handoff and is not removed. The vendor screens do not exist in Figma yet (docs/SCREEN_INVENTORY.md).
 
 #### FR-HC-007 · Admin sees the vendor reply status
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** For each meal Admin sees whether the headcount is not sent, waiting for the vendor, replied, or missing a reply.
+**Statement.** For each meal Admin sees whether the headcount is not sent, waiting for the vendor (pending acknowledgment), replied (acknowledged by the vendor account) or missing a reply.
 
 **Acceptance criteria.**
-1. Given a headcount was sent and no reply exists, then the status is Waiting with the time since it was sent.
-2. Given a reply was recorded, then the status shows Replied with the time.
+1. Given a headcount was published and no acknowledgment exists, then the status is Waiting (pending acknowledgment) with the time since it was published.
+2. Given the vendor account acknowledged, then the status shows Replied with the actor and the time of the acknowledgment.
 3. Given a reply is expected and absent, then the status is Missing and is never shown as an agreement.
+4. Given a headcount was published, then publishing is never shown as an acknowledgment (FR-VEN-003).
 
-**Dependencies:** [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only)
+**Dependencies:** [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only), [FR-VEN-003](#fr-ven-003--the-vendor-acknowledges-receipt-and-an-acknowledgment-is-never-fabricated)
 
-**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north)
+**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north); owner decision in the C1 review task prompt (vendor architecture)
 
-**Note.** The channel (WhatsApp, call or SMS) and whether the reply is automatic or a Mark as replied tap are open decisions (P6).
+**Note.** In the current Figma design the reply is a status the admin records after a message or call (the designed interim handoff); with a vendor account the reply is the vendor's acknowledgment. Whether acknowledgment is mandatory before a deadline, the deadline, the escalation recipients, the fallback when the vendor cannot reach MealLoop and the authorized fallback process are OPEN (docs/OPEN_DECISIONS.md, P6, P64, P65).
 
 #### FR-HC-008 · A change after sending is recorded and offered to the vendor
 
@@ -396,10 +403,10 @@ The headcount sent to the vendor, how it is produced, and the six quantities tha
 
 **Acceptance criteria.**
 1. Given a sent headcount, when Admin changes it, then a reason is required and the history shows before and after with the time.
-2. Given a change after sending, then Admin can tell the vendor of the change.
+2. Given a change after sending, then the vendor account shows it as an update (FR-VEN-004) and Admin can still tell the vendor through the designed interim message or call handoff.
 3. Given the change happened late, then Results can later show it as We raised the headcount late.
 
-**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ADM-006](#fr-adm-006--results-explain-waste-and-shortages-in-plain-reasons)
+**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ADM-006](#fr-adm-006--results-explain-waste-and-shortages-in-plain-reasons), [FR-VEN-004](#fr-ven-004--a-later-update-is-shown-as-an-update)
 
 **Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Tell the vendor sheet); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Results: We raised the headcount late)
 
@@ -1778,6 +1785,8 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 **Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (Decisions 3); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board)
 
+**Note.** The vendor replied step is the vendor account's acknowledgment once vendor accounts exist (FR-VEN-003); until then it is the manually recorded reply of the interim handoff (FR-HC-007).
+
 #### FR-ADM-003 · Admin sends the headcount from the headcount page
 
 **Status:** `CONFIRMED` · **Roles:** Admin
@@ -1786,12 +1795,14 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 **Acceptance criteria.**
 1. Given a ready forecast, then Admin sees the forecast with its basis and a Send action.
-2. Given Admin sends, then the state moves to Sent and then Vendor replied or Waiting.
+2. Given Admin sends (publishes the approved headcount to the vendor account), then the state moves to Sent and then Vendor replied or Waiting (pending acknowledgment).
 3. Given a mess with no forecast data, then no number or range is shown (Today shows No data).
 
 **Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only)
 
 **Source:** [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A02_headcount_north); [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (Lunch headcount board)
+
+**Note.** The existing Send and Tell the vendor design is the interim handoff; the vendor account workflow (FR-VEN-001 to FR-VEN-005) adds screens that are not in Figma.
 
 #### FR-ADM-004 · The live meal page shows entries, not the final count
 
@@ -2758,6 +2769,96 @@ Principles and evaluation, not implementation.
 **Dependencies:** [FR-AI-003](#fr-ai-003--forecasting-starts-from-a-statistical-baseline)
 
 **Source:** owner decision in task prompt; [`README.md`](../README.md) (AI in MealLoop)
+
+### 7.15 Vendor account workflow (`FR-VEN`)
+
+The vendor is a MealLoop user with a restricted account. It is not an external system and there is no direct vendor API. These requirements are confirmed product direction; the screens do not exist in Figma yet, and several rules (a mandatory acknowledgment deadline, escalation, the fallback when the vendor cannot reach MealLoop, and whether an update needs a new acknowledgment) are OPEN in [`OPEN_DECISIONS.md`](OPEN_DECISIONS.md).
+
+#### FR-VEN-001 · The vendor signs in to a restricted MealLoop account
+
+**Status:** `CONFIRMED` · **Roles:** Vendor
+
+**Statement.** The vendor signs in to its own individual MealLoop-managed account (FR-ID-002), assigned to specific messes. The vendor is a MealLoop user, not an external API integration.
+
+**Acceptance criteria.**
+1. Given a vendor account assigned to a mess, when the vendor signs in, then it reaches only the vendor views for that mess.
+2. Given a mess the vendor account is not explicitly assigned to, then nothing about that mess is visible.
+3. Given the vendor account is deactivated, then protected operations are refused (FR-ID-003).
+4. Given the requirements and API, then there is no direct vendor API integration.
+
+**Dependencies:** [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Vendor sign-in screens are not in Figma (docs/SCREEN_INVENTORY.md, Needs design). Who holds the account at the vendor and how many users it has are OPEN (vendor agreement).
+
+#### FR-VEN-002 · The vendor sees the approved headcount for its assigned mess and authorized updates
+
+**Status:** `CONFIRMED` · **Roles:** Vendor, Admin
+
+**Statement.** After the Food Head approves and publishes a headcount, the vendor sees the approved headcount for its assigned mess and any later authorized update, and nothing else.
+
+**Acceptance criteria.**
+1. Given the Food Head has published the approved headcount for a meal, then the vendor sees that value for the assigned mess.
+2. Given a headcount that is a forecast or is not approved or not published, then the vendor does not see it.
+3. Given the vendor view, then it shows no individual student intention or identity and no dish quantity.
+4. Given the Food Head changes the headcount after publishing, then the vendor sees the authorized update (FR-VEN-004).
+
+**Dependencies:** [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-HC-006](#fr-hc-006--the-vendor-receives-a-headcount-only), [FR-VEN-001](#fr-ven-001--the-vendor-signs-in-to-a-restricted-mealloop-account)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+#### FR-VEN-003 · The vendor acknowledges receipt and an acknowledgment is never fabricated
+
+**Status:** `CONFIRMED` · **Roles:** Vendor, Admin
+
+**Statement.** The vendor acknowledges receipt of the published headcount. MealLoop stores the publication and acknowledgment history. Publishing a headcount is never the same as acknowledgment, and a vendor acknowledgment is never fabricated.
+
+**Acceptance criteria.**
+1. Given the vendor acknowledges, then the acknowledgment is recorded with the vendor account as actor and the time.
+2. Given the vendor has not acknowledged, then the interface shows pending acknowledgment to the Food Head and never shows replied or agreed.
+3. Given a headcount was published, then the history shows the publication, its actor and time separately from any acknowledgment.
+4. Given the history, then entries cannot be edited or deleted (FR-ADM-016).
+
+**Dependencies:** [FR-VEN-002](#fr-ven-002--the-vendor-sees-the-approved-headcount-for-its-assigned-mess-and-authorized-updates), [FR-HC-007](#fr-hc-007--admin-sees-the-vendor-reply-status), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Whether acknowledgment is mandatory before a deadline, the deadline, the escalation recipients and what happens when the vendor cannot reach MealLoop are OPEN (P64, P65).
+
+#### FR-VEN-004 · A later update is shown as an update
+
+**Status:** `CONFIRMED` · **Roles:** Vendor, Admin
+
+**Statement.** When an approved headcount changes after it was published, the vendor sees the change as an update with its time, and the history keeps both values.
+
+**Acceptance criteria.**
+1. Given a later authorized change, then the vendor view shows it as an update, not as a replacement without trace.
+2. Given the earlier value was acknowledged, then that acknowledgment stays in the history and is not shown as acknowledging the update.
+3. Given the update, then the Food Head sees pending acknowledgment until the vendor account acknowledges it.
+
+**Dependencies:** [FR-HC-008](#fr-hc-008--a-change-after-sending-is-recorded-and-offered-to-the-vendor), [FR-VEN-003](#fr-ven-003--the-vendor-acknowledges-receipt-and-an-acknowledgment-is-never-fabricated)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+**Note.** Whether a later update supersedes an earlier acknowledgment and requires a new one is OPEN (P66); the criteria above only keep the history honest and decide nothing about that rule.
+
+#### FR-VEN-005 · The vendor account is restricted to the approved headcount
+
+**Status:** `CONFIRMED` · **Roles:** Vendor
+
+**Statement.** The vendor account can sign in, view the approved headcount for its assigned mess, view authorized updates and acknowledge receipt, and can do nothing else.
+
+**Acceptance criteria.**
+1. Given the vendor account, then it cannot approve or alter a headcount.
+2. Given the vendor account, then it cannot see individual student intentions or identities, or guardian evidence.
+3. Given the vendor account, then it cannot access another mess without an explicit assignment.
+4. Given the vendor account, then it cannot manage rewards, outings, attendance corrections or accounts.
+5. Given the vendor account, then it cannot enter production quantities, ingredients, procurement or recipes through this workflow.
+
+**Dependencies:** [FR-VEN-001](#fr-ven-001--the-vendor-signs-in-to-a-restricted-mealloop-account), [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+
+**Source:** owner decision in the C1 review task prompt (vendor architecture)
 
 ## 8. AI and forecasting requirements
 
