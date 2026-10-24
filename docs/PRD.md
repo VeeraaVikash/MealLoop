@@ -609,11 +609,11 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 3. Given three wrong tries, then the prototype is locked with Ask your supervisor to reset it.
 4. Given a production build, then a shared role password alone is not accepted as the authentication mechanism (FR-ATT-015).
 
-**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization), [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts)
 
 **Source:** [`design/reference/door_scanner_2026-10/data/door_scanner_spec.md`](../design/reference/door_scanner_2026-10/data/door_scanner_spec.md) (Flow); [`design/audit/design_intent.md`](../design/audit/design_intent.md) (DOOR SCANNER 2026-10: rule 9)
 
-**Note.** Approved demo behaviour only. Production authentication and authorization are proposed separately in FR-ATT-015.
+**Note.** A prototype interaction only (a Debug or Figma behaviour), not an approved production method. Production staff use individual MealLoop-managed accounts (FR-ID-002); the mechanism details are proposed in FR-ATT-015.
 
 #### FR-ATT-014 · Staff roles share Home, Alerts and Me
 
@@ -632,21 +632,21 @@ How entry is verified at the door. The entry QR confirms entry only (DI-7). The 
 
 #### FR-ATT-015 · Production staff authentication and authorization
 
-**Status:** `PROPOSED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor, Admin
+**Status:** `PROPOSED` · **Roles:** Door Scanner, Pass Desk, Kitchen Staff, Supervisor, Admin, Super Admin, Warden, Gate Security, Vendor
 
-**Statement.** Production staff access must provide a verified staff identity, an assigned role with mess or block scope, actions attributable to the actor, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions; the exact mechanism is decided in the NFR, architecture and security reviews.
+**Statement.** Production access must give every internal user an individually attributable identity: Students and Super Admins through SRM SSO (FR-ID-001) and all other internal users through individual MealLoop-managed accounts (FR-ID-002). Each user has an assigned role with mess or block scope, secure sessions with revocation, and auditable approvals, changes, scanning overrides and SOS actions. The exact mechanism is decided in the NFR, architecture and security reviews.
 
 **Acceptance criteria.**
-1. Given a staff action, then it carries the actor's verified identity, role and mess or block scope.
-2. Given a staff session, then it is secure and can be revoked.
-3. Given an approval, a change, a scanning override or an SOS action, then it is recorded in an audit trail with the actor.
+1. Given any production action, then it carries the actor's individual identity, role and mess or block scope.
+2. Given a session, then it is secure and can be revoked, and a deactivated account cannot perform protected operations.
+3. Given an approval, a change, a scanning override, an SOS action, an account administration action or a vendor acknowledgment, then it is recorded in an audit trail with the actor.
 4. Given the prototype's shared role password, then it is not accepted as the sole production credential.
 
-**Dependencies:** [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+**Dependencies:** [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-ID-001](#fr-id-001--students-and-super-admins-sign-in-through-srm-sso), [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles)
 
-**Source:** owner decision in task prompt
+**Source:** owner decision in task prompt; owner decision in the C1 review task prompt (identity boundaries)
 
-**Note.** Proposed production controls. The mechanism is not chosen here (open decision P35).
+**Note.** Proposed production controls. The two authentication arrangements are confirmed direction (FR-ID-001, FR-ID-002). The password policy, multi-factor authentication, lockout and recovery rules, session length and who may provision which roles are OPEN (P61, P62); the mechanism is not chosen here (P35).
 
 ### 7.4 Special meal pass and the Pass Desk (`FR-PASS`)
 
@@ -1454,14 +1454,14 @@ The other approved student features.
 
 **Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student
 
-**Statement.** A student signs in with their SRM identity and reaches Home without extra screens; the sign-in provider and any profile-correction path are decided by SRM.
+**Statement.** A student signs in with their SRM identity through SRM's official SSO and reaches Home without extra screens. SRM SSO feasibility is unverified; the sign-in provider, access to it and any profile-correction path are decided by SRM and SRM IT.
 
 **Acceptance criteria.**
 1. Given a valid SRM identity, when the student signs in, then Getting your details leads straight to Home.
 2. Given a failed sign-in, then a clear failure and offline state are shown.
-3. Given the provider is undecided, then no real authentication is claimed as built.
+3. Given the provider or SSO access is unconfirmed, then no real authentication is claimed as built and no fallback identity scheme is described as approved.
 
-**Dependencies:** none
+**Dependencies:** [FR-ID-001](#fr-id-001--students-and-super-admins-sign-in-through-srm-sso)
 
 **Source:** [`design/reference/redesign_2026-10/README.md`](../design/reference/redesign_2026-10/README.md) (01_sign_in, 02_getting_details); [`design/README.md`](../design/README.md) (Open decisions: Sign-in provider)
 
@@ -1975,23 +1975,26 @@ The Admin (Food head) app on Figma page 12: Today, Students, Results, More.
 
 #### FR-ADM-015 · Staff access is managed by Admin
 
-**Status:** `CONFIRMED` · **Roles:** Admin
+**Status:** `CONFIRMED` · **Roles:** Admin, Super Admin
 
-**Statement.** Admin can see who has which role (food heads, supervisors, door staff, kitchen staff, wardens, gate security), request and give access, and see the access history.
+**Statement.** Admin can see who has which role (food heads, supervisors, door staff, kitchen staff, wardens, gate security, the vendor account) and can request access, and sees the access history. Super Admin provisions accounts, assigns roles and scope, changes scope, deactivates accounts and initiates password resets (FR-ID-003); Admin does not do these.
 
 **Acceptance criteria.**
-1. Given People and access, then counts by role and a way to give access are shown.
+1. Given People and access, then counts by role and a way to request access are shown.
 2. Given an access change, then it is recorded in history with who and when.
+3. Given the Food Head / Admin role, then it cannot provision, assign roles, change scope, deactivate or initiate a password reset (FR-ID-005).
 
-**Dependencies:** [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history)
+**Dependencies:** [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ID-005](#fr-id-005--food-head--admin-does-not-have-super-admin-privileges)
 
-**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (People and access); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A13_people_access)
+**Source:** [`design/reference/admin_redesign_2026-10/data/admin_sample_data.md`](../design/reference/admin_redesign_2026-10/data/admin_sample_data.md) (People and access); [`design/reference/admin_redesign_2026-10/README.md`](../design/reference/admin_redesign_2026-10/README.md) (A13_people_access); owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** Superseded in part: version 0.2 said Admin can give access. Provisioning and role assignment now belong to the separate Super Admin role. The People and access frame is a read and request surface for Admin; the Super Admin screens are not in Figma.
 
 #### FR-ADM-016 · Key decisions keep an audit history
 
 **Status:** `CONFIRMED` · **Roles:** Admin
 
-**Statement.** Headcount adjustments, meal start and close, shortage resolution, waste edits, SOS closing, access changes and outing overrides are recorded with who, when and why.
+**Statement.** Headcount adjustments, headcount publication to the vendor account and its acknowledgment, meal start and close, shortage resolution, waste edits, SOS closing, access changes (account provisioning, role and scope changes, deactivation and password-reset initiation) and outing overrides are recorded with who, when and why.
 
 **Acceptance criteria.**
 1. Given any listed action, then the record holds actor, time and reason where one is required.
@@ -2859,6 +2862,109 @@ The vendor is a MealLoop user with a restricted account. It is not an external s
 **Dependencies:** [FR-VEN-001](#fr-ven-001--the-vendor-signs-in-to-a-restricted-mealloop-account), [FR-HC-004](#fr-hc-004--admin-approves-or-adjusts-the-headcount-with-a-reason), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
 
 **Source:** owner decision in the C1 review task prompt (vendor architecture)
+
+### 7.16 Accounts, roles and identity (`FR-ID`)
+
+MealLoop uses two internal authentication arrangements: SRM SSO for Students and Super Admins, and individual MealLoop-managed accounts (email and password) for all other internal users. These requirements are confirmed product direction except where marked. The password policy, multi-factor authentication, lockout and recovery rules, session length, who may provision which roles and the detailed Super Admin permission matrix are OPEN ([`OPEN_DECISIONS.md`](OPEN_DECISIONS.md), P60 to P63).
+
+#### FR-ID-001 · Students and Super Admins sign in through SRM SSO
+
+**Status:** `SRM APPROVAL REQUIRED` · **Roles:** Student, Super Admin
+
+**Statement.** Students and Super Admins are intended to authenticate through SRM's official SSO. This is a required architectural direction, but access to SRM's identity service must be confirmed with SRM IT, so SRM SSO feasibility is unverified. No OAuth, OIDC or SAML endpoint, approved client registration, user attributes or administrative API is assumed to exist, and no fallback identity scheme is approved.
+
+**Acceptance criteria.**
+1. Given SRM confirms access, when a Student or Super Admin signs in, then they authenticate through SRM SSO.
+2. Given SRM SSO feasibility is unverified, then no real authentication through it is claimed as built.
+3. Given any alternative sign-in for the pilot, then it is not described as approved until the owner and SRM approve it.
+
+**Dependencies:** [FR-STU-001](#fr-stu-001--students-sign-in-with-their-srm-identity), [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** Open questions for SRM IT: the protocol, client registration, available attributes, a test environment, the timeline, and how pilot access works if SSO is not ready (P60).
+
+#### FR-ID-002 · Other internal users have individual MealLoop-managed accounts
+
+**Status:** `CONFIRMED` · **Roles:** Admin, Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff, Warden, Gate Security, Vendor
+
+**Statement.** Food Head / Admin, Supervisor, Kitchen Staff, Door Scanner Staff, Pass Desk Staff, Warden, Gate Security and the Vendor each authenticate with an individual MealLoop-managed account using email and password.
+
+**Acceptance criteria.**
+1. Given any of these users, then they have their own account and no shared credential is used in production.
+2. Given a production action, then it is attributable to that individual account (FR-ATT-015).
+3. Given the shared four-digit role password of the prototype, then it is not accepted as a production method (FR-ATT-013).
+
+**Dependencies:** [FR-ATT-015](#fr-att-015--production-staff-authentication-and-authorization), [FR-ATT-013](#fr-att-013--prototype-staff-entry-uses-a-shared-role-password)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** OPEN: password policy, multi-factor authentication, lockout and recovery rules, session length, and who may provision which roles (P61, P62).
+
+#### FR-ID-003 · Super Admin manages accounts and roles
+
+**Status:** `CONFIRMED` · **Roles:** Super Admin
+
+**Statement.** Super Admin is a separate role that manages system-level identity and institutional configuration: account provisioning, role assignment, scope changes, account deactivation and password-reset initiation.
+
+**Acceptance criteria.**
+1. Given Super Admin provisions an account, assigns a role or changes scope, then the action is recorded with actor, time and reason (FR-ADM-016).
+2. Given Super Admin deactivates an account, then protected operations by that account are refused from then on.
+3. Given Super Admin initiates a password reset, then the user completes it and no password is shown to Super Admin (FR-ID-004).
+
+**Dependencies:** [FR-ID-002](#fr-id-002--other-internal-users-have-individual-mealloop-managed-accounts), [FR-ADM-016](#fr-adm-016--key-decisions-keep-an-audit-history), [FR-ID-004](#fr-id-004--no-one-can-read-a-password)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** The detailed Super Admin permission matrix is OPEN and not reviewed; no broader permission is implied (P62).
+
+#### FR-ID-004 · No one can read a password
+
+**Status:** `CONFIRMED` · **Roles:** Super Admin, all MealLoop-account users
+
+**Statement.** Passwords are never stored or displayed in plaintext. Super Admin cannot read any user's password. Users establish or reset their own credentials through a secure process.
+
+**Acceptance criteria.**
+1. Given any screen, API response, log or export, then no password is shown in plaintext.
+2. Given Super Admin, then there is no way to read a user's password.
+3. Given a new account or a reset, then the user sets their own password through the secure process (FR-ID-006).
+
+**Dependencies:** [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ID-006](#fr-id-006--invitation-and-password-reset-messages-use-an-external-provider)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** The credential storage mechanism is decided in technical design (NFR-SEC-010); this requirement states the outcome only.
+
+#### FR-ID-005 · Food Head / Admin does not have Super Admin privileges
+
+**Status:** `CONFIRMED` · **Roles:** Admin, Super Admin
+
+**Statement.** Food Head / Admin continues to manage operational mess workflows (headcount approval and vendor handoff, menus, reports) and does not have Super Admin privileges. Super Admin and Food Head / Admin are separate roles.
+
+**Acceptance criteria.**
+1. Given the Food Head / Admin role, then it cannot provision accounts, assign roles, change scope, deactivate accounts or initiate password resets.
+2. Given the role and permission matrix, then Super Admin and Admin are separate columns.
+
+**Dependencies:** [FR-ID-003](#fr-id-003--super-admin-manages-accounts-and-roles), [FR-ADM-015](#fr-adm-015--staff-access-is-managed-by-admin)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+#### FR-ID-006 · Invitation and password-reset messages use an external provider
+
+**Status:** `PROPOSED` · **Roles:** Super Admin, all MealLoop-account users
+
+**Statement.** Account invitations and password-reset messages are delivered through an external email or messaging provider. The provider is undecided and its availability is unverified.
+
+**Acceptance criteria.**
+1. Given an invitation or reset, then the user receives a message that lets them set their own password.
+2. Given delivery fails, then the failure is recorded and the account state is unchanged; a delivery result is never treated as the user completing the reset.
+3. Given no provider is chosen, then no delivery is claimed as built.
+
+**Dependencies:** [FR-ID-004](#fr-id-004--no-one-can-read-a-password)
+
+**Source:** owner decision in the C1 review task prompt (identity boundaries)
+
+**Note.** External integration feasibility is not verified; the provider choice is OPEN (P63).
 
 ## 8. AI and forecasting requirements
 
