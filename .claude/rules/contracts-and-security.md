@@ -12,7 +12,7 @@ Scope: domain models, repository protocols, the data layer, the app composition 
 
 ## Before changing shared code
 1. Search for the existing implementation (`rg`/Grep) before writing a new one.
-2. Read the domain model in `ios/MealLoop/Domain/`, the protocols in `ios/MealLoop/Data/Repositories/Repositories.swift` and the matching operation in `docs/backend/openapi.yaml`.
+2. Read the domain model in `ios/MealLoop/Domain/`, the protocol (shared ones in `ios/MealLoop/Data/Repositories/`, feature-only ones beside their feature in `ios/MealLoop/Features/`) and the matching operation in `docs/backend/openapi.yaml`.
 3. List every affected call site (views, ViewModels, the prototype data source, `RemoteAPI`, tests) and update them in the same change.
 4. Keep identifiers and field meanings consistent across models, repositories, DTOs and screens. A shared-model or contract change is reviewed by a teammate before it merges.
 5. **The OpenAPI file and the existing repository protocols are unreviewed drafts, not approved contracts** (ADR-005, FE-6). If two documents conflict, the newest explicit owner decision wins; report the discrepancy instead of choosing silently. Do not invent endpoints, fields or DTO shapes the task did not ask for.
