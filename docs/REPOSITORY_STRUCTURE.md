@@ -25,7 +25,7 @@ ios/
     Data/
       Repositories/          Protocols shared by several roles, the grouped Repositories container, RepositoryError
       Demo/                  DemoSeed and DemoDataProvider (compiled only with DEMO_DATA in Debug or REVIEW_DATA in Review)
-      Remote/                RemoteAPI (Release data source) and NotConnected, the one placeholder for unbuilt services
+      Remote/                RemoteAPI, its DTOs and HTTP/ (HTTPClient, KeychainTokenStore); NotConnected for unbuilt services
     Features/
       Entry/                 Welcome, Staff sign in, Sign in with SRM
       Shell/                 Role roots

@@ -60,6 +60,27 @@ Features/Student/
 A source that does not supply a group answers `NotConnected` (`Data/Remote/NotConnected.swift`): every call throws
 `RepositoryError.notImplemented`, and nothing is faked as success. It is the one placeholder in the app.
 
+## Networking (Release)
+
+```
+Repository protocol          for example HeadcountRepository
+   ↓ implemented by
+RemoteAPI                    Data/Remote/RemoteAPI.swift: what to call (path, body, Idempotency-Key) and DTO → Domain
+   ↓ sends an Endpoint to
+HTTPClient                   Data/Remote/HTTP/HTTPClient.swift: how (URLRequest, bearer credential, JSON, status codes,
+   ↓                         typed HTTPError); knows nothing about meals or headcounts
+URLSession → backend         docs/backend/openapi.yaml (0.2.0 draft; no server exists yet)
+```
+
+- Wire shapes live in `Data/Remote/RemoteDTOs.swift` and map to `Domain`. A response that breaks the contract (a
+  `ready` forecast without diners) fails as `unavailable`; it is never patched into a number.
+- `RemoteAPI.repositoryError` turns every `HTTPError` into the `RepositoryError` screens already render: no connection is
+  `offline`, a timeout is `unavailable` ("did not answer in time"), a 409 is `notAllowed` with the server's reason.
+  `409 already_recorded` on an entry is the result `alreadyRecorded`, not an error.
+- The credential is opaque (ADR-005) and kept by `KeychainTokenStore` (`Data/Remote/HTTP/TokenStore.swift`).
+- Open choices (address, retry, timeout, Keychain access, session expiry) are NET-1 to NET-12 in
+  [`OPEN_DECISIONS.md`](../OPEN_DECISIONS.md).
+
 ## Composition root
 
 `App/AppEnvironment.swift` is the only place that chooses a data source:
@@ -68,7 +89,7 @@ A source that does not supply a group answers `NotConnected` (`Data/Remote/NotCo
 |---|---|---|
 | Debug (`DEMO_DATA`) | `makeDemo()` | `DemoDataProvider.makeRepositories()` |
 | Review (`REVIEW_DATA`) | `makeReview()` | `DemoDataProvider.makeRepositories()` |
-| Release | `makeAPI()` | `RemoteAPI.makeRepositories()` |
+| Release | `makeAPI(baseURL:)` | `RemoteAPI(client: HTTPClient(baseURL:credential:), tokens: KeychainTokenStore())` |
 
 Screens get `AppEnvironment` from the SwiftUI environment and pass `environment.repositories` (or one repository from
 it) and `environment.clock` into their ViewModel's initializer. Nothing else creates a repository: no static registry,
@@ -82,7 +103,7 @@ no singleton.
 | A model used by several screens | `Domain/` | Teammate review; the OpenAPI schema if it crosses the network |
 | A repository for one feature | `Features/<Role>/<Screen>/<Name>Repository.swift` | A property in that role's group in `Repositories.swift`, the demo implementation, a `NotConnected` conformance |
 | A repository for several roles | `Data/Repositories/` | The same |
-| An API call | `RemoteAPI` (`Data/Remote/`) and `docs/backend/openapi.yaml` | Keep the path, body and DTO in step with the OpenAPI operation |
+| An API call | The operation in `docs/backend/openapi.yaml` first (ADR-002), then an `Endpoint` in `RemoteAPI` and a DTO in `RemoteDTOs.swift` | A case in `RemoteAPIContractTests` checking the request and the mapping |
 | Sample data | `Data/Demo/` only | Never in a view or `Domain/` |
 
 ## Dependency direction

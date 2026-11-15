@@ -227,3 +227,22 @@ From the Admin and Super Admin pack (`design/reference/admin_full_2026-11/`) and
 | AP-7 | North's approval (10:12 AM by the Food Head), cutoff 700 and 588 answered are sample values from the owner mock; other messes hold no entries. Real per-mess records are needed from the backend. | OPEN |
 | AP-8 | The story's lunch has 3 answered and 1 not yet, so Today's Live forecast tile reads "3 answered"; the mock shows 650 and 210, which are tomorrow's Main figures on Students. Align the seed? | OPEN |
 | AP-9 | The pack's lime "Not yet" tile conflicts with `.claude/rules/ios-design.md` ("never lime card fills"). The pack is newer and owner-approved, so it was followed; update the rule? | OPEN |
+
+## Networking and RemoteAPI (15 Nov 2026)
+
+`HTTPClient` and `RemoteAPI` were built against the OpenAPI draft (0.2.0) with no server. Each row below is a choice the code had to make; the suggested default is what the code does today, not a decision.
+
+| # | Decision | Options | Suggested default | Blocks |
+|---|---|---|---|---|
+| NET-1 | Backend address per build configuration | Info.plist key set per configuration; a build setting; a debug-only override | None: Release passes `baseURL: nil` to `AppEnvironment.makeAPI`, so every call answers "Not implemented" as before. Build settings are not changed without the owner | Any call to a real server |
+| NET-2 | Retry of failed requests | No retry; N attempts with a delay, only for requests safe to repeat | One attempt (`HTTPClient.RetryPolicy.none`). The mechanism exists and repeats only reads, `PUT` and writes with an `Idempotency-Key`, reusing the same key. ADR-005 lists mobile retry as open | Door Scanner, Pass Desk under poor signal |
+| NET-3 | Keychain access control for the credential | `afterFirstUnlockThisDeviceOnly`; `whenUnlockedThisDeviceOnly`; biometric access control | `afterFirstUnlockThisDeviceOnly` (never synced, never restored to another device) | Production sign-in |
+| NET-4 | Request timeout | URLSession default; a shorter staff timeout | 30 s per attempt. A timeout is shown as "did not answer in time", never as done or failed (C4 section 5) | Door Scanner |
+| NET-5 | The 21 operations drafted in OpenAPI 0.2.0 | Accept; change paths or shapes | Review each one marked "DRAFT 0.2.0"; `RemoteAPI` follows them until then | Backend implementation |
+| NET-6 | `Headcount` response shape | 0.1.0 (forecast, sent, vendorReply); 0.2.0 (the six separate values of FR-HC-002 plus approval and acknowledgment) | 0.2.0, because the domain model and PRD FR-HC-002 are newer than the 0.1.0 draft. **Conflict reported, not settled** | Food Head headcount, Vendor |
+| NET-7 | `recordEntry` body | 0.1.0 (qrPayload for a scan, studentId for typed digits); 0.2.0 (always the resolved studentId plus method) | 0.2.0: the app resolves the credential first (`resolveEntryCredential`), then records | Door Scanner |
+| NET-8 | `listMeals` date | Required query (0.1.0); optional, server's service date when omitted (0.2.0) | Optional: server time in IST is authoritative (NFR-REL-010) | Student Meals, staff Home |
+| NET-9 | Sign in with SRM and the shared role password over the API | Connect them; leave them unconnected | Unconnected: SRM SSO is unverified (P14) and the role password must not become production authentication (ADR-005). Both still throw "Not implemented" in Release | Student and staff sign-in |
+| NET-10 | Session expiry, renewal and sign-out | Re-sign-in on 401; a renewal credential; server-side revocation on sign-out | A `401` on a signed-in call says "Your session has ended. Sign in again." Nothing renews or clears the stored credential yet. Lifetimes, renewal and device limits are open (ADR-005) | Production sign-in |
+| NET-11 | `bearerFormat: JWT` in the OpenAPI draft | Remove; keep | Removed: ADR-005 superseded JWT with opaque bearer tokens | None |
+| NET-12 | The `by role:` arguments of repository methods | Send them; let the server take the role from the credential | Not sent: the server resolves role and scope from the credential, so the client cannot claim a role | Every write |
