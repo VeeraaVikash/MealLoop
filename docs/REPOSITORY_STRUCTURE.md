@@ -27,9 +27,8 @@ ios/
       Demo/                  DemoSeed and DemoDataProvider (compiled only with DEMO_DATA in Debug or REVIEW_DATA in Review)
       Remote/                RemoteAPI, its DTOs and HTTP/ (HTTPClient, KeychainTokenStore); NotConnected for unbuilt services
     Features/
-      Entry/                 Welcome, Staff sign in, Sign in with SRM
+      Entry/                 Walkthrough, the one Sign in, student Register and directory confirmation
       Shell/                 Role roots
-      StaffEntry/            Retired role selection and shared password (Debug only, nothing opens it)
       Staff/                 Pieces shared by several staff roles (Me page, home rows, meal summary)
       Student/ Admin/ Kitchen/ DoorScanner/ PassDesk/ Supervisor/
                              One folder per screen (Home/, Meals/, Today/ ...): View, ViewModel, screen-only models
