@@ -2,11 +2,12 @@
 #
 #   rules (ubuntu, ~20 s)  Commit messages, tracked junk, and whether ios/ or this workflow changed. Always runs.
 #   ios   (macOS)          Only when ios/ or .github/workflows/ changed, or when started by hand:
-#                          Debug unit tests once, then the Review and Release builds compile (not tested again),
-#                          then a check that the Release app holds no demo code.
+#                          Debug unit tests, the Release build and a check that it holds no demo code. Pushes to main
+#                          and runs started by hand also compile the Review build.
 #
-# The Review scheme runs the same test suite as Debug with other flags, so a pull request compiles it instead of
-# testing it twice. Start the workflow by hand with "Review tests" ticked to run that suite as well.
+# Almost all of the time is compiling (each configuration is a full compile of 6 to 12 minutes on the runner; the
+# tests run in under a minute), so a pull request compiles two configurations, not three. The Review scheme runs the
+# same tests as Debug; start the workflow by hand with "Review tests" ticked to run them as well.
 name: ios-ci
 
 on:
@@ -135,14 +136,12 @@ jobs:
             -destination "id=${{ steps.sim.outputs.udid }}" -parallel-testing-enabled NO \
             -resultBundlePath build/review.xcresult $FLAGS | tail -25
 
-      # Built for the booted simulator only, in the test step's build folder: one architecture is enough to prove they
-      # compile. With a generic destination and separate folders these two builds took 29 minutes on the runner.
-      - name: Review and Release builds
+      # Built for the booted simulator only, in the test step's build folder: one architecture is enough to prove it
+      # compiles. With a generic destination and separate folders the builds took 29 minutes on the runner.
+      - name: Release build
         shell: bash
         run: |
           set -o pipefail
-          xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop Review" \
-            -destination "id=${{ steps.sim.outputs.udid }}" $FLAGS | tail -5
           xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop" -configuration Release \
             -destination "id=${{ steps.sim.outputs.udid }}" $FLAGS | tail -5
 
@@ -159,6 +158,14 @@ jobs:
             if grep -q "$name" build/release-strings.txt; then echo "::error::$name is in the Release app"; exit 1; fi
           done
           echo "The Release app holds no demo code."
+
+      - name: Review build (main and runs started by hand)
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop Review" \
+            -destination "id=${{ steps.sim.outputs.udid }}" $FLAGS | tail -5
 
       - name: Keep the result bundles when something fails
         if: failure()
