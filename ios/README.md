@@ -70,9 +70,19 @@ xcodebuild build -project ios/MealLoop.xcodeproj -scheme MealLoop -configuration
 For verification runs, Debug and Review also accept the launch argument `-demoRole <role>` (for example `kitchenStaff`),
 which opens that role's Home as Switch role does.
 
-CI (`.github/workflows/ios-ci.yml`) runs the same three checks on every push to `main` and every pull request, from a
-sparse checkout of `ios` and `.github`, and keeps the test result bundles for 7 days. A second job checks commit
-messages (Conventional Commits, no co-author or tool trailers) and tracked junk files.
+CI (`.github/workflows/ios-ci.yml`) runs on every pull request into `main` and every push to `main`:
+
+- **commit and repository rules** (Linux, about 20 seconds, always): Conventional Commits, no co-author or tool
+  trailers, no tracked junk files. It also works out whether `ios/` or the workflow changed.
+- **build and test** (macOS, only when `ios/` or the workflow changed): the Debug unit tests, the Release build and
+  a check that the Release app holds no demo code. Pushes to `main` and runs started by hand also compile the Review
+  build. A docs-only change skips this job.
+
+Almost all CI time is compiling (each configuration is a full compile on the runner), so a pull request compiles
+Debug and Release only; a Review-only compile error shows up on `main` just after merging. To check Review before
+merging, or to run the Review tests, start **ios-ci** by hand from the Actions tab (tick **Review tests** for the
+tests). Test result bundles are kept
+for 7 days, only when a run fails. The full local checks above remain the way to verify a change before review.
 
 ## Configurations
 
