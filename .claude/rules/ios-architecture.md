@@ -11,20 +11,20 @@ Scope: all app Swift code. Source: `docs/adr/ADR-005-frontend-decisions-and-auth
 - **Organization (FE-1):** role-oriented presentation (`Features/<Role>/`) over one shared set of business models, repository contracts and workflows. One app target for all 11 roles; never an app target or a duplicated model set per role.
 - **Views** own presentation and user input only. No networking, no business rules.
 - **ViewModels** (`@MainActor`, `@Observable`) own screen state and delegate data work to repositories. They do not decide business rules such as duplicate entries, cutoffs, meal state or edit windows. Those belong to the domain types and, in the prototype, to the local prototype data source that mirrors server behaviour (the real server stays authoritative later). Create a ViewModel only for a screen with real logic; a static screen needs none.
-- **Repositories** isolate data access behind protocols in `ios/MealLoop/Data/Repositories/`. Remote adapters may map API DTOs into domain models. Repositories never drive SwiftUI navigation, and no view calls HTTP.
+- **Repositories** isolate data access behind protocols. A protocol used by one feature lives beside it (`Features/<Role>/<Screen>/<Name>Repository.swift`); a protocol shared by several roles lives in `ios/MealLoop/Data/Repositories/`. `Repositories.swift` holds the container, grouped by role (`repositories.student.meals`, `repositories.admin.results`, `repositories.passes.special`). Remote adapters may map API DTOs into domain models. Repositories never drive SwiftUI navigation, and no view calls HTTP. Map: `docs/architecture/ARCHITECTURE_MAP.md`.
 - **Use cases** only for a justified complex workflow. Do not add a service layer for a simple operation.
 - **Models (FE-5):** one canonical set in `ios/MealLoop/Domain/` plus feature-specific presentation state. Never define a second `Meal`, `Role`, `Headcount`, `EntryRecord` or similar inside a feature folder. A change to a shared model needs review by a teammate (`docs/REPOSITORY_STRUCTURE.md`).
 - **Contracts (FE-6):** review and share the Swift repository contracts and keep the OpenAPI specification in step; handwritten local and remote adapters for now. A generated client is optional later. Existing protocol methods and endpoints are drafts.
 
-Dependency direction: `Features` depend on `Domain` and on repository protocols, never on `ios/MealLoop/Data/Demo` or `ios/MealLoop/Data/Remote` concrete types. `Data` depends on `Domain`. `Domain` imports no UI and no `Data`. `DesignSystem` and `Core` import no feature.
+Dependency direction: `Features` depend on `Domain` and on repository protocols, never on `ios/MealLoop/Data/Demo` or `ios/MealLoop/Data/Remote` concrete types. `Data` depends on `Domain` and implements repository protocols, including those kept beside a feature; it never uses a feature's views or ViewModels. `Domain` imports no UI and no `Data`. `DesignSystem` and `Core` import no feature.
 
 ## Dependency injection (FE-3)
-- Manual constructor injection by default; one composition root (`ios/MealLoop/App/AppEnvironment.swift`).
+- Manual constructor injection by default; one composition root (`ios/MealLoop/App/AppEnvironment.swift`), which builds every repository through a source's `makeRepositories()`. A group a source does not supply answers `NotConnected` (`Data/Remote/NotConnected.swift`).
 - SwiftUI `Environment` only for genuinely app-wide observable state (for example `AppEnvironment`, `AppRouter`). A feature's ViewModel takes its repositories and an `AppClock` in its initializer; use the clock for "now", never `Date()` in a ViewModel.
 - No global singleton repositories, no static shared mutable state, no third-party DI library. Shared instances are created by the composition root and passed in.
 
 ## State management
-- `@Observable` (iOS 17) and `@MainActor` ViewModels; `@State` for view-owned state; `@Binding` for explicit parent-child state. Do not use `ObservableObject` or `@Published` in new code.
+- Screen-state classes are named `<Role><Screen>ViewModel`. `@Observable` (iOS 17) and `@MainActor` ViewModels; `@State` for view-owned state; `@Binding` for explicit parent-child state. Do not use `ObservableObject` or `@Published` in new code.
 - Load through `LoadState` and render through `AsyncContentView` so loading, empty, failed, stale and offline look the same on every screen.
 - Guard against double taps: every action that writes sets an in-progress state and ignores repeats until it finishes.
 - One coherent local data source serves the whole prototype, so an action on one role's screen (for example a simulated scan) is reflected on the others. Never hardcode a count in a screen. The pattern is `ios/MealLoop/Data/Demo/DemoDataProvider.swift`; extend it through review.

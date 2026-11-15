@@ -84,7 +84,7 @@ final class AdminPolishScreenshotTests: XCTestCase {
     func testCaptureRemind() async throws {
         let world = try await world(.storyStart)
         try await shot("remind_sheet_2262-237", world, pushed: false, tab: "Students", wait: 2) {
-            AdminStudentsView(model: AdminStudentsViewModel(students: world.env.repositories.adminStudents,
+            AdminStudentsView(model: AdminStudentsViewModel(students: world.env.repositories.admin.students,
                                                             role: world.context.account.role),
                               nav: world.nav, remindOpen: true)
         }
@@ -103,18 +103,18 @@ final class AdminPolishScreenshotTests: XCTestCase {
 
     func testCaptureSearchAndInvite() async throws {
         let world = try await world(.duringMeal)
-        let model = AdminSearchModel(repositories: world.env.repositories, session: world.session,
+        let model = AdminSearchViewModel(repositories: world.env.repositories, session: world.session,
                                      timeZone: world.context.mess.timeZone)
         try await shot("search_empty", world, pushed: false, tab: "Today") {
             AdminSearchView(model: model, nav: world.nav, openToday: {}, onCancel: {})
         }
-        let typed = AdminSearchModel(repositories: world.env.repositories, session: world.session,
+        let typed = AdminSearchViewModel(repositories: world.env.repositories, session: world.session,
                                      timeZone: world.context.mess.timeZone)
         typed.text = "sam"
         try await shot("search_results", world, pushed: false, tab: "Today", wait: 2) {
             AdminSearchView(model: typed, nav: world.nav, openToday: {}, onCancel: {})
         }
-        let access = AdminAccessModel(session: world.session, repository: world.env.repositories.people)
+        let access = AdminAccessViewModel(session: world.session, repository: world.env.repositories.admin.people)
         await access.load()
         try await shot("invite_role_page", world, wait: 2) {
             AdminAccessView(model: access, nav: world.nav, role: .doorScanner, initialSheet: .invite)
@@ -143,7 +143,7 @@ final class AdminPolishScreenshotTests: XCTestCase {
         try await shot("admin_students", world, pushed: false, tab: "Students") { AdminStudentsScreen(nav: world.nav) }
         try await shot("admin_results", world, pushed: false, tab: "Results") { AdminResultsScreen(nav: world.nav) }
         try await shot("admin_more", world, pushed: false) { AdminMoreScreen(nav: world.nav) }
-        let search = AdminSearchModel(repositories: world.env.repositories, session: world.session, timeZone: world.context.mess.timeZone)
+        let search = AdminSearchViewModel(repositories: world.env.repositories, session: world.session, timeZone: world.context.mess.timeZone)
         try await shot("admin_search", world, pushed: false, tab: "Today") {
             AdminSearchView(model: search, nav: world.nav, openToday: {}, onCancel: {})
         }
@@ -151,7 +151,7 @@ final class AdminPolishScreenshotTests: XCTestCase {
         await today.load()
         try await shot("admin_headcount", world, tab: "Today") { AdminHeadcountView(model: today) {} }
         try await shot("admin_live_meal", world, tab: "Today") { AdminLiveMealView(model: today, nav: world.nav) }
-        let overview = try await world.env.repositories.adminStudents.studentsOverview()
+        let overview = try await world.env.repositories.admin.students.studentsOverview()
         var pages: [(String, AdminPage)] = [
             ("people", .people), ("people_door_staff", .peopleRole(Role.doorScanner.rawValue)), ("weekly_menu", .weeklyMenu),
             ("passes", .passes), ("votes", .votes), ("rewards", .rewards), ("spare_food", .spareFood), ("history", .history),

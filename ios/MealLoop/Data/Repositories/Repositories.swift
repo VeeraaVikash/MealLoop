@@ -1,7 +1,9 @@
 import Foundation
 
-// Repository protocols. Views and view models depend only on these; they never touch data directly.
-// Keep each protocol small and async. Implementations live in Data/Demo (seeded, Debug and Review only) and Data/Remote (HTTP, not implemented yet).
+// Repository protocols shared by several roles, and the `Repositories` container. Views and view models depend only
+// on these protocols; they never touch data directly. A protocol used by one feature only lives beside that feature
+// (for example Features/Student/Meals/StudentMealsRepository.swift). Implementations live in Data/Demo (seeded, Debug
+// and Review only) and Data/Remote (HTTP).
 
 /// Menus and meals. Used by Kitchen (Menu for Lunch), Student (Meals) and Admin (Weekly menu).
 protocol MealRepository: Sendable {
@@ -96,13 +98,6 @@ protocol AuthRepository: Sendable {
     func verifyRolePassword(_ password: String, for role: Role) async throws -> RolePasswordResult
 }
 
-// MARK: - Documented stubs (no implementation and no caller yet)
-// Add methods when the first screen that needs them is built, following the contracts in docs/backend/openapi.yaml.
-
-/// Not implemented: Student feedback and My feedback.
-protocol FeedbackRepository: Sendable {}
-/// Not implemented: Community issues and "Me too" support.
-protocol CommunityRepository: Sendable {}
 /// The special-meal pass: lookup, recording and reissue requests (Pass Desk). There is no camera and no scan.
 protocol SpecialPassRepository: Sendable {
     /// Status only: it never records and never changes a count.
@@ -119,27 +114,17 @@ protocol SpecialPassRepository: Sendable {
     func requestReissue(_ submission: PassReissueSubmission) async throws -> PassReissueRequest
 }
 
-/// The answer of any data source with no pass service yet. It never fakes a result.
-struct UnavailableSpecialPasses: SpecialPassRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Special-meal passes") }
+// MARK: - The container
 
-    func lookUpPass(lastFour: String, for meal: MealID) async throws -> SpecialPassLookup { throw unavailable }
-    func refreshPassCode(for student: StudentID, meal: MealID) async throws -> LivePassCode { throw unavailable }
-    func recordPassEntry(_ request: SpecialPassEntryRequest) async throws -> SpecialPassEntryResult { throw unavailable }
-    func specialMealCount(for meal: MealID) async throws -> SpecialMealCount { throw unavailable }
-    func specialMealEntries(for meal: MealID) async throws -> [SpecialPassEntry] { throw unavailable }
-    func reissueRequests(for mess: MessID) async throws -> [PassReissueRequest] { throw unavailable }
-    func requestReissue(_ submission: PassReissueSubmission) async throws -> PassReissueRequest { throw unavailable }
-}
-/// Not implemented: digital outings (student, guardian, warden, gate).
-protocol OutingRepository: Sendable {}
-
-/// Optional and separate. Core dining actions must never depend on it. Nothing implements it yet.
-protocol IntelligenceService: Sendable {}
-
-/// The set of repositories the app runs with. Exactly one source (demo or api) per running app; never mixed.
+/// The repositories the app runs with, grouped by who uses them. Exactly one source (demo, review or api) per running
+/// app; never mixed. Only a source's `makeRepositories()`, called from the composition root (`AppEnvironment.make`),
+/// builds one; screens read it from `AppEnvironment.repositories`.
+///
+/// The shared dining operations sit at the top level because nearly every role uses them. Everything else is in a
+/// group named after the roles that read it. A group a source does not supply answers `NotConnected`, which throws
+/// `notImplemented` and never fakes a result.
 struct Repositories: Sendable {
-    var people: any PeopleRepository = UnavailablePeople()
+    // Shared dining operations (Student, staff and Admin).
     let meals: any MealRepository
     var mealState: any MealStateRepository
     var headcount: any HeadcountRepository
@@ -149,42 +134,65 @@ struct Repositories: Sendable {
     let wasteReports: any WasteReportRepository
     let sos: any SOSRepository
     let auth: any AuthRepository
-    /// Defaulted, so every existing caller stays as it was and a source without a pass service says so.
-    var specialPasses: any SpecialPassRepository = UnavailableSpecialPasses()
-    /// Defaulted for the same reason.
-    var studentExtras: any StudentExtrasRepository = UnavailableStudentExtras()
-    var studentMeals: any StudentMealsRepository = UnavailableStudentMeals()
-    var studentCommunity: any StudentCommunityRepository = UnavailableStudentCommunity()
-    var adminResults: any AdminResultsRepository = AdminDataNotBuilt()
-    var adminStudents: any AdminStudentsRepository = AdminDataNotBuilt()
-    var adminMore: any AdminMoreRepository = AdminDataNotBuilt()
-    var adminMesses: any AdminMessRepository = AdminMessesNotBuilt()
-    /// Defaulted, so every existing caller stays as it was and a source without a directory says nothing.
-    var staffDirectory: any StaffDirectoryRepository = UnavailableStaffDirectory()
-    /// Defaulted, so every existing caller stays as it was. Student Notifications, You, Credits and Attendance.
-    var studentYou: any StudentYouRepository = UnavailableStudentYou()
-    /// Defaulted, so every existing caller stays as it was. My reports, My feedback, Spending, Help, Community updates.
-    var studentRecords: any StudentRecordsRepository = UnavailableStudentRecords()
-    /// Defaulted, so every existing caller stays as it was. The clock-derived live pass code (P-PASS-9 a).
-    var livePassCodes: any LivePassCodeRepository = UnavailableLivePassCodes()
-    /// Defaulted, so every existing caller stays as it was. The Super Admin's accounts list (simulated actions).
-    var superAdmin: any SuperAdminRepository = UnavailableSuperAdmin()
-    /// Defaulted, so every existing caller stays as it was. The student's hold is the entry; 30 s of validity.
-    var passUse: any PassUseRepository = UnavailablePassUse()
-    /// Defaulted, so every existing caller stays as it was. The student's private spending ledger.
-    var studentSpending: any StudentSpendingRepository = UnavailableStudentSpending()
-    /// Defaulted, so every existing caller stays as it was. Admin menu vote decisions and reward redemptions.
-    var adminVotesRewards: any AdminVotesRewardsRepository = UnavailableAdminVotesRewards()
-    /// Defaulted, so every existing caller stays as it was. Rewards the Admin adds and deletes; Credits reads them.
-    var rewardCatalogue: any RewardCatalogueRepository = UnavailableRewardCatalogue()
-    /// Defaulted, so every existing caller stays as it was. Requests for next week's Special pass.
-    var passRequests: any PassRequestRepository = UnavailablePassRequests()
-    /// Defaulted, so every existing caller stays as it was. Reward tickets got with credits.
-    var studentRewards: any StudentRewardsRepository = UnavailableStudentRewards()
-    /// Defaulted, so every existing caller stays as it was. Good / Not good on a meal or a dish.
-    var feedbackRatings: any FeedbackRatingRepository = UnavailableFeedbackRatings()
-    /// Defaulted, so every existing caller stays as it was. Dish feedback after Not good (2159:149347).
-    var dishFeedback: any DishFeedbackRepository = UnavailableDishFeedback()
-    /// Defaulted, so every existing caller stays as it was and a source with no vendor view says so.
-    var vendor: any VendorRepository = UnavailableVendor()
+    /// Names and shift times for the Door Scanner and Pass Desk.
+    var staffDirectory: any StaffDirectoryRepository = NotConnected()
+
+    var passes = PassRepositories()
+    var outings = OutingRepositories()
+    var student = StudentRepositories()
+    var admin = AdminRepositories()
+    var vendor: any VendorRepository = NotConnected()
+}
+
+/// The special-meal pass, read by the Student and the Pass Desk, and requested from the Admin.
+struct PassRepositories: Sendable {
+    var special: any SpecialPassRepository = NotConnected()
+    /// The clock-derived live pass code (P-PASS-9 a).
+    var liveCodes: any LivePassCodeRepository = NotConnected()
+    /// The student's hold is the entry; 30 s of validity.
+    var use: any PassUseRepository = NotConnected()
+    /// Requests for next week's Special pass.
+    var requests: any PassRequestRepository = NotConnected()
+}
+
+/// Outings, one source for the Student, Guardian, Warden and Gate so a request the student sends is the one the
+/// guardian answers. `student` and `cases` are usually the same object.
+struct OutingRepositories: Sendable {
+    var cases: any OutingCaseRepository = NotConnected()
+    var student: any StudentOutingRepository = NotConnected()
+}
+
+/// Student-only screens (Features/Student). Each protocol lives beside the screen that uses it.
+struct StudentRepositories: Sendable {
+    /// Home, the answer page and Entry QR beyond the shared operations.
+    var extras: any StudentExtrasRepository = NotConnected()
+    var meals: any StudentMealsRepository = NotConnected()
+    var community: any StudentCommunityRepository = NotConnected()
+    /// Notifications, You, Credits and Attendance.
+    var you: any StudentYouRepository = NotConnected()
+    /// My reports, My feedback, Help and Community updates.
+    var records: any StudentRecordsRepository = NotConnected()
+    /// The student's private spending ledger.
+    var spending: any StudentSpendingRepository = NotConnected()
+    /// Reward tickets got with credits.
+    var rewards: any StudentRewardsRepository = NotConnected()
+    /// Good / Not good on a meal or a dish.
+    var ratings: any FeedbackRatingRepository = NotConnected()
+    /// Dish feedback after Not good (2159:149347).
+    var dishFeedback: any DishFeedbackRepository = NotConnected()
+}
+
+/// Food Head and Super Admin screens (Features/Admin, Features/SuperAdmin).
+struct AdminRepositories: Sendable {
+    var people: any PeopleRepository = NotConnected()
+    var results: any AdminResultsRepository = NotConnected()
+    var students: any AdminStudentsRepository = NotConnected()
+    var more: any AdminMoreRepository = NotConnected()
+    var messes: any AdminMessRepository = NotConnected()
+    /// Menu vote decisions and reward redemptions.
+    var votesRewards: any AdminVotesRewardsRepository = NotConnected()
+    /// Rewards the Admin adds and deletes; Credits reads them.
+    var rewardCatalogue: any RewardCatalogueRepository = NotConnected()
+    /// The Super Admin's accounts list (simulated actions).
+    var superAdmin: any SuperAdminRepository = NotConnected()
 }

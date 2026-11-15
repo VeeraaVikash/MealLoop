@@ -83,12 +83,12 @@ struct GuardianEntryFlow: View {
     @Environment(AppEnvironment.self) private var environment
     let account: AccountID
     /// Screenshot runs pass a loaded model, the steps to show and a typed code.
-    var preparedModel: GuardianModel?
+    var preparedModel: GuardianViewModel?
     var initialPath: [GuardianEntryStep] = []
     var initialCode = ""
-    let onFinish: (GuardianModel) -> Void
+    let onFinish: (GuardianViewModel) -> Void
 
-    @State private var holder: GuardianModel?
+    @State private var holder: GuardianViewModel?
     @State private var path: [GuardianEntryStep] = []
     @State private var code = ""
     @State private var showsLanguage = false
@@ -121,7 +121,7 @@ struct GuardianEntryFlow: View {
             if let preparedModel {
                 holder = preparedModel
             } else {
-                let made = GuardianModel(account: account, repository: OutingCaseRepositories.source(for: environment))
+                let made = GuardianViewModel(account: account, repository: environment.repositories.outings.cases)
                 await made.load()
                 holder = made
             }
@@ -129,11 +129,11 @@ struct GuardianEntryFlow: View {
         }
     }
 
-    private func student(_ model: GuardianModel) -> OutingStudent? { model.link?.student }
+    private func student(_ model: GuardianViewModel) -> OutingStudent? { model.link?.student }
 
     // MARK: G-0 Sign in
 
-    private func signIn(_ model: GuardianModel) -> some View {
+    private func signIn(_ model: GuardianViewModel) -> some View {
         GuardianLayout(model: model, title: GuardianEntryCopy.signInTitle,
                               subtitle: GuardianEntryCopy.signInSubtitle, onLanguage: { showsLanguage = true }) {
             VStack(alignment: .leading, spacing: MLSpacing.s8) {
@@ -158,7 +158,7 @@ struct GuardianEntryFlow: View {
     }
 
     /// "How it works": the four steps, naming the student and block from the seeded link.
-    private func howItWorks(_ model: GuardianModel) -> some View {
+    private func howItWorks(_ model: GuardianViewModel) -> some View {
         let name = model.studentName
         return VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 Text(GuardianEntryCopy.howItWorks).font(MLType.staffPrimary).foregroundStyle(MLColor.ink)
@@ -187,7 +187,7 @@ struct GuardianEntryFlow: View {
     }
 
     @ViewBuilder
-    private func destination(_ step: GuardianEntryStep, model: GuardianModel) -> some View {
+    private func destination(_ step: GuardianEntryStep, model: GuardianViewModel) -> some View {
         switch step {
         case .verify:
             verify(model).entryBar(GuardianEntryCopy.verifyBar)
@@ -206,7 +206,7 @@ struct GuardianEntryFlow: View {
 
     // MARK: G-0 Verify code
 
-    private func verify(_ model: GuardianModel) -> some View {
+    private func verify(_ model: GuardianViewModel) -> some View {
         GuardianLayout(model: model, title: GuardianEntryCopy.verifyTitle,
                        subtitle: GuardianEntryCopy.verifySubtitle(model.link?.phone ?? "—"),
                        onLanguage: { showsLanguage = true }) {
@@ -225,7 +225,7 @@ struct GuardianEntryFlow: View {
 
     // MARK: G-A1 Activate account
 
-    private func activate(_ model: GuardianModel) -> some View {
+    private func activate(_ model: GuardianViewModel) -> some View {
         GuardianLayout(model: model, title: GuardianEntryCopy.activateTitle,
                        subtitle: GuardianEntryCopy.activateSubtitle, onLanguage: { showsLanguage = true }) {
             VStack(spacing: 0) {
@@ -258,7 +258,7 @@ struct GuardianEntryFlow: View {
 
     // MARK: G-A2 Confirm link
 
-    private func confirmLink(_ model: GuardianModel) -> some View {
+    private func confirmLink(_ model: GuardianViewModel) -> some View {
         GuardianLayout(model: model, title: GuardianEntryCopy.linkedTitle(model.studentName, student(model)?.block),
                        subtitle: GuardianEntryCopy.linkedSubtitle, onLanguage: { showsLanguage = true }) {
             studentCard(model)
@@ -271,7 +271,7 @@ struct GuardianEntryFlow: View {
     }
 
     /// The linked student, as G-A2 draws it. The year of study is not shown: no record holds it.
-    private func studentCard(_ model: GuardianModel) -> some View {
+    private func studentCard(_ model: GuardianViewModel) -> some View {
         HStack(spacing: MLSpacing.s16) {
             Image(systemName: "person.crop.circle")
                 .font(.system(size: 36, weight: .light))
@@ -292,7 +292,7 @@ struct GuardianEntryFlow: View {
 
     // MARK: Declined (generated)
 
-    private func declined(_ model: GuardianModel) -> some View {
+    private func declined(_ model: GuardianViewModel) -> some View {
         GuardianLayout(model: model, title: GuardianEntryCopy.declinedTitle, subtitle: GuardianEntryCopy.declinedDetail,
                        onLanguage: { showsLanguage = true }) {
             studentCard(model)
@@ -310,7 +310,7 @@ struct GuardianEntryFlow: View {
 
     // MARK: G-A3 Done
 
-    private func done(_ model: GuardianModel) -> some View {
+    private func done(_ model: GuardianViewModel) -> some View {
         GuardianEntryDoneLayout(model: model, onLanguage: { showsLanguage = true }) {
             onFinish(model)
         }
@@ -330,7 +330,7 @@ private extension View {
 
 /// G-A3 Done: no large title, the black card says the account is ready.
 private struct GuardianEntryDoneLayout: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
     let onLanguage: () -> Void
     let onOpen: () -> Void
 

@@ -10,7 +10,7 @@ final class StudentRecordsRepositoryTests: XCTestCase {
     private let fixed = StudentFiledReportID("demo-report-0998")
 
     private func make(_ scenario: DemoScenario = .storyStart) -> any StudentRecordsRepository {
-        DemoDataProvider(scenario: scenario).makeRepositories().studentRecords
+        DemoDataProvider(scenario: scenario).makeRepositories().student.records
     }
 
     func testReportsListActiveFirstThenClosed() async throws {
@@ -103,7 +103,7 @@ final class StudentRecordsRepositoryTests: XCTestCase {
 
     func testTheUnavailableSourceNeverFakesAResult() async {
         do {
-            _ = try await UnavailableStudentRecords().reports(for: aarav)
+            _ = try await NotConnected().reports(for: aarav)
             XCTFail("Must throw.")
         } catch RepositoryError.notImplemented {} catch { XCTFail("\(error)") }
     }

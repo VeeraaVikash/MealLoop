@@ -400,14 +400,17 @@ final class KitchenRoleTests: XCTestCase {
     func testNoBannedWordsInTheCopy() throws {
         let folder = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("MealLoop/Features/Kitchen")
-        let files = try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
-        for file in files where file.pathExtension == "swift" {
+        let files = try XCTUnwrap(FileManager.default.enumerator(at: folder, includingPropertiesForKeys: nil))
+        var scanned = 0
+        for case let file as URL in files where file.pathExtension == "swift" {
+            scanned += 1
             let code = try String(contentsOf: file, encoding: .utf8).components(separatedBy: .newlines)
                 .filter { !$0.trimmingCharacters(in: .whitespaces).hasPrefix("//") }.joined().lowercased()
             for word in ["meals served", "recorded at the door", "needs attention", "\"remind", "forward to admin", "waiting for approval"] {
                 XCTAssertFalse(code.contains(word), "\(word) in \(file.lastPathComponent)")
             }
         }
+        XCTAssertGreaterThan(scanned, 10, "Every Kitchen screen folder is scanned")
     }
 }
 

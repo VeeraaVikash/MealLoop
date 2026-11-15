@@ -7,7 +7,7 @@ final class PassRequestRepositoryTests: XCTestCase {
     private let aarav = DemoSeed.sampleStudent
     private let nextMonday = DemoSeed.date(19, 12, 0)
 
-    private func make() -> any PassRequestRepository { DemoDataProvider().makeRepositories().passRequests }
+    private func make() -> any PassRequestRepository { DemoDataProvider().makeRepositories().passes.requests }
 
     func testARequestWaitsAndDoesNotUnlockThePass() async throws {
         let repo = make()

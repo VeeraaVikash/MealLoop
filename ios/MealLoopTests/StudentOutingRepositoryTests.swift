@@ -110,7 +110,7 @@ final class StudentOutingRepositoryTests: XCTestCase {
     // MARK: Student records additions (rulings on P-FINAL2-7 and P-FINAL2-9)
 
     func testAFixCheckIsRecordedOnceAndNeverChangesTheStage() async throws {
-        let records = DemoDataProvider(scenario: .storyStart).makeRepositories().studentRecords
+        let records = DemoDataProvider(scenario: .storyStart).makeRepositories().student.records
         let fixed = StudentFiledReportID("demo-report-0998")
         let first = try await records.answerFixCheck(fixed, .stillBad, by: aarav)
         XCTAssertEqual(first.fixCheck, .stillBad)
@@ -124,7 +124,7 @@ final class StudentOutingRepositoryTests: XCTestCase {
     }
 
     func testADataRequestIsRecordedOnce() async throws {
-        let records = DemoDataProvider(scenario: .storyStart).makeRepositories().studentRecords
+        let records = DemoDataProvider(scenario: .storyStart).makeRepositories().student.records
         let first = try await records.recordDataRequest(.copy, by: aarav)
         let again = try await records.recordDataRequest(.copy, by: aarav)
         XCTAssertEqual(first, again)

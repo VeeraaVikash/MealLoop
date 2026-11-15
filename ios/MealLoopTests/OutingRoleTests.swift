@@ -36,18 +36,18 @@ final class OutingRoleTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart, clock: DemoClock(DemoSeed.storyStartNow))
         let review = AppEnvironment(kind: .review, repositories: demo.makeRepositories(), clock: SystemClock(),
                                     demoControls: nil)
-        XCTAssertTrue(OutingCaseRepositories.source(for: review) is InMemoryOutingCaseRepository)
-        XCTAssertTrue(OutingCaseRepositories.source(for: review) as AnyObject === OutingCaseRepositories.source(for: review) as AnyObject,
-                      "One source per environment, so every role sees the same requests")
+        XCTAssertTrue(review.repositories.outings.cases is InMemoryOutingCaseRepository)
+        XCTAssertTrue(review.repositories.outings.cases as AnyObject === review.repositories.outings.student as AnyObject,
+                      "One source for the student and the outing roles, so every role sees the same requests")
         let api = AppEnvironment.makeAPI()
-        XCTAssertTrue(OutingCaseRepositories.source(for: api) is RemoteOutingCaseRepository)
+        XCTAssertTrue(api.repositories.outings.cases is NotConnected)
     }
 
     // MARK: Guardian model
 
     func testGuardianAcceptGoesThroughConsentAndCapture() async {
         let (source, _) = repository()
-        let model = GuardianModel(account: OutingSeed.guardianAccount, repository: source)
+        let model = GuardianViewModel(account: OutingSeed.guardianAccount, repository: source)
         await model.load()
         XCTAssertEqual(model.step, .choose)
         await model.accept()
@@ -64,7 +64,7 @@ final class OutingRoleTests: XCTestCase {
 
     func testGuardianRejectIsOneTapWithoutVideo() async {
         let (source, _) = repository()
-        let model = GuardianModel(account: OutingSeed.guardianAccount, repository: source)
+        let model = GuardianViewModel(account: OutingSeed.guardianAccount, repository: source)
         await model.load()
         await model.reject(reason: nil)
         XCTAssertEqual(model.step, .answered(justSent: true))
@@ -75,7 +75,7 @@ final class OutingRoleTests: XCTestCase {
 
     func testGuardianPageShowsExpiredAfterTheReplyTime() async {
         let (source, _) = repository(at: OutingSeed.at(8, 17, 0, 5))
-        let model = GuardianModel(account: OutingSeed.guardianAccount, repository: source)
+        let model = GuardianViewModel(account: OutingSeed.guardianAccount, repository: source)
         await model.load()
         XCTAssertEqual(model.step, .expired)
         await model.accept()
@@ -89,7 +89,7 @@ final class OutingRoleTests: XCTestCase {
 
     func testWardenQueueIsClosestDeadlineFirstAndCallPathNeedsANote() async {
         let (source, _) = repository(at: OutingSeed.wardenMoment)
-        let model = WardenModel(account: OutingSeed.wardenAccount, repository: source)
+        let model = WardenViewModel(account: OutingSeed.wardenAccount, repository: source)
         await model.load()
         XCTAssertEqual(model.queue.map(\.id), [OutingSeed.meeraRequest.id, OutingSeed.arjunRequest.id])
         XCTAssertEqual(model.escalated.map(\.id), [OutingSeed.aaravRequest.id, OutingSeed.devRequest.id,
@@ -108,7 +108,7 @@ final class OutingRoleTests: XCTestCase {
 
     func testGateRoutesAnUnsignedCodeToNotValidAndRecordsNothing() async throws {
         let (source, _) = repository(at: OutingSeed.gateMoment)
-        let model = GateModel(repository: source)
+        let model = GateViewModel(repository: source)
         await model.load()
         let before = model.overview?.outNow
         let route = await model.run(.code("7F3K"))

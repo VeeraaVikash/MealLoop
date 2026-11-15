@@ -50,11 +50,11 @@ final class AdminFigmaFixTests: XCTestCase {
 
     func testEveryReasonStaysFreeOfPercentages() async throws {
         let repositories = DemoDataProvider(scenario: .afterMealWasteRecorded).makeRepositories()
-        let overview = try await repositories.adminResults.overview()
+        let overview = try await repositories.admin.results.overview()
         for reason in overview.leftOver.reasons + overview.ranOut.reasons {
             XCTAssertFalse(reason.title.contains("%"), reason.title)
             XCTAssertFalse((reason.detail ?? "").contains("%"), reason.title)
-            let detail = try await repositories.adminResults.reason(reason.kind)
+            let detail = try await repositories.admin.results.reason(reason.kind)
             XCTAssertFalse(detail.explanation.contains("%"), detail.explanation)
         }
     }
@@ -106,7 +106,7 @@ final class AdminFigmaFixTests: XCTestCase {
     func testAMissingMessSourceStillShowsTheFoodHeadsOwnMess() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
         var repositories = demo.makeRepositories()
-        repositories.adminMesses = AdminMessesNotBuilt()
+        repositories.admin.messes = NotConnected()
         let model = AdminTodayViewModel(context: try await foodHead(demo), repositories: repositories, clock: demo.clock)
         await model.load()
         XCTAssertNil(model.state.value?.otherMesses)
@@ -149,7 +149,7 @@ final class AdminFigmaFixTests: XCTestCase {
 
     func testSendingForAnotherMessWaitsAndADoubleTapSendsOnce() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
-        let messes = demo.makeRepositories().adminMesses
+        let messes = demo.makeRepositories().admin.messes
         let model = AdminMessHeadcountViewModel(id: "North", slot: .lunch, role: .admin, messes: messes)
         await model.load()
         let first = await model.send()
@@ -160,7 +160,7 @@ final class AdminFigmaFixTests: XCTestCase {
     }
 
     func testTheForecastLineSaysOnlyWhatTheRecordHolds() async throws {
-        let messes = DemoDataProvider(scenario: .storyStart).makeRepositories().adminMesses
+        let messes = DemoDataProvider(scenario: .storyStart).makeRepositories().admin.messes
         let north = try await messes.messHeadcount("North", slot: .lunch)
         let south = try await messes.messHeadcount("South", slot: .lunch)
         let annexe = try await messes.messHeadcount("Annexe", slot: .lunch)
@@ -185,7 +185,7 @@ final class AdminFigmaFixTests: XCTestCase {
 
     func testAToggleOnCheckADayChangesThatWordAndKeepsTheSlot() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
-        let more = demo.makeRepositories().adminMore
+        let more = demo.makeRepositories().admin.more
         let menu = try await more.weekMenu()
         let day = try XCTUnwrap(menu.days.first { $0.wordsToCheck > 0 })
         let model = AdminDayEditViewModel(date: day.day, more: more, role: .admin)

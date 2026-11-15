@@ -18,7 +18,8 @@ enum DataSourceKind: String, Sendable {
     case demo
     /// The same seeded data for the external review (Review only).
     case review
-    /// The real backend. Not implemented yet: every call throws `notImplemented`.
+    /// The real backend through `RemoteAPI`. No backend address is configured yet, so every call throws
+    /// `notImplemented`.
     case api
 }
 
@@ -37,8 +38,6 @@ final class AppEnvironment {
     let kind: DataSourceKind
     let repositories: Repositories
     let clock: any AppClock
-    /// Optional; nothing implements it yet. Core dining features never depend on it.
-    let intelligence: (any IntelligenceService)?
     /// Non-nil only in the Debug and Review environments.
     let demoControls: (any DemoControlling)?
     /// Bumped when data changes outside a screen,
@@ -49,7 +48,6 @@ final class AppEnvironment {
         self.kind = kind
         self.repositories = repositories
         self.clock = clock
-        self.intelligence = nil
         self.demoControls = demoControls
     }
 
@@ -87,8 +85,13 @@ final class AppEnvironment {
     }
     #endif
 
-    static func makeAPI() -> AppEnvironment {
-        let api = RemoteAPI(baseURL: nil)
+    /// The Release environment: `RemoteAPI` over one `HTTPClient`, with the credential kept in the Keychain.
+    /// No backend address exists yet (docs/OPEN_DECISIONS.md, NET-1), so `baseURL` is nil and every call answers
+    /// `notImplemented`. Setting the address is the only change needed to talk to a server.
+    static func makeAPI(baseURL: URL? = nil) -> AppEnvironment {
+        let tokens = KeychainTokenStore()
+        let client = HTTPClient(baseURL: baseURL, credential: { await tokens.read() })
+        let api = RemoteAPI(client: client, tokens: tokens)
         return AppEnvironment(kind: .api, repositories: api.makeRepositories(), clock: SystemClock(), demoControls: nil)
     }
 }

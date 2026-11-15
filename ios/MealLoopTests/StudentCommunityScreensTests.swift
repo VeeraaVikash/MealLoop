@@ -54,7 +54,7 @@ final class StudentCommunityScreensTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart, clock: clock)
         let community = SwitchableCommunity(demo)
         var repositories = demo.makeRepositories()
-        repositories.studentCommunity = community
+        repositories.student.community = community
         return (demo, community, repositories, clock)
     }
 

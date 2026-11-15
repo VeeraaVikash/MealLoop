@@ -194,14 +194,18 @@ actor DemoDataProvider: MealRepository, MealStateRepository, HeadcountRepository
     nonisolated let passCodeTicker = PassCodeTicker()
     private nonisolated let peopleStore = DemoPeopleStore()
     private nonisolated let superAdminStore = DemoSuperAdminStore()
+    /// The one outing source of this provider, so the Student, Guardian, Warden and Gate see the same requests.
+    private nonisolated let outingCases: InMemoryOutingCaseRepository
 
     /// A new provider is a relaunch: in-memory state and the clock go back to the scenario's start.
     init(scenario: DemoScenario = .duringMeal, clock: (any StoryClock)? = nil) {
         let initial = DemoState(scenario: scenario)
         self.scenario = scenario
         self.state = initial
-        self.clock = clock ?? DemoClock(initial.now)
-        self.clock.set(initial.now)
+        let storyClock = clock ?? DemoClock(initial.now)
+        storyClock.set(initial.now)
+        self.clock = storyClock
+        self.outingCases = InMemoryOutingCaseRepository.app(clock: storyClock)
     }
 
     /// Tests only: replaces all demo state with another seeded state. The app never calls it.
@@ -213,25 +217,28 @@ actor DemoDataProvider: MealRepository, MealStateRepository, HeadcountRepository
 
     nonisolated func makeRepositories() -> Repositories {
         let admin = DemoAdminRepositories(core: self, store: adminStore, dishFeedback: dishFeedbackStore)
-        var repositories = Repositories(people: DemoPeople(core: self, store: peopleStore), meals: self, mealState: self, headcount: self, entries: self, intentions: self,
-                            shortages: self, wasteReports: self, sos: self, auth: self, specialPasses: self,
-                            studentExtras: self, studentMeals: self, studentCommunity: self, adminResults: admin, adminStudents: admin, adminMore: admin,
-                            adminMesses: DemoAdminMesses(core: self, store: adminMessStore), staffDirectory: self,
-                            studentYou: DemoStudentYou(core: self, store: studentYouStore, rewards: studentRewardsStore, catalogue: rewardCatalogueStore),
-                            studentRecords: DemoStudentRecords(core: self, store: studentRecordsStore, dishFeedback: dishFeedbackStore),
-                            livePassCodes: self, superAdmin: DemoSuperAdmin(core: self, store: superAdminStore),
-                            passUse: self,
-                            studentSpending: DemoStudentSpending(core: self, store: studentSpendingStore),
-                            adminVotesRewards: DemoAdminVotesRewards(core: self, store: adminVotesRewardsStore),
-                            rewardCatalogue: DemoRewardCatalogue(core: self, store: rewardCatalogueStore),
-                            passRequests: DemoPassRequests(core: self, store: passRequestStore),
-                            studentRewards: DemoStudentRewards(core: self, store: studentRewardsStore,
-                                                               you: DemoStudentYou(core: self, store: studentYouStore, rewards: studentRewardsStore,
-                                                                   catalogue: rewardCatalogueStore)),
-                            feedbackRatings: DemoFeedbackRatings(core: self, store: feedbackRatingStore))
-        repositories.dishFeedback = DemoDishFeedback(core: self, store: dishFeedbackStore)
-        repositories.vendor = self
-        return repositories
+        let you = DemoStudentYou(core: self, store: studentYouStore, rewards: studentRewardsStore, catalogue: rewardCatalogueStore)
+        return Repositories(
+            meals: self, mealState: self, headcount: self, entries: self, intentions: self,
+            shortages: self, wasteReports: self, sos: self, auth: self, staffDirectory: self,
+            passes: PassRepositories(special: self, liveCodes: self, use: self,
+                                     requests: DemoPassRequests(core: self, store: passRequestStore)),
+            outings: OutingRepositories(cases: outingCases, student: outingCases),
+            student: StudentRepositories(
+                extras: self, meals: self, community: self, you: you,
+                records: DemoStudentRecords(core: self, store: studentRecordsStore, dishFeedback: dishFeedbackStore),
+                spending: DemoStudentSpending(core: self, store: studentSpendingStore),
+                rewards: DemoStudentRewards(core: self, store: studentRewardsStore, you: you),
+                ratings: DemoFeedbackRatings(core: self, store: feedbackRatingStore),
+                dishFeedback: DemoDishFeedback(core: self, store: dishFeedbackStore)),
+            admin: AdminRepositories(
+                people: DemoPeople(core: self, store: peopleStore),
+                results: admin, students: admin, more: admin,
+                messes: DemoAdminMesses(core: self, store: adminMessStore),
+                votesRewards: DemoAdminVotesRewards(core: self, store: adminVotesRewardsStore),
+                rewardCatalogue: DemoRewardCatalogue(core: self, store: rewardCatalogueStore),
+                superAdmin: DemoSuperAdmin(core: self, store: superAdminStore)),
+            vendor: self)
     }
 
     /// For repositories that live outside this actor: throws exactly as the others do with no connection.

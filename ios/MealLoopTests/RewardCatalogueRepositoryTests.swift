@@ -8,30 +8,30 @@ final class RewardCatalogueRepositoryTests: XCTestCase {
 
     func testAnAddedRewardShowsInCreditsAtOnce() async throws {
         let repositories = DemoDataProvider().makeRepositories()
-        let coffee = try await repositories.rewardCatalogue.add(name: "  Coffee ", cost: 30, by: .admin)
+        let coffee = try await repositories.admin.rewardCatalogue.add(name: "  Coffee ", cost: 30, by: .admin)
         XCTAssertEqual(coffee.name, "Coffee")
-        let credits = try await repositories.studentYou.credits(for: aarav)
+        let credits = try await repositories.student.you.credits(for: aarav)
         XCTAssertTrue(credits.tickets.contains { $0.id == coffee.id && $0.cost == 30 })
-        let ticket = try await repositories.studentRewards.getTicket(coffee.id, for: aarav)
+        let ticket = try await repositories.student.rewards.getTicket(coffee.id, for: aarav)
         XCTAssertEqual(ticket.balanceAfter, 90)
     }
 
     func testADeletedRewardLeavesCreditsAndTicketsGotStayValid() async throws {
         let repositories = DemoDataProvider().makeRepositories()
-        let got = try await repositories.studentRewards.getTicket("juice", for: aarav)
-        try await repositories.rewardCatalogue.delete("juice", by: .superAdmin)
-        let credits = try await repositories.studentYou.credits(for: aarav)
+        let got = try await repositories.student.rewards.getTicket("juice", for: aarav)
+        try await repositories.admin.rewardCatalogue.delete("juice", by: .superAdmin)
+        let credits = try await repositories.student.you.credits(for: aarav)
         XCTAssertFalse(credits.tickets.contains { $0.id == "juice" })
-        let still = try await repositories.studentRewards.ticket(got.id, for: aarav)
+        let still = try await repositories.student.rewards.ticket(got.id, for: aarav)
         XCTAssertFalse(still.isUsed, "A ticket already got stays valid.")
         do {
-            try await repositories.rewardCatalogue.delete("juice", by: .admin)
+            try await repositories.admin.rewardCatalogue.delete("juice", by: .admin)
             XCTFail("Already deleted.")
         } catch RepositoryError.notFound {}
     }
 
     func testAnEmptyNameOrANonPositiveCostIsRefused() async throws {
-        let catalogue = DemoDataProvider().makeRepositories().rewardCatalogue
+        let catalogue = DemoDataProvider().makeRepositories().admin.rewardCatalogue
         for (name, cost) in [("", 30), ("Tea", 0), ("Tea", -5)] {
             do {
                 _ = try await catalogue.add(name: name, cost: cost, by: .admin)
@@ -43,7 +43,7 @@ final class RewardCatalogueRepositoryTests: XCTestCase {
     }
 
     func testOnlyTheAdminManagesRewards() async throws {
-        let catalogue = DemoDataProvider().makeRepositories().rewardCatalogue
+        let catalogue = DemoDataProvider().makeRepositories().admin.rewardCatalogue
         do {
             _ = try await catalogue.add(name: "Tea", cost: 20, by: .supervisor)
             XCTFail("Supervisor.")

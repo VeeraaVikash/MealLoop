@@ -3,7 +3,7 @@ import SwiftUI
 /// After the guardian answered: GV-06 Sent (and its variants), GV-01 Already answered, and the G-3 status pages that
 /// follow the warden's decision and the gate times. Which one shows comes only from the request's stage and times.
 struct GuardianAnsweredView: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
     let justSent: Bool
     let onLanguage: () -> Void
     let onSheet: (GuardianSheet) -> Void

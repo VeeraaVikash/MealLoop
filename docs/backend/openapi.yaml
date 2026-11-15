@@ -1,10 +1,17 @@
 openapi: 3.0.3
 info:
   title: MealLoop API (first slice)
-  version: 0.1.0-draft
+  version: 0.2.0-draft
   description: |
-    PROPOSAL. Initial REST contracts for the first vertical slice only (student answers a meal, headcount,
-    door entry, meal state, shortage, waste report). Nothing here is implemented. See docs/backend/BACKEND_PROPOSAL.md.
+    PROPOSAL. REST contracts for the shared dining operations the iOS `RemoteAPI` calls (student answers, headcount,
+    door entry, meal state, shortages, waste reports, SOS, sign-in). Nothing here is implemented and no server exists.
+    See docs/backend/BACKEND_PROPOSAL.md.
+
+    Status of the operations (ADR-005, FE-6: an approach decision, not approval of these endpoints):
+    - 0.1.0 (23 Oct 2026): the 12 first-slice operations, still unreviewed.
+    - 0.2.0 (15 Nov 2026): 21 operations drafted so that every method of the Swift repository contracts has an
+      operation; each is marked "DRAFT 0.2.0". Some 0.1.0 shapes changed to match the domain models (Headcount,
+      MealStatus, EntryRequest, EntryRecorded, Shortage). docs/OPEN_DECISIONS.md (NET-5 to NET-12) lists every change.
 
     Rules that every implementation must keep:
     - Missing values are explicit (`notEntered`, `unavailable`); a missing value is never returned as 0.
@@ -29,13 +36,19 @@ tags:
   - name: Entries
   - name: Shortages
   - name: Waste reports
+  - name: SOS
+  - name: Students
+  - name: Sessions
 paths:
   /staff/sessions:
     post:
       tags: [Staff sessions]
       operationId: createStaffSession
-      summary: Exchange the shared role password for a staff session token
-      description: One password per role and mess, 4 digits, 3 tries per device, then locked until the Supervisor resets it.
+      summary: Exchange the shared role password for a staff session token (LEGACY, prototype only)
+      description: |
+        LEGACY. ADR-005: the shared four-digit role password is not the production authentication contract and must
+        not be built on. The iOS `RemoteAPI` does not call this operation (NET-9). Kept only as the record of the
+        prototype flow. One password per role and mess, 4 digits, 3 tries per device, then locked.
       security: []
       requestBody:
         required: true
@@ -75,8 +88,10 @@ paths:
         - $ref: '#/components/parameters/MessId'
         - name: date
           in: query
-          required: true
-          description: Service date in the mess's time zone.
+          required: false
+          description: |
+            Service date in the mess's time zone. DRAFT 0.2.0: optional; when omitted the server uses its own current
+            service date (server time in IST is authoritative, NFR-REL-010) (NET-8).
           schema:
             type: string
             format: date
@@ -97,6 +112,24 @@ paths:
           $ref: '#/components/responses/NotFound'
 
   /meals/{mealId}/intentions/me:
+    get:
+      tags: [Intentions]
+      operationId: getMyIntention
+      summary: DRAFT 0.2.0. The signed-in student's answer for a meal
+      description: "'Roles: student.' `noResponse` is its own group and never a skip."
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: The answer, or noResponse.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
     put:
       tags: [Intentions]
       operationId: setMyIntention
@@ -300,6 +333,26 @@ paths:
           $ref: '#/components/responses/NotFound'
 
   /meals/{mealId}/shortages:
+    get:
+      tags: [Shortages]
+      operationId: listShortages
+      summary: DRAFT 0.2.0. Shortages reported for a meal
+      description: 'Roles: kitchenStaff, passDesk, supervisor, admin.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Shortages, newest first.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shortage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
     post:
       tags: [Shortages]
       operationId: reportShortage
@@ -384,16 +437,486 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
+  /messes/{messId}/meals/current:
+    get:
+      tags: [Meals]
+      operationId: getCurrentMeal
+      summary: DRAFT 0.2.0. The meal the mess is in or about to start
+      description: 'Roles: any signed-in role of this mess. `meal` is null when there is no meal today.'
+      parameters:
+        - $ref: '#/components/parameters/MessId'
+      responses:
+        '200':
+          description: The current meal, or null.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentMeal'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /messes/{messId}/meal-history:
+    get:
+      tags: [Meals]
+      operationId: listMealHistory
+      summary: DRAFT 0.2.0. Closed meals of a mess, newest first
+      description: 'Roles: kitchenStaff, supervisor, admin. Read only. A value the record does not have is null or `unavailable`, never 0.'
+      parameters:
+        - $ref: '#/components/parameters/MessId'
+      responses:
+        '200':
+          description: Closed meals.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MealRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meals/{mealId}/menu:
+    get:
+      tags: [Meals]
+      operationId: getMenu
+      summary: DRAFT 0.2.0. The dishes of one meal
+      description: 'Roles: any signed-in role of the meal''s mess.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Dishes, in menu order.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dish'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /meals/{mealId}/intentions/counts:
+    get:
+      tags: [Intentions]
+      operationId: getAnswerCounts
+      summary: DRAFT 0.2.0. How many students gave each answer
+      description: 'Roles: admin, supervisor. Counts only; a forecast is never derived from them by the client.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Counts per answer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerCounts'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meals/{mealId}/headcount/approval:
+    put:
+      tags: [Headcount]
+      operationId: approveHeadcount
+      summary: DRAFT 0.2.0. Approve the headcount (Food Head / Admin)
+      description: |
+        'Roles: admin.' A count that differs from the forecast or an earlier approval needs a reason. Repeating the same
+        count changes nothing. Refused once the headcount has been sent (`invalid_state`). Never automatic (FR-HC-005).
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveHeadcountRequest'
+      responses:
+        '200':
+          description: The headcount with its approval.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Headcount'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Already sent (`invalid_state`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /meals/{mealId}/headcount/publication:
+    post:
+      tags: [Headcount]
+      operationId: publishHeadcount
+      summary: DRAFT 0.2.0. Send the approved headcount to the vendor account
+      description: 'Roles: admin. Publishing is never an acknowledgment. A repeat with the same key changes nothing.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: The headcount with `sentToVendor` set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Headcount'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Not approved yet (`invalid_state`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /meals/{mealId}/headcount/acknowledgment:
+    post:
+      tags: [Headcount]
+      operationId: acknowledgeHeadcount
+      summary: DRAFT 0.2.0. The vendor account confirms receipt
+      description: 'Roles: vendor (its own account only). A repeat returns the first acknowledgment unchanged.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: The headcount with `acknowledgment` set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Headcount'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Not published yet (`invalid_state`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /meals/{mealId}/entries/without-answer:
+    get:
+      tags: [Entries]
+      operationId: listEnteredWithoutAnswer
+      summary: DRAFT 0.2.0. Students who entered without answering
+      description: 'Roles: doorScanner, supervisor (P12). Not a vote and never mixed with answers.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Entries without an answer, oldest first.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteredWithoutVoting'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meals/{mealId}/entry-credentials:
+    post:
+      tags: [Entries]
+      operationId: resolveEntryCredential
+      summary: DRAFT 0.2.0. Check a scanned QR or typed last four digits. Records nothing
+      description: |
+        'Roles: doorScanner.' A POST so the credential never appears in a URL or an access log. Only a `student` result
+        may go on to `recordEntry`.
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolveEntryRequest'
+      responses:
+        '200':
+          description: What the credential is.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResolveEntryResponse'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /students/{studentId}/entry-code:
+    get:
+      tags: [Students]
+      operationId: getEntryCode
+      summary: DRAFT 0.2.0. The student's entry code (QR payload and last four digits)
+      description: 'Roles: student (own code only). Never gated by the answer, the cutoff or a lost connection.'
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntryCode'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /shortages/{shortageId}/resolution:
+    put:
+      tags: [Shortages]
+      operationId: resolveShortage
+      summary: DRAFT 0.2.0. Mark a shortage resolved
+      description: 'Roles: supervisor. A repeat keeps the first resolution.'
+      parameters:
+        - $ref: '#/components/parameters/ShortageId'
+      responses:
+        '200':
+          description: The shortage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shortage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /shortages/{shortageId}/seen:
+    put:
+      tags: [Shortages]
+      operationId: markShortageSeen
+      summary: DRAFT 0.2.0. The Supervisor has read the report
+      description: 'Roles: supervisor. Sets `delivery.status` to `seen`; a repeat keeps the first sighting.'
+      parameters:
+        - $ref: '#/components/parameters/ShortageId'
+      responses:
+        '200':
+          description: The shortage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shortage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /meals/{mealId}/waste-report/summary:
+    get:
+      tags: [Waste reports]
+      operationId: getWasteReportSummary
+      summary: DRAFT 0.2.0. Status and progress of the waste report, without its rows
+      description: 'Roles: kitchenStaff, supervisor, admin.'
+      parameters:
+        - $ref: '#/components/parameters/MealId'
+      responses:
+        '200':
+          description: Summary.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WasteReportSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /messes/{messId}/sos-cases:
+    post:
+      tags: [SOS]
+      operationId: raiseSOS
+      summary: DRAFT 0.2.0. Open an SOS case for the mess
+      description: 'Roles: student and every mess staff role. The same key returns the case already opened.'
+      parameters:
+        - $ref: '#/components/parameters/MessId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SOSReport'
+      responses:
+        '201':
+          description: Opened.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SOSCase'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    get:
+      tags: [SOS]
+      operationId: listSOSCases
+      summary: DRAFT 0.2.0. SOS cases of the mess
+      description: 'Roles: every mess staff role, admin.'
+      parameters:
+        - $ref: '#/components/parameters/MessId'
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [open, closed]
+      responses:
+        '200':
+          description: Cases, newest first.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SOSCase'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /sos-cases/{sosCaseId}/claim:
+    put:
+      tags: [SOS]
+      operationId: claimSOS
+      summary: DRAFT 0.2.0. "I'll go and check". Does not close the case
+      description: 'Roles: every mess staff role. A repeat keeps the first claim.'
+      parameters:
+        - $ref: '#/components/parameters/SOSCaseId'
+      responses:
+        '200':
+          description: The case.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SOSCase'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /sos-cases/{sosCaseId}/check:
+    put:
+      tags: [SOS]
+      operationId: checkSOS
+      summary: DRAFT 0.2.0. Record that this role checked. Does not close the case
+      description: 'Roles: every mess staff role. One check per role; a repeat changes nothing.'
+      parameters:
+        - $ref: '#/components/parameters/SOSCaseId'
+      responses:
+        '200':
+          description: The case.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SOSCase'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /sos-cases/{sosCaseId}/close:
+    put:
+      tags: [SOS]
+      operationId: closeSOS
+      summary: DRAFT 0.2.0. Close the case
+      description: 'Roles: supervisor only. A repeat keeps the first closing.'
+      parameters:
+        - $ref: '#/components/parameters/SOSCaseId'
+      responses:
+        '200':
+          description: The case.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SOSCase'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /sessions:
+    post:
+      tags: [Sessions]
+      operationId: createSession
+      summary: DRAFT 0.2.0. Sign in with email and password; returns an opaque bearer credential
+      description: |
+        Accounts other than students (Food Head, Super Admin, Vendor, Guardian, Warden, Gate and staff). The credential
+        is opaque (ADR-005): the server keeps only a verifier with its user, device, expiry and revocation status. Its
+        format, entropy, lifetimes, renewal, device limits and rate limiting are open (ADR-005, NET-10). A wrong email
+        or password is one `401 invalid_credentials`, never saying which.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        '201':
+          description: Signed in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '400':
+          $ref: '#/components/responses/ValidationFailed'
+        '401':
+          description: Wrong email or password (`invalid_credentials`).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
       description: |
-        Role-based. The token carries the role (student, admin, doorScanner, passDesk, kitchenStaff, supervisor, guardian,
-        warden, gate) and the mess it belongs to. Every endpoint lists the roles it accepts; the server checks both role
-        and mess. Student sign-in (SRM) is an open decision and not part of this slice.
+        An opaque bearer credential (ADR-005; the earlier JWT choice of ADR-003 A9 to A12 is superseded). The server
+        looks it up against PostgreSQL-backed session records and resolves the account's role and mess or hostel scope;
+        the client never reads anything from it. Every endpoint lists the roles it accepts; the server checks role,
+        resource and scope. Format, entropy, lifetimes and renewal are open. Student sign-in (SRM) is an open decision.
 
   parameters:
     MessId:
@@ -404,6 +927,18 @@ components:
         type: string
     MealId:
       name: mealId
+      in: path
+      required: true
+      schema:
+        type: string
+    ShortageId:
+      name: shortageId
+      in: path
+      required: true
+      schema:
+        type: string
+    SOSCaseId:
+      name: sosCaseId
       in: path
       required: true
       schema:
@@ -499,7 +1034,8 @@ components:
 
     Role:
       type: string
-      enum: [student, admin, doorScanner, passDesk, kitchenStaff, supervisor, guardian, warden, gate]
+      description: The 11 approved roles (ADR-003). DRAFT 0.2.0 adds superAdmin and vendor.
+      enum: [student, superAdmin, admin, supervisor, kitchenStaff, doorScanner, passDesk, vendor, guardian, warden, gate]
 
     StaffSessionRequest:
       type: object
@@ -583,22 +1119,33 @@ components:
             $ref: '#/components/schemas/Dish'
         state:
           $ref: '#/components/schemas/MealState'
-
-    MealStatus:
-      type: object
-      required: [mealId, state]
-      properties:
-        mealId:
-          type: string
-        state:
-          $ref: '#/components/schemas/MealState'
         startedAt:
           type: string
           format: date-time
           nullable: true
+          description: DRAFT 0.2.0. Null until the Supervisor starts the meal.
         closedAt:
           type: string
           format: date-time
+          nullable: true
+          description: DRAFT 0.2.0. Null until the Supervisor closes the meal.
+
+    MealStatus:
+      description: DRAFT 0.2.0 (was mealId, state, startedAt, closedAt). The state together with the meal it belongs to, which every staff screen shows.
+      type: object
+      required: [meal]
+      properties:
+        meal:
+          $ref: '#/components/schemas/Meal'
+
+    CurrentMeal:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [meal]
+      properties:
+        meal:
+          allOf:
+            - $ref: '#/components/schemas/Meal'
           nullable: true
 
     MealIntention:
@@ -672,68 +1219,104 @@ components:
 
     Headcount:
       type: object
-      required: [mealId, forecast, vendorReply]
-      description: The vendor receives a headcount only, never dish quantities.
+      description: |
+        DRAFT 0.2.0 (was forecast, sent and vendorReply). The six headcount values of one meal (PRD FR-HC-002), each
+        separate: no field is ever filled from another. `approved`, `sentToVendor` and `acknowledgment` are null until
+        they happen. The vendor receives a headcount only, never dish quantities (NET-6).
+      required: [mealId, liveForecast, cutoffForecast, actualEntries, finalEntries]
       properties:
         mealId:
           type: string
-        forecast:
+        liveForecast:
           $ref: '#/components/schemas/Forecast'
-        sent:
+        cutoffForecast:
+          $ref: '#/components/schemas/Forecast'
+        approved:
           type: object
           nullable: true
-          required: [count, sentAt, adjustments]
+          required: [count, approvedBy, approvedAt, adjustments]
           properties:
             count:
               type: integer
               minimum: 0
-            sentAt:
+            approvedBy:
+              $ref: '#/components/schemas/Role'
+            approvedAt:
               type: string
               format: date-time
             adjustments:
               type: array
               items:
                 $ref: '#/components/schemas/HeadcountAdjustment'
-        vendorReply:
+        sentToVendor:
           type: object
-          required: [status]
+          nullable: true
+          required: [count, sentBy, sentAt]
           properties:
-            status:
-              type: string
-              enum: [notSent, waiting, replied, missing]
-            repliedAt:
+            count:
+              type: integer
+              minimum: 0
+            sentBy:
+              $ref: '#/components/schemas/Role'
+            sentAt:
               type: string
               format: date-time
-              nullable: true
-            note:
+        actualEntries:
+          $ref: '#/components/schemas/CountReading'
+        finalEntries:
+          $ref: '#/components/schemas/CountReading'
+        acknowledgment:
+          type: object
+          nullable: true
+          required: [acknowledgedBy, acknowledgedAt]
+          properties:
+            acknowledgedBy:
               type: string
-              nullable: true
+              description: The vendor account.
+            acknowledgedAt:
+              type: string
+              format: date-time
+
+    ApproveHeadcountRequest:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [count]
+      properties:
+        count:
+          type: integer
+          minimum: 0
+        reason:
+          type: string
+          nullable: true
+          description: Required when the count differs from the forecast or an earlier approval.
 
     EntryRequest:
       type: object
-      required: [method]
+      description: |
+        DRAFT 0.2.0 (was qrPayload or studentId by method). The app first resolves the credential
+        (`resolveEntryCredential`), so it always sends the resolved `studentId`; `method` says how it was read (NET-7).
+      required: [method, studentId]
       properties:
         method:
           type: string
           enum: [qrScan, typedLastFour]
-        qrPayload:
-          type: string
-          description: Required when `method` is `qrScan`.
         studentId:
           type: string
-          description: Required when `method` is `typedLastFour` (chosen from the last-4-digits matches).
 
     EntryRecorded:
       type: object
-      required: [entryId, mealId, studentMaskedId, recordedAt, hadMealResponse, count]
+      description: DRAFT 0.2.0 (was studentMaskedId). Carries the student reference and the method, as the door screen shows them.
+      required: [entryId, mealId, student, method, recordedAt, hadMealResponse, count]
       properties:
         entryId:
           type: string
         mealId:
           type: string
-        studentMaskedId:
+        student:
+          $ref: '#/components/schemas/StudentRef'
+        method:
           type: string
-          example: '••0238'
+          enum: [qrScan, typedLastFour]
         recordedAt:
           type: string
           format: date-time
@@ -816,9 +1399,18 @@ components:
             at:
               type: string
               format: date-time
+            by:
+              type: string
+              nullable: true
+              description: DRAFT 0.2.0. Who saw it; present only when `status` is `seen`.
         status:
           type: string
           enum: [active, resolved]
+        resolvedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: DRAFT 0.2.0. Present only when `status` is `resolved`.
 
     LeftoverMeasurement:
       type: object
@@ -899,3 +1491,301 @@ components:
             $ref: '#/components/schemas/DishLeftover'
         plateWaste:
           $ref: '#/components/schemas/PlateWaste'
+
+    WasteReportSummary:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [mealId, status, completedFieldCount, totalFieldCount]
+      properties:
+        mealId:
+          type: string
+        status:
+          type: string
+          enum: [notStarted, draft, recorded]
+        savedAt:
+          type: string
+          format: date-time
+          nullable: true
+        completedFieldCount:
+          type: integer
+          minimum: 0
+        totalFieldCount:
+          type: integer
+          minimum: 1
+
+    MealRecord:
+      description: DRAFT 0.2.0. One closed meal for Meal history. A value the record does not have is null or `unavailable`.
+      type: object
+      required: [mealId, messId, slot, day, finalEntries, shortages, waste]
+      properties:
+        mealId:
+          type: string
+        messId:
+          type: string
+        slot:
+          $ref: '#/components/schemas/MealSlot'
+        day:
+          type: string
+          format: date-time
+          description: Midnight of the service day in the mess time zone.
+        closedAt:
+          type: string
+          format: date-time
+          nullable: true
+        finalEntries:
+          $ref: '#/components/schemas/CountReading'
+        shortages:
+          type: array
+          items:
+            type: object
+            required: [status]
+            properties:
+              dishName:
+                type: string
+                nullable: true
+              status:
+                type: string
+                enum: [active, resolved]
+              resolvedAt:
+                type: string
+                format: date-time
+                nullable: true
+        waste:
+          type: object
+          required: [status]
+          properties:
+            status:
+              type: string
+              enum: [notRecorded, recorded]
+            recordedAt:
+              type: string
+              format: date-time
+              nullable: true
+        wasteReport:
+          allOf:
+            - $ref: '#/components/schemas/WasteReport'
+          nullable: true
+
+    AnswerCounts:
+      description: DRAFT 0.2.0. Keys follow `MealIntention` plus `noResponse`.
+      type: object
+      required: [in, skip, notSure, noResponse]
+      properties:
+        in:
+          type: integer
+          minimum: 0
+        skip:
+          type: integer
+          minimum: 0
+        notSure:
+          type: integer
+          minimum: 0
+        noResponse:
+          type: integer
+          minimum: 0
+
+    StudentRef:
+      description: DRAFT 0.2.0. A student as staff see them, by masked SRM ID only.
+      type: object
+      required: [id, maskedId]
+      properties:
+        id:
+          type: string
+        maskedId:
+          type: string
+          example: '••0238'
+
+    EnteredWithoutVoting:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [mealId, student, enteredAt]
+      properties:
+        mealId:
+          type: string
+        student:
+          $ref: '#/components/schemas/StudentRef'
+        enteredAt:
+          type: string
+          format: date-time
+
+    EntryCode:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [payload, lastFour]
+      properties:
+        payload:
+          type: string
+        lastFour:
+          type: string
+          pattern: '^[0-9]{4}$'
+
+    ResolveEntryRequest:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [kind, value]
+      properties:
+        kind:
+          type: string
+          enum: [qrPayload, lastFour]
+        value:
+          type: string
+
+    ResolveEntryResponse:
+      description: DRAFT 0.2.0. `student` is present only for `student`; `servingNow` is null when no meal is being served.
+      type: object
+      required: [result]
+      properties:
+        result:
+          type: string
+          enum: [student, notRecognised, wrongMeal]
+        student:
+          allOf:
+            - $ref: '#/components/schemas/StudentRef'
+          nullable: true
+        servingNow:
+          allOf:
+            - $ref: '#/components/schemas/MealSlot'
+          nullable: true
+
+    SOSReport:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [title, place]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        place:
+          type: string
+          minLength: 1
+
+    SOSCase:
+      description: DRAFT 0.2.0. Only the Supervisor closes a case; a claim or a check does not close it.
+      type: object
+      required: [id, messId, title, place, raisedAt, checks, status]
+      properties:
+        id:
+          type: string
+        messId:
+          type: string
+        title:
+          type: string
+        place:
+          type: string
+        raisedAt:
+          type: string
+          format: date-time
+        claim:
+          type: object
+          nullable: true
+          required: [role, at]
+          properties:
+            role:
+              $ref: '#/components/schemas/Role'
+            at:
+              type: string
+              format: date-time
+        checks:
+          type: array
+          items:
+            type: object
+            required: [role, at]
+            properties:
+              role:
+                $ref: '#/components/schemas/Role'
+              at:
+                type: string
+                format: date-time
+        status:
+          type: object
+          required: [state]
+          properties:
+            state:
+              type: string
+              enum: [open, closed]
+            at:
+              type: string
+              format: date-time
+              nullable: true
+            by:
+              allOf:
+                - $ref: '#/components/schemas/Role'
+              nullable: true
+
+    Mess:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [id, name, timeZone]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        timeZone:
+          type: string
+          example: Asia/Kolkata
+
+    SignInRequest:
+      description: DRAFT 0.2.0.
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+
+    Session:
+      description: |
+        DRAFT 0.2.0. `token` is the opaque credential; the app keeps it in the Keychain and never reads, logs or shows it.
+        `staff` is set only for the four mess staff roles, `student` only for students.
+      type: object
+      required: [token, account]
+      properties:
+        token:
+          type: string
+        account:
+          type: object
+          required: [id, displayName, email, role, scope]
+          properties:
+            id:
+              type: string
+            displayName:
+              type: string
+            email:
+              type: string
+            role:
+              $ref: '#/components/schemas/Role'
+            scope:
+              type: object
+              required: [kind, id]
+              properties:
+                kind:
+                  type: string
+                  enum: [mess, hostel]
+                id:
+                  type: string
+        staff:
+          type: object
+          nullable: true
+          required: [role, mess, staffInitials, supervisorName]
+          properties:
+            role:
+              $ref: '#/components/schemas/Role'
+            mess:
+              $ref: '#/components/schemas/Mess'
+            staffInitials:
+              type: string
+            supervisorName:
+              type: string
+        student:
+          type: object
+          nullable: true
+          required: [student, mess]
+          properties:
+            student:
+              $ref: '#/components/schemas/StudentRef'
+            mess:
+              $ref: '#/components/schemas/Mess'

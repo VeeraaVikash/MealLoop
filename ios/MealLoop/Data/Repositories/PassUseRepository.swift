@@ -13,13 +13,3 @@ protocol PassUseRepository: Sendable {
     /// The meal's live code for the desk, the same one every pass shows in this window. Read only.
     func deskCode(for meal: MealID, at instant: Date) async throws -> CurrentPassCode
 }
-
-/// The answer of any data source with no pass-use service yet. It never fakes a result.
-struct UnavailablePassUse: PassUseRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Pass use") }
-
-    func usePass(of student: StudentID, meal: MealID, key: IdempotencyKey) async throws -> PassUseState { throw unavailable }
-    func passUseState(of student: StudentID, meal: MealID, at instant: Date) async throws -> PassUseState { throw unavailable }
-    func checkLastFour(_ lastFour: String, meal: MealID, at instant: Date) async throws -> PassDigitCheck { throw unavailable }
-    func deskCode(for meal: MealID, at instant: Date) async throws -> CurrentPassCode { throw unavailable }
-}

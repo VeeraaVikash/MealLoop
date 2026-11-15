@@ -64,7 +64,7 @@ final class VendorRepositoryTests: XCTestCase {
 
     func testTheDefaultSourceSaysItHasNoVendorView() async throws {
         do {
-            _ = try await UnavailableVendor().vendorHistory(for: try vendorID())
+            _ = try await NotConnected().vendorHistory(for: try vendorID())
             XCTFail("expected notImplemented")
         } catch {
             guard case .notImplemented? = error as? RepositoryError else { return XCTFail("\(error)") }

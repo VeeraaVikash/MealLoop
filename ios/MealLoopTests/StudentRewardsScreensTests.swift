@@ -35,14 +35,14 @@ final class StudentRewardsScreensTests: XCTestCase {
         let none = await model.get("biryani-coupon")
         XCTAssertNil(none)
         XCTAssertEqual(model.failedReward, "biryani-coupon", "Credits · Failed 221:65873")
-        let credits = try await repositories.studentYou.credits(for: DemoSeed.sampleStudent.id)
+        let credits = try await repositories.student.you.credits(for: DemoSeed.sampleStudent.id)
         XCTAssertEqual(credits.balance, 120, "Your points are safe.")
     }
 
     func testTheTicketShowsUsedAfterTheCounterRecordsIt() async throws {
         let (repositories, model) = try make()
         let id = try await XCTUnwrapAsync(await model.get("juice"))
-        _ = try await repositories.studentRewards.recordCounterUse(of: id, for: DemoSeed.sampleStudent.id)
+        _ = try await repositories.student.rewards.recordCounterUse(of: id, for: DemoSeed.sampleStudent.id)
         await model.loadTicket(id)
         XCTAssertEqual(model.ticket.value?.isUsed, true, "Ticket · Juice · Used 1529:2180")
     }

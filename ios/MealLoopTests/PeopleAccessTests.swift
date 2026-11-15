@@ -6,7 +6,7 @@ final class PeopleAccessTests: XCTestCase {
     private func session(_ role: Role) -> Session { Session(account: account(role), staff: nil) }
     func testRevokeBlocksNewSignInAndGiveReplacesSharedPassword() async throws {
         let core = DemoDataProvider()
-        let people = core.makeRepositories().people
+        let people = core.makeRepositories().admin.people
         let target = account(.doorScanner)
         _ = try await core.signInStaff(email: target.email, password: DemoSeed.prototypePassword)
         try await people.revokePassword(of: target.id, by: session(.superAdmin))
@@ -24,7 +24,7 @@ final class PeopleAccessTests: XCTestCase {
     }
     func testFoodHeadAndEveryOtherRoleCannotManagePeople() async throws {
         let core = DemoDataProvider()
-        let people = core.makeRepositories().people
+        let people = core.makeRepositories().admin.people
         for role in Role.allCases where role != .superAdmin {
             do { _ = try await people.directory(by: session(role)); XCTFail("Allowed \(role)") } catch { guard case RepositoryError.notAllowed = error else { return XCTFail("Wrong error") } }
             do { _ = try await people.givePassword(to: account(.doorScanner).id, by: session(role)); XCTFail("Allowed give") } catch {}
@@ -32,14 +32,14 @@ final class PeopleAccessTests: XCTestCase {
         }
     }
     func testAdminPasswordsCannotBeRevoked() async throws {
-        let people = DemoDataProvider().makeRepositories().people
+        let people = DemoDataProvider().makeRepositories().admin.people
         for role in [Role.admin, .superAdmin] {
             do { try await people.revokePassword(of: account(role).id, by: session(.superAdmin)); XCTFail("Protected role") } catch { guard case RepositoryError.notAllowed = error else { return XCTFail("Wrong error") } }
         }
     }
     func testInviteAndAllotKeepHistoryAndUseChosenMessAtSignIn() async throws {
         let core = DemoDataProvider()
-        let people = core.makeRepositories().people
+        let people = core.makeRepositories().admin.people
         let directory = try await people.directory(by: session(.superAdmin))
         let north = directory.messes[1], south = directory.messes[2]
         let given = try await people.invite(name: "Sample name", contact: "sample@mealloop.example", role: .supervisor, mess: north.id, by: session(.superAdmin))
@@ -55,7 +55,7 @@ final class PeopleAccessTests: XCTestCase {
     }
     func testOfflineActionsDoNotMutateAndRelaunchResetsRevocation() async throws {
         let core = DemoDataProvider()
-        let people = core.makeRepositories().people
+        let people = core.makeRepositories().admin.people
         try await people.revokePassword(of: account(.doorScanner).id, by: session(.superAdmin))
         await core.setScenario(.offline)
         do { _ = try await people.givePassword(to: account(.doorScanner).id, by: session(.superAdmin)); XCTFail("Offline") } catch {}

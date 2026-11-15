@@ -10,7 +10,7 @@ final class StudentSpendingRepositoryTests: XCTestCase {
 
     private func make(_ scenario: DemoScenario = .storyStart) -> (DemoDataProvider, any StudentSpendingRepository) {
         let provider = DemoDataProvider(scenario: scenario)
-        return (provider, provider.makeRepositories().studentSpending)
+        return (provider, provider.makeRepositories().student.spending)
     }
 
     private func summary(_ repo: any StudentSpendingRepository, _ provider: DemoDataProvider) async throws

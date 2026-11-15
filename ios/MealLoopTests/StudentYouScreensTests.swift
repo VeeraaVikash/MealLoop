@@ -46,7 +46,7 @@ final class StudentYouScreensTests: XCTestCase {
         let first = try XCTUnwrap(model.notifications.value?.first)
         await model.open(first)
         XCTAssertEqual(model.notifications.value?.first?.isRead, true)
-        let stored = try await demo.makeRepositories().studentYou.notifications(for: DemoSeed.sampleStudent.id)
+        let stored = try await demo.makeRepositories().student.you.notifications(for: DemoSeed.sampleStudent.id)
         XCTAssertEqual(stored.first?.isRead, true, "The read state is the repository's, not the screen's.")
     }
 

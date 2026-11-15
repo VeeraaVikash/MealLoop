@@ -66,7 +66,7 @@ final class StudentMealsScreensTests: XCTestCase {
         if let time { clock.set(time) }
         let meals = SwitchableMeals(demo)
         var repositories = demo.makeRepositories()
-        repositories.studentMeals = meals
+        repositories.student.meals = meals
         return (demo, meals, repositories, clock)
     }
 
@@ -291,7 +291,7 @@ final class StudentMealsScreensTests: XCTestCase {
     func testAnUnbuiltCrowdServiceSaysSoAndNeverShowsAReading() async throws {
         let (demo, _, _, _) = try make()
         var repositories = demo.makeRepositories()
-        repositories.studentMeals = UnavailableStudentMeals()
+        repositories.student.meals = NotConnected()
         let model = try XCTUnwrap(StudentCrowdViewModel(session: try session, repositories: repositories))
         await model.load()
         guard case .failed(let failure) = model.state else { return XCTFail("Failed") }

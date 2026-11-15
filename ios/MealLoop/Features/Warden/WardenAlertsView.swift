@@ -50,7 +50,7 @@ enum WardenAlerts {
 }
 
 struct WardenAlertsScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let onBack: () -> Void
 
     private var alerts: [WardenAlert] {

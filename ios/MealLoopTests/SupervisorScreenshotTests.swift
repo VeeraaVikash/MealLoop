@@ -59,8 +59,8 @@ final class SupervisorScreenshotTests: XCTestCase {
             _ = try await demo.closeMeal(DemoSeed.lunch.id, by: .supervisor)
         }
 
-        func sosModel() async -> SupervisorSOSModel {
-            let model = SupervisorSOSModel(session: staff, repositories: environment.repositories, clock: clock)
+        func sosModel() async -> SupervisorSOSViewModel {
+            let model = SupervisorSOSViewModel(session: staff, repositories: environment.repositories, clock: clock)
             await model.load()
             return model
         }
@@ -202,7 +202,7 @@ final class SupervisorScreenshotTests: XCTestCase {
         try await shot("S05_sos_panel_checked_close_case", door, wait: 1.5) { panel(door, checked) }
     }
 
-    private func panel(_ world: World, _ model: SupervisorSOSModel) -> some View {
+    private func panel(_ world: World, _ model: SupervisorSOSViewModel) -> some View {
         Sheeted(base: root(world, tab: .home)) {
             SupervisorSOSPanelView(model: model, timeZone: DemoSeed.mess.timeZone, onDismiss: {}, onCaseClosed: {}, onChange: {})
         }

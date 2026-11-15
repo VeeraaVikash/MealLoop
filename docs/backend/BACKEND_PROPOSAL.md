@@ -1,6 +1,6 @@
 # Backend proposal
 
-**Status: proposal only.** No backend code exists. The first-slice contract is in [`openapi.yaml`](openapi.yaml) (12 operations, validated with `openapi-spec-validator`). The decision record is [ADR-002](../adr/ADR-002-backend-shape.md).
+**Status: proposal only.** No backend code exists. The contract is in [`openapi.yaml`](openapi.yaml): 12 first-slice operations (0.1.0, validated with `openapi-spec-validator`) and 21 operations drafted on 15 Nov 2026 (0.2.0, checked for valid YAML and references only). The decision record is [ADR-002](../adr/ADR-002-backend-shape.md).
 
 ## Shape: a modular monolith
 

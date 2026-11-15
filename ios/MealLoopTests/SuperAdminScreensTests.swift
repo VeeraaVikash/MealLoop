@@ -6,7 +6,7 @@ import XCTest
 @MainActor
 final class SuperAdminScreensTests: XCTestCase {
     private func make(_ role: Role = .superAdmin) -> SuperAdminViewModel {
-        SuperAdminViewModel(role: role, repository: DemoDataProvider(scenario: .storyStart).makeRepositories().superAdmin)
+        SuperAdminViewModel(role: role, repository: DemoDataProvider(scenario: .storyStart).makeRepositories().admin.superAdmin)
     }
 
     private var vendor: AccountID { DemoSeed.accounts.first { $0.role == .vendor }!.id }

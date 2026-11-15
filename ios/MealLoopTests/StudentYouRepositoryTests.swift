@@ -10,7 +10,7 @@ final class StudentYouRepositoryTests: XCTestCase {
 
     private func make() -> (DemoDataProvider, any StudentYouRepository) {
         let demo = DemoDataProvider(scenario: .storyStart)
-        return (demo, demo.makeRepositories().studentYou)
+        return (demo, demo.makeRepositories().student.you)
     }
 
     func testNotificationsNewestFirstWithTheirReadState() async throws {
@@ -97,7 +97,7 @@ final class StudentYouRepositoryTests: XCTestCase {
 
     func testOfflineIsAnErrorNotAnEmptyInbox() async throws {
         let demo = DemoDataProvider(scenario: .offline)
-        let you = demo.makeRepositories().studentYou
+        let you = demo.makeRepositories().student.you
         do {
             _ = try await you.notifications(for: aarav)
             XCTFail("Offline must throw.")
@@ -107,7 +107,7 @@ final class StudentYouRepositoryTests: XCTestCase {
 
     func testASourceWithoutTheServiceSaysSo() async {
         do {
-            _ = try await UnavailableStudentYou().credits(for: aarav)
+            _ = try await NotConnected().credits(for: aarav)
             XCTFail("Must throw.")
         } catch RepositoryError.notImplemented {
         } catch {

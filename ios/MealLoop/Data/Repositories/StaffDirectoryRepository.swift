@@ -8,9 +8,3 @@ protocol StaffDirectoryRepository: Sendable {
     /// When this role's shift began, for "On shift · since 11:40 AM".
     func shiftStartedAt(for role: Role, mess: MessID) async throws -> Date?
 }
-
-/// The default for a source with no directory: every answer is "not known", never an error on a staff screen.
-struct UnavailableStaffDirectory: StaffDirectoryRepository {
-    func studentName(_ student: StudentID) async throws -> String? { nil }
-    func shiftStartedAt(for role: Role, mess: MessID) async throws -> Date? { nil }
-}

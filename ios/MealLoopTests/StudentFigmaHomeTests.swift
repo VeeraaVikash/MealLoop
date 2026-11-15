@@ -64,7 +64,8 @@ final class StudentFigmaHomeTests: XCTestCase {
         var repositories = demo.makeRepositories()
         repositories = Repositories(meals: demo, mealState: demo, headcount: demo, entries: demo,
                                     intentions: EmptyBreakfast(source: demo), shortages: demo, wasteReports: demo, sos: demo,
-                                    auth: demo, specialPasses: demo, studentExtras: demo)
+                                    auth: demo, passes: PassRepositories(special: demo),
+                                        student: StudentRepositories(extras: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.load()
         XCTAssertEqual(try content(model).heroCase, .question)
@@ -202,7 +203,8 @@ final class StudentFigmaHomeTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart, clock: FigmaClock())
         let repositories = Repositories(meals: demo, mealState: demo, headcount: demo, entries: demo,
                                         intentions: RefusingIntentions(source: demo), shortages: demo, wasteReports: demo, sos: demo,
-                                        auth: demo, specialPasses: demo, studentExtras: demo)
+                                        auth: demo, passes: PassRepositories(special: demo),
+                                        student: StudentRepositories(extras: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.load()
         await model.answer(.attending, for: lunch.id)
@@ -216,7 +218,8 @@ final class StudentFigmaHomeTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart, clock: FigmaClock())
         let repositories = Repositories(meals: demo, mealState: demo, headcount: demo, entries: demo,
                                         intentions: RefusingIntentions(source: demo), shortages: demo, wasteReports: demo, sos: demo,
-                                        auth: demo, specialPasses: demo, studentExtras: demo)
+                                        auth: demo, passes: PassRepositories(special: demo),
+                                        student: StudentRepositories(extras: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.load()
         await model.answer(.attending, for: lunch.id)
@@ -328,7 +331,8 @@ final class StudentFigmaHomeTests: XCTestCase {
     func testNoExtrasLeavesHomeWorkingAndShowsMissingNotZero() async throws {
         let demo = DemoDataProvider(scenario: .storyStart, clock: FigmaClock())
         let repositories = Repositories(meals: demo, mealState: demo, headcount: demo, entries: demo, intentions: demo,
-                                        shortages: demo, wasteReports: demo, sos: demo, auth: demo, specialPasses: demo)
+                                        shortages: demo, wasteReports: demo, sos: demo, auth: demo,
+                                        passes: PassRepositories(special: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.load()
         let home = try content(model)
@@ -340,7 +344,8 @@ final class StudentFigmaHomeTests: XCTestCase {
     func testAMenuFallsBackWithoutExtras() async throws {
         let demo = DemoDataProvider(scenario: .storyStart, clock: FigmaClock())
         let repositories = Repositories(meals: demo, mealState: demo, headcount: demo, entries: demo, intentions: demo,
-                                        shortages: demo, wasteReports: demo, sos: demo, auth: demo, specialPasses: demo)
+                                        shortages: demo, wasteReports: demo, sos: demo, auth: demo,
+                                        passes: PassRepositories(special: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.loadAnswerMenu(for: lunch.id)
         XCTAssertEqual(model.menu.value, DemoSeed.lunchMenu)
