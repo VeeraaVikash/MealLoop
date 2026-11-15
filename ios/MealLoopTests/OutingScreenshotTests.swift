@@ -37,9 +37,9 @@ final class OutingScreenshotTests: XCTestCase {
                                                       simulation: ScriptedCaptureSimulation(script),
                                                       makeDigits: { source.next($0) })
             let demo = DemoDataProvider(scenario: .storyStart, clock: DemoClock(DemoSeed.storyStartNow))
-            environment = AppEnvironment(kind: .review, repositories: demo.makeRepositories(), clock: clock,
-                                         demoControls: nil)
-            OutingCaseRepositories.register(repository, for: environment)
+            var repositories = demo.makeRepositories()
+            repositories.outings = OutingRepositories(cases: repository, student: repository)
+            environment = AppEnvironment(kind: .review, repositories: repositories, clock: clock, demoControls: nil)
         }
 
         func at(_ month: Int, _ day: Int, _ hour: Int, _ minute: Int) { clock.set(OutingSeed.at(month, day, hour, minute)) }

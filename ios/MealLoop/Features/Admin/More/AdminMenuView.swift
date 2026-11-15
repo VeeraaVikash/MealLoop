@@ -65,7 +65,7 @@ struct AdminMenuScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminMenuView(model: AdminMenuViewModel(more: environment.repositories.adminMore, role: nav.context.account.role), nav: nav)
+        AdminMenuView(model: AdminMenuViewModel(more: environment.repositories.admin.more, role: nav.context.account.role), nav: nav)
     }
 }
 
@@ -421,7 +421,7 @@ struct AdminCheckDayScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminCheckDayView(model: AdminDayEditViewModel(date: date, more: environment.repositories.adminMore, role: nav.context.account.role),
+        AdminCheckDayView(model: AdminDayEditViewModel(date: date, more: environment.repositories.admin.more, role: nav.context.account.role),
                           date: date, nav: nav)
     }
 }
@@ -505,7 +505,7 @@ struct AdminEditDayScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminEditDayView(model: AdminDayEditViewModel(date: date, more: environment.repositories.adminMore, role: nav.context.account.role),
+        AdminEditDayView(model: AdminDayEditViewModel(date: date, more: environment.repositories.admin.more, role: nav.context.account.role),
                          date: date, nav: nav)
     }
 }
@@ -795,8 +795,8 @@ struct AdminDinnerChangeSheet: View {
             }
         }
         .task {
-            totalStudents = (try? await environment.repositories.adminStudents.studentsOverview())?.totalStudents
-            earlier = (try? await environment.repositories.adminMore.earlierDishes()) ?? []
+            totalStudents = (try? await environment.repositories.admin.students.studentsOverview())?.totalStudents
+            earlier = (try? await environment.repositories.admin.more.earlierDishes()) ?? []
         }
     }
 

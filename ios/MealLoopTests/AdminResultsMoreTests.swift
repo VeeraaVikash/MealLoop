@@ -38,16 +38,16 @@ final class AdminResultsMoreTests: XCTestCase {
 
     func testNoReasonCarriesAPercentage() async throws {
         let repositories = repositories()
-        let overview = try await repositories.adminResults.overview()
+        let overview = try await repositories.admin.results.overview()
         XCTAssertFalse(try json(overview.leftOver).contains("%"))
         XCTAssertFalse(try json(overview.ranOut).contains("%"))
         for kind in ReasonKind.allCases {
-            let detail = try await repositories.adminResults.reason(kind)
+            let detail = try await repositories.admin.results.reason(kind)
             let reasonText = [detail.reason.title, detail.reason.detail ?? "", detail.explanation, detail.timelineNote ?? "",
                               detail.arrivals?.markerText ?? ""] + detail.timeline.map(\.text) + detail.feedback.map(\.problem)
             XCTAssertFalse(reasonText.joined().contains("%"), "\(kind)")
         }
-        let report = try await repositories.adminResults.weeklyReport(.thisWeek)
+        let report = try await repositories.admin.results.weeklyReport(.thisWeek)
         XCTAssertFalse(try json(report.pages?.reasons).contains("%"))
         XCTAssertFalse(AdminScreenCopy.moreThanSent(came: 627, more: 47).contains("%"))
     }
@@ -65,7 +65,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testReasonCountsMatchThePack() async throws {
-        let overview = try await repositories().adminResults.overview()
+        let overview = try await repositories().admin.results.overview()
         XCTAssertEqual(overview.leftOver.reasons.map(\.meals), [5, 3, 2, 4])
         XCTAssertEqual(overview.leftOver.meals, 9)
         XCTAssertEqual(overview.ranOut.reasons.map(\.meals), [1, 1, 1, 1])
@@ -73,7 +73,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAMealWithNoFinalCountIsNotListedAsFewerCame() async throws {
-        let detail = try await repositories(.duringMeal).adminResults.reason(.fewerCame)
+        let detail = try await repositories(.duringMeal).admin.results.reason(.fewerCame)
         XCTAssertFalse(detail.meals.contains { $0.id == DemoSeed.lunch.id })
         XCTAssertEqual(detail.meals.count + detail.moreMeals, detail.reason.meals)
     }
@@ -108,7 +108,7 @@ final class AdminResultsMoreTests: XCTestCase {
 
     /// Integration item 5: simulated sends say what happened in this prototype, never that anyone received them.
     func testSimulatedSendsNeverClaimDelivery() async throws {
-        let audiences = try await repositories().adminMore.announcementDraft().audiences
+        let audiences = try await repositories().admin.more.announcementDraft().audiences
         var lines = [AdminScreenCopy.reminderSent("9:05 AM"), AdminScreenCopy.remindNote, AdminScreenCopy.reminderToast,
                      AdminScreenCopy.savedTold, AdminScreenCopy.everyoneGets("3,500"), AdminScreenCopy.sentDinner,
                      AdminScreenCopy.inviteSent, AdminScreenCopy.announcementSent,
@@ -128,7 +128,7 @@ final class AdminResultsMoreTests: XCTestCase {
     func testEveryReasonRuleIsLabelledDraft() async throws {
         let repositories = repositories()
         for kind in [ReasonKind.fewerCame, .didntLikeDish, .raisedLate, .moreCame, .lastThirtyMinutes, .reportedLate] {
-            let detail = try await repositories.adminResults.reason(kind)
+            let detail = try await repositories.admin.results.reason(kind)
             XCTAssertTrue(detail.explanation.contains("(draft, SRM approval required)"), "\(kind)")
         }
     }
@@ -142,7 +142,7 @@ final class AdminResultsMoreTests: XCTestCase {
 
     func testTheBackendAndTheScreenBothRefuseWorkedWithOneMeal() async throws {
         let repositories = repositories()
-        let model = AdminCheckViewModel(id: AdminSeed.wednesdayPlan, role: .admin, results: repositories.adminResults)
+        let model = AdminCheckViewModel(id: AdminSeed.wednesdayPlan, role: .admin, results: repositories.admin.results)
         await model.load()
         // The one recorded meal (Wed 14 lunch) ran out of rice, so under the owner-proposed rule it is not comparable
         // and counts for nothing (integration item 5). It counted 1 before that rule.
@@ -156,18 +156,18 @@ final class AdminResultsMoreTests: XCTestCase {
         XCTAssertNotNil(model.errorText)
         XCTAssertEqual(model.state.value?.closedAsWorked, false)
         XCTAssertEqual(model.state.value?.stage, .testing)
-        let saved = try await repositories.adminResults.check(AdminSeed.wednesdayPlan)
+        let saved = try await repositories.admin.results.check(AdminSeed.wednesdayPlan)
         XCTAssertFalse(saved.closedAsWorked)
     }
 
     func testAStoryMealStillOpenCountsForNothing() async {
-        let model = AdminCheckViewModel(id: AdminSeed.wednesdayPlan, role: .admin, results: repositories(.duringMeal).adminResults)
+        let model = AdminCheckViewModel(id: AdminSeed.wednesdayPlan, role: .admin, results: repositories(.duringMeal).admin.results)
         await model.load()
         XCTAssertEqual(model.counted, 0)
     }
 
     func testIDsTypedByHandDoNotCount() async {
-        let model = AdminCheckViewModel(id: AdminSeed.northScanner, role: .admin, results: repositories().adminResults)
+        let model = AdminCheckViewModel(id: AdminSeed.northScanner, role: .admin, results: repositories().admin.results)
         await model.load()
         XCTAssertEqual(model.state.value?.stage, .open)
         XCTAssertEqual(model.counted, 0)
@@ -176,18 +176,18 @@ final class AdminResultsMoreTests: XCTestCase {
     func testMakingAChangeForTheStoryMealOpensTheExistingOneAndReviewsTheMeal() async throws {
         let context = try XCTUnwrap(AdminContext(session: try session(.admin)))
         let repositories = repositories()
-        let model = AdminChangeViewModel(meal: DemoSeed.lunch.id, suggested: "Use the average", context: context, results: repositories.adminResults)
+        let model = AdminChangeViewModel(meal: DemoSeed.lunch.id, suggested: "Use the average", context: context, results: repositories.admin.results)
 
         let saved = await model.save()
 
         XCTAssertEqual(saved?.id, AdminSeed.wednesdayPlan)
-        let meal = try await repositories.adminResults.meal(DemoSeed.lunch.id)
+        let meal = try await repositories.admin.results.meal(DemoSeed.lunch.id)
         XCTAssertFalse(meal.needsReview)
     }
 
     func testAnEmptyChangeCannotBeSaved() async throws {
         let context = try XCTUnwrap(AdminContext(session: try session(.admin)))
-        let model = AdminChangeViewModel(meal: nil, suggested: "  ", context: context, results: repositories().adminResults)
+        let model = AdminChangeViewModel(meal: nil, suggested: "  ", context: context, results: repositories().admin.results)
         XCTAssertFalse(model.canSave)
         let saved = await model.save()
         XCTAssertNil(saved)
@@ -202,7 +202,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAMealBeforeItClosesShowsDashesAndSaysWhy() async throws {
-        let meal = try await repositories(.storyStart).adminResults.meal(DemoSeed.lunch.id)
+        let meal = try await repositories(.storyStart).admin.results.meal(DemoSeed.lunch.id)
         XCTAssertEqual(AdminFormat.sentToCame(meal), "— → —")
         XCTAssertNil(AdminMealReportContent.difference(meal))
         let lines = AdminMealReportContent.lines(meal, timeZone: timeZone)
@@ -210,7 +210,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testNothingAboutAnOpenMealIsStatedBeforeItCloses() async throws {
-        let meal = try await repositories(.duringMeal).adminResults.meal(DemoSeed.lunch.id)
+        let meal = try await repositories(.duringMeal).admin.results.meal(DemoSeed.lunch.id)
         XCTAssertNil(meal.headcountChange)
         XCTAssertTrue(meal.missing.isEmpty)
         XCTAssertTrue(meal.openQuestions.isEmpty)
@@ -219,7 +219,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testMissingEvidenceIsListedAsMissing() async throws {
-        let meal = try await repositories(.afterMeal).adminResults.meal(DemoSeed.lunch.id)
+        let meal = try await repositories(.afterMeal).admin.results.meal(DemoSeed.lunch.id)
         XCTAssertEqual(meal.finalEntries, DemoSeed.finalEntries)
         XCTAssertEqual(Set(meal.missing), [.amountCooked, .wasteRecord])
         let unknown = AdminMealReportContent.lines(meal, timeZone: timeZone).filter { !$0.isKnown }.map(\.text)
@@ -228,7 +228,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAMessThatSentNoDataStaysEmptyInTheReport() async throws {
-        let report = try await repositories().adminResults.weeklyReport(.thisWeek)
+        let report = try await repositories().admin.results.weeklyReport(.thisWeek)
         let south = try XCTUnwrap(report.pages?.byMess.first { $0.mess == "South" })
         XCTAssertNil(south.plateWasteKg)
         XCTAssertNil(south.ranOutMeals)
@@ -236,7 +236,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAnAudienceWithNoNumberDoesNotSayZero() async throws {
-        let draft = try await repositories().adminMore.announcementDraft()
+        let draft = try await repositories().admin.more.announcementDraft()
         let north = try XCTUnwrap(draft.audiences.first { $0.id == "north" })
         XCTAssertNil(north.students)
         XCTAssertFalse(AdminScreenCopy.audienceReach(north).contains("0"))
@@ -256,44 +256,44 @@ final class AdminResultsMoreTests: XCTestCase {
     // MARK: Each tab loads its states
 
     func testStudentsLoadsAndGoesOffline() async {
-        let model = AdminStudentsViewModel(students: repositories(.duringMeal).adminStudents, role: .admin)
+        let model = AdminStudentsViewModel(students: repositories(.duringMeal).admin.students, role: .admin)
         XCTAssertEqual(model.state, .idle)
         await model.load()
         guard case .allMesses(let overview)? = model.state.value else { return XCTFail("\(model.state)") }
         XCTAssertEqual(overview.answered, 2_870)
         XCTAssertEqual(overview.notAnswered, 630)
 
-        let offline = AdminStudentsViewModel(students: repositories(.offline).adminStudents, role: .admin)
+        let offline = AdminStudentsViewModel(students: repositories(.offline).admin.students, role: .admin)
         await offline.load()
         XCTAssertEqual(offline.state, .offline(nil, savedAt: DemoSeed.offlineSavedAt))
     }
 
     func testResultsAndMoreLoadAndGoOffline() async {
         let online = repositories(.duringMeal)
-        let results = AdminPageViewModel { try await online.adminResults.overview() }
+        let results = AdminPageViewModel { try await online.admin.results.overview() }
         await results.load()
         XCTAssertEqual(results.state.value?.toReview.count, 2)
         XCTAssertEqual(results.state.value?.changes.count, 2)
-        let more = AdminPageViewModel { try await online.adminMore.hub() }
+        let more = AdminPageViewModel { try await online.admin.more.hub() }
         await more.load()
         XCTAssertEqual(more.state.value?.passUsed, 196)
 
         let down = repositories(.offline)
-        let offline = AdminPageViewModel { try await down.adminResults.overview() }
+        let offline = AdminPageViewModel { try await down.admin.results.overview() }
         await offline.load()
         if case .offline = offline.state {} else { XCTFail("\(offline.state)") }
     }
 
     func testAnotherSourceShowsNotBuiltNotAnEmptyScreen() async {
         let remote = RemoteAPI(baseURL: nil).makeRepositories()
-        let model = AdminStudentsViewModel(students: remote.adminStudents, role: .admin)
+        let model = AdminStudentsViewModel(students: remote.admin.students, role: .admin)
         await model.load()
         guard case .failed(let failure) = model.state else { return XCTFail("\(model.state)") }
         XCTAssertTrue(failure.isNotImplemented)
     }
 
     func testFindAMealFiltersAndSaysWhenThereIsNothing() async {
-        let model = AdminFindMealViewModel(defaultMess: "Main", results: repositories().adminResults)
+        let model = AdminFindMealViewModel(defaultMess: "Main", results: repositories().admin.results)
         await model.load()
         XCTAssertEqual(model.messes, ["Main", "North", "South", "Annexe"])
         XCTAssertEqual(model.state.value?.map(\.mess), ["Main", "Main"])
@@ -304,7 +304,7 @@ final class AdminResultsMoreTests: XCTestCase {
     // MARK: Students
 
     func testARemindIsRecordedOnce() async {
-        let model = AdminStudentsViewModel(students: repositories().adminStudents, role: .admin)
+        let model = AdminStudentsViewModel(students: repositories().admin.students, role: .admin)
         await model.load()
         let first = await model.remind()
         XCTAssertTrue(first)
@@ -315,14 +315,14 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAnOfflineRemindIsNotShownAsSent() async {
-        let model = AdminStudentsViewModel(students: repositories(.offline).adminStudents, role: .admin)
+        let model = AdminStudentsViewModel(students: repositories(.offline).admin.students, role: .admin)
         let sent = await model.remind()
         XCTAssertFalse(sent)
         XCTAssertEqual(model.errorText, AdminScreenCopy.offlineNothingSaved)
     }
 
     func testAnOwnerDoesNotFixTheIssue() async {
-        let model = AdminCommunityViewModel(id: AdminSeed.longWait, role: .admin, students: repositories().adminStudents)
+        let model = AdminCommunityViewModel(id: AdminSeed.longWait, role: .admin, students: repositories().admin.students)
         await model.load()
         let assigned = await model.assign("Ravi")
         XCTAssertTrue(assigned)
@@ -346,7 +346,7 @@ final class AdminResultsMoreTests: XCTestCase {
     // MARK: Weekly report
 
     func testExportNeverClaimsAFile() async {
-        let model = AdminWeeklyReportViewModel(results: repositories().adminResults, preparingTime: .zero)
+        let model = AdminWeeklyReportViewModel(results: repositories().admin.results, preparingTime: .zero)
         await model.load()
         await model.exportPDF()
         XCTAssertEqual(model.exportState, .preview)
@@ -359,7 +359,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testPeriodsFollowThePack() async {
-        let model = AdminWeeklyReportViewModel(results: repositories().adminResults, preparingTime: .zero)
+        let model = AdminWeeklyReportViewModel(results: repositories().admin.results, preparingTime: .zero)
         await model.load()
         XCTAssertEqual(model.state.value?.mealsLeftOver, 4)
         await model.select(.lastWeek)
@@ -380,7 +380,7 @@ final class AdminResultsMoreTests: XCTestCase {
 
     func testTheUploadIsSimulatedAndChangesNoData() async {
         let repositories = repositories()
-        let model = AdminMenuViewModel(more: repositories.adminMore, role: .admin, stepTime: .zero)
+        let model = AdminMenuViewModel(more: repositories.admin.more, role: .admin, stepTime: .zero)
         await model.load()
         let before = model.state.value
         await model.simulateUpload()
@@ -391,7 +391,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     private func thursday(_ repositories: Repositories) async -> AdminDayEditViewModel {
-        let model = AdminDayEditViewModel(date: DemoSeed.date(15, 0, 0), more: repositories.adminMore, role: .admin)
+        let model = AdminDayEditViewModel(date: DemoSeed.date(15, 0, 0), more: repositories.admin.more, role: .admin)
         await model.load()
         return model
     }
@@ -425,7 +425,7 @@ final class AdminResultsMoreTests: XCTestCase {
         XCTAssertEqual(model.wordsToCheck.count, 1)
         let saved = await model.save()
         XCTAssertTrue(saved)
-        let menu = try await repositories.adminMore.weekMenu()
+        let menu = try await repositories.admin.more.weekMenu()
         let day = try XCTUnwrap(menu.days.first { $0.day == DemoSeed.date(15, 0, 0) })
         XCTAssertEqual(day.wordsToCheck, 1)
     }
@@ -449,7 +449,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testTheDinnerChangeReachesTheMenu() async throws {
-        let model = AdminMenuViewModel(more: repositories().adminMore, role: .admin, stepTime: .zero)
+        let model = AdminMenuViewModel(more: repositories().admin.more, role: .admin, stepTime: .zero)
         await model.load()
         let didApply = await model.apply(.swap(dish: "Dal Tadka", with: "Tomato Dal"))
         XCTAssertTrue(didApply)
@@ -458,7 +458,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAnAnnouncementHasALimit() async {
-        let model = AdminAnnounceViewModel(more: repositories().adminMore, role: .admin)
+        let model = AdminAnnounceViewModel(more: repositories().admin.more, role: .admin)
         await model.load()
         XCTAssertEqual(model.audience?.confirmName, "Main Mess")
         XCTAssertTrue(model.canSend)
@@ -469,7 +469,7 @@ final class AdminResultsMoreTests: XCTestCase {
     }
 
     func testAnInviteNeedsANumberAndCountsOnce() async {
-        let model = AdminPeopleViewModel(more: repositories().adminMore, role: .admin)
+        let model = AdminPeopleViewModel(more: repositories().admin.more, role: .admin)
         await model.load()
         let empty = await model.invite(phone: "", role: "Door staff")
         XCTAssertFalse(empty)

@@ -13,21 +13,3 @@ protocol StudentOutingRepository: Sendable {
     /// Withdraws a request or an unused pass. Refused once the gate recorded an exit.
     func cancelOuting(_ id: OutingRequestID, by student: StudentID) async throws -> OutingCase
 }
-
-/// The answer of any data source with no student outing service yet. It never fakes a result.
-struct UnavailableStudentOutings: StudentOutingRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Student outings") }
-
-    func now() async -> Date { Date() }
-    func outings(for student: StudentID) async throws -> StudentOutings { throw unavailable }
-    func outing(_ id: OutingRequestID, for student: StudentID) async throws -> OutingCase { throw unavailable }
-    func requestOuting(_ draft: StudentOutingDraft, by student: StudentID) async throws -> OutingCase { throw unavailable }
-    func cancelOuting(_ id: OutingRequestID, by student: StudentID) async throws -> OutingCase { throw unavailable }
-}
-
-extension OutingCaseRepositories {
-    /// The student side of the environment's outing source, or a source that says it is not built.
-    static func studentSource(for environment: AppEnvironment) -> any StudentOutingRepository {
-        (source(for: environment) as? any StudentOutingRepository) ?? UnavailableStudentOutings()
-    }
-}

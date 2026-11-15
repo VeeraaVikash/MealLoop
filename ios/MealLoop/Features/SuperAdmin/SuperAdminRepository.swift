@@ -12,13 +12,3 @@ protocol SuperAdminRepository: Sendable {
     /// SIMULATED in the prototype: the request is recorded and nothing is sent. No password is set, shown or read.
     func startPasswordReset(_ id: AccountID, by role: Role) async throws -> ManagedAccount
 }
-
-/// The answer of any data source with no account service yet. It never fakes a result.
-struct UnavailableSuperAdmin: SuperAdminRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Super Admin accounts") }
-
-    func accounts(by role: Role) async throws -> [ManagedAccount] { throw unavailable }
-    func account(_ id: AccountID, by role: Role) async throws -> ManagedAccount { throw unavailable }
-    func deactivate(_ id: AccountID, by role: Role) async throws -> ManagedAccount { throw unavailable }
-    func startPasswordReset(_ id: AccountID, by role: Role) async throws -> ManagedAccount { throw unavailable }
-}

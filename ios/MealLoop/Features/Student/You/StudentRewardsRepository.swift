@@ -14,20 +14,3 @@ protocol StudentRewardsRepository: Sendable {
     /// Records "Something wrong with your balance?". An empty text is refused.
     func reportBalanceIssue(_ text: String, for student: StudentID) async throws -> StudentBalanceIssueReceipt
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableStudentRewards: StudentRewardsRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Reward tickets") }
-
-    func getTicket(_ rewardID: String, for student: StudentID) async throws -> StudentRewardTicket { throw unavailable }
-    func tickets(for student: StudentID) async throws -> [StudentRewardTicket] { throw unavailable }
-    func ticket(_ id: StudentRewardTicketID, for student: StudentID) async throws -> StudentRewardTicket {
-        throw unavailable
-    }
-    func recordCounterUse(of id: StudentRewardTicketID, for student: StudentID) async throws -> StudentRewardTicket {
-        throw unavailable
-    }
-    func reportBalanceIssue(_ text: String, for student: StudentID) async throws -> StudentBalanceIssueReceipt {
-        throw unavailable
-    }
-}

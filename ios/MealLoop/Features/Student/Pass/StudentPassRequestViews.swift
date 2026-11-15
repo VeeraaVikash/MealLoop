@@ -54,7 +54,7 @@ final class StudentPassRequestViewModel {
 
     init(context: StudentContext, repositories: Repositories, clock: any AppClock) {
         self.context = context
-        self.repository = repositories.passRequests
+        self.repository = repositories.passes.requests
         self.clock = clock
     }
 

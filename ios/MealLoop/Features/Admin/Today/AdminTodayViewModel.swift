@@ -40,8 +40,8 @@ final class AdminTodayViewModel {
         self.intentions = repositories.intentions
         self.shortages = repositories.shortages
         self.sos = repositories.sos
-        self.messes = repositories.adminMesses
-        self.results = repositories.adminResults
+        self.messes = repositories.admin.messes
+        self.results = repositories.admin.results
         self.clock = clock
     }
 

@@ -22,79 +22,79 @@ final class DishFeedbackRepositoryTests: XCTestCase {
 
     func testEachDishHasItsFramesChoices() async throws {
         let (_, repositories) = make()
-        let sambar = try await repositories.dishFeedback.problems(forDish: "Masala Sambar").map(\.title)
+        let sambar = try await repositories.student.dishFeedback.problems(forDish: "Masala Sambar").map(\.title)
         XCTAssertEqual(sambar, ["Too salty", "Too spicy", "Too watery", "Too sour", "Cold", "Too little"])
-        let milk = try await repositories.dishFeedback.problems(forDish: "Milk").map(\.title)
+        let milk = try await repositories.student.dishFeedback.problems(forDish: "Milk").map(\.title)
         XCTAssertEqual(milk, ["Too sour", "Watery", "Not fresh", "Warm", "Too little"])
-        let pongal = try await repositories.dishFeedback.problems(forDish: "Pongal").map(\.title)
+        let pongal = try await repositories.student.dishFeedback.problems(forDish: "Pongal").map(\.title)
         XCTAssertEqual(pongal.first, "Undercooked")
     }
 
     func testOthersCountsComeFromTheFeedbackDataAndAreNeverZero() async throws {
         let (_, repositories) = make()
-        let counts = try await repositories.dishFeedback.otherCounts(dish: "Masala Sambar", day: day, slot: .lunch, at: mess,
+        let counts = try await repositories.student.dishFeedback.otherCounts(dish: "Masala Sambar", day: day, slot: .lunch, at: mess,
                                                                       excluding: aarav)
         XCTAssertEqual(counts, ["Too salty": 6], "The Admin seed's six; a problem nobody reported is absent.")
-        let none = try await repositories.dishFeedback.otherCounts(dish: "Pongal", day: day, slot: .breakfast, at: mess,
+        let none = try await repositories.student.dishFeedback.otherCounts(dish: "Pongal", day: day, slot: .breakfast, at: mess,
                                                                     excluding: aarav)
         XCTAssertTrue(none.isEmpty)
     }
 
     func testASendAddsToTheAdminCountAndMyFeedbackWithoutAName() async throws {
         let (_, repositories) = make()
-        let receipt = try await repositories.dishFeedback.send(sambar(severity: .very), at: mess, by: aarav)
-        _ = try await repositories.dishFeedback.send(sambar(severity: .very), at: mess, by: aarav)
+        let receipt = try await repositories.student.dishFeedback.send(sambar(severity: .very), at: mess, by: aarav)
+        _ = try await repositories.student.dishFeedback.send(sambar(severity: .very), at: mess, by: aarav)
         XCTAssertEqual(receipt.submission.problem, "Too salty")
-        let overview = try await repositories.adminStudents.studentsOverview()
+        let overview = try await repositories.admin.students.studentsOverview()
         let item = try XCTUnwrap(overview.feedback.first { $0.id == AdminSeed.sambarFeedback })
         XCTAssertEqual(item.students, 7, "The same key counts once.")
         XCTAssertEqual(item.problems.first?.severity, "How bad: quite (5), very (2)")
-        let mine = try await repositories.studentRecords.feedback(for: aarav)
+        let mine = try await repositories.student.records.feedback(for: aarav)
         XCTAssertEqual(mine.items.first?.dish, "Masala Sambar")
         XCTAssertEqual(mine.items.first?.stage, .reported)
         let mirror = Mirror(reflecting: item)
         XCTAssertFalse(mirror.children.contains { $0.label?.lowercased().contains("student") == true && $0.label != "students" },
                        "An item never carries who sent it.")
-        let mostReported = try await repositories.dishFeedback.mostReported(day: day, slot: .lunch, at: mess)
+        let mostReported = try await repositories.student.dishFeedback.mostReported(day: day, slot: .lunch, at: mess)
         XCTAssertEqual(mostReported?.students, 7)
-        let othersForAarav = try await repositories.dishFeedback.otherCounts(dish: "Masala Sambar", day: day, slot: .lunch,
+        let othersForAarav = try await repositories.student.dishFeedback.otherCounts(dish: "Masala Sambar", day: day, slot: .lunch,
                                                                               at: mess, excluding: aarav)
         XCTAssertEqual(othersForAarav["Too salty"], 6, "The student's own send is not one of the others.")
     }
 
     func testANewProblemStartsItsOwnAdminItem() async throws {
         let (_, repositories) = make()
-        _ = try await repositories.dishFeedback.send(sambar("Cold", key: "k2", severity: .aBit), at: mess, by: other)
-        let overview = try await repositories.adminStudents.studentsOverview()
+        _ = try await repositories.student.dishFeedback.send(sambar("Cold", key: "k2", severity: .aBit), at: mess, by: other)
+        let overview = try await repositories.admin.students.studentsOverview()
         let cold = try XCTUnwrap(overview.feedback.first { $0.problem == "cold" })
         XCTAssertEqual(cold.students, 1)
         XCTAssertEqual(cold.problems.first?.severity, "How bad: a bit (1)")
         XCTAssertEqual(cold.meal, DemoSeed.lunch.id)
-        let detail = try await repositories.adminStudents.feedback(cold.id)
+        let detail = try await repositories.admin.students.feedback(cold.id)
         XCTAssertEqual(detail.students, 1)
     }
 
     func testOfflineNothingIsSentAndKeptFeedbackSendsLater() async throws {
         let (provider, repositories) = make(.offline)
         do {
-            _ = try await repositories.dishFeedback.send(sambar(), at: mess, by: aarav)
+            _ = try await repositories.student.dishFeedback.send(sambar(), at: mess, by: aarav)
             XCTFail("Offline never sends.")
         } catch RepositoryError.offline {}
-        await repositories.dishFeedback.keepForLater(sambar(), at: mess, by: aarav)
-        let kept = await repositories.dishFeedback.kept(by: aarav)
+        await repositories.student.dishFeedback.keepForLater(sambar(), at: mess, by: aarav)
+        let kept = await repositories.student.dishFeedback.kept(by: aarav)
         XCTAssertEqual(kept.count, 1)
         do {
-            _ = try await repositories.dishFeedback.sendKept(by: aarav)
+            _ = try await repositories.student.dishFeedback.sendKept(by: aarav)
             XCTFail("Still offline.")
         } catch RepositoryError.offline {}
         await provider.setScenario(.afterMeal)
-        let overviewBefore = try await repositories.adminStudents.studentsOverview()
+        let overviewBefore = try await repositories.admin.students.studentsOverview()
         XCTAssertEqual(overviewBefore.feedback.first?.students, 6, "Kept is not counted.")
-        let receipts = try await repositories.dishFeedback.sendKept(by: aarav)
+        let receipts = try await repositories.student.dishFeedback.sendKept(by: aarav)
         XCTAssertEqual(receipts.count, 1)
-        let keptAfter = await repositories.dishFeedback.kept(by: aarav)
+        let keptAfter = await repositories.student.dishFeedback.kept(by: aarav)
         XCTAssertTrue(keptAfter.isEmpty)
-        let overview = try await repositories.adminStudents.studentsOverview()
+        let overview = try await repositories.admin.students.studentsOverview()
         XCTAssertEqual(overview.feedback.first?.students, 7)
     }
 

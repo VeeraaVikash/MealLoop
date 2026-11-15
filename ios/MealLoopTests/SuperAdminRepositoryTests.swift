@@ -5,7 +5,7 @@ import XCTest
 /// The Super Admin accounts list: simulated actions, no password anywhere, no other role's powers.
 final class SuperAdminRepositoryTests: XCTestCase {
     private func make(_ scenario: DemoScenario = .storyStart) -> any SuperAdminRepository {
-        DemoDataProvider(scenario: scenario).makeRepositories().superAdmin
+        DemoDataProvider(scenario: scenario).makeRepositories().admin.superAdmin
     }
 
     private var foodHead: AccountID { DemoSeed.accounts.first { $0.role == .admin }!.id }

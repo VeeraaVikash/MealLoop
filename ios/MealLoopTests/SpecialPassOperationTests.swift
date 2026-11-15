@@ -185,7 +185,7 @@ final class SpecialPassOperationTests: XCTestCase {
 
     func testRemoteHasNoPassServiceAndSaysSo() async {
         do {
-            _ = try await RemoteAPI(baseURL: nil).makeRepositories().specialPasses.lookUpPass(lastFour: "0238", for: lunch)
+            _ = try await RemoteAPI(baseURL: nil).makeRepositories().passes.special.lookUpPass(lastFour: "0238", for: lunch)
             XCTFail("Must not fake a result")
         } catch {
             guard case .notImplemented? = error as? RepositoryError else { return XCTFail("\(error)") }

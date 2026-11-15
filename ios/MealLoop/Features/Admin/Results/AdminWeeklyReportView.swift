@@ -64,7 +64,7 @@ struct AdminWeeklyReportScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminWeeklyReportView(model: AdminWeeklyReportViewModel(results: environment.repositories.adminResults), nav: nav)
+        AdminWeeklyReportView(model: AdminWeeklyReportViewModel(results: environment.repositories.admin.results), nav: nav)
     }
 }
 

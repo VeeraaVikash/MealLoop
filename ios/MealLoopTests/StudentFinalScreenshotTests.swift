@@ -150,7 +150,7 @@ final class StudentFinalScreenshotTests: XCTestCase {
             StudentCreditsHistoryView(model: world.you, rewards: world.rewards) {}
         }
         world.clock.set(DemoSeed.time(12, 32))
-        _ = try await world.environment.repositories.studentRewards.recordCounterUse(of: id, for: DemoSeed.sampleStudent.id)
+        _ = try await world.environment.repositories.student.rewards.recordCounterUse(of: id, for: DemoSeed.sampleStudent.id)
         try await shot("ticket_juice_used_1529-2180", world, tab: .you) { StudentRewardTicketView(model: world.rewards, id: id) }
         try await shot("ticket_juice_used_largest_text", world, tab: .you, largestText: true) {
             StudentRewardTicketView(model: world.rewards, id: id)
@@ -161,7 +161,7 @@ final class StudentFinalScreenshotTests: XCTestCase {
 
     func testCaptureRatings() async throws {
         let world = World(.afterMeal)
-        let matches = try await world.environment.repositories.studentMeals.findDishes("Steamed Rice", mess: DemoSeed.mess.id)
+        let matches = try await world.environment.repositories.student.meals.findDishes("Steamed Rice", mess: DemoSeed.mess.id)
         let match = try XCTUnwrap(matches.first { $0.slot == .lunch && $0.day >= DemoSeed.time(0, 0) && $0.day <= DemoSeed.time(23, 59) })
         let rice = match.dish
         func rating(_ dish: DishID? = nil) -> StudentRatingViewModel {
@@ -257,7 +257,7 @@ final class StudentFinalScreenshotTests: XCTestCase {
         try await shot("p2_pass_request", world, tab: .home, wait: 2) {
             StudentPassScreen(session: world.session) {}
         }
-        _ = try await world.environment.repositories.passRequests.request(for: DemoSeed.sampleStudent, at: DemoSeed.mess)
+        _ = try await world.environment.repositories.passes.requests.request(for: DemoSeed.sampleStudent, at: DemoSeed.mess)
         try await shot("p2_pass_requested", world, tab: .home, wait: 2) {
             StudentPassScreen(session: world.session) {}
         }
@@ -268,7 +268,7 @@ final class StudentFinalScreenshotTests: XCTestCase {
     func testCaptureOutingNextSteps() async throws {
         let world = World()
         let outings = try XCTUnwrap(StudentOutingsViewModel(session: world.session,
-                                                            repository: OutingCaseRepositories.studentSource(for: world.environment)))
+                                                            repository: world.environment.repositories.outings.student))
         await outings.load()
         try await shot("p4_new_outing", world, tab: .you, wait: 2) {
             StudentNewOutingView(model: outings, onSent: { _ in }, onOpen: { _ in }) {}
@@ -392,7 +392,7 @@ final class StudentFinalScreenshotTests: XCTestCase {
         let records = try XCTUnwrap(StudentRecordsViewModel(session: world.session, repositories: world.environment.repositories,
                                                             clock: world.clock))
         let outings = try XCTUnwrap(StudentOutingsViewModel(session: world.session,
-                                                            repository: OutingCaseRepositories.studentSource(for: world.environment)))
+                                                            repository: world.environment.repositories.outings.student))
         try await shot("student_home", world, tab: .home, pushed: false) { StudentHomeScreen(session: world.session) }
         try await shot("student_meals", world, tab: .meals, pushed: false) { StudentMealsScreen(session: world.session) }
         try await shot("student_community", world, tab: .community, pushed: false) { StudentCommunityScreen(session: world.session) }

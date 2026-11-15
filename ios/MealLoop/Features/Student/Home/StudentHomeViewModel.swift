@@ -50,7 +50,7 @@ final class StudentHomeViewModel {
         self.intentions = repositories.intentions
         self.entries = repositories.entries
         self.meals = repositories.meals
-        self.extras = repositories.studentExtras
+        self.extras = repositories.student.extras
         self.clock = clock
     }
 

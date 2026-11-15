@@ -23,8 +23,8 @@ final class StudentCommunityViewModel {
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.community = repositories.studentCommunity
-        self.meals = repositories.studentMeals
+        self.community = repositories.student.community
+        self.meals = repositories.student.meals
         self.clock = clock
     }
 
@@ -127,7 +127,7 @@ final class StudentReportViewModel {
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.community = repositories.studentCommunity
+        self.community = repositories.student.community
         self.mealState = repositories.mealState
         self.clock = clock
     }

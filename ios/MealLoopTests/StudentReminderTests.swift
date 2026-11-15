@@ -85,10 +85,10 @@ final class StudentReminderTests: XCTestCase {
     func testARemindersEarnsNoCreditsAndSendsNothing() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
         let repositories = demo.makeRepositories()
-        let before = try await repositories.studentYou.credits(for: DemoSeed.sampleStudent.id).balance
+        let before = try await repositories.student.you.credits(for: DemoSeed.sampleStudent.id).balance
         let reminders = StudentMealReminders()
         reminders.set(lunch(), now: seven)
-        let after = try await repositories.studentYou.credits(for: DemoSeed.sampleStudent.id).balance
+        let after = try await repositories.student.you.credits(for: DemoSeed.sampleStudent.id).balance
         XCTAssertEqual(before, after)
     }
 }

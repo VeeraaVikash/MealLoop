@@ -13,16 +13,3 @@ protocol StudentMealsRepository: Sendable {
     func startPass(of student: StudentID, key: IdempotencyKey) async throws -> StudentPassStanding
     func crowd(at mess: MessID) async throws -> StudentCrowd
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableStudentMeals: StudentMealsRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Student Meals") }
-
-    func week(for mess: MessID) async throws -> StudentWeek { throw unavailable }
-    func mealMenu(on day: Date, slot: MealSlot, mess: MessID) async throws -> StudentMealMenu { throw unavailable }
-    func dishDetail(_ dish: DishID, on day: Date, slot: MealSlot, mess: MessID) async throws -> StudentDishDetail { throw unavailable }
-    func findDishes(_ text: String, mess: MessID) async throws -> [StudentDishMatch] { throw unavailable }
-    func passStanding(of student: StudentID, at mess: MessID) async throws -> StudentPassStanding { throw unavailable }
-    func startPass(of student: StudentID, key: IdempotencyKey) async throws -> StudentPassStanding { throw unavailable }
-    func crowd(at mess: MessID) async throws -> StudentCrowd { throw unavailable }
-}

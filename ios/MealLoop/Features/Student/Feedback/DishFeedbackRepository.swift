@@ -19,18 +19,3 @@ protocol DishFeedbackRepository: Sendable {
     /// Sends what was kept. Throws offline and keeps everything; returns the receipts of what was sent.
     func sendKept(by student: StudentID) async throws -> [DishFeedbackReceipt]
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableDishFeedback: DishFeedbackRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Dish feedback") }
-
-    func problems(forDish name: String) async throws -> [DishProblemOption] { throw unavailable }
-    func otherCounts(dish name: String, day: Date, slot: MealSlot, at mess: MessID, excluding student: StudentID)
-        async throws -> [String: Int] { throw unavailable }
-    func mostReported(day: Date, slot: MealSlot, at mess: MessID) async throws -> DishMostReported? { throw unavailable }
-    func send(_ submission: DishFeedbackSubmission, at mess: MessID, by student: StudentID) async throws
-        -> DishFeedbackReceipt { throw unavailable }
-    func keepForLater(_ submission: DishFeedbackSubmission, at mess: MessID, by student: StudentID) async {}
-    func kept(by student: StudentID) async -> [DishFeedbackSubmission] { [] }
-    func sendKept(by student: StudentID) async throws -> [DishFeedbackReceipt] { throw unavailable }
-}

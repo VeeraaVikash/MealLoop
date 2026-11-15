@@ -290,10 +290,10 @@ extension Repositories {
         let scope = AdminDataScope(session: session, mess: mess, sourceMess: (auth as? any AdminDataOrigin)?.adminSourceMess)
         value.mealState = ScopedAdminMealState(base: mealState, scope: scope)
         value.headcount = ScopedAdminHeadcount(base: headcount, meals: mealState, scope: scope)
-        value.adminResults = ScopedAdminResultsRepository(base: adminResults, scope: scope)
-        value.adminStudents = ScopedAdminStudentsRepository(base: adminStudents, scope: scope)
-        value.adminMore = ScopedAdminMoreRepository(base: adminMore, scope: scope)
-        value.adminMesses = ScopedAdminMessRepository(base: adminMesses, scope: scope)
+        value.admin.results = ScopedAdminResultsRepository(base: admin.results, scope: scope)
+        value.admin.students = ScopedAdminStudentsRepository(base: admin.students, scope: scope)
+        value.admin.more = ScopedAdminMoreRepository(base: admin.more, scope: scope)
+        value.admin.messes = ScopedAdminMessRepository(base: admin.messes, scope: scope)
         return value
     }
 }

@@ -24,26 +24,3 @@ protocol StudentRecordsRepository: Sendable {
     /// Oldest first, then the next step. Empty when the mess posted none.
     func updates(for issue: CommunityIssueID) async throws -> [StudentIssueUpdate]
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableStudentRecords: StudentRecordsRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Student records") }
-
-    func reports(for student: StudentID) async throws -> [StudentFiledReport] { throw unavailable }
-    func report(_ id: StudentFiledReportID, for student: StudentID) async throws -> StudentFiledReport { throw unavailable }
-    func reply(to id: StudentFiledReportID, text: String, by student: StudentID) async throws -> StudentFiledReport {
-        throw unavailable
-    }
-    func answerFixCheck(_ id: StudentFiledReportID, _ answer: StudentFixCheckAnswer, by student: StudentID) async throws
-        -> StudentFiledReport { throw unavailable }
-    func recordDataRequest(_ kind: StudentDataRequestKind, by student: StudentID) async throws -> StudentDataRequestReceipt {
-        throw unavailable
-    }
-    func dataRequests(for student: StudentID) async throws -> [StudentDataRequestReceipt] { throw unavailable }
-    func feedback(for student: StudentID) async throws -> StudentFeedbackSummary { throw unavailable }
-    func answerRecheck(_ id: StudentFeedbackID, _ answer: StudentRecheckAnswer, by student: StudentID) async throws
-        -> StudentFeedbackSummary { throw unavailable }
-    func spending(for student: StudentID) async throws -> StudentSpending { throw unavailable }
-    func help(at mess: MessID) async throws -> StudentHelp { throw unavailable }
-    func updates(for issue: CommunityIssueID) async throws -> [StudentIssueUpdate] { throw unavailable }
-}

@@ -39,16 +39,3 @@ enum PassCodeWindow {
         max(1, Int(end(of: index, length: length).timeIntervalSince(instant).rounded(.up)))
     }
 }
-
-/// The answer of any data source with no live pass code yet. It never fakes a result.
-struct UnavailableLivePassCodes: LivePassCodeRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Live pass code") }
-
-    func passCodeInstant() async -> Date { Date(timeIntervalSince1970: 0) }
-    func currentPassCode(for student: StudentID, meal: MealID, at instant: Date) async throws -> CurrentPassCode {
-        throw unavailable
-    }
-    func recordPassEntryForCurrentCode(_ request: SpecialPassEntryRequest) async throws -> SpecialPassEntryResult {
-        throw unavailable
-    }
-}

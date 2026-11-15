@@ -26,8 +26,8 @@ final class StudentYouViewModel {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
         self.displayName = session.account.displayName
-        self.you = repositories.studentYou
-        self.extras = repositories.studentExtras
+        self.you = repositories.student.you
+        self.extras = repositories.student.extras
         self.clock = clock
     }
 

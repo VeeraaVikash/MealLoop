@@ -57,7 +57,7 @@ final class StudentRewardsViewModel {
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.rewards = repositories.studentRewards
+        self.rewards = repositories.student.rewards
         self.clock = clock
     }
 

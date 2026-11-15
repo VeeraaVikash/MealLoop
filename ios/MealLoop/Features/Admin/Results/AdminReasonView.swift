@@ -7,7 +7,7 @@ struct AdminReasonScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let results = environment.repositories.adminResults
+        let results = environment.repositories.admin.results
         AdminLoadedPage(model: AdminPageViewModel { [kind] in try await results.reason(kind) }, timeZone: nav.timeZone) { detail, _ in
             AdminReasonBody(detail: detail, nav: nav)
         }

@@ -18,9 +18,9 @@ final class AdminPolishTests: XCTestCase {
         let core = DemoDataProvider(scenario: .duringMeal)
         let session = try await core.signInStaff(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
         let repos = core.makeRepositories()
-        let directory = try await repos.people.directory(by: session)
-        let menu = try await repos.adminMore.weekMenu()
-        let students = try await repos.adminStudents.studentsOverview()
+        let directory = try await repos.admin.people.directory(by: session)
+        let menu = try await repos.admin.more.weekMenu()
+        let students = try await repos.admin.students.studentsOverview()
         return AdminSearchEngine.index(directory: directory, menu: menu, students: students, timeZone: DemoSeed.mess.timeZone)
     }
 
@@ -62,7 +62,7 @@ final class AdminPolishTests: XCTestCase {
 
     func testNoMorePagesSayNotPartOfThisPrototype() throws {
         let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("MealLoop/Features/Admin/AdminMoreView.swift")
+            .appendingPathComponent("MealLoop/Features/Admin/More/AdminMoreView.swift")
         let source = try String(contentsOf: file, encoding: .utf8)
         XCTAssertFalse(source.contains("notInPrototype"))
     }

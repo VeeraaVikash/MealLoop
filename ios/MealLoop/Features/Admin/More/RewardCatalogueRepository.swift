@@ -11,12 +11,3 @@ protocol RewardCatalogueRepository: Sendable {
     /// Tickets already got for this reward stay valid. `notFound` when it is not in the catalogue.
     func delete(_ id: String, by role: Role) async throws
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableRewardCatalogue: RewardCatalogueRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Reward catalogue") }
-
-    func items() async throws -> [StudentCreditTicket] { throw unavailable }
-    func add(name: String, cost: Int, by role: Role) async throws -> StudentCreditTicket { throw unavailable }
-    func delete(_ id: String, by role: Role) async throws { throw unavailable }
-}

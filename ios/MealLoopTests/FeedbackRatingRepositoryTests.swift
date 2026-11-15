@@ -19,7 +19,7 @@ final class FeedbackRatingRepositoryTests: XCTestCase {
     /// Owner (11 November): in the demo a meal can be rated at any time, before it is served or days later.
     func testAMealCanBeRatedAtAnyTime() async throws {
         let (provider, repositories) = make() // 7:00 AM, lunch not started
-        let ratings = repositories.feedbackRatings
+        let ratings = repositories.student.ratings
         let window = try await ratings.ratingWindow(day: day, slot: .lunch, at: mess)
         XCTAssertTrue(window.isOpen)
         let early = try await ratings.rateMeal(day: day, slot: .lunch, .good, at: mess, for: aarav)
@@ -32,7 +32,7 @@ final class FeedbackRatingRepositoryTests: XCTestCase {
     /// A saved rating is there when the page is opened again, and it can be changed.
     func testASavedRatingIsThereOnReopenAndCanBeChanged() async throws {
         let (_, repositories) = make()
-        let ratings = repositories.feedbackRatings
+        let ratings = repositories.student.ratings
         let target = StudentRatingTarget(day: day, slot: .breakfast, dish: nil)
         _ = try await ratings.rateMeal(day: day, slot: .breakfast, .good, at: mess, for: aarav)
         let first = try await ratings.myRating(target, for: aarav)
@@ -47,7 +47,7 @@ final class FeedbackRatingRepositoryTests: XCTestCase {
 
     func testGoodIsRecordedOncePerMealAndAChangeReplacesIt() async throws {
         let (provider, repositories) = make(.afterMeal)
-        let ratings = repositories.feedbackRatings
+        let ratings = repositories.student.ratings
         _ = try await ratings.rateMeal(day: day, slot: .lunch, .good, at: mess, for: aarav)
         provider.clock.set(provider.clock.now().addingTimeInterval(60))
         let again = try await ratings.rateMeal(day: day, slot: .lunch, .good, at: mess, for: aarav)
@@ -64,7 +64,7 @@ final class FeedbackRatingRepositoryTests: XCTestCase {
 
     func testADishIsRatedOnItsOwnBesideTheMeal() async throws {
         let (_, repositories) = make(.afterMeal)
-        let ratings = repositories.feedbackRatings
+        let ratings = repositories.student.ratings
         _ = try await ratings.rateDish(rice, day: day, slot: .lunch, .good, at: mess, for: aarav)
         let dish = try await ratings.myRating(StudentRatingTarget(day: day, slot: .lunch, dish: rice), for: aarav)
         XCTAssertNotNil(dish)
@@ -74,23 +74,23 @@ final class FeedbackRatingRepositoryTests: XCTestCase {
 
     func testNotGoodAloneRecordsNothing() async throws {
         let (_, repositories) = make(.afterMeal)
-        let result = try await repositories.feedbackRatings.rateDish(rice, day: day, slot: .lunch, .notGood, at: mess,
+        let result = try await repositories.student.ratings.rateDish(rice, day: day, slot: .lunch, .notGood, at: mess,
                                                                     for: aarav)
         XCTAssertNil(result)
-        let count = try await repositories.feedbackRatings.goodCount(StudentRatingTarget(day: day, slot: .lunch, dish: rice),
+        let count = try await repositories.student.ratings.goodCount(StudentRatingTarget(day: day, slot: .lunch, dish: rice),
                                                                      at: mess)
         XCTAssertEqual(count, 0)
     }
 
     func testRatingsArePrivateAndEarnNoCredits() async throws {
         let (_, repositories) = make(.afterMeal)
-        let before = try await repositories.studentYou.credits(for: aarav)
-        _ = try await repositories.feedbackRatings.rateMeal(day: day, slot: .lunch, .good, at: mess, for: aarav)
-        _ = try await repositories.feedbackRatings.rateDish(rice, day: day, slot: .lunch, .good, at: mess, for: aarav)
-        let after = try await repositories.studentYou.credits(for: aarav)
+        let before = try await repositories.student.you.credits(for: aarav)
+        _ = try await repositories.student.ratings.rateMeal(day: day, slot: .lunch, .good, at: mess, for: aarav)
+        _ = try await repositories.student.ratings.rateDish(rice, day: day, slot: .lunch, .good, at: mess, for: aarav)
+        let after = try await repositories.student.you.credits(for: aarav)
         XCTAssertEqual(after.balance, before.balance, "Ratings earn no credits.")
         XCTAssertEqual(after.history, before.history)
-        let theirs = try await repositories.feedbackRatings.myRating(StudentRatingTarget(day: day, slot: .lunch, dish: nil),
+        let theirs = try await repositories.student.ratings.myRating(StudentRatingTarget(day: day, slot: .lunch, dish: nil),
                                                                      for: other)
         XCTAssertNil(theirs, "Nobody reads another student's rating.")
     }

@@ -36,11 +36,11 @@ final class OutingRoleTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart, clock: DemoClock(DemoSeed.storyStartNow))
         let review = AppEnvironment(kind: .review, repositories: demo.makeRepositories(), clock: SystemClock(),
                                     demoControls: nil)
-        XCTAssertTrue(OutingCaseRepositories.source(for: review) is InMemoryOutingCaseRepository)
-        XCTAssertTrue(OutingCaseRepositories.source(for: review) as AnyObject === OutingCaseRepositories.source(for: review) as AnyObject,
-                      "One source per environment, so every role sees the same requests")
+        XCTAssertTrue(review.repositories.outings.cases is InMemoryOutingCaseRepository)
+        XCTAssertTrue(review.repositories.outings.cases as AnyObject === review.repositories.outings.student as AnyObject,
+                      "One source for the student and the outing roles, so every role sees the same requests")
         let api = AppEnvironment.makeAPI()
-        XCTAssertTrue(OutingCaseRepositories.source(for: api) is RemoteOutingCaseRepository)
+        XCTAssertTrue(api.repositories.outings.cases is NotConnected)
     }
 
     // MARK: Guardian model

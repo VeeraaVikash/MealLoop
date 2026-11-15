@@ -37,8 +37,6 @@ final class AppEnvironment {
     let kind: DataSourceKind
     let repositories: Repositories
     let clock: any AppClock
-    /// Optional; nothing implements it yet. Core dining features never depend on it.
-    let intelligence: (any IntelligenceService)?
     /// Non-nil only in the Debug and Review environments.
     let demoControls: (any DemoControlling)?
     /// Bumped when data changes outside a screen,
@@ -49,7 +47,6 @@ final class AppEnvironment {
         self.kind = kind
         self.repositories = repositories
         self.clock = clock
-        self.intelligence = nil
         self.demoControls = demoControls
     }
 

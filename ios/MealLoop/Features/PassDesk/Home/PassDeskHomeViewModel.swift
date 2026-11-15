@@ -19,7 +19,7 @@ final class PassDeskHomeViewModel {
         self.session = session
         self.repositories = repositories
         self.clock = clock
-        self.code = PassDeskLiveCodeViewModel(use: repositories.passUse, live: repositories.livePassCodes)
+        self.code = PassDeskLiveCodeViewModel(use: repositories.passes.use, live: repositories.passes.liveCodes)
     }
 
     func load() async {
@@ -32,8 +32,8 @@ final class PassDeskHomeViewModel {
                 return
             }
             let mealID = status.meal.id
-            let count = try await repositories.specialPasses.specialMealCount(for: mealID)
-            let requests = try await repositories.specialPasses.reissueRequests(for: session.mess.id)
+            let count = try await repositories.passes.special.specialMealCount(for: mealID)
+            let requests = try await repositories.passes.special.reissueRequests(for: session.mess.id)
             let shortages = try await repositories.shortages.shortages(for: mealID)
             let content = PassDeskHomeContent(status: status, phase: Self.phase(for: status), count: count, requests: requests,
                                               reportedShortages: shortages.filter { $0.reportedBy == session.role })

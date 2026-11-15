@@ -91,7 +91,7 @@ final class AdminHeadcountTodayTests: XCTestCase {
     // MARK: Students
 
     func testFoodHeadStudentsHoldMainsRollButNotItsSplit() async throws {
-        let source = try XCTUnwrap(try scoped(.admin).adminStudents as? any SingleMessStudentsRepository)
+        let source = try XCTUnwrap(try scoped(.admin).admin.students as? any SingleMessStudentsRepository)
         let main = try await source.singleMessStudents()
         XCTAssertEqual(main.mess, "Main")
         XCTAssertEqual(main.students, 860)
@@ -102,14 +102,14 @@ final class AdminHeadcountTodayTests: XCTestCase {
 
     func testFoodHeadRemindsTheirMessOnceAndTheSuperAdminSeesEveryMess() async throws {
         let demo = DemoDataProvider()
-        let source = try XCTUnwrap(try scoped(.admin, demo).adminStudents as? any SingleMessStudentsRepository)
+        let source = try XCTUnwrap(try scoped(.admin, demo).admin.students as? any SingleMessStudentsRepository)
         let key = IdempotencyKey.make()
         let first = try await source.remindMess(key: key, by: .admin)
         let sentAt = try XCTUnwrap(first.reminderSentAt)
         let again = try await source.remindMess(key: key, by: .admin)
         XCTAssertEqual(again.reminderSentAt, sentAt)
 
-        let all = try await scoped(.superAdmin, demo).adminStudents.studentsOverview()
+        let all = try await scoped(.superAdmin, demo).admin.students.studentsOverview()
         XCTAssertNil(all.reminderSentAt, "Main's reminder is not every mess's")
         let rolls = try XCTUnwrap(all.byMess)
         XCTAssertEqual(rolls.map(\.mess), ["Main", "North", "South", "Annexe"])
@@ -120,7 +120,7 @@ final class AdminHeadcountTodayTests: XCTestCase {
     // MARK: Results and More
 
     func testFoodHeadResultsAreMainsOwnSummary() async throws {
-        let overview = try await scoped(.admin).adminResults.overview()
+        let overview = try await scoped(.admin).admin.results.overview()
         XCTAssertEqual(overview.periodTitle, "Last 4 weeks · Main")
         XCTAssertEqual(overview.leftOver.meals, 3)
         XCTAssertEqual(overview.leftOver.totalMeals, 14)
@@ -128,13 +128,13 @@ final class AdminHeadcountTodayTests: XCTestCase {
         XCTAssertTrue(overview.toReview.allSatisfy { $0.meal.mess.replacingOccurrences(of: " Mess", with: "") == "Main" })
         XCTAssertTrue(overview.changes.allSatisfy { $0.mess == "Main" })
         do {
-            _ = try await scoped(.admin).adminResults.reason(.fewerCame)
+            _ = try await scoped(.admin).admin.results.reason(.fewerCame)
             XCTFail("Reason pages hold every mess's meals")
         } catch {}
     }
 
     func testFoodHeadMoreShowsOnlyRowsWithFiguresForTheirMess() async throws {
-        let values = try await AdminHubValues.load(try scoped(.admin).adminMore, allMesses: false)
+        let values = try await AdminHubValues.load(try scoped(.admin).admin.more, allMesses: false)
         XCTAssertEqual(values.menuStatus, "Published")
         XCTAssertEqual(values.passUsed, 196)
         XCTAssertEqual(values.passTotal, 214)
@@ -143,7 +143,7 @@ final class AdminHeadcountTodayTests: XCTestCase {
         XCTAssertNil(values.liveRewards)
         XCTAssertNil(values.invited, "People and access stays the Super Admin's")
 
-        let all = try await AdminHubValues.load(try scoped(.superAdmin).adminMore, allMesses: true)
+        let all = try await AdminHubValues.load(try scoped(.superAdmin).admin.more, allMesses: true)
         XCTAssertNotNil(all.outNow)
         XCTAssertNotNil(all.invited)
     }

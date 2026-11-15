@@ -197,7 +197,7 @@ struct AdminProposalsScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminProposalsView(model: AdminVotesViewModel(repository: environment.repositories.adminVotesRewards,
+        AdminProposalsView(model: AdminVotesViewModel(repository: environment.repositories.admin.votesRewards,
                                                   role: nav.context.account.role), nav: nav)
     }
 }
@@ -245,7 +245,7 @@ struct AdminProposalsView: View {
         }
         .task {
             await model.load()
-            votes = try? await environment.repositories.adminMore.votes()
+            votes = try? await environment.repositories.admin.more.votes()
         }
     }
 
@@ -266,7 +266,7 @@ struct AdminProposalScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminProposalView(model: AdminVotesViewModel(repository: environment.repositories.adminVotesRewards,
+        AdminProposalView(model: AdminVotesViewModel(repository: environment.repositories.admin.votesRewards,
                                                  role: nav.context.account.role), id: id, nav: nav)
     }
 }
@@ -324,7 +324,7 @@ struct AdminProposalView: View {
         }
         .task {
             await model.load()
-            votes = try? await environment.repositories.adminMore.votes()
+            votes = try? await environment.repositories.admin.more.votes()
         }
     }
 }
@@ -337,7 +337,7 @@ struct AdminRedemptionsScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let repository = environment.repositories.adminVotesRewards
+        let repository = environment.repositories.admin.votesRewards
         AdminPageScaffold(title: AdminVotesRewardsCopy.redemptionsTitle, onBack: nav.pop) {
             AdminLoadedPage(model: AdminPageViewModel { try await repository.redemptions() }, timeZone: nav.timeZone) { summary, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
@@ -370,6 +370,6 @@ struct AdminRedemptionsScreen: View {
                 }
             }
         }
-        .task { budget = try? await environment.repositories.adminMore.rewards() }
+        .task { budget = try? await environment.repositories.admin.more.rewards() }
     }
 }

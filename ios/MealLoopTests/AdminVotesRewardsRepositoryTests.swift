@@ -5,7 +5,7 @@ import XCTest
 /// The additive menu-vote decisions, proposals and redemptions.
 final class AdminVotesRewardsRepositoryTests: XCTestCase {
     private func make(_ scenario: DemoScenario = .storyStart) -> any AdminVotesRewardsRepository {
-        DemoDataProvider(scenario: scenario).makeRepositories().adminVotesRewards
+        DemoDataProvider(scenario: scenario).makeRepositories().admin.votesRewards
     }
 
     func testADecisionIsRecordedAndReplacedOnlyByTheAdmin() async throws {

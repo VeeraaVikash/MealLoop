@@ -53,7 +53,7 @@ struct AdminPeopleScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminPeopleView(model: AdminPeopleViewModel(more: environment.repositories.adminMore, role: nav.context.account.role), nav: nav)
+        AdminPeopleView(model: AdminPeopleViewModel(more: environment.repositories.admin.more, role: nav.context.account.role), nav: nav)
     }
 }
 
@@ -183,7 +183,7 @@ struct AdminRoleScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let more = environment.repositories.adminMore
+        let more = environment.repositories.admin.more
         AdminLoadedPage(model: AdminPageViewModel { try await more.people() }, timeZone: nav.timeZone) { people, _ in
             if let role = people.roles.first(where: { $0.id == id }) {
                 AdminPageScaffold(title: role.title, subtitle: AdminScreenCopy.peopleCount(role.count, messes: role.messes), onBack: nav.pop) {

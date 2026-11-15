@@ -61,7 +61,7 @@ struct AdminCheckScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminCheckView(model: AdminCheckViewModel(id: check, role: nav.context.account.role, results: environment.repositories.adminResults), nav: nav)
+        AdminCheckView(model: AdminCheckViewModel(id: check, role: nav.context.account.role, results: environment.repositories.admin.results), nav: nav)
     }
 }
 

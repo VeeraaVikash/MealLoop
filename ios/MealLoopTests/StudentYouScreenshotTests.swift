@@ -90,7 +90,7 @@ final class StudentYouScreenshotTests: XCTestCase {
 
         let empty = World { base in
             var repositories = base
-            repositories.studentYou = EmptyInbox(base: base.studentYou)
+            repositories.student.you = EmptyInbox(base: base.student.you)
             return repositories
         }
         try await shot("notifications_empty_65955", empty, tab: .home) { StudentNotificationsView(model: empty.youModel) {} }

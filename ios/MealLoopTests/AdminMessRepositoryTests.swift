@@ -5,7 +5,7 @@ import XCTest
 final class AdminMessRepositoryTests: XCTestCase {
     private func repository() async -> (DemoDataProvider, any AdminMessRepository) {
         let demo = DemoDataProvider(scenario: .storyStart)
-        return (demo, demo.makeRepositories().adminMesses)
+        return (demo, demo.makeRepositories().admin.messes)
     }
 
     func testLunchHoldsTheThreeOtherMessesAndAnnexeHasNoData() async throws {
@@ -86,14 +86,14 @@ final class AdminMessRepositoryTests: XCTestCase {
     func testNotAnsweredByMessAddsUpToTheStudentsOverview() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
         let repositories = demo.makeRepositories()
-        let byMess = try await repositories.adminMesses.notAnsweredByMess()
-        let overview = try await repositories.adminStudents.studentsOverview()
+        let byMess = try await repositories.admin.messes.notAnsweredByMess()
+        let overview = try await repositories.admin.students.studentsOverview()
         XCTAssertEqual(byMess.map(\.students).reduce(0, +), overview.notAnswered)
     }
 
     func testASourceWithNoMessDataSaysSo() async {
         do {
-            _ = try await AdminMessesNotBuilt().messDay(for: .lunch)
+            _ = try await NotConnected().messDay(for: .lunch)
             XCTFail("Must not pretend")
         } catch RepositoryError.notImplemented {
         } catch {

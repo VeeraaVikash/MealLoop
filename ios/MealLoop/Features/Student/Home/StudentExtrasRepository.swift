@@ -17,17 +17,3 @@ protocol StudentExtrasRepository: Sendable {
     /// The same idempotency key returns the first request.
     func requestEntryCorrection(_ request: EntryCorrectionRequest) async throws -> EntryCorrection
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableStudentExtras: StudentExtrasRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Student Home extras") }
-
-    func homeExtras(for student: StudentID, mess: MessID) async throws -> StudentHomeExtras { throw unavailable }
-    func studentMenu(for meal: MealID) async throws -> [Dish] { throw unavailable }
-    func skipReason(of student: StudentID, for meal: MealID) async throws -> MealSkipReason? { throw unavailable }
-    func setSkipReason(_ reason: MealSkipReason, of student: StudentID, for meal: MealID) async throws { throw unavailable }
-    func entryStanding(of student: StudentID, for meal: MealID, at mess: MessID) async throws -> StudentEntryStanding { throw unavailable }
-    func rotatingEntryCode(for student: StudentID, step: Int) async throws -> RotatingEntryCode { throw unavailable }
-    func correctableRecord(for student: StudentID) async throws -> AttendanceRecord? { throw unavailable }
-    func requestEntryCorrection(_ request: EntryCorrectionRequest) async throws -> EntryCorrection { throw unavailable }
-}

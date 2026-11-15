@@ -64,7 +64,7 @@ final class StudentSpendingViewModel {
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.spending = repositories.studentSpending
+        self.spending = repositories.student.spending
         self.clock = clock
     }
 

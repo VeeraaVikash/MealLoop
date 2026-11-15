@@ -128,7 +128,7 @@ struct AdminHeadcountView: View {
             return
         }
         let next = AdminMessHeadcountViewModel(id: id, slot: slot, role: model.context.account.role,
-                                               messes: environment.repositories.adminMesses)
+                                               messes: environment.repositories.admin.messes)
         other = next
         Task { await next.load() }
     }

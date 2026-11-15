@@ -44,7 +44,7 @@ final class StudentRatingViewModel {
     init?(session: Session, repositories: Repositories, day: Date, slot: MealSlot, dish: DishID? = nil) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.ratings = repositories.feedbackRatings
+        self.ratings = repositories.student.ratings
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = context.mess.timeZone
         target = StudentRatingTarget(day: calendar.startOfDay(for: day), slot: slot, dish: dish)

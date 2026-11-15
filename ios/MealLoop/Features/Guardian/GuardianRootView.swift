@@ -55,7 +55,7 @@ struct GuardianPageView: View {
     @State private var rejectReason: String?
     @State private var changeFields: Set<String> = []
 
-    var model: GuardianViewModel { holder ?? GuardianViewModel(account: account, repository: RemoteOutingCaseRepository()) }
+    var model: GuardianViewModel { holder ?? GuardianViewModel(account: account, repository: NotConnected()) }
 
     var body: some View {
         NavigationStack(path: $infoPath) {
@@ -82,7 +82,7 @@ struct GuardianPageView: View {
             if let preparedModel {
                 holder = preparedModel
             } else {
-                let made = GuardianViewModel(account: account, repository: OutingCaseRepositories.source(for: environment))
+                let made = GuardianViewModel(account: account, repository: environment.repositories.outings.cases)
                 holder = made
                 await made.load()
             }

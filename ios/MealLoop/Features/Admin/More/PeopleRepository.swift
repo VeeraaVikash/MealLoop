@@ -35,13 +35,3 @@ protocol PeopleRepository: Sendable {
     func allot(_ person: AccountID, to mess: MessID, by session: Session) async throws
     func audit(by session: Session) async throws -> [AccessAudit]
 }
-
-struct UnavailablePeople: PeopleRepository {
-    private var missing: RepositoryError { .notImplemented(feature: "People and access") }
-    func directory(by session: Session) async throws -> AccessDirectory { throw missing }
-    func givePassword(to person: AccountID, by session: Session) async throws -> GivenPassword { throw missing }
-    func revokePassword(of person: AccountID, by session: Session) async throws { throw missing }
-    func invite(name: String, contact: String, role: Role, mess: MessID, by session: Session) async throws -> GivenPassword { throw missing }
-    func allot(_ person: AccountID, to mess: MessID, by session: Session) async throws { throw missing }
-    func audit(by session: Session) async throws -> [AccessAudit] { throw missing }
-}

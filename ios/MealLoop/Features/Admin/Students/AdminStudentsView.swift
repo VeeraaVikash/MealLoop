@@ -120,7 +120,7 @@ struct AdminStudentsScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminStudentsView(model: AdminStudentsViewModel(students: environment.repositories.adminStudents, role: nav.context.account.role,
+        AdminStudentsView(model: AdminStudentsViewModel(students: environment.repositories.admin.students, role: nav.context.account.role,
                                                         allMesses: nav.context.allMesses), nav: nav)
     }
 }
@@ -452,8 +452,8 @@ struct AdminFeedbackScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let students = environment.repositories.adminStudents
-        let results = environment.repositories.adminResults
+        let students = environment.repositories.admin.students
+        let results = environment.repositories.admin.results
         AdminLoadedPage(model: AdminPageViewModel { [id] () -> (FeedbackItem, AdminMealFacts) in
             let item = try await students.feedback(id)
             return (item, try await results.meal(item.meal))
@@ -609,7 +609,7 @@ struct AdminCommunityScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminCommunityView(model: AdminCommunityViewModel(id: id, role: nav.context.account.role, students: environment.repositories.adminStudents), nav: nav)
+        AdminCommunityView(model: AdminCommunityViewModel(id: id, role: nav.context.account.role, students: environment.repositories.admin.students), nav: nav)
     }
 }
 
@@ -702,7 +702,7 @@ struct AdminSkipReasonsScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let students = environment.repositories.adminStudents
+        let students = environment.repositories.admin.students
         AdminLoadedPage(model: AdminPageViewModel { try await students.skipReasons() }, timeZone: nav.timeZone) { skips, _ in
             AdminPageScaffold(title: AdminScreenCopy.whyStudentsSkip, subtitle: AdminScreenCopy.skipSubtitle(skips.mealTitle, skips.saidNo), onBack: nav.pop) {
                 Text(AdminScreenCopy.skipIntro)

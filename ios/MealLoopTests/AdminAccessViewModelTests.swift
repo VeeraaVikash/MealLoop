@@ -12,13 +12,13 @@ import XCTest
         await model.load()
         XCTAssertNil(model.state.value?.otherMesses)
         XCTAssertEqual(model.state.value?.mess.id, DemoSeed.mess.id)
-        let access = AdminAccessViewModel(session: session(.admin), repository: core.makeRepositories().people)
+        let access = AdminAccessViewModel(session: session(.admin), repository: core.makeRepositories().admin.people)
         await access.load()
         XCTAssertNil(access.state.value)
     }
     func testInvitedFoodHeadGetsAssignedMessWithoutMainFallback() async throws {
         let core = DemoDataProvider()
-        let people = core.makeRepositories().people
+        let people = core.makeRepositories().admin.people
         let directory = try await people.directory(by: session(.superAdmin))
         let north = directory.messes[1]
         let given = try await people.invite(name: "Sample name", contact: "new-head@mealloop.example", role: .admin, mess: north.id, by: session(.superAdmin))
@@ -39,7 +39,7 @@ import XCTest
         let context = try XCTUnwrap(AdminContext(session: session(.superAdmin)))
         XCTAssertTrue(context.allMesses)
         XCTAssertTrue(context.canManagePeople)
-        let model = AdminAccessViewModel(session: session(.superAdmin), repository: core.makeRepositories().people)
+        let model = AdminAccessViewModel(session: session(.superAdmin), repository: core.makeRepositories().admin.people)
         await model.load()
         let target = try XCTUnwrap(model.people(.doorScanner).first)
         XCTAssertTrue(target.canRevoke)

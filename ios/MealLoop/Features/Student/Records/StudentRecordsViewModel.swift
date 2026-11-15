@@ -27,7 +27,7 @@ final class StudentRecordsViewModel {
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.records = repositories.studentRecords
+        self.records = repositories.student.records
         self.clock = clock
     }
 

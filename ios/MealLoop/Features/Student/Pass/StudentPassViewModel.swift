@@ -42,11 +42,11 @@ final class StudentPassViewModel {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
         self.name = session.account.displayName
-        self.meals = repositories.studentMeals
-        self.passes = repositories.specialPasses
-        self.live = repositories.livePassCodes
-        self.use = repositories.passUse
-        self.extras = repositories.studentExtras
+        self.meals = repositories.student.meals
+        self.passes = repositories.passes.special
+        self.live = repositories.passes.liveCodes
+        self.use = repositories.passes.use
+        self.extras = repositories.student.extras
         self.clock = clock
     }
 
@@ -188,7 +188,7 @@ final class StudentCrowdViewModel {
     init?(session: Session, repositories: Repositories) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.repository = repositories.studentMeals
+        self.repository = repositories.student.meals
     }
 
     var timeZone: TimeZone { context.mess.timeZone }

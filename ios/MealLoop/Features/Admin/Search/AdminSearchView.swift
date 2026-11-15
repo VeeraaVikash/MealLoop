@@ -154,9 +154,9 @@ final class AdminSearchViewModel {
     }
 
     func load() async {
-        let directory = try? await repositories.people.directory(by: session)
-        let menu = try? await repositories.adminMore.weekMenu()
-        let students = try? await repositories.adminStudents.studentsOverview()
+        let directory = try? await repositories.admin.people.directory(by: session)
+        let menu = try? await repositories.admin.more.weekMenu()
+        let students = try? await repositories.admin.students.studentsOverview()
         index = AdminSearchEngine.index(directory: directory, menu: menu, students: students, timeZone: timeZone)
         search()
     }

@@ -40,7 +40,7 @@ struct AdminLiveMealView: View {
         .task(id: meal?.meal.id) {
             guard let id = meal?.meal.id else { return }
             dishes = (try? await environment.repositories.meals.menu(for: id)) ?? []
-            usualByNow = (try? await environment.repositories.adminMesses.liveReference(for: id))?.usualByNow
+            usualByNow = (try? await environment.repositories.admin.messes.liveReference(for: id))?.usualByNow
         }
         .mlSheet(isPresented: isTellingVendor) {
             if let telling {

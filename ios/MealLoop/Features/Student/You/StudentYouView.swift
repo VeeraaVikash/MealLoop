@@ -80,7 +80,7 @@ struct StudentYouView: View {
         .task(id: environment.dataRevision) {
             await model.loadProfile()
             if outingsModel == nil {
-                outingsModel = StudentOutingsViewModel(session: session, repository: OutingCaseRepositories.studentSource(for: environment))
+                outingsModel = StudentOutingsViewModel(session: session, repository: environment.repositories.outings.student)
             }
             await outingsModel?.load()
         }

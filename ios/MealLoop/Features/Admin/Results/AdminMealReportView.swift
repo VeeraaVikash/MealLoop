@@ -7,7 +7,7 @@ struct AdminMealReportScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let results = environment.repositories.adminResults
+        let results = environment.repositories.admin.results
         AdminLoadedPage(model: AdminPageViewModel { [meal] in try await results.meal(meal) }, timeZone: nav.timeZone) { facts, model in
             AdminMealReportBody(facts: facts, nav: nav) { Task { await model.load() } }
         }

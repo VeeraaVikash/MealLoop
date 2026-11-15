@@ -117,7 +117,7 @@ struct AdminRewardCatalogueSection: View {
         }
         .task {
             if model == nil {
-                model = AdminRewardCatalogueViewModel(repository: environment.repositories.rewardCatalogue,
+                model = AdminRewardCatalogueViewModel(repository: environment.repositories.admin.rewardCatalogue,
                                                   role: nav.context.account.role)
                 adding = addOpen
             }

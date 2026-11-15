@@ -11,16 +11,3 @@ protocol AdminVotesRewardsRepository: Sendable {
     func respond(to proposal: String, _ response: ProposalResponse, by role: Role) async throws -> VoteProposal
     func redemptions() async throws -> RedemptionsSummary
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableAdminVotesRewards: AdminVotesRewardsRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Menu votes and rewards") }
-
-    func decision() async throws -> VoteDecisionRecord? { throw unavailable }
-    func decide(_ decision: VoteDecision, by role: Role) async throws -> VoteDecisionRecord { throw unavailable }
-    func proposals() async throws -> VoteProposals { throw unavailable }
-    func respond(to proposal: String, _ response: ProposalResponse, by role: Role) async throws -> VoteProposal {
-        throw unavailable
-    }
-    func redemptions() async throws -> RedemptionsSummary { throw unavailable }
-}

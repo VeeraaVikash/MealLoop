@@ -25,7 +25,7 @@ final class StudentMealsViewModel {
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.repository = repositories.studentMeals
+        self.repository = repositories.student.meals
         self.clock = clock
     }
 
@@ -164,7 +164,7 @@ final class StudentSearchViewModel {
     init?(session: Session, repositories: Repositories) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
-        self.repository = repositories.studentMeals
+        self.repository = repositories.student.meals
     }
 
     var timeZone: TimeZone { context.mess.timeZone }

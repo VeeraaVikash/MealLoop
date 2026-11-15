@@ -63,8 +63,8 @@ final class StudentDishFeedbackViewModel {
     init(context: StudentContext, repositories: Repositories, clock: any AppClock, request: StudentDishFeedbackRequest) {
         self.context = context
         self.clock = clock
-        feedback = repositories.dishFeedback
-        meals = repositories.studentMeals
+        feedback = repositories.student.dishFeedback
+        meals = repositories.student.meals
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = context.mess.timeZone
         day = calendar.startOfDay(for: request.day)

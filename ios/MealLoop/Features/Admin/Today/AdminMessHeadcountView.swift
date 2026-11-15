@@ -66,7 +66,7 @@ struct AdminMessHeadcountScreen: View {
 
     var body: some View {
         AdminMessHeadcountView(model: AdminMessHeadcountViewModel(id: id, slot: slot, role: nav.context.account.role,
-                                                                  messes: environment.repositories.adminMesses),
+                                                                  messes: environment.repositories.admin.messes),
                                slot: slot, nav: nav)
     }
 }
@@ -311,8 +311,8 @@ struct AdminNotAnsweredScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let messes = environment.repositories.adminMesses
-        let students = environment.repositories.adminStudents
+        let messes = environment.repositories.admin.messes
+        let students = environment.repositories.admin.students
         AdminLoadedPage(model: AdminPageViewModel { () -> ([AdminMessCount], AdminStudentsOverview) in
             (try await messes.notAnsweredByMess(), try await students.studentsOverview())
         }, timeZone: nav.timeZone) { value, _ in

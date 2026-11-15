@@ -13,16 +13,3 @@ protocol StudentSpendingRepository: Sendable {
     /// `notFound` when the entry is not the student's.
     func deleteExpense(_ id: StudentExpenseID, for student: StudentID) async throws
 }
-
-/// The answer of any data source with no such service yet. It never fakes a result.
-struct UnavailableStudentSpending: StudentSpendingRepository {
-    private var unavailable: RepositoryError { .notImplemented(feature: "Spending") }
-
-    func expenses(for student: StudentID) async throws -> [StudentExpense] { throw unavailable }
-    func addExpense(_ draft: StudentExpenseDraft, for student: StudentID) async throws -> StudentExpense {
-        throw unavailable
-    }
-    func updateExpense(_ id: StudentExpenseID, with draft: StudentExpenseDraft, for student: StudentID) async throws
-        -> StudentExpense { throw unavailable }
-    func deleteExpense(_ id: StudentExpenseID, for student: StudentID) async throws { throw unavailable }
-}

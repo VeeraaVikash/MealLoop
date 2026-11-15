@@ -121,7 +121,7 @@ struct GuardianEntryFlow: View {
             if let preparedModel {
                 holder = preparedModel
             } else {
-                let made = GuardianViewModel(account: account, repository: OutingCaseRepositories.source(for: environment))
+                let made = GuardianViewModel(account: account, repository: environment.repositories.outings.cases)
                 await made.load()
                 holder = made
             }

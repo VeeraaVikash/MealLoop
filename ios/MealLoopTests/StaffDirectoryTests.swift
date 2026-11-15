@@ -37,7 +37,7 @@ final class StaffDirectoryTests: XCTestCase {
     }
 
     func testTheDefaultSourceAnswersNothing() async throws {
-        let directory = UnavailableStaffDirectory()
+        let directory = NotConnected()
         let name = try await directory.studentName(DemoSeed.sampleStudent.id)
         let time = try await directory.shiftStartedAt(for: .doorScanner, mess: DemoSeed.mess.id)
         XCTAssertNil(name)

@@ -55,7 +55,7 @@ struct GateFlowView: View {
             if let preparedModel {
                 model = preparedModel
             } else {
-                let made = GateViewModel(repository: OutingCaseRepositories.source(for: environment))
+                let made = GateViewModel(repository: environment.repositories.outings.cases)
                 model = made
                 await made.load()
             }

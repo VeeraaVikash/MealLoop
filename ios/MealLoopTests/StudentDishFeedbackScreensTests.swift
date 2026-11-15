@@ -50,7 +50,7 @@ final class StudentDishFeedbackScreensTests: XCTestCase {
     func testSendRecordsFeedbackWithoutANameAndNoCredits() async throws {
         let (model, _, repositories) = make(.dish("Masala Sambar"))
         await model.load()
-        let before = try await repositories.studentYou.credits(for: context.student.id).balance
+        let before = try await repositories.student.you.credits(for: context.student.id).balance
         model.problem = "Too salty"
         model.severity = .very
         model.note = "  Much saltier than usual.  "
@@ -59,11 +59,11 @@ final class StudentDishFeedbackScreensTests: XCTestCase {
         guard case .sent(let receipt) = model.step else { return XCTFail("Shows Sent.") }
         XCTAssertEqual(receipt.submission.note, "Much saltier than usual.")
         XCTAssertEqual(receipt.submission.severity, .very)
-        let overview = try await repositories.adminStudents.studentsOverview()
+        let overview = try await repositories.admin.students.studentsOverview()
         XCTAssertEqual(overview.feedback.first?.students, 7, "Counted, never named.")
-        let mine = try await repositories.studentRecords.feedback(for: context.student.id)
+        let mine = try await repositories.student.records.feedback(for: context.student.id)
         XCTAssertEqual(mine.items.first?.problem, "Too salty", "Shows on My feedback.")
-        let after = try await repositories.studentYou.credits(for: context.student.id).balance
+        let after = try await repositories.student.you.credits(for: context.student.id).balance
         XCTAssertEqual(before, after, "Feedback earns no credits.")
     }
 
@@ -75,10 +75,10 @@ final class StudentDishFeedbackScreensTests: XCTestCase {
         XCTAssertFalse(sent)
         XCTAssertEqual(model.sendState, .keptOffline)
         XCTAssertEqual(model.step, .whatsWrong("Masala Sambar"), "Never shows Sent offline.")
-        let kept = await repositories.dishFeedback.kept(by: context.student.id)
+        let kept = await repositories.student.dishFeedback.kept(by: context.student.id)
         XCTAssertEqual(kept.count, 1)
         await demo.setScenario(.afterMeal)
-        let overview = try await repositories.adminStudents.studentsOverview()
+        let overview = try await repositories.admin.students.studentsOverview()
         XCTAssertNil(overview.feedback.first { $0.problem == "cold" }, "Nothing reached the kitchen while offline.")
     }
 

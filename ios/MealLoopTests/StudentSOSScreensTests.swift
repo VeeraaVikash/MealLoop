@@ -61,10 +61,11 @@ final class StudentSOSScreensTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .duringMeal)
         var repositories = demo.makeRepositories()
         let working = repositories.sos
-        repositories = Repositories(people: repositories.people, meals: repositories.meals, mealState: repositories.mealState,
+        repositories = Repositories(meals: repositories.meals, mealState: repositories.mealState,
                                     headcount: repositories.headcount, entries: repositories.entries,
                                     intentions: repositories.intentions, shortages: repositories.shortages,
-                                    wasteReports: repositories.wasteReports, sos: FailingSOS(), auth: repositories.auth)
+                                    wasteReports: repositories.wasteReports, sos: FailingSOS(), auth: repositories.auth,
+                                    admin: repositories.admin)
         let failing = StudentSOSViewModel(context: context, repositories: repositories, clock: demo.clock)
         failing.choose(.otherSafety)
         failing.takePhoto()

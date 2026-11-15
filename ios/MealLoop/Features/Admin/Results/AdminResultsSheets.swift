@@ -48,7 +48,7 @@ struct AdminTellVendorSheet: View {
             }
         }
         .task {
-            phone = (try? await environment.repositories.adminMore.people())?.vendor.phone
+            phone = (try? await environment.repositories.admin.more.people())?.vendor.phone
         }
     }
 }
@@ -98,7 +98,7 @@ struct AdminMakeChangeSheet: View {
 
     var body: some View {
         AdminMakeChangeForm(model: AdminChangeViewModel(meal: meal, suggested: suggested, context: context,
-                                                        results: environment.repositories.adminResults),
+                                                        results: environment.repositories.admin.results),
                             ownerName: context.account.firstName, onClose: onClose, onSaved: onSaved)
     }
 }

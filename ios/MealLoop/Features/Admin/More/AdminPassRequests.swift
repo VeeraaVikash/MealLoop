@@ -101,7 +101,7 @@ struct AdminPassRequestsSection: View {
         }
         .task {
             if model == nil {
-                model = AdminPassRequestsViewModel(repository: environment.repositories.passRequests, role: nav.context.account.role)
+                model = AdminPassRequestsViewModel(repository: environment.repositories.passes.requests, role: nav.context.account.role)
             }
             await model?.load()
         }

@@ -91,7 +91,7 @@ struct WardenTabsView: View {
                 if let preparedModel {
                     model = preparedModel
                 } else {
-                    let made = WardenViewModel(account: account, repository: OutingCaseRepositories.source(for: environment))
+                    let made = WardenViewModel(account: account, repository: environment.repositories.outings.cases)
                     model = made
                     await made.load()
                 }

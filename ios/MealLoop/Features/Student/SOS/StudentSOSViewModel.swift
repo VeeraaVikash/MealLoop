@@ -72,7 +72,7 @@ final class StudentSOSViewModel {
         self.location = location
         sosRepository = repositories.sos
         mealState = repositories.mealState
-        meals = repositories.studentMeals
+        meals = repositories.student.meals
     }
 
     var now: Date { clock.now() }

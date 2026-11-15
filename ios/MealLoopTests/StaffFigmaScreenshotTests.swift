@@ -310,7 +310,7 @@ final class StaffFigmaScreenshotTests: XCTestCase {
     // shows the live code on Home and checks the last four only as a lookup.
 
     private func checkDigits(_ world: World, _ digits: [Int]) async -> PassDeskCheckDigitsViewModel {
-        let model = PassDeskCheckDigitsViewModel(use: world.repositories.passUse, live: world.repositories.livePassCodes,
+        let model = PassDeskCheckDigitsViewModel(use: world.repositories.passes.use, live: world.repositories.passes.liveCodes,
                                              meal: DemoSeed.lunch.id)
         for digit in digits { await model.type(digit) }
         return model
@@ -330,17 +330,17 @@ final class StaffFigmaScreenshotTests: XCTestCase {
         try await lookUp("2535_5824", [0, 4, 1, 2])
         try await lookUp("2535_5948", [0, 3, 7, 7])
 
-        _ = try await world.repositories.passUse.usePass(of: DemoSeed.sampleStudent.id, meal: DemoSeed.lunch.id, key: .make())
+        _ = try await world.repositories.passes.use.usePass(of: DemoSeed.sampleStudent.id, meal: DemoSeed.lunch.id, key: .make())
         try await lookUp("2535_5697", [0, 2, 3, 8])
 
-        let form = PassDeskRequestForm(session: world.staff, passes: world.repositories.specialPasses, meal: DemoSeed.lunch.id)
+        let form = PassDeskRequestForm(session: world.staff, passes: world.repositories.passes.special, meal: DemoSeed.lunch.id)
         await form.prefill("0238")
         form.reason = .phoneLost
         try await shot("2538_5464", world) {
             PassDeskRequestView(form: form, digits: "0238", onBack: {}, onSent: {})
         }
         try await shot("2538_5739", world) {
-            PassDeskRequestsView(model: PassDeskRequestsViewModel(passes: world.repositories.specialPasses, mess: world.staff.mess.id),
+            PassDeskRequestsView(model: PassDeskRequestsViewModel(passes: world.repositories.passes.special, mess: world.staff.mess.id),
                                  session: world.staff, mealName: "Lunch", onBack: {})
         }
         let log = PassDeskProblemLog(session: world.staff, repositories: world.repositories, clock: world.clock)

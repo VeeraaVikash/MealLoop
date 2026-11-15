@@ -97,7 +97,7 @@ struct AdminAccessScreen: View {
     var personID: AccountID?
     var body: some View {
         AdminAccessView(model: AdminAccessViewModel(session: Session(account: nav.context.account, staff: nil),
-                                                repository: environment.repositories.people), nav: nav, role: role, personID: personID)
+                                                repository: environment.repositories.admin.people), nav: nav, role: role, personID: personID)
     }
 }
 

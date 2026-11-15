@@ -50,7 +50,7 @@ struct AdminFindMealScreen: View {
     var body: some View {
         // The mess name without "Mess", as the chips write it.
         AdminFindMealView(model: AdminFindMealViewModel(defaultMess: nav.context.mess.name.components(separatedBy: " ").first,
-                                                        results: environment.repositories.adminResults), nav: nav)
+                                                        results: environment.repositories.admin.results), nav: nav)
     }
 }
 
@@ -117,7 +117,7 @@ struct AdminSafetyCasesScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let results = environment.repositories.adminResults
+        let results = environment.repositories.admin.results
         let now = environment.clock.now()
         AdminPageScaffold(title: AdminScreenCopy.safetyCases, subtitle: AdminScreenCopy.safetyCasesSubtitle, onBack: nav.pop) {
             AdminLoadedPage(model: AdminPageViewModel { try await results.safetyCases() }, timeZone: nav.timeZone) { cases, _ in
@@ -175,7 +175,7 @@ struct AdminSafetyCaseScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        let results = environment.repositories.adminResults
+        let results = environment.repositories.admin.results
         AdminLoadedPage(model: AdminPageViewModel(fetch: { try await results.safetyCases() }), timeZone: nav.timeZone) { cases, _ in
             if let item = cases.first(where: { $0.id == id }) {
                 AdminSafetyCaseBody(item: item, now: environment.clock.now(), nav: nav)

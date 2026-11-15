@@ -30,7 +30,7 @@ final class PassDeskViewModelTests: XCTestCase {
     }
 
     private func checkDigits(_ world: World) -> PassDeskCheckDigitsViewModel {
-        PassDeskCheckDigitsViewModel(use: world.repositories.passUse, live: world.repositories.livePassCodes, meal: lunch)
+        PassDeskCheckDigitsViewModel(use: world.repositories.passes.use, live: world.repositories.passes.liveCodes, meal: lunch)
     }
 
     private func typed(_ digits: String, _ model: PassDeskCheckDigitsViewModel) async {
@@ -41,7 +41,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     /// The student's hold of "Use pass" on their own phone: the only way an entry is recorded (owner ruling, Prompt 2B).
     private func studentHolds(_ world: World) async throws -> PassUseState {
-        try await world.repositories.passUse.usePass(of: DemoSeed.sampleStudent.id, meal: lunch, key: .make())
+        try await world.repositories.passes.use.usePass(of: DemoSeed.sampleStudent.id, meal: lunch, key: .make())
     }
 
     private func recorded(_ world: World) async throws -> Int {
@@ -92,7 +92,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     func testHomeHasNoKeypadDigitBoxesOrRecordButton() throws {
         let source = try String(contentsOf: URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-            .appendingPathComponent("../MealLoop/Features/PassDesk/PassDeskHomeView.swift").standardizedFileURL, encoding: .utf8)
+            .appendingPathComponent("../MealLoop/Features/PassDesk/Home/PassDeskHomeView.swift").standardizedFileURL, encoding: .utf8)
         for banned in ["KeyPad(", "DigitBoxes", "Matches", "Doesn't match", "Record entry", "recordPassEntry", "Camera"] {
             XCTAssertFalse(source.contains(banned), "Home contains \(banned)")
         }
@@ -105,8 +105,8 @@ final class PassDeskViewModelTests: XCTestCase {
         let world = world()
         let model = await home(world)
         let first = try XCTUnwrap(model.code.current)
-        let phone = try await world.repositories.livePassCodes.currentPassCode(
-            for: DemoSeed.sampleStudent.id, meal: lunch, at: await world.repositories.livePassCodes.passCodeInstant())
+        let phone = try await world.repositories.passes.liveCodes.currentPassCode(
+            for: DemoSeed.sampleStudent.id, meal: lunch, at: await world.repositories.passes.liveCodes.passCodeInstant())
         XCTAssertEqual(first.live.code, phone.live.code)
         XCTAssertEqual(first.live.colourName, phone.live.colourName)
         world.clock.set(first.live.changesAt)
@@ -196,7 +196,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     func testApprovedIsNeverDone() async {
         let world = world()
-        let model = PassDeskRequestsViewModel(passes: world.repositories.specialPasses, mess: DemoSeed.mess.id)
+        let model = PassDeskRequestsViewModel(passes: world.repositories.passes.special, mess: DemoSeed.mess.id)
         await model.load()
         let requests = model.state.value ?? []
         XCTAssertEqual(requests.map(\.status), [.waiting, .approved, .done, .rejected])
@@ -207,7 +207,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     func testANewRequestStartsWaitingAndNothingApprovesIt() async throws {
         let world = world()
-        let form = PassDeskRequestForm(session: staff(), passes: world.repositories.specialPasses, meal: lunch)
+        let form = PassDeskRequestForm(session: staff(), passes: world.repositories.passes.special, meal: lunch)
         await form.prefill("0412")
         XCTAssertEqual(form.holder?.name, "Meera")
         XCTAssertFalse(form.canSend, "A reason is needed")
@@ -223,7 +223,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     func testARequestForAStudentNobodyHoldsIsRefused() async {
         let world = world()
-        let form = PassDeskRequestForm(session: staff(), passes: world.repositories.specialPasses, meal: lunch)
+        let form = PassDeskRequestForm(session: staff(), passes: world.repositories.passes.special, meal: lunch)
         await form.prefill("0999")
         XCTAssertNil(form.holder)
         XCTAssertNotNil(form.problem)
@@ -231,7 +231,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     func testAnOfflineRequestIsNotSent() async throws {
         let world = world()
-        let form = PassDeskRequestForm(session: staff(), passes: world.repositories.specialPasses, meal: lunch)
+        let form = PassDeskRequestForm(session: staff(), passes: world.repositories.passes.special, meal: lunch)
         await form.prefill("0412")
         form.reason = .other
         await world.demo.setScenario(.offline)
@@ -328,21 +328,24 @@ final class PassDeskViewModelTests: XCTestCase {
     func testTheDeskHasNoRecordOperationOnItsScreens() throws {
         let folder = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
             .appendingPathComponent("../MealLoop/Features/PassDesk").standardizedFileURL
-        let files = try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
-        for file in files where file.pathExtension == "swift" {
+        let files = try XCTUnwrap(FileManager.default.enumerator(at: folder, includingPropertiesForKeys: nil))
+        var scanned = 0
+        for case let file as URL in files where file.pathExtension == "swift" {
+            scanned += 1
             let source = try String(contentsOf: file, encoding: .utf8)
             XCTAssertFalse(source.contains("recordPassEntry"), "\(file.lastPathComponent) records")
         }
+        XCTAssertGreaterThan(scanned, 5, "Every Pass Desk screen folder is scanned")
     }
 
     func testAStudentsHoldIsVisibleToOtherRolesThroughTheRepository() async throws {
         let world = world()
         _ = try await studentHolds(world)
         // The read takes no role: what the Supervisor's or Admin's screens would read.
-        let entries = try await world.repositories.specialPasses.specialMealEntries(for: lunch)
+        let entries = try await world.repositories.passes.special.specialMealEntries(for: lunch)
         XCTAssertEqual(entries.map(\.student), [DemoSeed.sampleStudent])
         XCTAssertEqual(entries.first?.recordedBy, .student)
-        let count = try await world.repositories.specialPasses.specialMealCount(for: lunch)
+        let count = try await world.repositories.passes.special.specialMealCount(for: lunch)
         XCTAssertEqual(count.recorded.value, DemoSeed.specialMealsSoFar + 1)
     }
 

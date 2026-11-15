@@ -28,7 +28,7 @@ struct AdminSingleMessReportScreen: View {
     @State private var period: ReportPeriod = .thisWeek
 
     var body: some View {
-        let results = environment.repositories.adminResults
+        let results = environment.repositories.admin.results
         AdminPageScaffold(title: AdminScreenCopy.weeklyReport, subtitle: nav.context.mess.name, onBack: nav.pop) {
             AdminFlow {
                 ForEach(ReportPeriod.allCases, id: \.self) { value in

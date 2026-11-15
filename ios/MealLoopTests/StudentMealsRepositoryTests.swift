@@ -88,10 +88,10 @@ final class StudentMealsRepositoryTests: XCTestCase {
     func testAMealTheFoodHeadEmptiesHasNoMenuAndSaysWhenItChanged() async throws {
         let (demo, clock) = make()
         let repositories = demo.makeRepositories()
-        var day = try await repositories.adminMore.weekMenu().days.first { $0.day == self.wednesday }!
+        var day = try await repositories.admin.more.weekMenu().days.first { $0.day == self.wednesday }!
         day.meals[.snacks] = []
         clock.set(DemoSeed.time(11, 10))
-        _ = try await repositories.adminMore.saveDay(day, by: .admin)
+        _ = try await repositories.admin.more.saveDay(day, by: .admin)
 
         let snacks = try await demo.mealMenu(on: wednesday, slot: .snacks, mess: mess)
         XCTAssertEqual(snacks.status, .noMeal)

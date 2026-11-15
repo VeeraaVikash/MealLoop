@@ -221,8 +221,8 @@ struct StudentHomeView: View {
     /// Dish feedback kept while offline is sent once the app is back online. Nothing is sent while offline.
     private func sendKeptFeedback() async {
         let student = model.context.student.id
-        guard !(await environment.repositories.dishFeedback.kept(by: student)).isEmpty,
-              let sent = try? await environment.repositories.dishFeedback.sendKept(by: student), !sent.isEmpty else { return }
+        guard !(await environment.repositories.student.dishFeedback.kept(by: student)).isEmpty,
+              let sent = try? await environment.repositories.student.dishFeedback.sendKept(by: student), !sent.isEmpty else { return }
         environment.dataDidChange()
     }
 

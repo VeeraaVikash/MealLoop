@@ -21,7 +21,7 @@ final class AdminBackendTests: XCTestCase {
     func testAnotherSourceSaysItHasNoAdminData() async {
         let repositories = RemoteAPI(baseURL: nil).makeRepositories()
         do {
-            _ = try await repositories.adminResults.overview()
+            _ = try await repositories.admin.results.overview()
             XCTFail("Expected notImplemented")
         } catch {
             XCTAssertEqual(error as? RepositoryError, .notImplemented(feature: "Admin data"))
@@ -31,7 +31,7 @@ final class AdminBackendTests: XCTestCase {
     func testEveryReadFollowsTheConnection() async {
         let (_, repositories) = admin(.offline)
         do {
-            _ = try await repositories.adminStudents.studentsOverview()
+            _ = try await repositories.admin.students.studentsOverview()
             XCTFail("Expected offline")
         } catch {
             XCTAssertEqual(error as? RepositoryError, .offline(lastSavedAt: DemoSeed.offlineSavedAt))
@@ -41,20 +41,20 @@ final class AdminBackendTests: XCTestCase {
     func testOnlyTheFoodHeadCanWrite() async {
         let (_, repositories) = admin()
         for role in Role.allCases where role != .admin {
-            await refused { _ = try await repositories.adminResults.addNote("x", to: AdminSeed.northScanner, by: role) }
-            await refused { _ = try await repositories.adminStudents.remind(key: .make(), by: role) }
-            await refused { try await repositories.adminMore.announce("x", to: "main", by: role) }
+            await refused { _ = try await repositories.admin.results.addNote("x", to: AdminSeed.northScanner, by: role) }
+            await refused { _ = try await repositories.admin.students.remind(key: .make(), by: role) }
+            await refused { try await repositories.admin.more.announce("x", to: "main", by: role) }
         }
     }
 
     func testTheStoryMealIsReadFromTheLiveRepositories() async throws {
         let (_, during) = admin(.duringMeal)
-        let open = try await during.adminResults.meal(DemoSeed.lunch.id)
+        let open = try await during.admin.results.meal(DemoSeed.lunch.id)
         XCTAssertFalse(open.isClosed)
         XCTAssertNil(open.finalEntries, "Live entries are never final")
 
         let (_, after) = admin(.afterMeal)
-        let closed = try await after.adminResults.meal(DemoSeed.lunch.id)
+        let closed = try await after.admin.results.meal(DemoSeed.lunch.id)
         XCTAssertEqual(closed.finalEntries, DemoSeed.finalEntries)
         XCTAssertTrue(closed.missing.contains(.wasteRecord))
         XCTAssertNil(closed.plateWasteKg, "No waste record is not zero")
@@ -69,7 +69,7 @@ final class AdminBackendTests: XCTestCase {
         report.plateWaste = .entered(kilograms: 18)
         _ = try await demo.save(report, by: .kitchenStaff)
 
-        let meal = try await repositories.adminResults.meal(DemoSeed.lunch.id)
+        let meal = try await repositories.admin.results.meal(DemoSeed.lunch.id)
         XCTAssertEqual(meal.plateWasteKg, 18)
         XCTAssertEqual(meal.leftovers.map(\.amount), [4])
         XCTAssertFalse(meal.missing.contains(.wasteRecord))
@@ -80,7 +80,7 @@ final class AdminBackendTests: XCTestCase {
         let (demo, repositories) = admin()
         let history = try await demo.mealHistory(for: DemoSeed.mess.id)
         let record = try XCTUnwrap(history.first { $0.mealID == AdminSeed.tueDinnerMain })
-        let meal = try await repositories.adminResults.meal(AdminSeed.tueDinnerMain)
+        let meal = try await repositories.admin.results.meal(AdminSeed.tueDinnerMain)
         XCTAssertEqual(record.finalEntries.value, 598)
         XCTAssertEqual(meal.finalEntries, record.finalEntries.value)
         XCTAssertEqual(record.waste, .notRecorded)
@@ -88,7 +88,7 @@ final class AdminBackendTests: XCTestCase {
         XCTAssertNil(meal.headcountSent, "No spec document gives this meal's headcount")
         XCTAssertNil(meal.dataCompletePercent)
         XCTAssertTrue(meal.missing.contains(.wasteRecord))
-        let found = try await repositories.adminResults.findMeals(mess: "Main", slot: .dinner)
+        let found = try await repositories.admin.results.findMeals(mess: "Main", slot: .dinner)
         XCTAssertEqual(found.first { $0.id == AdminSeed.tueDinnerMain }?.finalEntries, 598)
     }
 
@@ -98,7 +98,7 @@ final class AdminBackendTests: XCTestCase {
         let (demo, repositories) = admin(.afterMeal)
         let history = try await demo.mealHistory(for: DemoSeed.mess.id)
         let record = try XCTUnwrap(history.first { $0.mealID == DemoSeed.lunch.id })
-        let meal = try await repositories.adminResults.meal(DemoSeed.lunch.id)
+        let meal = try await repositories.admin.results.meal(DemoSeed.lunch.id)
         XCTAssertEqual(meal.finalEntries, record.finalEntries.value)
         let final = try await demo.finalCount(for: DemoSeed.lunch.id)
         XCTAssertNotNil(final.value)
@@ -108,10 +108,10 @@ final class AdminBackendTests: XCTestCase {
     func testAChangeForAMealIsNotOpenedTwice() async throws {
         let (_, repositories) = admin()
         let draft = ChangeDraft(meal: AdminSeed.tueDinnerMain, change: "Keep more rice ready", owner: "Devi")
-        let first = try await repositories.adminResults.saveChange(draft, by: .admin)
-        let again = try await repositories.adminResults.saveChange(draft, by: .admin)
+        let first = try await repositories.admin.results.saveChange(draft, by: .admin)
+        let again = try await repositories.admin.results.saveChange(draft, by: .admin)
         XCTAssertEqual(first.id, again.id)
-        let meal = try await repositories.adminResults.meal(AdminSeed.tueDinnerMain)
+        let meal = try await repositories.admin.results.meal(AdminSeed.tueDinnerMain)
         XCTAssertFalse(meal.needsReview)
         XCTAssertEqual(meal.linkedCheck, first.id)
     }
@@ -119,15 +119,15 @@ final class AdminBackendTests: XCTestCase {
     func testTheSameReminderKeyChangesNothing() async throws {
         let (demo, repositories) = admin()
         let key = IdempotencyKey.make()
-        let first = try await repositories.adminStudents.remind(key: key, by: .admin)
+        let first = try await repositories.admin.students.remind(key: key, by: .admin)
         demo.clock.set(DemoSeed.afterMealNow)
-        let again = try await repositories.adminStudents.remind(key: key, by: .admin)
+        let again = try await repositories.admin.students.remind(key: key, by: .admin)
         XCTAssertEqual(first.reminderSentAt, again.reminderSentAt)
     }
 
     func testTheBoardHasFourMealsEveryDayAndNoOrBetweenDishes() async throws {
         let (_, repositories) = admin()
-        let menu = try await repositories.adminMore.weekMenu()
+        let menu = try await repositories.admin.more.weekMenu()
         XCTAssertEqual(menu.days.count, 7)
         for day in menu.days {
             XCTAssertEqual(Set(day.meals.keys), Set(MealSlot.allCases))
@@ -142,8 +142,8 @@ final class AdminBackendTests: XCTestCase {
 
     func testTodaysDinnerChangesOnlyTodaysDinner() async throws {
         let (_, repositories) = admin()
-        let before = try await repositories.adminMore.weekMenu()
-        let after = try await repositories.adminMore.applyToTodaysDinner(.addSpecial(name: "Chicken Biryani", isLimited: true, isNonVeg: true), by: .admin)
+        let before = try await repositories.admin.more.weekMenu()
+        let after = try await repositories.admin.more.applyToTodaysDinner(.addSpecial(name: "Chicken Biryani", isLimited: true, isNonVeg: true), by: .admin)
         let today = try XCTUnwrap(after.days.first { $0.day == after.today })
         XCTAssertEqual(today.meals[.dinner]?.last?.name, "Chicken Biryani")
         XCTAssertEqual(today.meals[.dinner]?.last?.isLimited, true)

@@ -121,15 +121,15 @@ struct PassDeskTabs: View {
         let back = { _ = path.popLast() }
         switch route {
         case .checkDigits(let meal):
-            PassDeskCheckDigitsView(model: PassDeskCheckDigitsViewModel(use: repositories.passUse, live: repositories.livePassCodes,
+            PassDeskCheckDigitsView(model: PassDeskCheckDigitsViewModel(use: repositories.passes.use, live: repositories.passes.liveCodes,
                                                                     meal: meal.id), onBack: back)
         case .requestPass(let meal, let digits):
-            PassDeskRequestView(form: PassDeskRequestForm(session: home.session, passes: repositories.specialPasses, meal: meal.id),
+            PassDeskRequestView(form: PassDeskRequestForm(session: home.session, passes: repositories.passes.special, meal: meal.id),
                                 digits: digits, onBack: back) {
                 path = [.requests]
             }
         case .requests:
-            PassDeskRequestsView(model: PassDeskRequestsViewModel(passes: repositories.specialPasses, mess: home.session.mess.id),
+            PassDeskRequestsView(model: PassDeskRequestsViewModel(passes: repositories.passes.special, mess: home.session.mess.id),
                                  session: home.session, mealName: home.state.value.map { MLFormat.mealSlot($0.meal.slot) },
                                  onBack: back)
         case .reportProblem:

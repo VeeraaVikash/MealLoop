@@ -114,7 +114,7 @@ final class DoorWithoutVotingViewModel {
     private let directory: any StaffDirectoryRepository
     private let meal: MealID
 
-    init(entries: any EntryRepository, meal: MealID, directory: any StaffDirectoryRepository = UnavailableStaffDirectory()) {
+    init(entries: any EntryRepository, meal: MealID, directory: any StaffDirectoryRepository = NotConnected()) {
         self.entries = entries
         self.directory = directory
         self.meal = meal
