@@ -87,8 +87,9 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 40
     env:
-      # The index store is only for the IDE; CI never reads it.
-      FLAGS: CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO
+      # The index store is only for the IDE; CI never reads it. One build folder for every step, so the Review and
+      # Release builds reuse the module caches the test build made.
+      FLAGS: CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO -derivedDataPath build/dd
     steps:
       # The app and its tests read only ios/; docs and design (about 4,000 files) stay out of the checkout.
       - uses: actions/checkout@v4
@@ -134,24 +135,28 @@ jobs:
             -destination "id=${{ steps.sim.outputs.udid }}" -parallel-testing-enabled NO \
             -resultBundlePath build/review.xcresult $FLAGS | tail -25
 
+      # Built for the booted simulator only, in the test step's build folder: one architecture is enough to prove they
+      # compile. With a generic destination and separate folders these two builds took 29 minutes on the runner.
       - name: Review and Release builds
         shell: bash
         run: |
           set -o pipefail
           xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop Review" \
-            -destination "generic/platform=iOS Simulator" -derivedDataPath build/review $FLAGS | tail -5
+            -destination "id=${{ steps.sim.outputs.udid }}" $FLAGS | tail -5
           xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop" -configuration Release \
-            -destination "generic/platform=iOS Simulator" -derivedDataPath build/release $FLAGS | tail -5
+            -destination "id=${{ steps.sim.outputs.udid }}" $FLAGS | tail -5
 
       - name: No demo code in the Release app
         shell: bash
         run: |
-          app=build/release/Build/Products/Release-iphonesimulator/MealLoop.app/MealLoop
+          app=build/dd/Build/Products/Release-iphonesimulator/MealLoop.app/MealLoop
+          # Read the names once into a file: piping strings into grep -q breaks the pipe as soon as grep matches.
+          strings -a "$app" > build/release-strings.txt
           # RemoteAPI must be found, so an empty or unreadable binary can't pass this check.
-          strings -a "$app" | grep -q RemoteAPI || { echo "::error::Could not read type names from $app"; exit 1; }
+          grep -q RemoteAPI build/release-strings.txt || { echo "::error::Could not read type names from $app"; exit 1; }
           # Types compiled only with DEMO_DATA or REVIEW_DATA. (DemoControlling is declared for every build on purpose.)
           for name in DemoDataProvider DemoSeed InMemoryOutingCaseRepository RunningDemoClock; do
-            if strings -a "$app" | grep -q "$name"; then echo "::error::$name is in the Release app"; exit 1; fi
+            if grep -q "$name" build/release-strings.txt; then echo "::error::$name is in the Release app"; exit 1; fi
           done
           echo "The Release app holds no demo code."
 
