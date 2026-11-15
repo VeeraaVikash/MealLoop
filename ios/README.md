@@ -74,11 +74,14 @@ CI (`.github/workflows/ios-ci.yml`) runs on every pull request into `main` and e
 
 - **commit and repository rules** (Linux, about 20 seconds, always): Conventional Commits, no co-author or tool
   trailers, no tracked junk files. It also works out whether `ios/` or the workflow changed.
-- **build and test** (macOS, only when `ios/` or the workflow changed): the Debug unit tests once, then the Review
-  and Release builds compile, then a check that the Release app holds no demo code. A docs-only change skips it.
+- **build and test** (macOS, only when `ios/` or the workflow changed): the Debug unit tests, the Release build and
+  a check that the Release app holds no demo code. Pushes to `main` and runs started by hand also compile the Review
+  build. A docs-only change skips this job.
 
-The Review scheme runs the same tests as Debug, so CI compiles it rather than testing it twice. To run the Review
-tests as well, start **ios-ci** by hand from the Actions tab and tick **Review tests**. Test result bundles are kept
+Almost all CI time is compiling (each configuration is a full compile on the runner), so a pull request compiles
+Debug and Release only; a Review-only compile error shows up on `main` just after merging. To check Review before
+merging, or to run the Review tests, start **ios-ci** by hand from the Actions tab (tick **Review tests** for the
+tests). Test result bundles are kept
 for 7 days, only when a run fails. The full local checks above remain the way to verify a change before review.
 
 ## Configurations
