@@ -75,19 +75,10 @@ struct DemoStudentYou: StudentYouRepository {
         let lines = earned + redeemed
         let balance = DemoSeed.sampleCredits + lines.reduce(0) { $0 + $1.points }
         return StudentCredits(balance: balance, tickets: tickets,
-                              history: lines.sorted { $0.day > $1.day } + DemoSeed.sampleCreditHistory)
+                              history: lines.sorted { $0.day > $1.day } + DemoSeed.sampleCreditHistory,
+                              pointsPerAnswer: DemoSeed.samplePointsPerDefiniteAnswer, amountsAreSamples: true)
     }
 
-    func attendance(for student: StudentID, at mess: MessID) async throws -> StudentAttendanceMonth {
-        try await core.requireConnection()
-        guard student == DemoSeed.sampleStudent.id, mess == DemoSeed.mess.id else {
-            return StudentAttendanceMonth(month: DemoSeed.sampleMonthStart, marks: [:], daysInMonth: DemoSeed.sampleMonthDays,
-                                          firstWeekdayOffset: DemoSeed.sampleMonthFirstWeekday, mealsEntered: nil, mealsServed: nil)
-        }
-        return StudentAttendanceMonth(month: DemoSeed.sampleMonthStart, marks: DemoSeed.sampleAttendanceMarks,
-                                      daysInMonth: DemoSeed.sampleMonthDays, firstWeekdayOffset: DemoSeed.sampleMonthFirstWeekday,
-                                      mealsEntered: DemoSeed.sampleMealsEntered, mealsServed: DemoSeed.sampleMealsServed)
-    }
 
     private static func answeredTitle(_ meal: MealID) -> String {
         switch meal {

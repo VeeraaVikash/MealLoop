@@ -76,24 +76,7 @@ final class StudentYouRepositoryTests: XCTestCase {
         XCTAssertNil(profile.credits)
     }
 
-    func testAttendanceComputesTheShareAndStreakFromTheMarks() async throws {
-        let (_, you) = make()
-        let month = try await you.attendance(for: aarav, at: mess)
-        XCTAssertEqual(month.mealsEntered, 36)
-        XCTAssertEqual(month.mealsServed, 41)
-        XCTAssertEqual(month.percentEntered, 88)
-        XCTAssertEqual(month.bestStreak, 4)
-        XCTAssertEqual(month.marks[3], .noEntryForAMeal, "A missing entry is recorded as no entry, never as absent.")
-        XCTAssertNil(month.marks[20])
-    }
 
-    func testMissingAttendanceCountsAreMissingNotZero() async throws {
-        let (_, you) = make()
-        let month = try await you.attendance(for: stranger, at: mess)
-        XCTAssertNil(month.mealsEntered)
-        XCTAssertNil(month.percentEntered)
-        XCTAssertTrue(month.marks.isEmpty)
-    }
 
     func testOfflineIsAnErrorNotAnEmptyInbox() async throws {
         let demo = DemoDataProvider(scenario: .offline)

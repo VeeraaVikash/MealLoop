@@ -129,7 +129,7 @@ final class VendorViewModelTests: XCTestCase {
         let model = try vendor(demo)
         await model.load()
         await model.acknowledge()
-        let foodHead = try await DemoDataProvider().signInStaff(email: try account(.admin).email, password: DemoSeed.prototypePassword)
+        let foodHead = try await DemoDataProvider().signIn(email: try account(.admin).email, password: DemoSeed.prototypePassword)
         let admin = AdminTodayViewModel(context: try XCTUnwrap(AdminContext(session: foodHead)), repositories: demo.makeRepositories(),
                                         clock: demo.clock)
         await admin.load()

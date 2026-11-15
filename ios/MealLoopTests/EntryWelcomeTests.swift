@@ -1,7 +1,7 @@
 import XCTest
 @testable import MealLoop
 
-/// Welcome after the owner's 7 November review: no recent account is offered, and nothing about one is kept.
+/// The front door: no recent account is offered and nothing about one is kept; one Sign in, one Register.
 @MainActor
 final class EntryWelcomeTests: XCTestCase {
     func testSigningOutKeepsNoAccountForWelcomeToOffer() {
@@ -12,9 +12,19 @@ final class EntryWelcomeTests: XCTestCase {
         XCTAssertEqual(stored, ["_current"])
     }
 
-    func testWelcomeOffersOnlyTheTwoSignInActions() {
-        XCTAssertEqual(EntryCopy.signInWithSRM, "Sign in with SRM")
-        XCTAssertEqual(EntryCopy.staffSignIn, "Staff sign in")
+    func testTheEntryOffersOneSignInAndOneRegister() {
+        XCTAssertEqual(EntryCopy.signIn, "Sign in")
+        XCTAssertEqual(EntryCopy.register, "Register")
+        XCTAssertEqual(EntryCopy.pages.map(\.title), ["For Students", "Attendance & Meals", "Crowd Tracking", "Credits & Incentives"])
+    }
+
+    /// The walkthrough copy claims only what the app does: no amounts, penalties, starting balances or cadence.
+    func testTheWalkthroughMakesNoUnsupportedClaims() {
+        for page in EntryCopy.pages {
+            for word in ["pts", "+", "−", "penalt", "start with", "every 15", "minute"] {
+                XCTAssertFalse(page.body.localizedCaseInsensitiveContains(word), "\(page.title): \(word)")
+            }
+        }
     }
 
     func testTheTermsAreTheFramesTwoLines() {

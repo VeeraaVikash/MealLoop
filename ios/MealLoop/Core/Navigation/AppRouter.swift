@@ -1,19 +1,11 @@
 import Foundation
 import Observation
 
-/// Pushed screens before sign-in.
-/// Students: Welcome (221:62499) → Getting your details (135:15587) → Home; a failure is Couldn't sign in (135:15825)
-/// with Try again.
-/// Mess staff: Welcome → Staff sign in, which is Choose your role (1508:235) → What you do (sheet) → Password
-/// (2469:2102) → role Home. Accounts that are not mess staff (Food Head, Super Admin, Vendor, Guardian, Warden, Gate)
-/// use "Sign in with email" on Choose your role.
+/// Pushed screens before sign-in. The stack root is the walkthrough on a phone that has not seen it, otherwise Sign in.
+/// Every account uses the one Sign in; Register is for students only.
 enum EntryRoute: Hashable, Sendable {
-    case chooseRole
-    case emailSignIn
-    /// The email sign-in for Food Head or Admin, chosen on Choose your role.
-    case accountSignIn(Role)
-    case srmSignIn
-    case rolePassword(Role)
+    case signIn
+    case register
 }
 
 /// The shared staff tab pattern: Home, Alerts, Me. There is no fourth tab.

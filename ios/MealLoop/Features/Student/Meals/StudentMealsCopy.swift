@@ -3,6 +3,20 @@ import Foundation
 /// Words of the Meals, Dish, Search, Special pass and Crowd frames (page 07). Kept apart from `StudentCopy` so the
 /// Home part stays as it was.
 enum MealsCopy {
+    // Serving now and meal details (student redesign, 15 Nov 2026).
+    static let servingNow = "Serving now"
+    static func servingNowTill(_ meal: String, _ time: String) -> String { "\(meal) is serving now · till \(time)" }
+    static func otherServing(_ meal: String) -> String { "\(meal) is serving now" }
+    static let nothingServing = "Nothing is being served right now."
+    static func nothingServingNext(_ meal: String, _ time: String) -> String { "Nothing is being served right now. \(meal) starts at \(time)." }
+    static let details = "Details"
+    static let detailsHint = "Opens the meal details."
+    static let notStartedYet = "Not started yet"
+    static let served = "Served"
+    static func answerBy(_ time: String) -> String { "Answer I'm in or Skip by \(time)." }
+    static let noDishesYet = "The menu for this meal isn't published yet."
+    static let showQROnHome = "Show entry QR on Home"
+
     // Meals.
     static let title = "Meals"
     static func changedAt(_ time: String) -> String { "The mess updated this menu at \(time)." }
@@ -46,7 +60,6 @@ enum MealsCopy {
 
     // Search.
     static let search = "Search"
-    static let searchPrompt = "Search this week's menu"
     static let clear = "Clear"
     static func noResults(_ text: String) -> String { "No results for \"\(text)\"" }
     static let noResultsDetail = "Search looks through this week's menu. Try another dish."
@@ -97,54 +110,24 @@ enum MealsCopy {
 
     // Crowd.
     static let crowd = "Crowd"
-    static let estimate = "ESTIMATE"
-    static let everyFifteen = "Today, every 15 minutes"
-    static let waitNow = "Wait now"
-    static func waitAt(_ time: String) -> String { "Wait at \(time)" }
-    static let about = "about"
-    static let notServing = "not serving now"
-    static let atTheBusiest = "At the busiest"
-    static func minutes(_ value: Int) -> String { "\(value) min" }
-    static let noMinutes = "— min"
+    static let enteredSoFar = "Entered so far"
+    static let stillExpected = "Still expected"
+    static let noCount = "—"
+    static func notAvailable(_ label: String) -> String { "\(label) · not available" }
+    static let entriesEvery = "Recorded entries, every 15 minutes"
+    static let countsNote = "Entered so far counts each student's first valid entry once. Still expected counts students who said I'm in and have no entry yet."
+    static let countsSpoken = "Counts of recorded door entries."
+    static func notStartedCrowd(_ time: String) -> String { "Service starts at \(time)." }
+    static func notStartedChart(_ time: String) -> String { "No entries yet. Entries show here from \(time)." }
+    static let crowdUnavailableDetail = "Entries can't be read right now."
+    static func enteredShort(_ count: Int?) -> String { count.map { "\($0) entered so far" } ?? "Entries not available" }
     static func crowdEyebrow(_ slot: MealSlot, time: String) -> String { "\(MLFormat.mealSlot(slot)) · \(time)" }
     static func crowdUpdatedEyebrow(_ slot: MealSlot, time: String) -> String { "\(MLFormat.mealSlot(slot)) · Updated \(time)" }
     static func crowdOffline(_ time: String) -> String { "You're offline · Updated \(time)" }
     static let crowdOfflineNothing = "You're offline. No crowd reading was saved."
-    static func levelAt(_ level: CrowdLevel, time: String) -> String {
-        switch level {
-        case .quiet: return "Quiet at \(time)"
-        case .busy: return "Busy at \(time)"
-        case .closed: return "Closed at \(time)"
-        }
-    }
-    /// Pass · Expired and the other status frames draw "Getting busy" on the crowd row.
-    static func crowdShort(_ level: CrowdLevel) -> String {
-        switch level {
-        case .quiet: return "Quiet now"
-        case .busy: return "Getting busy"
-        case .closed: return "Closed now"
-        }
-    }
-    static func detailLabel(_ level: CrowdLevel) -> String {
-        switch level {
-        case .quiet: return "Best time"
-        case .busy: return "Quieter after"
-        case .closed: return "Opens"
-        }
-    }
-    static let estimateSpoken = "Estimate from door entries, not a head count."
-    static let notEnoughTitle = "Not enough entries yet"
-    static let notEnoughDetail = "The estimate needs more door entries for this meal. Check again later."
-    static let crowdFailed = "Couldn't load the crowd estimate."
-    static func barLabel(_ time: String, level: String) -> String { "\(time), \(level)" }
-    static let barNow = "now"
-    static let barBest = "best time"
-    static func activityWord(_ activity: Double) -> String {
-        switch activity {
-        case ..<0.34: return "quiet"
-        case ..<0.67: return "moderate"
-        default: return "busy"
-        }
+    static let crowdFailed = "Couldn't load the crowd."
+    static func barLabel(_ time: String, entries: Int, isNow: Bool) -> String {
+        "\(time), \(entries) \(entries == 1 ? "entry" : "entries")\(isNow ? ", now" : "")"
     }
 }
 

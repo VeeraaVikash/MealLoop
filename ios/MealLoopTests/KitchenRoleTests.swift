@@ -386,10 +386,10 @@ final class KitchenRoleTests: XCTestCase {
     func testOnlyKitchenStaffReachTheRole() async throws {
         let demo = story()
         for account in DemoSeed.accounts where account.role != .student {
-            let signedIn = try await demo.signInStaff(email: account.email, password: DemoSeed.prototypePassword)
+            let signedIn = try await demo.signIn(email: account.email, password: DemoSeed.prototypePassword)
             XCTAssertEqual(KitchenRootView.allows(signedIn), account.role == .kitchenStaff, "\(account.role)")
         }
-        let student = try await demo.srmStudentSession()
+        let student = try await demo.registeredStudentSession()
         XCTAssertFalse(KitchenRootView.allows(student))
     }
 

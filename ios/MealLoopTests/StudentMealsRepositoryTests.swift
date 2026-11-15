@@ -133,22 +133,6 @@ final class StudentMealsRepositoryTests: XCTestCase {
         XCTAssertNil(pongal.verifiedOn)
     }
 
-    func testFindingADishNarrowsByNameAndEmptiesCorrectly() async throws {
-        let (demo, _) = make()
-        let sambar = try await demo.findDishes("SAMBAR", mess: mess)
-        XCTAssertFalse(sambar.isEmpty)
-        XCTAssertTrue(sambar.allSatisfy { $0.dish.name.lowercased().contains("sambar") })
-        XCTAssertTrue(sambar.contains { $0.day == self.wednesday && $0.slot == .breakfast })
-
-        let narrower = try await demo.findDishes("masala sambar", mess: mess)
-        XCTAssertLessThan(narrower.count, sambar.count)
-        XCTAssertTrue(narrower.allSatisfy { $0.dish.name == "Masala Sambar" })
-
-        let none = try await demo.findDishes("biryani", mess: mess)
-        XCTAssertTrue(none.isEmpty)
-        let blank = try await demo.findDishes("   ", mess: mess)
-        XCTAssertTrue(blank.isEmpty)
-    }
 
     // MARK: Special pass
 
@@ -244,41 +228,27 @@ final class StudentMealsRepositoryTests: XCTestCase {
 
     // MARK: Crowd
 
-    func testTheCrowdIsTheHomeEstimateWithTheDrawnPattern() async throws {
+    func testBeforeLunchTheCrowdHasNoChartAndARealZero() async throws {
         let (demo, _) = make()
         let crowd = try await demo.crowd(at: mess)
-        let home = try await demo.homeExtras(for: aarav, mess: mess).crowd
-        XCTAssertEqual(crowd.level, home?.level)
-        XCTAssertEqual(crowd.detailTime, home?.detailTime)
-        XCTAssertEqual(crowd.level, .quiet)
-        XCTAssertEqual(crowd.slots.count, 8)
-        XCTAssertEqual(crowd.slots.map(\.activity).max(), 1)
-        XCTAssertEqual(crowd.slots.first?.startsAt, DemoSeed.lunch.startsAt)
-        XCTAssertEqual(crowd.slots.last?.startsAt, DemoSeed.time(13, 45))
-        XCTAssertNil(crowd.currentSlot, "Before lunch the clock is in no slot.")
-        XCTAssertNil(crowd.waitNowMinutes, "No wait is claimed while the mess is not serving.")
-        XCTAssertEqual(crowd.bestSlot, 6)
-        XCTAssertEqual(crowd.busiestWaitMinutes, 18)
-        XCTAssertEqual(crowd.busiestAt, DemoSeed.time(12, 45))
+        let extras = try await demo.homeExtras(for: aarav, mess: mess)
+        XCTAssertEqual(crowd.enteredSoFar, extras.crowd?.enteredSoFar)
+        XCTAssertEqual(crowd.meal, DemoSeed.lunch)
+        XCTAssertEqual(crowd.mealState, .notStarted)
+        XCTAssertTrue(crowd.intervals.isEmpty)
+        XCTAssertEqual(crowd.enteredSoFar.value, 0)
+        XCTAssertNil(crowd.currentInterval)
     }
 
-    func testDuringLunchTheCrowdIsBusyInTheCurrentSlot() async throws {
+    func testDuringLunchTheChartRunsFromServiceStartToNow() async throws {
         let (demo, clock) = make()
         _ = try await demo.startMeal(DemoSeed.lunch.id, by: .supervisor)
         clock.set(DemoSeed.time(12, 40))
         let crowd = try await demo.crowd(at: mess)
-        XCTAssertEqual(crowd.level, .busy)
-        XCTAssertEqual(crowd.currentSlot, 2)
-        XCTAssertEqual(crowd.waitNowMinutes, 2)
+        XCTAssertEqual(crowd.intervals.first?.startsAt, DemoSeed.lunch.startsAt)
+        XCTAssertEqual(crowd.intervals.count, 3)
+        XCTAssertEqual(crowd.currentInterval, 2)
         XCTAssertEqual(crowd.observedAt, DemoSeed.time(12, 40))
-    }
-
-    func testTheCrowdIsClosedBeforeTheDoorsOpen() async throws {
-        let (demo, clock) = make()
-        clock.set(DemoSeed.time(6, 30))
-        let crowd = try await demo.crowd(at: mess)
-        XCTAssertEqual(crowd.level, .closed)
-        XCTAssertEqual(crowd.detailTime, DemoSeed.breakfast.startsAt)
     }
 }
 #endif

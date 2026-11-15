@@ -214,16 +214,18 @@ struct StudentTicketRow: View {
     }
 }
 
-/// The one Crowd row (CrowdRow 2133:2427). Its level is an estimate and the bars are hourly activity, never a head count.
+/// The one Crowd row (CrowdRow 2133:2427): Entered so far and Still expected for the meal at hand, with the recorded
+/// entries of the last intervals. Counts only; a count that could not be read says so.
 struct StudentCrowdRow: View {
-    /// Nil when there is no reading to show.
-    let crowd: CrowdReading?
+    /// Nil when the counts could not be read.
+    let crowd: StudentCrowd?
     let mess: String
     let timeZone: TimeZone
 
     private var detail: String? {
-        guard let crowd, let time = crowd.detailTime else { return nil }
-        return StudentCopy.crowdDetail(crowd.level, time: StudentFormat.shortTime(time, in: timeZone).replacingOccurrences(of: " ", with: "\u{00A0}"))
+        guard let crowd else { return nil }
+        let expected = crowd.stillExpected.value.map { StudentCopy.stillExpected($0) } ?? StudentCopy.expectedUnavailable
+        return "\(expected) · \(MLFormat.mealSlot(crowd.meal.slot))"
     }
 
     var body: some View {
@@ -232,9 +234,9 @@ struct StudentCrowdRow: View {
                 Text(StudentCopy.crowdAt(mess))
                     .font(StudentType.footnote)
                     .foregroundStyle(MLColor.inkSecondary)
-                Text(crowd.map { StudentCopy.crowdLevel($0.level) } ?? StudentCopy.crowdUnavailable)
+                Text(crowd?.enteredSoFar.value.map(StudentCopy.enteredSoFar) ?? StudentCopy.crowdUnavailable)
                     .font(StudentType.section)
-                    .foregroundStyle(crowd == nil ? MLColor.inkSecondary : MLColor.ink)
+                    .foregroundStyle(crowd?.enteredSoFar.value == nil ? MLColor.inkSecondary : MLColor.ink)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
                 if let detail {
@@ -244,7 +246,7 @@ struct StudentCrowdRow: View {
                 }
             }
             Spacer(minLength: 0)
-            if let crowd {
+            if let crowd, !crowd.intervals.isEmpty {
                 bars(crowd)
             }
         }
@@ -252,29 +254,29 @@ struct StudentCrowdRow: View {
         .padding(.vertical, MLSpacing.s16)
         .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).strokeBorder(MLColor.border, lineWidth: 1.5))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel([StudentCopy.crowdAt(mess), crowd.map { StudentCopy.crowdSpoken($0.level) } ?? StudentCopy.crowdUnavailable, detail]
-            .compactMap { $0 }.joined(separator: ", "))
+        .accessibilityLabel([StudentCopy.crowdAt(mess), crowd?.enteredSoFar.value.map(StudentCopy.enteredSoFar) ?? StudentCopy.crowdUnavailable,
+                             detail].compactMap { $0 }.joined(separator: ", "))
     }
 
-    private func bars(_ crowd: CrowdReading) -> some View {
-        HStack(alignment: .bottom, spacing: 5) {
-            ForEach(Array(crowd.bars.enumerated()), id: \.offset) { index, height in
+    /// The last seven intervals, scaled to the busiest of them.
+    private func bars(_ crowd: StudentCrowd) -> some View {
+        let shown = Array(crowd.intervals.suffix(7))
+        let offset = crowd.intervals.count - shown.count
+        let tallest = max(1, shown.map(\.entries).max() ?? 1)
+        return HStack(alignment: .bottom, spacing: 5) {
+            ForEach(Array(shown.enumerated()), id: \.offset) { index, interval in
+                let isNow = index + offset == crowd.currentInterval
                 RoundedRectangle(cornerRadius: 6.5, style: .continuous)
-                    .fill(fill(index, crowd))
+                    .fill(interval.entries == 0 ? MLColor.track : (isNow ? MLColor.lime : MLColor.ink))
                     .overlay {
-                        if index == crowd.currentBar {
+                        if isNow && interval.entries > 0 {
                             RoundedRectangle(cornerRadius: 6.5, style: .continuous).strokeBorder(MLColor.limeOutline, lineWidth: 1.2)
                         }
                     }
-                    .frame(width: 13, height: CGFloat(height))
+                    .frame(width: 13, height: max(6, 46 * CGFloat(interval.entries) / CGFloat(tallest)))
             }
         }
         .frame(height: 48, alignment: .bottom)
-    }
-
-    private func fill(_ index: Int, _ crowd: CrowdReading) -> Color {
-        if crowd.level == .closed { return MLColor.track }
-        return index == crowd.currentBar ? MLColor.lime : MLColor.ink
     }
 }
 
@@ -282,7 +284,8 @@ struct StudentCrowdRow: View {
 
 /// The follow-up on the student's own feedback (Feedback row 2147:620).
 struct StudentRecheckRow: View {
-    let recheck: StudentRecheck
+    let title: String
+    let detail: String
     let onOpen: () -> Void
 
     var body: some View {
@@ -294,10 +297,10 @@ struct StudentRecheckRow: View {
                     .frame(width: 24, height: 24)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(recheck.title)
+                    Text(title)
                         .font(StudentType.bodySemibold)
                         .foregroundStyle(MLColor.ink)
-                    Text(recheck.detail)
+                    Text(detail)
                         .font(StudentType.secondary)
                         .foregroundStyle(MLColor.inkSecondary)
                 }
@@ -308,5 +311,48 @@ struct StudentRecheckRow: View {
             .padding(.vertical, MLSpacing.s4)
         }
         .buttonStyle(.plain)
+    }
+}
+
+/// Rate a dish, shown once the door recorded this student's entry for the meal. It never blocks Home: the student
+/// can rate now, later from here, or from My feedback.
+struct StudentRateDishCard: View {
+    let slot: MealSlot
+    let recordedAt: String
+    let isRated: Bool
+    let onOpen: () -> Void
+
+    var body: some View {
+        Button(action: onOpen) {
+            HStack(spacing: MLSpacing.s12) {
+                Image(systemName: isRated ? "checkmark" : "hand.thumbsup")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(MLColor.onLime)
+                    .frame(width: MLSize.hit, height: MLSize.hit)
+                    .background(Circle().fill(MLColor.lime).overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1)))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(StudentCopy.rateDish)
+                        .font(StudentType.bodySemibold)
+                        .foregroundStyle(MLColor.ink)
+                    Text(isRated ? StudentCopy.ratedDish(slot) : StudentCopy.rateDishDetail(slot, at: recordedAt))
+                        .font(StudentType.secondary)
+                        .foregroundStyle(MLColor.inkSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .multilineTextAlignment(.leading)
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(MLColor.ink)
+                    .accessibilityHidden(true)
+            }
+            .padding(MLSpacing.s16)
+            .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
     }
 }

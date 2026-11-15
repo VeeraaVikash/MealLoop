@@ -94,7 +94,7 @@ struct StudentCommunityView: View {
     @State private var model: StudentCommunityViewModel
     @State private var path: [StudentCommunityRoute] = []
     @State private var showsFixed = false
-    /// Community · Info sheet (1535:114372).
+    /// How Community works: the first-visit guide, also opened by the bar button and the link on the page.
     @State private var showsInfo = false
     let session: Session
 
@@ -106,13 +106,9 @@ struct StudentCommunityView: View {
     var body: some View {
         NavigationStack(path: $path) {
             // The tab root: a large title that collapses into the bar, the info button in the bar.
-            MLScreen(CommunityCopy.title, subtitle: CommunityCopy.subtitle, bottomClearance: .tabBar) {
+            MLScreen(CommunityCopy.title, subtitle: CommunityCopy.subtitle) {
                 // A plain bar button: the bar draws its own glass circle, so a second drawn circle overlapped it.
-                Button { showsInfo = true } label: {
-                    Image(systemName: "info.circle")
-                        .foregroundStyle(MLColor.ink)
-                }
-                .accessibilityLabel(CommunityCopy.about)
+                StudentGuideInfoButton(guide: .community) { showsInfo = true }
             } content: {
                 VStack(alignment: .leading, spacing: MLSpacing.s16) {
                     CommunitySegments(showsFixed: $showsFixed)
@@ -128,9 +124,7 @@ struct StudentCommunityView: View {
         .task(id: environment.dataRevision) {
             await model.load()
         }
-        .mlSheet(isPresented: $showsInfo) {
-            CommunityInfoSheet { showsInfo = false }
-        }
+        .studentGuide(.community, student: model.context.student.id, isPresented: $showsInfo)
     }
 
     @ViewBuilder
@@ -352,8 +346,7 @@ struct StudentIssueView: View {
 
     /// On `MLScreen`: the issue's title is the large title, and the system back button and swipe-back pop the page.
     var body: some View {
-        MLScreen(model.issue(id)?.title ?? CommunityCopy.issue, subtitle: model.issue(id).map(reportedLine),
-                 bottomClearance: .tabBar) {
+        MLScreen(model.issue(id)?.title ?? CommunityCopy.issue, subtitle: model.issue(id).map(reportedLine)) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 if let issue = model.issue(id) {
                     details(issue)
@@ -419,7 +412,7 @@ struct StudentIssueView: View {
         }
         .padding(MLSpacing.s20)
         .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.heroBackground))
-        if issue.isAboutWaiting, let crowd = model.crowd, !crowd.slots.isEmpty {
+        if issue.isAboutWaiting, let crowd = model.crowd, !crowd.intervals.isEmpty {
             waitCard(crowd)
         }
         if let updates = records?.updates, !updates.isEmpty {
@@ -460,71 +453,8 @@ struct StudentIssueView: View {
         .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.surface))
     }
 
-    /// "When the wait is longest": the Crowd estimate's pattern, with its busiest slot drawn lime.
+    /// For a waiting problem: today's recorded entries per interval, the same chart as Crowd. Counts only, no forecast.
     private func waitCard(_ crowd: StudentCrowd) -> some View {
-        let busiest = crowd.slots.indices.max { crowd.slots[$0].activity < crowd.slots[$1].activity }
-        return VStack(alignment: .leading, spacing: MLSpacing.s12) {
-            Text(CommunityCopy.waitLongest)
-                .font(StudentType.secondary)
-                .foregroundStyle(MLColor.inkSecondary)
-            if let at = crowd.busiestAt, let minutes = crowd.busiestWaitMinutes {
-                Text(CommunityCopy.peak(MLFormat.time(at, in: model.timeZone), minutes: minutes))
-                    .font(StudentType.bodySemibold)
-                    .foregroundStyle(MLColor.ink)
-            }
-            HStack(alignment: .bottom, spacing: 0) {
-                ForEach(Array(crowd.slots.enumerated()), id: \.offset) { index, slot in
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(index == busiest ? MLColor.lime : MLColor.ink)
-                        .overlay {
-                            if index == busiest {
-                                RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(MLColor.limeOutline, lineWidth: 1.5)
-                            }
-                        }
-                        .frame(width: 30, height: max(14, 80 * CGFloat(slot.activity)))
-                        .frame(maxWidth: .infinity)
-                }
-            }
-            .frame(height: 84, alignment: .bottom)
-            .accessibilityHidden(true)
-            HStack {
-                ForEach(Array([0.0, 3600, 7200].enumerated()), id: \.offset) { index, offset in
-                    if index > 0 { Spacer() }
-                    Text(crowd.slots.first.map { MealsFormat.clock($0.startsAt.addingTimeInterval(offset), in: model.timeZone) } ?? "")
-                }
-            }
-            .font(.system(size: 13, weight: .medium, design: .monospaced))
-            .foregroundStyle(MLColor.inkSecondary)
-            .accessibilityHidden(true)
-        }
-        .padding(MLSpacing.s20)
-        .background(RoundedRectangle(cornerRadius: StudentMetric.highlightRadius, style: .continuous).fill(MLColor.surface))
-        .accessibilityElement(children: .combine)
-        .accessibilityHint(MealsCopy.estimateSpoken)
-    }
-}
-
-/// Community · Info sheet (1535:114372): How Community works, in three short items. Sized to its content.
-struct CommunityInfoSheet: View {
-    let onClose: () -> Void
-
-    private static let items: [(title: String, detail: String)] = [
-        ("Who sees it", "Your mess food head and the mess team. Others see how many back a report, never who."),
-        ("What to write", "The dish or the place, not a person."),
-        ("Same problem?", "Tap Me too instead of a new report. You can undo it."),
-    ]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: MLSpacing.s16) {
-            SheetHeader(title: "How Community works", onClose: onClose)
-            ForEach(Self.items, id: \.title) { item in
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(item.title).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
-                    Text(item.detail).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .accessibilityElement(children: .combine)
-            }
-        }
+        CrowdChart(crowd: crowd, isOffline: false, timeZone: model.timeZone)
     }
 }

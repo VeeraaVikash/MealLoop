@@ -64,6 +64,15 @@ enum MLFormat {
         }
     }
 
+    /// The short title the Admin pages use for who did something: "Food Head" and "Admin" for the two manager roles.
+    static func roleTitle(_ role: Role) -> String {
+        switch role {
+        case .admin: return "Food Head"
+        case .superAdmin: return "Admin"
+        default: return roleName(role)
+        }
+    }
+
     static func roleName(_ role: Role) -> String {
         switch role {
         case .student: return "Student"

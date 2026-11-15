@@ -6,7 +6,7 @@ import XCTest
 @MainActor
 final class AdminFigmaFixTests: XCTestCase {
     private func foodHead(_ demo: DemoDataProvider) async throws -> AdminContext {
-        let session = try await demo.signInStaff(email: "foodhead@mealloop.example", password: "MealLoop-2026")
+        let session = try await demo.signIn(email: "foodhead@mealloop.example", password: "MealLoop-2026")
         return try XCTUnwrap(AdminContext(session: session))
     }
 
@@ -14,7 +14,7 @@ final class AdminFigmaFixTests: XCTestCase {
         let demo = DemoDataProvider(scenario: scenario)
         let context: AdminContext
         if allMesses {
-            let session = try await demo.signInStaff(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
+            let session = try await demo.signIn(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
             context = try XCTUnwrap(AdminContext(session: session))
         } else { context = try await foodHead(demo) }
         let model = AdminTodayViewModel(context: context, repositories: demo.makeRepositories(), clock: demo.clock)

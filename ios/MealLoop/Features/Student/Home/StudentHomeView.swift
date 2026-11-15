@@ -53,6 +53,11 @@ struct StudentHomeView: View {
     /// Meals whose How was … card was answered Good or skipped in this run. Skip for now records nothing.
     @State private var skippedRatings: Set<String> = []
     @State private var skipping: MealID?
+    /// The student's feedback, for the recheck row and sheet. Nil where there is no session (previews).
+    @State private var records: StudentRecordsViewModel?
+    @State private var rechecking: StudentFeedbackItem?
+    /// Meals the student has already rated, so Rate a dish says so instead of asking again.
+    @State private var ratedMeals: Set<MealID> = []
     /// Thanks after Good, or Which dish after Not good, on the How was … card (2159:159, 2159:285).
     @State private var feedback: StudentDishFeedbackRequest?
     @Environment(\.studentSelectTab) private var selectTab
@@ -107,16 +112,36 @@ struct StudentHomeView: View {
         .task(id: model.state.value?.lastClosedMeal?.id) {
             await hideRatingCardIfDone()
         }
+        .task(id: model.recordedEntry?.meal.id) {
+            await loadRatedState()
+        }
+        .onChange(of: path) { _, newPath in
+            // Back on Home after the QR or a rating: pick up a scan or a rating made meanwhile.
+            if newPath.isEmpty { Task { await model.refreshRecordedEntry(); await loadRatedState() } }
+        }
         .task(id: environment.dataRevision) {
             await model.load()
             reminders.cancelAnswered(model.state.value?.cards ?? [])
             await you?.loadCredits()
             await sendKeptFeedback()
+            if records == nil, let session {
+                records = StudentRecordsViewModel(session: session, repositories: environment.repositories, clock: environment.clock)
+            }
+            await records?.loadFeedback()
         }
         .studentDishFeedback($feedback, context: model.context, repositories: environment.repositories,
                              clock: environment.clock, onSOS: { path.append(.sos) },
                              onCommunity: selectTab.map { select in { select(.community) } },
                              onMyFeedback: { path.append(.myFeedback) })
+        .mlSheet(item: $rechecking, isWorking: records?.recheckSend == .sending) { item in
+            StudentRecheckSheet(item: item, isSending: records?.recheckSend == .sending, error: recheckError,
+                                onAnswer: { answer in
+                                    Task {
+                                        await records?.answerRecheck(item.id, answer)
+                                        if records?.recheckSend == .idle { rechecking = nil }
+                                    }
+                                }, onClose: { rechecking = nil })
+        }
         .mlSheet(isPresented: Binding(get: { skipping != nil }, set: { if !$0 { skipping = nil } })) {
             if let meal = skipping, let card = model.card(id: meal) {
                 WhySkippingSheet(slot: card.meal.slot, onClose: { skipping = nil }) { reason in
@@ -193,7 +218,8 @@ struct StudentHomeView: View {
         case .myFeedback:
             if let session, let records = StudentRecordsViewModel(session: session, repositories: environment.repositories,
                                                                   clock: environment.clock) {
-                StudentMyFeedbackView(model: records, onReports: {}) { path.removeLast() }
+                StudentMyFeedbackView(model: records, onReports: {},
+                                      onRate: { path.append(.rateMeal(day: $0.startsAt, slot: $0.slot)) }) { path.removeLast() }
             }
         case .rewardTicket(let id):
             if let session, let rewards = StudentRewardsViewModel(session: session, repositories: environment.repositories,
@@ -216,6 +242,20 @@ struct StudentHomeView: View {
         if rating.isGood {
             skippedRatings.insert(Self.ratingKey(meal.startsAt, meal.slot))
         }
+    }
+
+    private var recheckError: String? {
+        if case .failed(let message)? = records?.recheckSend { return message }
+        return nil
+    }
+
+    /// Whether the meal Rate a dish is for was already rated; the existing rating stays the source of truth.
+    private func loadRatedState() async {
+        guard let session, let meal = model.recordedEntry?.meal,
+              let rating = StudentRatingViewModel(session: session, repositories: environment.repositories,
+                                                  day: meal.startsAt, slot: meal.slot) else { return }
+        await rating.load()
+        if rating.isGood { ratedMeals.insert(meal.id) } else { ratedMeals.remove(meal.id) }
     }
 
     /// Dish feedback kept while offline is sent once the app is back online. Nothing is sent while offline.
@@ -286,7 +326,12 @@ struct StudentHomeView: View {
                             reminderState: { reminders.state(for: $0, now: content.today) },
                             canRemind: { reminders.canOffer($0, now: content.today) },
                             onRemind: { reminders.set($0, now: content.today) },
-                            onUndoReminder: { reminders.undo($0) })
+                            onUndoReminder: { reminders.undo($0) },
+                            recordedEntry: model.recordedEntry,
+                            hasRatedRecordedMeal: model.recordedEntry.map { ratedMeals.contains($0.meal.id) } ?? false,
+                            onRateDish: { meal in path.append(.rateMeal(day: meal.startsAt, slot: meal.slot)) },
+                            recheck: records?.rechecksDue.first,
+                            onRecheck: { rechecking = $0 })
         } else if model.isLoadingHome {
             StudentHomeLoading()
         } else {
@@ -375,6 +420,14 @@ struct StudentHomeBody: View {
     var canRemind: (StudentMealCard) -> Bool = { _ in false }
     var onRemind: (StudentMealCard) -> Void = { _ in }
     var onUndoReminder: (MealID) -> Void = { _ in }
+    /// The meal whose entry the door recorded, which unlocks Rate a dish for it. Nil until then.
+    var recordedEntry: (meal: Meal, at: Date)?
+    /// True when the student already rated that meal: the card then says so instead of asking again.
+    var hasRatedRecordedMeal = false
+    var onRateDish: (Meal) -> Void = { _ in }
+    /// A recheck waiting for the student's answer, and what opens its sheet.
+    var recheck: StudentFeedbackItem?
+    var onRecheck: (StudentFeedbackItem) -> Void = { _ in }
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var extras: StudentHomeExtras? { content.extras }
@@ -385,7 +438,13 @@ struct StudentHomeBody: View {
                 StudentOfflineBanner(text: StudentCopy.offlineSaved(savedAt))
             }
             hero
-            if let closed = content.lastClosedMeal, content.heroCase == .nextMeal, showsRating(closed) {
+            if let entry = recordedEntry {
+                StudentRateDishCard(slot: entry.meal.slot, recordedAt: MLFormat.time(entry.at, in: timeZone),
+                                    isRated: hasRatedRecordedMeal) { onRateDish(entry.meal) }
+                    .mlTransition(.fade)
+            }
+            if let closed = content.lastClosedMeal, content.heroCase == .nextMeal, showsRating(closed),
+               recordedEntry?.meal.id != closed.id {
                 StudentHowWasCard(slot: closed.slot, onOpen: { onRating(closed, .open) },
                                   onGood: { onRating(closed, .good) }, onNotGood: { onRating(closed, .notGood) },
                                   onSkip: { onRating(closed, .skip) })
@@ -407,9 +466,10 @@ struct StudentHomeBody: View {
             }
             .buttonStyle(.plain)
             .accessibilityAddTraits(.isButton)
-            if let recheck = extras?.recheck {
+            if let recheck, !isOffline {
                 Rectangle().fill(MLColor.border).frame(height: 1)
-                StudentRecheckRow(recheck: recheck, onOpen: onOpenMyFeedback)
+                StudentRecheckRow(title: RecordsCopy.youSaidProblem(recheck.dish, recheck.problem),
+                                  detail: RecordsCopy.wasItBetter(recheck.dish)) { onRecheck(recheck) }
             }
         }
     }
@@ -434,7 +494,8 @@ extension StudentHomeBody {
                 StudentRemindSwipe(enabled: asks && canRemind(card), radius: StudentMetric.heroRadius,
                                    onRemind: { remind(card) }) {
                     StudentHomeHero(content: content, mess: mess, timeZone: timeZone, isOffline: isOffline,
-                                    answerState: heroAnswerState, onAnswer: onAnswer, onShowEntry: onShowEntry)
+                                    answerState: heroAnswerState, onAnswer: onAnswer, onShowEntry: onShowEntry,
+                                    onChangeAnswer: { onOpenAnswer(card.id) })
                 }
             }
         }
@@ -475,6 +536,7 @@ struct StudentHomeHero: View {
     let answerState: MealAnswerState
     let onAnswer: (MealIntention) -> Void
     let onShowEntry: () -> Void
+    var onChangeAnswer: () -> Void = {}
 
     private var card: StudentMealCard { content.shownHero }
     private var meal: Meal { card.meal }
@@ -573,27 +635,33 @@ struct StudentHomeHero: View {
         }
     }
 
+    /// The hero's actions. Show entry QR only for the meal being served; the answer buttons only while its cutoff is
+    /// open; Change answer only before the cutoff of an answered meal. The repository checks the cutoff again on save.
     @ViewBuilder
     private var actions: some View {
-        if content.heroCase == .question && card.isAnswerOpen && !isOffline {
-            // One row as drawn; at the accessibility text sizes the three stack so no label is cut.
+        let isServing = content.heroCase == .nowServing
+        if isServing {
+            StudentHeroButton(title: StudentCopy.showEntryQR, style: .cream, action: onShowEntry)
+        } else if content.heroCase == .question && card.isAnswerOpen && !isOffline {
+            // One row as drawn; at the accessibility text sizes the two stack so no label is cut.
             let layout = typeSize.isAccessibilitySize
                 ? AnyLayout(VStackLayout(spacing: MLSpacing.s8)) : AnyLayout(HStackLayout(spacing: MLSpacing.s8))
             layout {
                 StudentHeroButton(title: answerState == .saving(.attending) ? StudentCopy.saving : StudentCopy.imIn, style: .lime) { onAnswer(.attending) }
                 StudentHeroButton(title: StudentCopy.skip, style: .outline, expands: typeSize.isAccessibilitySize) { onAnswer(.skipping) }
-                StudentHeroButton(title: StudentCopy.entryQRShort, style: .cream, action: onShowEntry)
             }
             .disabled(isSaving)
-        } else {
+        } else if content.heroCase == .answered && card.isAnswerOpen && !isOffline {
             VStack(alignment: .leading, spacing: MLSpacing.s12) {
-                StudentHeroButton(title: StudentCopy.showEntryQR, style: .cream, action: onShowEntry)
-                if content.heroCase == .question {
-                    Text(StudentCopy.answersClosed(StudentFormat.shortTime(card.cutoff, in: timeZone)))
-                        .font(MLType.secondary)
-                        .foregroundStyle(MLColor.onHeroSecondary)
-                }
+                StudentHeroButton(title: StudentCopy.changeAnswer, style: .outline, action: onChangeAnswer)
+                Text(StudentCopy.changeUntil(StudentFormat.shortTime(card.cutoff, in: timeZone)))
+                    .font(MLType.secondary)
+                    .foregroundStyle(MLColor.onHeroSecondary)
             }
+        } else if content.heroCase == .question || content.heroCase == .answered {
+            Text(StudentCopy.answersClosed(StudentFormat.shortTime(card.cutoff, in: timeZone)))
+                .font(MLType.secondary)
+                .foregroundStyle(MLColor.onHeroSecondary)
         }
     }
 

@@ -48,6 +48,9 @@ struct StudentMealsView: View {
     @State private var model: StudentMealsViewModel
     @State private var path: [StudentMealsRoute] = []
     @State private var showsHighlightInfo = false
+    /// The meal details sheet, for the meal on screen.
+    @State private var showsMealDetails = false
+    @Environment(\.studentSelectTab) private var selectTab
     let session: Session
 
     init(model: StudentMealsViewModel, session: Session) {
@@ -58,15 +61,20 @@ struct StudentMealsView: View {
     var body: some View {
         NavigationStack(path: $path) {
             // The tab root: a large title that collapses into the bar as the week scrolls under it.
-            MLScreen(MealsCopy.title, subtitle: model.context.mess.name, bottomClearance: .tabBar) {
+            MLScreen(MealsCopy.title, subtitle: model.context.mess.name) {
                 VStack(alignment: .leading, spacing: MLSpacing.s16) {
                     if let week = model.week {
                         MealsWeekStrip(week: week, selected: model.selectedDay, timeZone: model.timeZone) { day in
                             Task { await model.select(day: day) }
                         }
                     }
-                    MealsSegments(selected: model.selectedSlot) { slot in
+                    MealsSegments(selected: model.selectedSlot,
+                                  serving: model.isToday ? model.servingMeal?.slot : nil) { slot in
                         Task { await model.select(slot: slot) }
+                    }
+                    if model.isToday {
+                        MealsServingBanner(selected: model.selectedSlot, serving: model.servingMeal, next: model.nextMeal,
+                                           timeZone: model.timeZone) { showsMealDetails = true }
                     }
                     content
                 }
@@ -80,8 +88,16 @@ struct StudentMealsView: View {
         .task(id: environment.dataRevision) {
             await model.load()
         }
+        .onAppear { Task { await model.refreshServing() } }
         .mlSheet(isPresented: $showsHighlightInfo) {
             HighlightInfoSheet { showsHighlightInfo = false }
+        }
+        .mlSheet(isPresented: $showsMealDetails) {
+            MealDetailsSheet(slot: model.selectedSlot, menu: model.state.value,
+                             status: model.isToday ? model.todayStatus(model.selectedSlot) : nil,
+                             timeZone: model.timeZone,
+                             onShowQR: selectTab.map { select in { showsMealDetails = false; select(.home) } },
+                             onClose: { showsMealDetails = false })
         }
     }
 
@@ -207,9 +223,11 @@ struct MealsWeekStrip: View {
     }
 }
 
-/// MealSegments4 2133:2323: four slots, the selected one a black pill.
+/// MealSegments4 2133:2323: four slots, the selected one a black pill. The meal being served carries a lime dot with
+/// an ink outline and says "serving now" to VoiceOver, so it never relies on colour alone.
 struct MealsSegments: View {
     let selected: MealSlot
+    var serving: MealSlot?
     let onSelect: (MealSlot) -> Void
 
     var body: some View {
@@ -217,11 +235,18 @@ struct MealsSegments: View {
             ForEach(StudentMealsViewModel.slots, id: \.self) { slot in
                 let isSelected = slot == selected
                 Button { onSelect(slot) } label: {
-                    Text(MLFormat.mealSlot(slot))
-                        .font(isSelected ? StudentType.secondaryMedium : StudentType.secondary)
-                        .foregroundStyle(isSelected ? MLColor.onHero : MLColor.inkSecondary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.85)
+                    HStack(spacing: 4) {
+                        if slot == serving {
+                            Circle().fill(MLColor.lime).overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1))
+                                .frame(width: 8, height: 8)
+                                .accessibilityHidden(true)
+                        }
+                        Text(MLFormat.mealSlot(slot))
+                            .font(isSelected ? StudentType.secondaryMedium : StudentType.secondary)
+                            .foregroundStyle(isSelected ? MLColor.onHero : MLColor.inkSecondary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.85)
+                    }
                         .frame(maxWidth: .infinity)
                         .frame(height: MLSize.hit)
                         .background { if isSelected { Capsule().fill(MLColor.ink) } }
@@ -229,10 +254,119 @@ struct MealsSegments: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityAddTraits(isSelected ? .isSelected : [])
+                .accessibilityValue(slot == serving ? MealsCopy.servingNow : "")
             }
         }
         .padding(4)
         .background(Capsule().fill(MLColor.track))
+    }
+}
+
+/// Under the segments, today only: "Serving now" for the meal being served, otherwise when the next meal starts.
+/// Both come from the same meal state Home reads, so the two screens never disagree.
+struct MealsServingBanner: View {
+    let selected: MealSlot
+    let serving: Meal?
+    let next: Meal?
+    let timeZone: TimeZone
+    let onDetails: () -> Void
+
+    var body: some View {
+        Button(action: onDetails) {
+            HStack(spacing: MLSpacing.s12) {
+                if let serving, serving.slot == selected {
+                    Circle().fill(MLColor.lime).overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1))
+                        .frame(width: 10, height: 10)
+                        .accessibilityHidden(true)
+                    Text(MealsCopy.servingNowTill(MLFormat.mealSlot(serving.slot), StudentFormat.shortTime(serving.endsAt, in: timeZone)))
+                        .font(StudentType.secondaryMedium)
+                        .foregroundStyle(MLColor.ink)
+                } else if let serving {
+                    Image(systemName: "clock").foregroundStyle(MLColor.inkSecondary).accessibilityHidden(true)
+                    Text(MealsCopy.otherServing(MLFormat.mealSlot(serving.slot)))
+                        .font(StudentType.secondary)
+                        .foregroundStyle(MLColor.inkSecondary)
+                } else {
+                    Image(systemName: "clock").foregroundStyle(MLColor.inkSecondary).accessibilityHidden(true)
+                    Text(next.map { MealsCopy.nothingServingNext(MLFormat.mealSlot($0.slot), StudentFormat.shortTime($0.startsAt, in: timeZone)) }
+                         ?? MealsCopy.nothingServing)
+                        .font(StudentType.secondary)
+                        .foregroundStyle(MLColor.inkSecondary)
+                }
+                Spacer(minLength: MLSpacing.s8)
+                Text(MealsCopy.details)
+                    .font(StudentType.secondaryMedium)
+                    .foregroundStyle(MLColor.ink)
+                    .underline()
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(minHeight: MLSize.hit)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityHint(MealsCopy.detailsHint)
+    }
+}
+
+/// Meal details in a native sheet: when it is served, whether it is serving now, the answer cutoff and the dishes as a
+/// plain list. During service it points to the entry QR on Home, the one place the QR is shown.
+struct MealDetailsSheet: View {
+    let slot: MealSlot
+    let menu: StudentMealMenu?
+    let status: MealStatus?
+    let timeZone: TimeZone
+    let onShowQR: (() -> Void)?
+    let onClose: () -> Void
+
+    private var stateText: String? {
+        switch status?.state {
+        case .inService?: return MealsCopy.servingNow
+        case .notStarted?: return MealsCopy.notStartedYet
+        case .closed?: return MealsCopy.served
+        case nil: return nil
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: MLSpacing.s16) {
+            SheetHeader(title: MLFormat.mealSlot(slot), subtitle: subtitle, onClose: onClose)
+            if let stateText {
+                Label(stateText, systemImage: status?.state == .inService ? "circle.inset.filled" : "clock")
+                    .font(StudentType.secondaryMedium)
+                    .foregroundStyle(MLColor.ink)
+            }
+            if let meal = status?.meal, menu?.isAnswerable ?? true {
+                Text(MealsCopy.answerBy(StudentFormat.shortTime(IntentionPolicy.cutoff(for: meal), in: timeZone)))
+                    .font(StudentType.secondary)
+                    .foregroundStyle(MLColor.inkSecondary)
+            }
+            if let dishes = menu?.allDishes, menu?.status == .published, !dishes.isEmpty {
+                VStack(alignment: .leading, spacing: 0) {
+                    ForEach(Array(dishes.enumerated()), id: \.offset) { index, dish in
+                        if index > 0 { Divider() }
+                        Text(dish.name)
+                            .font(StudentType.body)
+                            .foregroundStyle(MLColor.ink)
+                            .frame(maxWidth: .infinity, minHeight: MLSize.hit, alignment: .leading)
+                    }
+                }
+                .padding(.horizontal, MLSpacing.s16)
+                .background(RoundedRectangle(cornerRadius: MLRadius.compact, style: .continuous).fill(MLColor.fillQuiet))
+            } else {
+                Text(MealsCopy.noDishesYet)
+                    .font(StudentType.secondary)
+                    .foregroundStyle(MLColor.inkSecondary)
+            }
+            if status?.state == .inService, let onShowQR {
+                InkActionButton(title: MealsCopy.showQROnHome, action: onShowQR)
+            }
+        }
+    }
+
+    private var subtitle: String? {
+        guard let from = menu?.servedFrom ?? status?.meal.startsAt, let until = menu?.servedUntil ?? status?.meal.endsAt else { return nil }
+        return MLFormat.timeRange(from, until, in: timeZone)
     }
 }
 
@@ -689,7 +823,6 @@ struct StudentDishDetailView: View {
         } bottom: {
             if state.value != nil {
                 InkActionButton(title: MealsCopy.rateDish, action: onRate)
-                    .studentAboveTabBar()
             }
         }
         .task {

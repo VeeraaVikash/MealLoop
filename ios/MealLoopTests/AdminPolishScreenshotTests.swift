@@ -28,7 +28,7 @@ final class AdminPolishScreenshotTests: XCTestCase {
 
     func world(_ scenario: DemoScenario = .duringMeal) async throws -> World {
         let core = DemoDataProvider(scenario: scenario)
-        let session = try await core.signInStaff(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
+        let session = try await core.signIn(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
         let context = try XCTUnwrap(AdminContext(session: session))
         let env = AppEnvironment(kind: .review, repositories: core.makeRepositories().scopedAdmin(session, mess: context.mess),
                                  clock: core.clock, demoControls: nil)
@@ -170,7 +170,7 @@ final class AdminPolishScreenshotTests: XCTestCase {
 
     func testCaptureFoodHead() async throws {
         let core = DemoDataProvider(scenario: .duringMeal)
-        let session = try await core.signInStaff(email: "foodhead@mealloop.example", password: DemoSeed.prototypePassword)
+        let session = try await core.signIn(email: "foodhead@mealloop.example", password: DemoSeed.prototypePassword)
         let context = try XCTUnwrap(AdminContext(session: session))
         let env = AppEnvironment(kind: .review, repositories: core.makeRepositories().scopedAdmin(session, mess: context.mess),
                                  clock: core.clock, demoControls: nil)

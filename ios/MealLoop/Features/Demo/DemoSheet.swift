@@ -10,6 +10,7 @@ struct DemoSheet: View {
     @Environment(AppRouter.self) private var router
     @Environment(SessionStore.self) private var sessionStore
     @Environment(DemoMenu.self) private var demoMenu
+    @Environment(DevicePreferences.self) private var preferences
 
     /// The order of the role list: the people of the core story first.
     static let roles: [Role] = [.student, .admin, .superAdmin, .supervisor, .kitchenStaff, .doorScanner, .passDesk,
@@ -25,14 +26,29 @@ struct DemoSheet: View {
         NavigationStack {
             List {
                 Section {
-                    row("Student · Sign in with SRM") { start([.srmSignIn]) }
-                    row("Student · Sign in failed") {
-                        await environment.demoControls?.failNextSRMSignIn()
-                        start([.srmSignIn])
+                    row("Walkthrough") {
+                        preferences.resetWalkthrough()
+                        start([])
                     }
-                    row("Staff · Choose your role") { start([.chooseRole]) }
-                    row("Staff · Password") { start([.chooseRole, .rolePassword(.doorScanner)]) }
-                    row("Staff · Sign in with email") { start([.chooseRole, .emailSignIn]) }
+                    row("Sign in") {
+                        preferences.markWalkthroughSeen()
+                        start([])
+                    }
+                    row("Register") {
+                        preferences.markWalkthroughSeen()
+                        start([.register])
+                    }
+                    row("Register · directory lookup fails once") {
+                        await environment.demoControls?.failNextDirectoryLookup()
+                        preferences.markWalkthroughSeen()
+                        start([.register])
+                    }
+                    row("Student · show first-visit guides again") {
+                        if let student = sessionStore.current?.student?.student.id {
+                            preferences.clearFlags(withPrefix: StudentGuide.flagPrefix(for: student))
+                        }
+                        demoMenu.isPresented = false
+                    }
                 } header: {
                     Text(DemoCopy.gettingStarted)
                 } footer: {

@@ -184,7 +184,7 @@ final class StudentHomeViewModelTests: XCTestCase {
     func testANonStudentSessionCannotOpenStudentHome() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
         for account in DemoSeed.accounts where account.role != .student {
-            let session = try await demo.signInStaff(email: account.email, password: DemoSeed.prototypePassword)
+            let session = try await demo.signIn(email: account.email, password: DemoSeed.prototypePassword)
             XCTAssertNil(StudentHomeViewModel(session: session, repositories: demo.makeRepositories(), clock: demo.clock), "\(account.role)")
         }
         // A session claiming a student's context still needs the Student role.
@@ -194,7 +194,7 @@ final class StudentHomeViewModelTests: XCTestCase {
     }
 
     func testTheTabsMatchTheRoleRoot() {
-        XCTAssertEqual(StudentTab.pillTabs.map(\.rawValue), RoleRoot.student.placeholderTabs)
+        XCTAssertEqual(StudentTab.allCases.map(\.rawValue), RoleRoot.student.placeholderTabs)
     }
 
     // MARK: Cross-role

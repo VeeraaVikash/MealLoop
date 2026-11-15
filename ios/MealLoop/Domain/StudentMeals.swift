@@ -67,15 +67,6 @@ struct StudentDishDetail: Sendable, Hashable {
     let verifiedOn: Date?
 }
 
-/// One dish found by name in the week's menu.
-struct StudentDishMatch: Sendable, Hashable, Identifiable {
-    let dish: Dish
-    let day: Date
-    let slot: MealSlot
-
-    var id: String { "\(dish.id.rawValue)-\(day.timeIntervalSince1970)-\(slot.rawValue)" }
-}
-
 /// The special-meal pass as its holder sees it.
 struct StudentPassTicket: Sendable, Hashable {
     let meal: Meal
@@ -100,30 +91,63 @@ enum StudentPassStanding: Sendable, Hashable {
     case expired(StudentPassTicket, endedAt: Date)
 }
 
-/// One 15-minute slot of the Crowd chart.
-struct StudentCrowdSlot: Sendable, Hashable {
+/// Recorded entries in one interval of the Crowd chart.
+struct StudentCrowdInterval: Codable, Sendable, Hashable {
     let startsAt: Date
-    /// Arrivals at the door in this slot, relative to the busiest slot of the day (0 to 1). An estimate of the pattern,
-    /// never a head count.
-    let activity: Double
+    /// Distinct students whose first valid entry for the meal falls in this interval. Zero is a real zero.
+    let entries: Int
 }
 
-/// The Crowd page. The level is an estimate; nothing here claims how many people are inside.
-struct StudentCrowd: Sendable, Hashable {
+/// Crowd for one meal at one mess, counted from the entry records and the meal answers. Nothing here predicts: no
+/// best time, no estimated wait and no level. A count that cannot be read is `.unavailable`, never zero.
+struct StudentCrowd: Codable, Sendable, Hashable {
+    /// The chart's interval. Crowd · Main Mess (221:63246) draws "every 15 minutes".
+    static let intervalLength: TimeInterval = 15 * 60
+
     let meal: Meal
+    let mealState: MealState
     let observedAt: Date
-    /// The same estimate as the Home row, so the two never disagree.
-    let level: CrowdLevel
-    /// Quiet: the best time. Busy: when it gets quieter. Closed: when it opens.
-    let detailTime: Date?
-    /// Empty when there are not enough entries to draw the day.
-    let slots: [StudentCrowdSlot]
-    /// The slot the clock is in. Nil outside the meal.
-    let currentSlot: Int?
-    /// The slot with the best time, for the dot.
-    let bestSlot: Int?
-    /// About how long the wait is now, in minutes. Nil when the mess is not serving.
-    let waitNowMinutes: Int?
-    let busiestWaitMinutes: Int?
-    let busiestAt: Date?
+    /// Distinct students with a valid entry for this meal and mess. A walk-in counts; a repeat scan does not.
+    let enteredSoFar: CountReading
+    /// Students who answered I'm in for this meal and mess and have no valid entry yet. A walk-in never lowers it.
+    let stillExpected: CountReading
+    /// From the start of service to now (or to its end), one per interval. Empty before service starts.
+    let intervals: [StudentCrowdInterval]
+
+    /// The interval the clock is in, while the meal is being served.
+    var currentInterval: Int? {
+        guard mealState == .inService, !intervals.isEmpty else { return nil }
+        return intervals.lastIndex { $0.startsAt <= observedAt }
+    }
+
+    /// Builds the counts from the entry records of one meal. `entries` may hold repeats and other meals' records;
+    /// only the first valid entry per student for `meal` counts.
+    static func counted(meal: Meal, state: MealState, now: Date, entries: [EntryRecord]?,
+                        attending: Set<StudentID>?) -> StudentCrowd {
+        guard let entries else {
+            return StudentCrowd(meal: meal, mealState: state, observedAt: now, enteredSoFar: .unavailable,
+                                stillExpected: .unavailable, intervals: [])
+        }
+        var first: [StudentID: Date] = [:]
+        for entry in entries where entry.mealID == meal.id {
+            first[entry.student.id] = min(first[entry.student.id] ?? entry.recordedAt, entry.recordedAt)
+        }
+        let entered = Set(first.keys)
+        let expected: CountReading = attending.map { .available($0.subtracting(entered).count, asOf: now) } ?? .unavailable
+        var intervals: [StudentCrowdInterval] = []
+        if state != .notStarted || !first.isEmpty {
+            let end = state == .closed ? meal.endsAt : min(max(now, meal.startsAt), meal.endsAt)
+            let count = max(1, Int(ceil(end.timeIntervalSince(meal.startsAt) / intervalLength)))
+            var buckets = Array(repeating: 0, count: count)
+            for at in first.values {
+                let index = Int(floor(at.timeIntervalSince(meal.startsAt) / intervalLength))
+                buckets[min(max(index, 0), count - 1)] += 1
+            }
+            intervals = buckets.enumerated().map { index, value in
+                StudentCrowdInterval(startsAt: meal.startsAt.addingTimeInterval(Double(index) * intervalLength), entries: value)
+            }
+        }
+        return StudentCrowd(meal: meal, mealState: state, observedAt: now, enteredSoFar: .available(entered.count, asOf: now),
+                            stillExpected: expected, intervals: intervals)
+    }
 }

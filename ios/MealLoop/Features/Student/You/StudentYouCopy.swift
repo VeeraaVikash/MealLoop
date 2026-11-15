@@ -1,6 +1,6 @@
 import Foundation
 
-/// Words of the Notifications, You, Credits and Attendance frames (page 07). This is wording, not data.
+/// Words of the Notifications, You and Credits frames (page 07). This is wording, not data.
 enum YouCopy {
     static let notifications = "Notifications"
     static let today = "Today"
@@ -18,7 +18,6 @@ enum YouCopy {
     static let you = "You"
     static let outings = "Outings"
     static let credits = "Credits"
-    static let attendance = "Attendance"
     static let spending = "Spending"
     static let myFeedback = "My feedback"
     static let help = "Help"
@@ -28,8 +27,22 @@ enum YouCopy {
     static func idAndMess(_ maskedID: String, _ mess: String) -> String { maskedID.isEmpty ? mess : "\(maskedID) · \(mess)" }
     static func points(_ value: Int) -> String { "\(value) pts" }
 
-    static let creditsSubtitle = "Earned by showing up. Never lost for a missed meal."
+    static let creditsSubtitle = "Earned by answering meals before the cutoff."
+    static let recentActivity = "Recent activity"
+    static let seeAll = "See all"
+    static let noActivityTitle = "No activity yet"
+    static let noActivityDetail = "Answer I'm in or Skip before a meal's cutoff to earn credits."
+    static let couldntLoadCredits = "Couldn't load your credits"
+    static let ruleAnswer = "Answer I'm in or Skip before the cutoff"
+    static let ruleNotSure = "Answer Not sure, or don't answer"
+    static let ruleNoCredits = "0"
+    static let ruleTicket = "Get a ticket at your mess counter"
+    static let ruleTicketCost = "Its cost"
+    static let rulesSubtitle = "Only your meal answers earn credits."
+    static let rulesSamples = "Review build: point amounts are sample values and not final."
+    static let rulesAmountUnknown = "Amount not set"
     static let pts = "pts"
+    static let creditsWord = "credits"
     static let tickets = "Tickets"
     static let get = "Get"
     static let history = "History"
@@ -44,18 +57,4 @@ enum YouCopy {
     static func signed(_ points: Int) -> String { points >= 0 ? "+\(points) pts" : "−\(-points) pts" }
     static func entryLine(_ title: String, _ day: String) -> String { "\(title) · \(day)" }
 
-    static let attendanceSubtitle = "The days you came to the mess"
-    static func mealsOf(_ entered: Int, _ served: Int) -> String { "\(entered) of \(served) meals" }
-    static let cameThisMonth = "you came this month so far"
-    static func bestStreak(_ days: Int) -> String { "Best streak: \(days) \(days == 1 ? "day" : "days")" }
-    static let countsMissing = "Meal counts aren't available yet"
-    static let everyMeal = "Came to every meal"
-    /// Attendance (221:64717) says "Missed a meal". A missing scan is not proof the student was away, so the
-    /// legend says only that no entry was recorded.
-    static let noEntry = "No entry for a meal"
-    static let missingScanNote = "No entry means no scan was recorded, not that you were away."
-    /// Under the calendar while a missed day can be corrected (Entry · Discrepancy, 221:63082).
-    static let tapMissedDay = "Ate but not scanned? Tap the circled day to ask for a correction."
-    static let weekdays = ["M", "T", "W", "T", "F", "S", "S"]
-    static let attendanceOffline = "You're offline. This is the attendance you last saw."
 }

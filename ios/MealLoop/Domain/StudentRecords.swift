@@ -106,10 +106,15 @@ enum StudentFeedbackStage: String, Codable, Sendable, Hashable {
     }
 }
 
-/// "Better today?" after a fix. Recorded only.
-enum StudentRecheckAnswer: String, Codable, Sendable, Hashable {
+/// "Was the [dish] better today?" after the kitchen recorded a fix (recheck sheet, 15 Nov 2026). Recorded once.
+enum StudentRecheckAnswer: String, Codable, Sendable, Hashable, CaseIterable {
     case better
-    case same
+    case stillAProblem
+    /// The student did not eat the dish today. It closes the recheck and is never a rating of the dish.
+    case didntEat
+
+    /// True for the two answers that say how the dish was.
+    var isAboutTheDish: Bool { self != .didntEat }
 }
 
 /// One dish feedback the student gave.
@@ -124,6 +129,9 @@ struct StudentFeedbackItem: Codable, Sendable, Hashable, Identifiable {
     /// The kitchen's own words about the fix ("Less salt from Thursday 8 Aug."). Nil when it wrote nothing.
     let fixNote: String?
     let recheck: StudentRecheckAnswer?
+
+    /// The kitchen recorded a fix and the student has not answered the recheck yet.
+    var isRecheckDue: Bool { stage == .fixed && recheck == nil }
 }
 
 /// My feedback. The counts are computed from the items, never typed in.

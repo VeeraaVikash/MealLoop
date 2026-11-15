@@ -126,16 +126,21 @@ struct StudentOutingsView: View {
     let onNew: () -> Void
     let onOpen: (OutingRequestID) -> Void
     let onBack: () -> Void
+    /// How the outing pass works: opens by itself on the first visit and from the ⓘ bar button.
+    @State private var showsGuide = false
 
     /// On `MLScreen`: the system back button and swipe-back pop the page; `onBack` stays for callers.
     var body: some View {
-        MLScreen(OutingStudentCopy.title, subtitle: OutingStudentCopy.subtitle, bottomClearance: .tabBar) {
+        MLScreen(OutingStudentCopy.title, subtitle: OutingStudentCopy.subtitle) {
+            StudentGuideInfoButton(guide: .outingPass) { showsGuide = true }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }
         }
         .refreshable { await model.load() }
         .task { await model.load() }
+        .studentGuide(.outingPass, student: model.context.student.id, isPresented: $showsGuide)
     }
 
     @ViewBuilder
@@ -360,7 +365,6 @@ struct StudentNewOutingView: View {
                 }
         } bottom: {
             sendButton
-                .studentAboveTabBar()
         }
         .task { await model.load() }
     }
@@ -526,7 +530,6 @@ struct StudentOutingSentView: View {
             }
         } bottom: {
             InkActionButton(title: OutingStudentCopy.seeRequest, action: onSee)
-                .studentAboveTabBar()
         }
     }
 }
@@ -542,7 +545,7 @@ struct StudentOutingDetailView: View {
 
     /// On `MLScreen`: the title follows the request's state; the system back button and swipe-back pop the page.
     var body: some View {
-        MLScreen(title, subtitle: subtitle, bottomClearance: .tabBar) {
+        MLScreen(title, subtitle: subtitle) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }

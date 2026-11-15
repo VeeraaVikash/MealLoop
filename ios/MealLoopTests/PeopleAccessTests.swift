@@ -8,16 +8,16 @@ final class PeopleAccessTests: XCTestCase {
         let core = DemoDataProvider()
         let people = core.makeRepositories().admin.people
         let target = account(.doorScanner)
-        _ = try await core.signInStaff(email: target.email, password: DemoSeed.prototypePassword)
+        _ = try await core.signIn(email: target.email, password: DemoSeed.prototypePassword)
         try await people.revokePassword(of: target.id, by: session(.superAdmin))
-        do { _ = try await core.signInStaff(email: target.email, password: DemoSeed.prototypePassword); XCTFail("Revoked sign-in") } catch { XCTAssertEqual(error as? RepositoryError, .invalidCredentials) }
+        do { _ = try await core.signIn(email: target.email, password: DemoSeed.prototypePassword); XCTFail("Revoked sign-in") } catch { XCTAssertEqual(error as? RepositoryError, .invalidCredentials) }
         let given = try await people.givePassword(to: target.id, by: session(.superAdmin))
-        let signedIn = try await core.signInStaff(email: target.email, password: given.value)
+        let signedIn = try await core.signIn(email: target.email, password: given.value)
         XCTAssertEqual(signedIn.account.id, target.id)
-        do { _ = try await core.signInStaff(email: target.email, password: DemoSeed.prototypePassword); XCTFail("Old password") } catch { XCTAssertEqual(error as? RepositoryError, .invalidCredentials) }
+        do { _ = try await core.signIn(email: target.email, password: DemoSeed.prototypePassword); XCTFail("Old password") } catch { XCTAssertEqual(error as? RepositoryError, .invalidCredentials) }
         let next = try await people.givePassword(to: target.id, by: session(.superAdmin))
         XCTAssertNotEqual(next.value, given.value)
-        do { _ = try await core.signInStaff(email: target.email, password: given.value); XCTFail("Replaced password") } catch { XCTAssertEqual(error as? RepositoryError, .invalidCredentials) }
+        do { _ = try await core.signIn(email: target.email, password: given.value); XCTFail("Replaced password") } catch { XCTAssertEqual(error as? RepositoryError, .invalidCredentials) }
         // There is no password readback method on the directory; public entries contain only account and status.
         let directory = try await people.directory(by: session(.superAdmin))
         XCTAssertFalse(String(reflecting: directory).contains(given.value))
@@ -43,10 +43,10 @@ final class PeopleAccessTests: XCTestCase {
         let directory = try await people.directory(by: session(.superAdmin))
         let north = directory.messes[1], south = directory.messes[2]
         let given = try await people.invite(name: "Sample name", contact: "sample@mealloop.example", role: .supervisor, mess: north.id, by: session(.superAdmin))
-        let signedIn = try await core.signInStaff(email: given.person.account.email, password: given.value)
+        let signedIn = try await core.signIn(email: given.person.account.email, password: given.value)
         XCTAssertEqual(signedIn.staff?.mess.id, north.id)
         try await people.allot(given.person.id, to: south.id, by: session(.superAdmin))
-        let moved = try await core.signInStaff(email: given.person.account.email, password: given.value)
+        let moved = try await core.signIn(email: given.person.account.email, password: given.value)
         XCTAssertEqual(moved.staff?.mess.id, south.id)
         let audit = try await people.audit(by: session(.superAdmin))
         XCTAssertEqual(audit.count, 2)
@@ -62,6 +62,6 @@ final class PeopleAccessTests: XCTestCase {
         await core.setScenario(.duringMeal)
         let directory = try await people.directory(by: session(.superAdmin))
         XCTAssertTrue(directory.people.first { $0.id == account(.doorScanner).id }!.passwordRevoked)
-        _ = try await DemoDataProvider().signInStaff(email: account(.doorScanner).email, password: DemoSeed.prototypePassword)
+        _ = try await DemoDataProvider().signIn(email: account(.doorScanner).email, password: DemoSeed.prototypePassword)
     }
 }

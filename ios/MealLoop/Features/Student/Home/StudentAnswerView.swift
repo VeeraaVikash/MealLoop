@@ -24,7 +24,7 @@ struct StudentAnswerView: View {
 
     /// On `MLScreen`: the system back button and swipe-back pop the page; `onBack` stays for callers.
     var body: some View {
-        MLScreen(card.map { MLFormat.mealSlot($0.meal.slot) }, subtitle: card.map(subtitle), bottomClearance: .tabBar) {
+        MLScreen(card.map { MLFormat.mealSlot($0.meal.slot) }, subtitle: card.map(subtitle)) {
             if let card {
                 VStack(alignment: .leading, spacing: MLSpacing.s16) {
                     dishes

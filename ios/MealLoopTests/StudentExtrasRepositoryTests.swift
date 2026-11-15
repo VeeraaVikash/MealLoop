@@ -26,32 +26,90 @@ final class StudentExtrasRepositoryTests: XCTestCase {
     // MARK: Home extras
 
     func testTheSamplesAreTheOnesDrawnOnHome() async throws {
-        let (demo, _) = make()
+        let (demo, clock) = make()
+        clock.set(DemoSeed.storyStartNow)
         let extras = try await demo.homeExtras(for: aarav, mess: mess)
         XCTAssertEqual(extras.credits, 120)
-        XCTAssertEqual(extras.crowd?.level, .quiet)
-        XCTAssertEqual(extras.crowd?.bars, [22, 38, 46, 46, 34, 17, 17])
-        XCTAssertEqual(extras.crowd?.currentBar, 0)
-        XCTAssertEqual(extras.crowd?.detailTime, DemoSeed.time(13, 30))
         XCTAssertEqual(extras.pass, StudentPassRow(meal: DemoSeed.lunch, status: .open))
         XCTAssertFalse(extras.isMessClosed)
         XCTAssertEqual(extras.laterMeal, DemoSeed.dinner)
     }
 
-    func testTheCrowdIsBusyDuringServiceAndClosedBeforeTheDoorsOpen() async throws {
-        let (demo, clock) = make()
-        clock.set(DemoSeed.time(8, 10))
-        var extras = try await demo.homeExtras(for: aarav, mess: mess)
-        XCTAssertEqual(extras.crowd?.level, .busy)
-        XCTAssertEqual(extras.crowd?.currentBar, 2)
-        XCTAssertEqual(extras.crowd?.detailTime, DemoSeed.time(8, 45))
+    // MARK: Crowd: recorded entries only
 
-        clock.set(DemoSeed.time(6, 30))
-        extras = try await demo.homeExtras(for: aarav, mess: mess)
-        XCTAssertTrue(extras.isMessClosed)
-        XCTAssertEqual(extras.crowd?.level, .closed)
-        XCTAssertNil(extras.crowd?.currentBar)
-        XCTAssertEqual(extras.crowd?.detailTime, DemoSeed.breakfast.startsAt)
+    /// Before any entry, Entered so far is a real zero and Still expected counts the I'm in answers.
+    func testHomeCrowdComesFromTheRecordsNotFromSamples() async throws {
+        let (demo, clock) = make()
+        clock.set(DemoSeed.storyStartNow)
+        let extras = try await demo.homeExtras(for: aarav, mess: mess)
+        let crowd = try XCTUnwrap(extras.crowd)
+        let page = try await demo.crowd(at: mess)
+        XCTAssertEqual(crowd.enteredSoFar, page.enteredSoFar, "Home and Crowd read the same counts")
+        XCTAssertEqual(crowd.stillExpected, page.stillExpected)
+        XCTAssertNotNil(page.enteredSoFar.value)
+    }
+
+    /// A recorded entry raises Entered so far and lowers Still expected for a student who said I'm in. A repeat scan
+    /// changes neither; a walk-in raises Entered so far without lowering Still expected.
+    func testEntriesWalkInsAndRepeatsCountAsRecorded() async throws {
+        let (demo, clock) = make()
+        clock.set(DemoSeed.time(9, 0))
+        _ = try await demo.setIntention(.attending, of: aarav, for: lunch)
+        clock.set(DemoSeed.time(12, 10))
+        _ = try await demo.startMeal(lunch, by: .supervisor)
+        let before = try await demo.crowd(at: mess)
+        let enteredBefore = try XCTUnwrap(before.enteredSoFar.value)
+        let expectedBefore = try XCTUnwrap(before.stillExpected.value)
+
+        _ = try await demo.recordEntry(entry("crowd-aarav"))
+        let after = try await demo.crowd(at: mess)
+        XCTAssertEqual(after.enteredSoFar.value, enteredBefore + 1)
+        XCTAssertEqual(after.stillExpected.value, expectedBefore - 1)
+        XCTAssertEqual(after.intervals.map(\.entries).reduce(0, +), enteredBefore + 1, "The chart sums to Entered so far")
+
+        _ = try await demo.recordEntry(EntryRequest(mealID: lunch, student: DemoSeed.sampleStudent, method: .typedLastFour,
+                                                    idempotencyKey: IdempotencyKey("crowd-aarav-again")))
+        let repeated = try await demo.crowd(at: mess)
+        XCTAssertEqual(repeated.enteredSoFar, after.enteredSoFar, "A repeat scan changes nothing")
+        XCTAssertEqual(repeated.stillExpected, after.stillExpected)
+    }
+
+    func testCountingRuleKeepsMissingApartFromZero() {
+        let meal = DemoSeed.lunch
+        let missing = StudentCrowd.counted(meal: meal, state: .inService, now: DemoSeed.time(12, 20), entries: nil, attending: nil)
+        XCTAssertEqual(missing.enteredSoFar, .unavailable)
+        XCTAssertEqual(missing.stillExpected, .unavailable)
+        XCTAssertTrue(missing.intervals.isEmpty)
+
+        let none = StudentCrowd.counted(meal: meal, state: .inService, now: DemoSeed.time(12, 20), entries: [], attending: [])
+        XCTAssertEqual(none.enteredSoFar.value, 0)
+        XCTAssertEqual(none.stillExpected.value, 0)
+        XCTAssertEqual(none.intervals.count, 2, "12:00 and 12:15 so far, every 15 minutes")
+        XCTAssertEqual(none.currentInterval, 1)
+    }
+
+    func testCountingRuleDeduplicatesAndBucketsByFirstEntry() {
+        let meal = DemoSeed.lunch
+        let a = StudentRef(id: StudentID("a"), maskedID: "••0001")
+        let walkIn = StudentRef(id: StudentID("walk-in"), maskedID: "••0002")
+        func record(_ ref: StudentRef, _ hour: Int, _ minute: Int, meal id: MealID = DemoSeed.lunch.id) -> EntryRecord {
+            EntryRecord(id: EntryID(UUID().uuidString), mealID: id, student: ref, recordedAt: DemoSeed.time(hour, minute),
+                        method: .typedLastFour, hadMealResponse: true)
+        }
+        let entries = [record(a, 12, 20), record(a, 12, 50), record(walkIn, 12, 40), record(a, 12, 5, meal: DemoSeed.dinner.id)]
+        let crowd = StudentCrowd.counted(meal: meal, state: .closed, now: DemoSeed.time(15, 0), entries: entries,
+                                         attending: [a.id, StudentID("b")])
+        XCTAssertEqual(crowd.enteredSoFar.value, 2, "Each student once; another meal's entry is not counted")
+        XCTAssertEqual(crowd.stillExpected.value, 1, "Only b said I'm in and has no entry; the walk-in lowers nothing")
+        XCTAssertEqual(crowd.intervals[1].entries, 1, "a's first entry, 12:20")
+        XCTAssertEqual(crowd.intervals[2].entries, 1, "the walk-in, 12:40")
+        XCTAssertNil(crowd.currentInterval, "Nothing is current once the meal closed")
+    }
+
+    func testBeforeServiceThereIsNoChart() {
+        let crowd = StudentCrowd.counted(meal: DemoSeed.lunch, state: .notStarted, now: DemoSeed.time(9, 0), entries: [], attending: [])
+        XCTAssertTrue(crowd.intervals.isEmpty)
+        XCTAssertEqual(crowd.enteredSoFar.value, 0)
     }
 
     func testAStudentWithNoPassHasNoRow() async throws {

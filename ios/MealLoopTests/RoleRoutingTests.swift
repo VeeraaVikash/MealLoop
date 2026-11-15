@@ -48,8 +48,9 @@ final class RoleRoutingTests: XCTestCase {
         XCTAssertEqual(RoleRoot.admin.placeholderTabs, ["Today", "Students", "Results", "More"])
     }
 
-    func testOnlyStudentAndAdminHaveSearch() {
-        XCTAssertEqual(RoleRoot.allCases.filter(\.hasSearch), [.student, .admin])
+    /// Student Search was removed (15 Nov 2026, SR-5); Admin keeps it.
+    func testOnlyAdminHasSearch() {
+        XCTAssertEqual(RoleRoot.allCases.filter(\.hasSearch), [.admin])
     }
 
     func testTheWardenTabsAreWordsOnly() {
@@ -69,7 +70,7 @@ final class RoleRoutingTests: XCTestCase {
 
     func testRouterResetClearsPositionForTheNextAccount() {
         let router = AppRouter()
-        router.entryPath = [.chooseRole, .rolePassword(.kitchenStaff)]
+        router.entryPath = [.signIn, .register]
         router.selectedStaffTab = .me
         router.reset()
         XCTAssertTrue(router.entryPath.isEmpty)

@@ -74,6 +74,9 @@ struct StudentHomeContent: Equatable {
         return laterMeal
     }
 
+    /// The meal being served right now, the only one Home offers the entry QR for. Nil between serving windows.
+    var servingMeal: StudentMealCard? { heroState == .inService ? hero : nil }
+
     /// Every meal this screen can open the answer page for.
     var cards: [StudentMealCard] { [hero, nextMeal, laterMeal].compactMap { $0 } }
 }

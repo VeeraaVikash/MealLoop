@@ -114,7 +114,7 @@ struct StudentRewardTicketView: View {
     let id: StudentRewardTicketID
 
     var body: some View {
-        MLScreen(title, subtitle: subtitle, bottomClearance: .tabBar) {
+        MLScreen(title, subtitle: subtitle) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }

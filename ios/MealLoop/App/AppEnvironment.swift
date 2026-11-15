@@ -28,8 +28,8 @@ enum DataSourceKind: String, Sendable {
 protocol DemoControlling: Sendable {
     /// A session for the seeded account of a role, for Switch role (keeps data). Nil when the role has no account.
     func demoSession(for role: Role) async -> Session?
-    /// The next Sign in with SRM fails once, so Couldn't sign in (135:15825) can be shown. Try again then succeeds.
-    func failNextSRMSignIn() async
+    /// The next student directory lookup on Register fails once, so its retry can be shown. Try again then succeeds.
+    func failNextDirectoryLookup() async
 }
 
 /// Selects exactly one data source for the running app. Demo and real data are never mixed.
@@ -40,15 +40,19 @@ final class AppEnvironment {
     let clock: any AppClock
     /// Non-nil only in the Debug and Review environments.
     let demoControls: (any DemoControlling)?
+    /// Local reminders on this phone (Notification settings).
+    let reminders: any ReminderScheduling
     /// Bumped when data changes outside a screen,
     /// so screens can reload with `.task(id: environment.dataRevision)`.
     private(set) var dataRevision = 0
 
-    init(kind: DataSourceKind, repositories: Repositories, clock: any AppClock, demoControls: (any DemoControlling)?) {
+    init(kind: DataSourceKind, repositories: Repositories, clock: any AppClock, demoControls: (any DemoControlling)?,
+         reminders: any ReminderScheduling = LocalReminderScheduler()) {
         self.kind = kind
         self.repositories = repositories
         self.clock = clock
         self.demoControls = demoControls
+        self.reminders = reminders
     }
 
     func dataDidChange() {

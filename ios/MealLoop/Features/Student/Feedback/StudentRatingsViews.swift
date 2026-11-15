@@ -168,8 +168,7 @@ struct StudentRateMealView: View {
     var body: some View {
         MLScreen(StudentCopy.howWas(model.target.slot),
                  subtitle: RatingCopy.dayAndMess(StudentFormat.mediumDay(model.target.day, in: model.timeZone),
-                                                 model.context.mess.name),
-                 bottomClearance: .tabBar) {
+                                                 model.context.mess.name)) {
             VStack(spacing: MLSpacing.s16) {
                 RatingChoiceRow(symbol: "hand.thumbsup", title: RatingCopy.good, detail: RatingCopy.itWasFine,
                                 accent: true, selected: model.isGood) {
@@ -315,7 +314,6 @@ struct StudentRateDishView: View {
             }
         } bottom: {
             InkActionButton(title: RatingCopy.done, action: onDone)
-                .studentAboveTabBar()
         }
         .task {
             if model.dishName == nil { model.dishName = try? await loadDish().dish.name }

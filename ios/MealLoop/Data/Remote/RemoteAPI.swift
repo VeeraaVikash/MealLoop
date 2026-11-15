@@ -269,7 +269,7 @@ struct RemoteAPI: MealRepository, MealStateRepository, HeadcountRepository, Entr
 
     /// Saves the returned credential in the token store before answering, so the next call is signed in.
     /// A wrong email or password is `invalidCredentials`, never which of the two.
-    func signInStaff(email: String, password: String) async throws -> Session {
+    func signIn(email: String, password: String) async throws -> Session {
         let endpoint = Endpoint(method: .post, path: "/sessions", body: SignInRequestDTO(email: email, password: password),
                                 requiresAuthentication: false)
         let session: SessionDTO
@@ -289,17 +289,6 @@ struct RemoteAPI: MealRepository, MealStateRepository, HeadcountRepository, Entr
             throw RepositoryError.unavailable(reason: "This phone could not keep you signed in. Try again.")
         }
         return session.domain
-    }
-
-    /// Not connected on purpose: SRM single sign-on is unverified and no SRM integration exists (P14, NET-9).
-    func signInWithSRM() async throws -> Session {
-        throw RepositoryError.notImplemented(feature: "Remote · Sign in with SRM")
-    }
-
-    /// Not connected on purpose: the shared four-digit role password is a prototype interaction only and must never
-    /// become production authentication (CLAUDE.md, contracts-and-security rules; NET-9).
-    func verifyRolePassword(_ password: String, for role: Role) async throws -> RolePasswordResult {
-        throw RepositoryError.notImplemented(feature: "Remote · role password")
     }
 
     // MARK: Errors

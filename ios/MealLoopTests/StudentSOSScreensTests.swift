@@ -42,7 +42,8 @@ final class StudentSOSScreensTests: XCTestCase {
 
     func testOfflineNothingIsSentOrShownAsSentAndItSendsOnceBack() async throws {
         let (model, demo, repositories) = make(.offline)
-        model.choose(.spoiled)
+        model.choose(.smellsBad)
+        model.dish = StudentSOSCopy.notListed
         model.takePhoto()
         await model.checkConnection()
         XCTAssertEqual(model.sendState, .offline, "Review · Offline shows before any tap.")
@@ -68,27 +69,31 @@ final class StudentSOSScreensTests: XCTestCase {
                                     admin: repositories.admin)
         let failing = StudentSOSViewModel(context: context, repositories: repositories, clock: demo.clock)
         failing.choose(.otherSafety)
-        failing.takePhoto()
+        failing.whereHappened = "Dining hall"
+        failing.whatHappened = "Wet floor"
         let sent = await failing.send()
         XCTAssertFalse(sent)
         XCTAssertEqual(failing.sendState, .failed)
         XCTAssertNil(failing.sos, "Nothing is shown as sent.")
         let (model, _, _) = make()
         model.choose(.otherSafety)
-        model.takePhoto()
+        model.whereHappened = "Dining hall"
+        model.whatHappened = "Wet floor"
         _ = await model.send()
         _ = await model.send()
         let open = try await working.activeCases(for: DemoSeed.mess.id)
-        XCTAssertLessThanOrEqual(open.filter { $0.title == "Another safety problem" }.count, 1)
+        XCTAssertLessThanOrEqual(open.filter { $0.title == model.subject }.count, 1)
     }
 
-    func testCameraDeniedSendsWithoutAPhotoFlagged() async throws {
+    /// A food reason whose photo is optional can go without one when the camera is off, flagged for the team.
+    func testCameraDeniedSendsAnOptionalPhotoReasonFlagged() async throws {
         let (model, _, _) = make(camera: .denied)
         await model.load()
-        model.choose(.unwell)
+        model.choose(.smellsBad)
+        model.dish = StudentSOSCopy.notListed
         model.continueWithoutPhoto()
         XCTAssertFalse(model.hasPhoto)
-        XCTAssertEqual(model.subject, "I feel unwell after eating · \(MLFormat.mealSlot(try XCTUnwrap(model.meal)))")
+        XCTAssertTrue(model.withoutPhoto)
         let raised = await model.send()
         XCTAssertTrue(raised)
         XCTAssertTrue(model.sos?.title.hasSuffix("· no photo") == true, "Flagged for the team.")
@@ -97,6 +102,7 @@ final class StudentSOSScreensTests: XCTestCase {
     func testNoGPSRecordsNoPlace() async {
         let (model, _, _) = make(location: .unavailable)
         model.choose(.foundInFood)
+        model.dish = StudentSOSCopy.notListed
         model.takePhoto()
         _ = await model.send()
         XCTAssertEqual(model.sos?.place, StudentSOSCopy.placeNotRecorded, "Nothing is guessed.")

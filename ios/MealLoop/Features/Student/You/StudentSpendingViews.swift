@@ -27,6 +27,7 @@ enum SpendingCopy {
     static let delete = "Delete"
     static let didNotDelete = "Didn't delete. Try again."
     static let emptyTitle = "Nothing added yet"
+    static let couldntLoad = "Couldn't load your spending"
     static let emptyDetail = "Add what you spend outside the mess. Only you can see it."
     static let amountHint = "Amount in rupees"
     static func saved(_ category: StudentExpenseCategory, _ amount: Int) -> String {
@@ -60,6 +61,8 @@ final class StudentSpendingViewModel {
     let context: StudentContext
     private let spending: any StudentSpendingRepository
     private let clock: any AppClock
+    /// The saved entries the chart, the totals and the list are all computed from, so the four never disagree.
+    private var entries: [StudentExpense] = []
 
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
@@ -75,13 +78,18 @@ final class StudentSpendingViewModel {
     func load() async {
         if state.value == nil { state = .loading }
         do {
-            let entries = try await spending.expenses(for: student)
-            state = .loaded(StudentSpendingMath.summary(of: entries, today: today, timeZone: timeZone))
+            entries = try await spending.expenses(for: student)
+            recompute()
         } catch RepositoryError.offline(let savedAt) {
             state = .offline(state.value, savedAt: savedAt)
         } catch {
             state = .failed(LoadFailure(error))
         }
+    }
+
+    /// One summary from `entries`: chart, month total, this week and the list.
+    private func recompute() {
+        state = .loaded(StudentSpendingMath.summary(of: entries, today: today, timeZone: timeZone))
     }
 
     func beginEditing() {
@@ -99,6 +107,10 @@ final class StudentSpendingViewModel {
             }
             savedLine = SpendingCopy.saved(saved.category, saved.amount)
             write = .idle
+            // The saved entry shows at once; the reload then confirms it against the source.
+            entries.removeAll { $0.id == saved.id }
+            entries.append(saved)
+            recompute()
             await load()
             return true
         } catch {
@@ -113,6 +125,8 @@ final class StudentSpendingViewModel {
             try await spending.deleteExpense(id, for: student)
             savedLine = nil
             write = .idle
+            entries.removeAll { $0.id == id }
+            recompute()
             await load()
             return true
         } catch {
@@ -167,7 +181,7 @@ struct StudentSpendingView: View {
     }
 
     var body: some View {
-        MLScreen(YouCopy.spending, bottomClearance: .tabBar) {
+        MLScreen(YouCopy.spending) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }
@@ -191,7 +205,7 @@ struct StudentSpendingView: View {
             YouSkeleton(heights: [259, 216], label: YouCopy.spending)
         case .failed(let failure):
             SpendingPrivateChip()
-            MealsStateCard(symbol: "exclamationmark.circle", title: failure.message, detail: "")
+            RetryCard(title: SpendingCopy.couldntLoad, message: failure.message) { Task { await model.load() } }
         case .empty:
             page(nil)
         case .loaded(let summary), .stale(let summary, _):
@@ -209,8 +223,11 @@ struct StudentSpendingView: View {
             SpendingSavedBanner(text: line)
                 .mlTransition(.fromTop)
         }
-        if let summary, !summary.isEmpty {
+        if let summary, !summary.weeks.isEmpty {
+            // Drawn even with no entries, so deleting the last one leaves an empty chart, not a jump.
             SpendingHero(summary: summary, timeZone: model.timeZone)
+        }
+        if let summary, !summary.isEmpty {
             Text(RecordsCopy.recent)
                 .font(StudentType.secondaryMedium)
                 .foregroundStyle(MLColor.inkSecondary)

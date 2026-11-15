@@ -69,7 +69,7 @@ struct StudentReportView: View {
     }
 
     var body: some View {
-        MLScreen(ReportCopy.whatsWrong, bottomClearance: .tabBar) {
+        MLScreen(ReportCopy.whatsWrong) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 choose
             }
@@ -178,7 +178,6 @@ struct StudentReportDetailsPage: View {
                 }
             }
             .allowsHitTesting(model.send != .sending)
-            .studentAboveTabBar()
         }
         // Back would abandon a send in flight, so it waits until the send has an answer.
         .navigationBarBackButtonHidden(model.send == .sending)
@@ -209,7 +208,6 @@ struct StudentReportReceiptPage: View {
                 }
                 InkActionButton(title: ReportCopy.done, action: onClose)
             }
-            .studentAboveTabBar()
         }
         .navigationBarBackButtonHidden(true)
     }

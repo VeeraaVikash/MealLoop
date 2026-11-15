@@ -56,8 +56,7 @@ struct EntryQRView: View {
     /// 254 pt as drawn, smaller on a short phone so the card stays near the tab bar.
     /// On `MLScreen`: the system back button and swipe-back pop the page; `onBack` stays for callers.
     private func page(zoneSize: CGFloat) -> some View {
-        MLScreen(StudentCopy.entryQR, subtitle: StudentCopy.entrySubtitle(meal?.meal.slot, mess: model.context.mess.name),
-                 bottomClearance: .tabBar) {
+        MLScreen(StudentCopy.entryQR, subtitle: StudentCopy.entrySubtitle(meal?.meal.slot, mess: model.context.mess.name)) {
             VStack(spacing: MLSpacing.s16) {
                 if entryCase == .savedOffline {
                     StudentOfflineBanner(text: StudentCopy.offlineQRBanner)

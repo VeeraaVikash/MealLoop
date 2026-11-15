@@ -11,7 +11,7 @@ final class AdminTodayViewModelTests: XCTestCase {
     /// A separate provider signs in, because the one under test may be offline.
     private func foodHead() async throws -> AdminContext {
         let email = try XCTUnwrap(DemoSeed.accounts.first { $0.role == .admin }).email
-        let session = try await DemoDataProvider().signInStaff(email: email, password: DemoSeed.prototypePassword)
+        let session = try await DemoDataProvider().signIn(email: email, password: DemoSeed.prototypePassword)
         return try XCTUnwrap(AdminContext(session: session))
     }
 

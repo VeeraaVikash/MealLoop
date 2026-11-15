@@ -31,22 +31,22 @@ git checkout main
 1. Open `ios/MealLoop.xcodeproj`, choose the scheme **MealLoop Review** and an iPhone simulator, press ⌘R.
 2. The app opens on Welcome at **Wed 14 Aug, 7:00 AM**. The clock then runs in real time; nothing jumps it.
    All data is in memory and resets on every launch.
-3. **Getting started** is the real sign-in. Students: **Sign in with SRM** → Getting your details → Home.
-   Mess staff: **Staff sign in** → Choose your role → What you do → shared password **1234** → Home (3 wrong tries lock
-   it). Food Head, Super Admin, Vendor, Guardian, Warden and Gate: **Sign in with email** under the roles; accounts are
-   in [`docs/PRESENTER_ACCOUNTS.md`](../docs/PRESENTER_ACCOUNTS.md).
+3. **Getting started:** the four-page walkthrough (first launch on a phone), then one **Sign in** for every account,
+   with **Register** for students. Register checks the seeded student directory and asks **Is this you?** before it
+   creates the account. Accounts are in [`docs/PRESENTER_ACCOUNTS.md`](../docs/PRESENTER_ACCOUNTS.md).
 4. **Demo states.** The small **Demo** chip on Welcome (and on the Guardian page), or the **Demo states** row in Me, You
    or More, opens a sheet:
-   - **Getting started** signs out and opens a sign-in step, including a one-time failed SRM sign-in.
+   - **Getting started** signs out and opens the walkthrough, Sign in or Register, including a directory lookup
+     that fails once (to show Try again), and can show a student's first-visit guides again.
    - **Switch role (keeps data)** opens any role's normal Home. Answers, entries, headcounts, waste reports, outings
      and the time are kept.
    The sheet exists only in Debug and Review; the Release binary does not contain it.
 
 ### Seeded data
 
-Sample values only, never measured results: one student (Aarav), four messes with sample headcounts, the lunch menu
-and forecast (860), sample earlier meals and reviews. Breakfast starts unanswered; lunch is not started; outings start
-empty. Lunch answers close at 10:00 AM; breakfast stays open until its service ends (the per-meal cutoffs are an open
+Sample values only, never measured results: one student (Aarav) and one student directory record for him, four
+messes with sample headcounts, the lunch menu and forecast (860), sample earlier meals and reviews. Breakfast starts
+unanswered; lunch is not started; outings start empty. Crowd counts only recorded door entries. Lunch answers close at 10:00 AM; breakfast stays open until its service ends (the per-meal cutoffs are an open
 owner decision). Only Main Mess lunch has a vendor account.
 
 ## Local checks
@@ -106,7 +106,8 @@ has none.
 
 ## Known gaps
 
-SRM sign-in, guardian SMS, camera scanning and video capture are simulated, and nothing reaches a vendor or a phone.
+The student directory, account creation, guardian SMS, camera scanning and video capture are simulated; local
+reminders are real notifications timed from the app clock, and nothing reaches a vendor or a phone.
 Camera, haptics and device feel are not verified on a physical device. Student screens use fixed text sizes and do not
 grow with the largest accessibility sizes. The app runs in Light: it has no dark theme.
 

@@ -184,9 +184,13 @@ private struct RecordsPage<Content: View>: View {
     var subtitle: String?
     @ViewBuilder let content: Content
     var onRefresh: (() async -> Void)?
+    /// The page's guide, shown as the ⓘ bar button. Nil for pages without one.
+    var guide: (guide: StudentGuide, open: () -> Void)?
 
     var body: some View {
-        MLScreen(title, subtitle: subtitle, bottomClearance: .tabBar) {
+        MLScreen(title, subtitle: subtitle) {
+            if let guide { StudentGuideInfoButton(guide: guide.guide, action: guide.open) }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s16) { content }
         }
         .refreshable { await onRefresh?() }
@@ -464,26 +468,85 @@ struct RecordsReplySheet: View {
 
 // MARK: - My feedback
 
-/// My feedback (2159:151331), Better saved (2159:151464), Empty (2159:151588), Offline (2159:151689).
+/// My feedback (student redesign, 15 Nov 2026): Rate a dish first, then any recheck waiting, then what the student
+/// reported with its status. How feedback works opens by itself on the first visit and from its link.
 struct StudentMyFeedbackView: View {
     @State var model: StudentRecordsViewModel
     let onReports: () -> Void
+    var onRate: (Meal) -> Void = { _ in }
     let onBack: () -> Void
+    @State private var showsGuide = false
+    @State private var rechecking: StudentFeedbackItem?
 
     var body: some View {
         RecordsPage(title: YouCopy.myFeedback, subtitle: RecordsCopy.feedbackSubtitle, content: {
+            rateTile
             content
-        }, onRefresh: { await model.loadFeedback() })
-        .task { await model.loadFeedback() }
+        }, onRefresh: { await load() }, guide: (.feedback, { showsGuide = true }))
+        .task { await load() }
+        .studentGuide(.feedback, student: model.context.student.id, isPresented: $showsGuide, isBlocked: rechecking != nil)
+        .mlSheet(item: $rechecking, isWorking: model.recheckSend == .sending) { item in
+            StudentRecheckSheet(item: item, isSending: model.recheckSend == .sending, error: recheckError,
+                                onAnswer: { answer in
+                                    Task {
+                                        await model.answerRecheck(item.id, answer)
+                                        if model.recheckSend == .idle { rechecking = nil }
+                                    }
+                                }, onClose: { rechecking = nil })
+        }
+    }
+
+    private func load() async {
+        await model.loadFeedback()
+        await model.loadRateTarget()
+    }
+
+    private var recheckError: String? {
+        if case .failed(let message) = model.recheckSend { return message }
+        return nil
+    }
+
+    /// The Rate a dish tile. It opens the rating of the latest meal with a recorded entry, or says why it cannot.
+    private var rateTile: some View {
+        Button { if let meal = model.rateTarget { onRate(meal) } } label: {
+            HStack(spacing: MLSpacing.s12) {
+                Image(systemName: "hand.thumbsup")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(MLColor.onLime)
+                    .frame(width: MLSize.hit, height: MLSize.hit)
+                    .background(Circle().fill(MLColor.lime).overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1)))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(RecordsCopy.rateDishTitle).font(StudentType.bodySemibold).foregroundStyle(MLColor.onHero)
+                    Text(model.rateTarget.map { RecordsCopy.rateDishFor(MLFormat.mealSlot($0.slot).lowercased()) }
+                         ?? RecordsCopy.rateDishLocked)
+                        .font(StudentType.secondary).foregroundStyle(MLColor.onHeroSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .multilineTextAlignment(.leading)
+                Spacer(minLength: 0)
+                if model.rateTarget != nil {
+                    Image(systemName: "chevron.right").font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(MLColor.onHero).accessibilityHidden(true)
+                }
+            }
+            .padding(MLSpacing.s20)
+            .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.heroBackground))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(model.rateTarget == nil)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
     }
 
     @ViewBuilder
     private var content: some View {
         switch model.feedback {
         case .idle, .loading:
-            YouSkeleton(heights: [168, 165, 105], label: YouCopy.myFeedback)
+            YouSkeleton(heights: [120, 105, 105], label: YouCopy.myFeedback)
         case .failed(let failure):
-            MealsStateCard(symbol: "exclamationmark.circle", title: failure.message, detail: "")
+            RetryCard(title: RecordsCopy.yourFeedback, message: failure.message) { Task { await load() } }
         case .empty:
             MealsStateCard(title: RecordsCopy.noFeedbackTitle, detail: RecordsCopy.noFeedbackDetail)
         case .loaded(let summary), .stale(let summary, _):
@@ -496,112 +559,76 @@ struct StudentMyFeedbackView: View {
 
     @ViewBuilder
     private func page(_ summary: StudentFeedbackSummary, offline: Bool) -> some View {
+        let due = summary.items.filter(\.isRecheckDue)
+        if !due.isEmpty {
+            section(RecordsCopy.followUps)
+            ForEach(due) { item in
+                Button { rechecking = item } label: {
+                    HStack(spacing: MLSpacing.s12) {
+                        Image(systemName: "arrow.clockwise").foregroundStyle(MLColor.ink).accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(RecordsCopy.wasItBetter(item.dish)).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+                            Text(RecordsCopy.youSaidProblem(item.dish, item.problem))
+                                .font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                        }
+                        .multilineTextAlignment(.leading)
+                        Spacer(minLength: 0)
+                        Image(systemName: "chevron.right").foregroundStyle(MLColor.ink).accessibilityHidden(true)
+                    }
+                    .padding(MLSpacing.s16)
+                    .background(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).fill(MLColor.surface))
+                    .overlay(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).strokeBorder(MLColor.ink, lineWidth: 1.5))
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(offline)
+                .accessibilityElement(children: .combine)
+            }
+        }
+        section(RecordsCopy.yourFeedback)
         if summary.items.isEmpty {
             MealsStateCard(title: RecordsCopy.noFeedbackTitle, detail: RecordsCopy.noFeedbackDetail)
         } else {
-            hero(summary)
             ForEach(summary.items) { item in
-                if item.stage == .fixed {
-                    fixedCard(item, offline: offline)
-                } else {
-                    progressCard(item)
-                }
+                itemCard(item)
             }
+            Button(RecordsCopy.myReports, action: onReports)
+                .font(StudentType.secondaryMedium)
+                .foregroundStyle(MLColor.ink)
+                .frame(minHeight: MLSize.hit)
+                .accessibilityIdentifier("student.feedback.reports")
         }
     }
 
-    /// The black hero. It opens My reports, where the reports and their pages are.
-    private func hero(_ summary: StudentFeedbackSummary) -> some View {
-        Button(action: onReports) {
-            VStack(alignment: .leading, spacing: MLSpacing.s12) {
-                Text(RecordsCopy.yourReports).font(StudentType.eyebrow).tracking(1.0).foregroundStyle(MLColor.onHeroSecondary)
-                HStack(alignment: .firstTextBaseline, spacing: MLSpacing.s12) {
-                    Text("\(summary.total)").font(.system(size: 48, weight: .medium)).foregroundStyle(MLColor.onHero)
-                    Text(RecordsCopy.thisMonth).font(StudentType.body).foregroundStyle(MLColor.onHeroSecondary)
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.right").font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(MLColor.onHeroSecondary).accessibilityHidden(true)
-                }
-                HStack(spacing: MLSpacing.s8) {
-                    Text(RecordsCopy.fixedCount(summary.fixed))
-                        .font(StudentType.secondaryMedium).foregroundStyle(MLColor.onLime)
-                        .padding(.horizontal, MLSpacing.s16).frame(height: 36)
-                        .background(Capsule().fill(MLColor.lime))
-                    Text(RecordsCopy.withKitchen(summary.withTheKitchen))
-                        .font(StudentType.secondaryMedium).foregroundStyle(MLColor.onHero)
-                        .padding(.horizontal, MLSpacing.s16).frame(height: 36)
-                        .overlay(Capsule().strokeBorder(MLColor.onHeroSecondary, lineWidth: 1.5))
-                }
-            }
-            .padding(MLSpacing.s20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.heroBackground))
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityHint(RecordsCopy.myReports)
-        .accessibilityIdentifier("student.feedback.reports")
+    private func section(_ title: String) -> some View {
+        Text(title)
+            .font(StudentType.section)
+            .foregroundStyle(MLColor.ink)
+            .accessibilityAddTraits(.isHeader)
+            .padding(.top, MLSpacing.s4)
     }
 
-    private func fixedCard(_ item: StudentFeedbackItem, offline: Bool) -> some View {
-        VStack(alignment: .leading, spacing: MLSpacing.s12) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(RecordsCopy.dishProblem(item.dish, item.problem))
-                    .font(StudentType.section).foregroundStyle(MLColor.ink)
-                Spacer(minLength: MLSpacing.s8)
-                Text(RecordsCopy.fixedOn(RecordsFormat.weekday(item.at, in: model.timeZone)))
-                    .font(StudentType.footnote).foregroundStyle(MLColor.onLime)
-                    .padding(.horizontal, 10).frame(height: 28)
-                    .background(Capsule().fill(MLColor.lime))
-                    .overlay(Capsule().strokeBorder(MLColor.limeOutline, lineWidth: 1))
-            }
-            if let note = item.fixNote {
-                Text(note).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
-            }
-            if let answer = item.recheck {
-                Text(RecordsCopy.youSaid(answer)).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
-            } else {
-                HStack(spacing: MLSpacing.s12) {
-                    Text(RecordsCopy.betterToday).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer(minLength: 0)
-                    Button { Task { await model.answerRecheck(item.id, .better) } } label: {
-                        Text(RecordsCopy.better).font(StudentType.bodySemibold).foregroundStyle(MLColor.onHero)
-                            .frame(width: 100, height: 48).background(Capsule().fill(MLColor.ink))
-                    }
-                    .accessibilityIdentifier("student.feedback.better")
-                    Button { Task { await model.answerRecheck(item.id, .same) } } label: {
-                        Text(RecordsCopy.same).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
-                            .frame(width: 92, height: 48).overlay(Capsule().strokeBorder(MLColor.ink, lineWidth: 1.5))
-                    }
-                }
-                .buttonStyle(.plain)
-                .disabled(offline || model.recheckSend == .sending)
-                if case .failed(let message) = model.recheckSend {
-                    Text(message).font(StudentType.footnote).foregroundStyle(MLColor.danger)
-                }
-            }
-        }
-        .padding(MLSpacing.s20)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).fill(MLColor.surface))
-        .overlay(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).strokeBorder(MLColor.ink, lineWidth: 1.5))
-    }
-
-    private func progressCard(_ item: StudentFeedbackItem) -> some View {
-        VStack(alignment: .leading, spacing: MLSpacing.s12) {
-            Text(RecordsCopy.dishProblem(item.dish, item.problem)).font(StudentType.section).foregroundStyle(MLColor.ink)
+    /// One submitted feedback: the dish and the issue, its status in words and steps, and the recheck answer if given.
+    private func itemCard(_ item: StudentFeedbackItem) -> some View {
+        VStack(alignment: .leading, spacing: MLSpacing.s8) {
+            Text(RecordsCopy.dishProblem(item.dish, item.problem)).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
             Text(RecordsCopy.feedbackStage(item.stage, RecordsFormat.day(item.at, in: model.timeZone)))
                 .font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
             HStack(spacing: 6) {
                 ForEach(1...3, id: \.self) { index in
-                    Capsule().fill(index <= item.stage.step ? MLColor.ink : MLColor.track).frame(height: 8)
+                    Capsule().fill(index <= item.stage.step ? MLColor.ink : MLColor.track).frame(height: 6)
                 }
             }
             .accessibilityHidden(true)
+            if let note = item.fixNote {
+                Text(RecordsCopy.kitchenRecorded(note)).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            if let answer = item.recheck {
+                Text(RecordsCopy.youSaid(answer)).font(StudentType.secondaryMedium).foregroundStyle(MLColor.ink)
+            }
         }
-        .padding(MLSpacing.s20)
+        .padding(MLSpacing.s16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).fill(MLColor.surface))
         .accessibilityElement(children: .combine)

@@ -304,7 +304,7 @@ final class CoreStoryTests: XCTestCase {
         let vendor = try XCTUnwrap(DemoSeed.accounts.first { $0.role == .vendor }).email
 
         // Sign-in, and the student answers and has the entry QR.
-        let student = try await data.auth.srmStudentSession()
+        let student = try await data.auth.registeredStudentSession()
         let aaravRef = try XCTUnwrap(student.student?.student)
         _ = try await data.intentions.setIntention(.attending, of: aaravRef.id, for: lunch.id)
         let code = try await data.entries.entryCode(for: aaravRef.id)
@@ -312,7 +312,7 @@ final class CoreStoryTests: XCTestCase {
         // The Food Head approves and publishes; the vendor acknowledges.
         _ = try await data.headcount.approveHeadcount(DemoSeed.forecastDiners, reason: nil, for: lunch.id, by: .admin)
         _ = try await data.headcount.publishHeadcount(for: lunch.id, by: .admin)
-        let vendorSession = try await data.auth.signInStaff(email: vendor, password: DemoSeed.prototypePassword)
+        let vendorSession = try await data.auth.signIn(email: vendor, password: DemoSeed.prototypePassword)
         let acknowledged = try await data.headcount.acknowledgeHeadcount(for: lunch.id, by: vendorSession.account.id)
         guard case .acknowledged = acknowledged.vendorAcknowledgmentStatus else { return XCTFail("Expected acknowledged") }
 
@@ -398,7 +398,7 @@ final class CoreStoryTests: XCTestCase {
     // MARK: Session
 
     func testAStudentSessionHasIdentityAndAMess() async throws {
-        let session = try await story().srmStudentSession()
+        let session = try await story().registeredStudentSession()
         XCTAssertEqual(session.student?.student, DemoSeed.sampleStudent)
         XCTAssertEqual(session.student?.mess, DemoSeed.mess)
         XCTAssertNil(session.staff)
@@ -406,7 +406,7 @@ final class CoreStoryTests: XCTestCase {
 
     func testNoOtherSessionHasAStudent() async throws {
         for account in DemoSeed.accounts where account.role != .student {
-            let session = try await story().signInStaff(email: account.email, password: DemoSeed.prototypePassword)
+            let session = try await story().signIn(email: account.email, password: DemoSeed.prototypePassword)
             XCTAssertNil(session.student, "\(account.role)")
         }
     }

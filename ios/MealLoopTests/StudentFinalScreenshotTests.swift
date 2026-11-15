@@ -75,17 +75,14 @@ final class StudentFinalScreenshotTests: XCTestCase {
             }
             .navigationDestination(for: Pushed.self) { _ in page }
         }
-        let framed = ZStack(alignment: .bottom) {
-            stack
-            GlassTabBar(items: StudentTab.pillTabs.map { GlassTabItem(tab: $0, title: $0.rawValue, symbol: $0.symbol) },
-                        selection: .constant(tab), searchTab: .search)
-                .padding(.horizontal, MLSpacing.s16)
-                .padding(.bottom, MLSpacing.s8)
-                .ignoresSafeArea(.keyboard, edges: .bottom) // as StudentRootView
+        // The native tab bar, as StudentRootView draws it.
+        let framed = TabView(selection: .constant(tab)) {
+            stack.tabItem { Label(tab.rawValue, systemImage: tab.symbol) }.tag(tab)
         }
         .dynamicTypeSize(largestText ? .accessibility5 : .large)
         window.rootViewController = UIHostingController(rootView: framed
-            .environment(world.environment).environment(world.router).environment(world.store))
+            .environment(world.environment).environment(world.router).environment(world.store)
+            .environment(DevicePreferences(defaults: UserDefaults(suiteName: "screenshots") ?? .standard)))
         window.makeKeyAndVisible()
         try await Task.sleep(for: .seconds(wait))
         if scrolledToEnd, let scrollView = scrollViews(in: window).first(where: { $0.contentSize.height > $0.bounds.height }) {
@@ -161,9 +158,9 @@ final class StudentFinalScreenshotTests: XCTestCase {
 
     func testCaptureRatings() async throws {
         let world = World(.afterMeal)
-        let matches = try await world.environment.repositories.student.meals.findDishes("Steamed Rice", mess: DemoSeed.mess.id)
-        let match = try XCTUnwrap(matches.first { $0.slot == .lunch && $0.day >= DemoSeed.time(0, 0) && $0.day <= DemoSeed.time(23, 59) })
-        let rice = match.dish
+        let menu = try await world.environment.repositories.student.meals.mealMenu(on: DemoSeed.time(0, 0), slot: .lunch,
+                                                                                    mess: DemoSeed.mess.id)
+        let rice = try XCTUnwrap(menu.allDishes.first { $0.name == "Steamed Rice" })
         func rating(_ dish: DishID? = nil) -> StudentRatingViewModel {
             StudentRatingViewModel(session: world.session, repositories: world.environment.repositories,
                                    day: DemoSeed.lunch.startsAt, slot: .lunch, dish: dish)!
@@ -175,19 +172,19 @@ final class StudentFinalScreenshotTests: XCTestCase {
                                           clock: world.clock)!
         try await shot("rate_dish", world, tab: .meals) {
             StudentRateDishView(model: rating(rice.id),
-                                loadDish: { try await meals.dishDetail(rice.id, day: match.day, slot: .lunch) },
+                                loadDish: { try await meals.dishDetail(rice.id, day: DemoSeed.time(0, 0), slot: .lunch) },
                                 onSOS: {}) {}
         }
         let good = rating(rice.id)
         _ = await good.rate(.good)
         try await shot("rate_dish_good", world, tab: .meals) {
             StudentRateDishView(model: good,
-                                loadDish: { try await meals.dishDetail(rice.id, day: match.day, slot: .lunch) },
+                                loadDish: { try await meals.dishDetail(rice.id, day: DemoSeed.time(0, 0), slot: .lunch) },
                                 onSOS: {}) {}
         }
         try await shot("rate_dish_largest_text", world, tab: .meals, largestText: true) {
             StudentRateDishView(model: rating(rice.id),
-                                loadDish: { try await meals.dishDetail(rice.id, day: match.day, slot: .lunch) },
+                                loadDish: { try await meals.dishDetail(rice.id, day: DemoSeed.time(0, 0), slot: .lunch) },
                                 onSOS: {}) {}
         }
         try await shot("report_from_not_good", world, tab: .meals) {
@@ -231,7 +228,7 @@ final class StudentFinalScreenshotTests: XCTestCase {
         let world = World()
         try await shot("community_info_sheet_1535-114372", world, tab: .community, pushed: false, wait: 2) {
             StudentCommunityScreen(session: world.session)
-                .mlSheet(isPresented: .constant(true)) { CommunityInfoSheet {} }
+                .mlSheet(isPresented: .constant(true)) { StudentGuideSheet(guide: .community) {} }
         }
     }
 
@@ -243,8 +240,6 @@ final class StudentFinalScreenshotTests: XCTestCase {
         try await shot("notifications_collapsed", world, tab: .home, scrolledToEnd: true) {
             StudentNotificationsView(model: world.you) {}
         }
-        try await shot("attendance_mlscreen", world, tab: .you) { StudentAttendanceView(model: world.you) {} }
-        try await shot("attendance_largest_text", world, tab: .you, largestText: true) { StudentAttendanceView(model: world.you) {} }
         try await shot("credits_history_mlscreen", world, tab: .you) {
             StudentCreditsHistoryView(model: world.you, rewards: world.rewards) {}
         }
@@ -397,13 +392,11 @@ final class StudentFinalScreenshotTests: XCTestCase {
         try await shot("student_meals", world, tab: .meals, pushed: false) { StudentMealsScreen(session: world.session) }
         try await shot("student_community", world, tab: .community, pushed: false) { StudentCommunityScreen(session: world.session) }
         try await shot("student_you", world, tab: .you, pushed: false) { StudentYouScreen(session: world.session) {} }
-        try await shot("student_search", world, tab: .search, pushed: false) { StudentSearchScreen(session: world.session) {} }
         try await shot("student_notifications", world, tab: .home) { StudentNotificationsView(model: world.you) {} }
         try await shot("student_credits", world, tab: .you) {
             StudentCreditsView(model: world.you, rewards: world.rewards, onHistory: {}, onTicket: { _ in })
         }
         try await shot("student_credits_history", world, tab: .you) { StudentCreditsHistoryView(model: world.you, rewards: world.rewards) {} }
-        try await shot("student_attendance", world, tab: .you) { StudentAttendanceView(model: world.you) {} }
         try await shot("student_spending", world, tab: .you) { StudentSpendingView(model: world.spending) }
         try await shot("student_my_feedback", world, tab: .you) { StudentMyFeedbackView(model: records, onReports: {}) {} }
         try await shot("student_my_reports", world, tab: .you) { StudentMyReportsView(model: records, onOpen: { _ in }) {} }
@@ -478,20 +471,6 @@ final class StudentFinalScreenshotTests: XCTestCase {
         await report.sendReport(.notClean)
         try await shot("student_report_receipt", world, tab: .home) {
             StudentReportReceiptPage(model: report, onShowIssue: nil) {}
-        }
-        // S3: Attendance's missed day opens Entry · Discrepancy; after sending, the page says it was recorded only.
-        let you = world.you
-        await you.loadAttendance()
-        if let record = you.correctable {
-            try await shot("student_attendance_discrepancy", world, tab: .you, wait: 2) {
-                StudentAttendanceView(model: you) {}
-                    .mlSheet(isPresented: .constant(true)) {
-                        EntryDiscrepancySheet(record: record, timeZone: DemoSeed.mess.timeZone, send: { _, _, _ in },
-                                              onClose: {}) {}
-                    }
-            }
-            try await you.sendCorrection(for: record, reason: .ateButNotScanned, note: nil, key: IdempotencyKey("audit"))
-            try await shot("student_attendance_recorded", world, tab: .you, scrolledToEnd: true) { StudentAttendanceView(model: you) {} }
         }
         try await shot("student_meals_collapsed", world, tab: .meals, pushed: false, scrolledToEnd: true) {
             StudentMealsScreen(session: world.session)

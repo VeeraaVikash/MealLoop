@@ -53,7 +53,12 @@ struct StudentCreditEntry: Codable, Sendable, Hashable, Identifiable {
 struct StudentCredits: Codable, Sendable, Hashable {
     let balance: Int?
     let tickets: [StudentCreditTicket]
+    /// Newest first, as the ledger orders it.
     let history: [StudentCreditEntry]
+    /// What the ledger gives a definite answer (I'm in or Skip) before the cutoff. Nil when the source has no number.
+    var pointsPerAnswer: Int? = nil
+    /// True when the amounts are the Review build's sample values, not an approved rule (open decision P1).
+    var amountsAreSamples = false
 
     /// The cheapest ticket the balance does not reach yet, and how many points are missing.
     var nextGoal: (ticket: StudentCreditTicket, missing: Int)? {
@@ -70,47 +75,6 @@ enum StudentCreditRule {
         case .answered(.attending, _), .answered(.skipping, _): return perDefiniteAnswer
         case .answered(.notSure, _), .noResponse: return 0
         }
-    }
-}
-
-/// One day on the attendance calendar. A day with no entry recorded is never called absent: a missing scan is not
-/// proof that the student was away.
-enum StudentAttendanceMark: String, Codable, Sendable, Hashable {
-    /// An entry was recorded for every meal the mess served.
-    case everyMeal
-    /// At least one meal has no entry recorded.
-    case noEntryForAMeal
-    case today
-    /// Nothing is recorded for this day (a future day, or no record).
-    case noRecord
-}
-
-struct StudentAttendanceMonth: Codable, Sendable, Hashable {
-    /// The first day of the month, in the mess's time zone.
-    let month: Date
-    /// Day of the month (1...31) to its mark. Days missing here have no record.
-    let marks: [Int: StudentAttendanceMark]
-    let daysInMonth: Int
-    /// Weekday of the 1st, Monday = 0.
-    let firstWeekdayOffset: Int
-    /// Meals with an entry recorded and meals served this month so far. Nil when unknown, never zero.
-    let mealsEntered: Int?
-    let mealsServed: Int?
-
-    /// Rounded share of served meals with an entry, or nil when either count is missing.
-    var percentEntered: Int? {
-        guard let mealsEntered, let mealsServed, mealsServed > 0 else { return nil }
-        return Int((Double(mealsEntered) / Double(mealsServed) * 100).rounded())
-    }
-
-    /// The longest run of consecutive days with an entry for every meal.
-    var bestStreak: Int {
-        var best = 0
-        var run = 0
-        for day in 1...max(1, daysInMonth) {
-            if marks[day] == .everyMeal { run += 1; best = max(best, run) } else { run = 0 }
-        }
-        return best
     }
 }
 

@@ -55,17 +55,5 @@ extension DemoSeed {
     /// Pass · Wrong mess (221:65326): "This pass is for Main Mess, Block A".
     static let passMessName = "Main Mess, Block A"
 
-    // MARK: Crowd
-
-    /// Crowd · Main Mess (221:63246), "Today, every 15 minutes": the eight bar heights as drawn (35 to 118 pt), from
-    /// 12:00 to 1:45 PM. An estimate of the usual pattern, not arrivals counted today.
-    static let lunchCrowdHeights: [Double] = [35, 57, 86, 118, 112, 80, 48, 32]
-    static let crowdSlotLength: TimeInterval = 15 * 60
-    /// Crowd · Main Mess: the best-time dot sits on the seventh bar, 1:30 PM.
-    static let crowdBestSlot = 6
-    /// Crowd · Main Mess: "Wait now 2 min about", "At the busiest 18 min 12:45 PM".
-    static let crowdWaitNowMinutes = 2
-    static let crowdBusiestWaitMinutes = 18
-    static let crowdBusiestAt = time(12, 45)
 }
 #endif

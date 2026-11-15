@@ -89,13 +89,10 @@ protocol SOSRepository: Sendable {
 
 /// Sign-in. Every method returns the session the data source vouches for; the client never picks a role itself.
 protocol AuthRepository: Sendable {
-    /// Throws `invalidCredentials` for a wrong password or an unknown email, without saying which.
-    func signInStaff(email: String, password: String) async throws -> Session
-    /// SRM SSO feasibility is unverified. No real SRM integration exists anywhere in this app.
-    func signInWithSRM() async throws -> Session
-    /// The shared password of a mess staff role on this device (4 digits, 3 tries; DS-0 password frames 2469:2102 to
-    /// 2469:2734). Staff reach it from Staff sign in → Choose your role (1508:235) → What you do.
-    func verifyRolePassword(_ password: String, for role: Role) async throws -> RolePasswordResult
+    /// The one sign-in for every account. The role comes from the account the email belongs to; the email domain,
+    /// a typed role name or local UI state never grant one. Throws `invalidCredentials` for a wrong password or an
+    /// unknown email, without saying which.
+    func signIn(email: String, password: String) async throws -> Session
 }
 
 /// The special-meal pass: lookup, recording and reissue requests (Pass Desk). There is no camera and no scan.
@@ -134,6 +131,8 @@ struct Repositories: Sendable {
     let wasteReports: any WasteReportRepository
     let sos: any SOSRepository
     let auth: any AuthRepository
+    /// Student Register: the directory lookup and account creation.
+    var registration: any StudentRegistrationRepository = NotConnected()
     /// Names and shift times for the Door Scanner and Pass Desk.
     var staffDirectory: any StaffDirectoryRepository = NotConnected()
 

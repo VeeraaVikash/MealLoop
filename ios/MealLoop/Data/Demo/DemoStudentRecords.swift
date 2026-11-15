@@ -127,6 +127,8 @@ struct DemoStudentRecords: StudentRecordsRepository {
         guard item.stage == .fixed else {
             throw RepositoryError.notAllowed(reason: "Only a fixed dish asks if it is better.")
         }
+        // The first answer stays: a second tap, or a reopen after answering, changes nothing. "I didn't eat it today"
+        // closes the recheck and adds no rating anywhere.
         await store.recordRecheck(id, answer)
         return try await feedback(for: student)
     }

@@ -21,7 +21,7 @@ final class StudentRecordsScreensTests: XCTestCase {
     }
 
     func testEveryYouRowOpensItsOwnPage() {
-        let routes: [StudentYouRoute] = [.outings, .credits, .attendance, .spending, .myFeedback, .help, .privacy]
+        let routes: [StudentYouRoute] = [.outings, .credits, .spending, .myFeedback, .notificationSettings, .help, .privacy]
         XCTAssertEqual(Set(routes).count, routes.count)
         for route in [StudentYouRoute.spending, .myFeedback, .help, .privacy] {
             XCTAssertNotEqual(route, .comingSoon(YouCopy.spending))

@@ -13,7 +13,7 @@ final class SuperAdminScreensTests: XCTestCase {
 
     func testTheSuperAdminSignsInOnStaffSignIn() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
-        let session = try await demo.signInStaff(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
+        let session = try await demo.signIn(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
         XCTAssertEqual(session.account.role, .superAdmin)
         XCTAssertNil(session.staff, "No mess staff powers")
     }
