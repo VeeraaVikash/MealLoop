@@ -15,13 +15,13 @@ final class SupervisorAlertsViewModel {
 
     private(set) var state: LoadState<Content> = .idle
     let session: StaffSession
-    let sosModel: SupervisorSOSModel
+    let sosModel: SupervisorSOSViewModel
     private let repositories: Repositories
 
     init(session: StaffSession, repositories: Repositories, clock: any AppClock) {
         self.session = session
         self.repositories = repositories
-        self.sosModel = SupervisorSOSModel(session: session, repositories: repositories, clock: clock)
+        self.sosModel = SupervisorSOSViewModel(session: session, repositories: repositories, clock: clock)
     }
 
     func load() async {

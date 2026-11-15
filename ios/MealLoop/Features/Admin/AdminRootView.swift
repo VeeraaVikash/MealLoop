@@ -50,7 +50,7 @@ private struct AdminTabsView: View {
                 }
             } else if selectedTab == RoleRoot.searchTab {
                 tab($searchPath) { nav in
-                    AdminSearchView(model: AdminSearchModel(repositories: environment.repositories,
+                    AdminSearchView(model: AdminSearchViewModel(repositories: environment.repositories,
                                                             session: Session(account: context.account, staff: nil),
                                                             timeZone: context.mess.timeZone),
                                     nav: nav, openToday: { selectedTab = todayTab }, onCancel: { selectedTab = lastTab })

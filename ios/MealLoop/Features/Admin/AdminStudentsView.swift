@@ -454,7 +454,7 @@ struct AdminFeedbackScreen: View {
     var body: some View {
         let students = environment.repositories.adminStudents
         let results = environment.repositories.adminResults
-        AdminLoadedPage(model: AdminPageModel { [id] () -> (FeedbackItem, AdminMealFacts) in
+        AdminLoadedPage(model: AdminPageViewModel { [id] () -> (FeedbackItem, AdminMealFacts) in
             let item = try await students.feedback(id)
             return (item, try await results.meal(item.meal))
         }, timeZone: nav.timeZone) { value, _ in
@@ -703,7 +703,7 @@ struct AdminSkipReasonsScreen: View {
 
     var body: some View {
         let students = environment.repositories.adminStudents
-        AdminLoadedPage(model: AdminPageModel { try await students.skipReasons() }, timeZone: nav.timeZone) { skips, _ in
+        AdminLoadedPage(model: AdminPageViewModel { try await students.skipReasons() }, timeZone: nav.timeZone) { skips, _ in
             AdminPageScaffold(title: AdminScreenCopy.whyStudentsSkip, subtitle: AdminScreenCopy.skipSubtitle(skips.mealTitle, skips.saidNo), onBack: nav.pop) {
                 Text(AdminScreenCopy.skipIntro)
                     .font(MLType.body)

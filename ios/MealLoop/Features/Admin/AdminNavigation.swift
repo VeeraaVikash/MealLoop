@@ -47,7 +47,7 @@ struct AdminNav {
 /// One page's load, for every screen that only reads. Screens that write have their own view model.
 @MainActor
 @Observable
-final class AdminPageModel<Value: Sendable> {
+final class AdminPageViewModel<Value: Sendable> {
     private(set) var state: LoadState<Value> = .idle
 
     private let fetch: @Sendable () async throws -> Value
@@ -81,14 +81,14 @@ final class AdminPageModel<Value: Sendable> {
 /// Keeps a page model alive and reloads it when the story moves.
 struct AdminLoadedPage<Value: Sendable, Content: View>: View {
     @Environment(AppEnvironment.self) private var environment
-    @State private var model: AdminPageModel<Value>
+    @State private var model: AdminPageViewModel<Value>
     let timeZone: TimeZone
     var emptyTitle: String = AdminScreenCopy.nothingYet
     var emptyMessage: String = ""
-    @ViewBuilder let content: (Value, AdminPageModel<Value>) -> Content
+    @ViewBuilder let content: (Value, AdminPageViewModel<Value>) -> Content
 
-    init(model: AdminPageModel<Value>, timeZone: TimeZone, emptyTitle: String = AdminScreenCopy.nothingYet, emptyMessage: String = "",
-         @ViewBuilder content: @escaping (Value, AdminPageModel<Value>) -> Content) {
+    init(model: AdminPageViewModel<Value>, timeZone: TimeZone, emptyTitle: String = AdminScreenCopy.nothingYet, emptyMessage: String = "",
+         @ViewBuilder content: @escaping (Value, AdminPageViewModel<Value>) -> Content) {
         _model = State(initialValue: model)
         self.timeZone = timeZone
         self.emptyTitle = emptyTitle

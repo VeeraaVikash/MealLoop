@@ -4,8 +4,8 @@ import SwiftUI
 /// The simulator has no camera, so the preview is a still face placeholder and no video is captured; the timer and
 /// the length rules are real. Capture is not verified on a device (see the report).
 struct GuardianRecordScreen: View {
-    let model: GuardianModel
-    let phase: GuardianModel.RecordPhase
+    let model: GuardianViewModel
+    let phase: GuardianViewModel.RecordPhase
     /// Screenshot runs show a fixed time and stop the clock.
     var initialElapsed = 0
     var runsTimer = true
@@ -410,7 +410,7 @@ extension GuardianPageView {
 
 /// GV-05 Photo and code: a live photo (a still placeholder in the prototype), the typed phrase and the SMS code.
 struct GuardianPhotoStep: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
     let challenge: PhotoChallenge
     let onLanguage: () -> Void
     var initialTyped = ""

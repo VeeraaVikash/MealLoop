@@ -23,11 +23,11 @@ struct GateFlowView: View {
     @Environment(SessionStore.self) private var sessionStore
     /// Lets a screenshot run start on a page with a model it prepared.
     var initialPath: [GateRoute] = []
-    var preparedModel: GateModel?
+    var preparedModel: GateViewModel?
     var initialCode = ""
     var initialSRMID = ""
 
-    @State private var model: GateModel?
+    @State private var model: GateViewModel?
     @State private var path: [GateRoute] = []
     @State private var isEndingShift = false
 
@@ -55,7 +55,7 @@ struct GateFlowView: View {
             if let preparedModel {
                 model = preparedModel
             } else {
-                let made = GateModel(repository: OutingCaseRepositories.source(for: environment))
+                let made = GateViewModel(repository: OutingCaseRepositories.source(for: environment))
                 model = made
                 await made.load()
             }
@@ -67,7 +67,7 @@ struct GateFlowView: View {
         }
     }
 
-    private func go(_ attempt: GateAttempt, model: GateModel, replacing: Bool = false) {
+    private func go(_ attempt: GateAttempt, model: GateViewModel, replacing: Bool = false) {
         Task {
             guard let route = await model.run(attempt) else { return }
             if replacing, !path.isEmpty { path.removeLast() }
@@ -79,7 +79,7 @@ struct GateFlowView: View {
     private func scanNext() { path = [.scan] }
 
     @ViewBuilder
-    private func destination(_ route: GateRoute, model: GateModel) -> some View {
+    private func destination(_ route: GateRoute, model: GateViewModel) -> some View {
         let back = { _ = path.popLast() }
         switch route {
         case .scan:
@@ -177,7 +177,7 @@ struct GateTile: View {
 // MARK: - Home (GA-1)
 
 struct GateHomeScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     let onOpen: (GateRoute) -> Void
     let onEndShift: () -> Void
 
@@ -241,7 +241,7 @@ struct GateHomeScreen: View {
 
 /// The scan page. The simulator has no camera, so the viewfinder is a still frame; Can't scan? types the code.
 struct GateScanScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     let onBack: () -> Void
     let onCantScan: () -> Void
 
@@ -303,7 +303,7 @@ struct GateScanScreen: View {
 // MARK: - Pass code (GA-4)
 
 struct GatePassCodeScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     var initialCode = ""
     let onBack: () -> Void
     let onFind: () -> Void
@@ -389,7 +389,7 @@ struct GatePassCodeScreen: View {
 // MARK: - Find student (GA-5)
 
 struct GateFindStudentScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     var initialSRMID = ""
     let onBack: () -> Void
     let onOpen: (OutingRequestID) -> Void
@@ -455,7 +455,7 @@ struct GateFindStudentScreen: View {
 // MARK: - Verify (GA-3)
 
 struct GateVerifyScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     let check: GateCheck
     let onConfirm: (GateAttempt) -> Void
     let onMismatch: () -> Void

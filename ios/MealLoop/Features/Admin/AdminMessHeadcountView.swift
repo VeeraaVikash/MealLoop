@@ -313,7 +313,7 @@ struct AdminNotAnsweredScreen: View {
     var body: some View {
         let messes = environment.repositories.adminMesses
         let students = environment.repositories.adminStudents
-        AdminLoadedPage(model: AdminPageModel { () -> ([AdminMessCount], AdminStudentsOverview) in
+        AdminLoadedPage(model: AdminPageViewModel { () -> ([AdminMessCount], AdminStudentsOverview) in
             (try await messes.notAnsweredByMess(), try await students.studentsOverview())
         }, timeZone: nav.timeZone) { value, _ in
             AdminPageScaffold(title: AdminScreenCopy.notAnswered,

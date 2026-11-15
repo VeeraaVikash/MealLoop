@@ -114,7 +114,7 @@ struct GateResultLayout: View {
 
 /// Maps a gate outcome to its GA-6 frame.
 struct GateOutcomeScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     let outcome: GateOutcome
     let onScanNext: () -> Void
     let onRetry: (GateAttempt) -> Void
@@ -202,7 +202,7 @@ struct GateOutcomeScreen: View {
 // MARK: - Out now (GA-7) and Overdue returns (GA-8)
 
 struct GateOutListScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     let isOverdue: Bool
     let onBack: () -> Void
     let onOpen: (OutingRequestID) -> Void
@@ -245,7 +245,7 @@ struct GateOutListScreen: View {
 // MARK: - Report a problem (GA-9)
 
 struct GateReportScreen: View {
-    let model: GateModel
+    let model: GateViewModel
     let onBack: () -> Void
     let onSent: (GateProblemReport) -> Void
 

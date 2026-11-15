@@ -45,7 +45,7 @@ struct StudentPassView: View {
     @State private var confirming = false
     @State private var hold = PassHoldTracker()
     /// Next week's pass request (StudentPassRequestViews.swift), shown when this week has no pass to use.
-    @State private var request: StudentPassRequestModel?
+    @State private var request: StudentPassRequestViewModel?
     let onOpenCrowd: (() -> Void)?
     let onBack: () -> Void
 
@@ -69,7 +69,7 @@ struct StudentPassView: View {
         .task(id: environment.dataRevision) {
             await model.load()
             if request == nil {
-                request = StudentPassRequestModel(context: model.context, repositories: environment.repositories,
+                request = StudentPassRequestViewModel(context: model.context, repositories: environment.repositories,
                                                   clock: environment.clock)
             }
             await request?.load()

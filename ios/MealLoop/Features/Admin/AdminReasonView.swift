@@ -8,7 +8,7 @@ struct AdminReasonScreen: View {
 
     var body: some View {
         let results = environment.repositories.adminResults
-        AdminLoadedPage(model: AdminPageModel { [kind] in try await results.reason(kind) }, timeZone: nav.timeZone) { detail, _ in
+        AdminLoadedPage(model: AdminPageViewModel { [kind] in try await results.reason(kind) }, timeZone: nav.timeZone) { detail, _ in
             AdminReasonBody(detail: detail, nav: nav)
         }
         .frame(maxHeight: .infinity, alignment: .top)

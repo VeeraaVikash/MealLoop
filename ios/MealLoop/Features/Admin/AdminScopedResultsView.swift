@@ -37,7 +37,7 @@ struct AdminSingleMessReportScreen: View {
                                isSelected: period == value) { period = value }
                 }
             }
-            AdminLoadedPage(model: AdminPageModel {
+            AdminLoadedPage(model: AdminPageViewModel {
                 guard let source = results as? any SingleMessReportRepository else {
                     throw RepositoryError.notImplemented(feature: "Single-mess report")
                 }

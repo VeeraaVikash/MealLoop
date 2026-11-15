@@ -40,7 +40,7 @@ struct WardenTabsView: View {
     var initialTab: WardenTab = .queue
     var initialRoute: WardenRoute?
     /// Lets a screenshot run hold the model it prepared and open a sheet on arrival.
-    var preparedModel: WardenModel?
+    var preparedModel: WardenViewModel?
     var queueSheet: WardenQueueScreen.Sheet?
     var askFields: Set<String> = []
     var askNote = ""
@@ -48,7 +48,7 @@ struct WardenTabsView: View {
     var callingID: OutingRequestID?
     var historyStartsOnAll = false
 
-    @State private var model: WardenModel?
+    @State private var model: WardenViewModel?
     @State private var tab: WardenTab = .queue
     @State private var paths: [WardenTab: [WardenRoute]] = [:]
     @State private var toast: String?
@@ -91,7 +91,7 @@ struct WardenTabsView: View {
                 if let preparedModel {
                     model = preparedModel
                 } else {
-                    let made = WardenModel(account: account, repository: OutingCaseRepositories.source(for: environment))
+                    let made = WardenViewModel(account: account, repository: OutingCaseRepositories.source(for: environment))
                     model = made
                     await made.load()
                 }
@@ -115,7 +115,7 @@ struct WardenTabsView: View {
     }
 
     @ViewBuilder
-    private func page(_ model: WardenModel) -> some View {
+    private func page(_ model: WardenViewModel) -> some View {
         switch tab {
         case .queue:
             WardenQueueScreen(model: model, onMe: { push(.me) }, onShowTab: { tab = $0 }, initialSheet: queueSheet,
@@ -136,7 +136,7 @@ struct WardenTabsView: View {
     }
 
     @ViewBuilder
-    private func destination(_ route: WardenRoute, model: WardenModel) -> some View {
+    private func destination(_ route: WardenRoute, model: WardenViewModel) -> some View {
         switch route {
         case .me:
             WardenMeScreen(model: model, onBack: pop) { push(.alerts) }

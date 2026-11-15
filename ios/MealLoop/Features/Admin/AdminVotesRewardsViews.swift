@@ -80,7 +80,7 @@ struct AdminRulesSheet: View {
 
 @MainActor
 @Observable
-final class AdminVotesModel {
+final class AdminVotesViewModel {
     private(set) var decision: VoteDecisionRecord?
     private(set) var proposals: LoadState<VoteProposals> = .idle
     private(set) var isSaving = false
@@ -135,7 +135,7 @@ final class AdminVotesModel {
 
 /// Decide on a closed vote: two options as large rows, one line, Save decision.
 struct AdminDecideSheet: View {
-    let model: AdminVotesModel
+    let model: AdminVotesViewModel
     let subject: String
     let onSaved: () -> Void
     let onClose: () -> Void
@@ -197,14 +197,14 @@ struct AdminProposalsScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminProposalsView(model: AdminVotesModel(repository: environment.repositories.adminVotesRewards,
+        AdminProposalsView(model: AdminVotesViewModel(repository: environment.repositories.adminVotesRewards,
                                                   role: nav.context.account.role), nav: nav)
     }
 }
 
 struct AdminProposalsView: View {
     @Environment(AppEnvironment.self) private var environment
-    @State var model: AdminVotesModel
+    @State var model: AdminVotesViewModel
     @State private var votes: VotesPage?
     let nav: AdminNav
 
@@ -266,14 +266,14 @@ struct AdminProposalScreen: View {
     let nav: AdminNav
 
     var body: some View {
-        AdminProposalView(model: AdminVotesModel(repository: environment.repositories.adminVotesRewards,
+        AdminProposalView(model: AdminVotesViewModel(repository: environment.repositories.adminVotesRewards,
                                                  role: nav.context.account.role), id: id, nav: nav)
     }
 }
 
 struct AdminProposalView: View {
     @Environment(AppEnvironment.self) private var environment
-    @State var model: AdminVotesModel
+    @State var model: AdminVotesViewModel
     @State private var votes: VotesPage?
     let id: String
     let nav: AdminNav
@@ -339,7 +339,7 @@ struct AdminRedemptionsScreen: View {
     var body: some View {
         let repository = environment.repositories.adminVotesRewards
         AdminPageScaffold(title: AdminVotesRewardsCopy.redemptionsTitle, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await repository.redemptions() }, timeZone: nav.timeZone) { summary, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await repository.redemptions() }, timeZone: nav.timeZone) { summary, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
                     HeroCard {
                         VStack(alignment: .leading, spacing: MLSpacing.s4) {

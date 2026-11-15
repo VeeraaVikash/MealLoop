@@ -46,7 +46,7 @@ enum AdminAccessCopy {
 }
 
 @MainActor @Observable
-final class AdminAccessModel {
+final class AdminAccessViewModel {
     private(set) var state: LoadState<AccessDirectory> = .idle
     private(set) var isWriting = false
     private(set) var errorText: String?
@@ -96,13 +96,13 @@ struct AdminAccessScreen: View {
     var role: Role?
     var personID: AccountID?
     var body: some View {
-        AdminAccessView(model: AdminAccessModel(session: Session(account: nav.context.account, staff: nil),
+        AdminAccessView(model: AdminAccessViewModel(session: Session(account: nav.context.account, staff: nil),
                                                 repository: environment.repositories.people), nav: nav, role: role, personID: personID)
     }
 }
 
 struct AdminAccessView: View {
-    @State var model: AdminAccessModel
+    @State var model: AdminAccessViewModel
     let nav: AdminNav
     var role: Role?
     var personID: AccountID?
@@ -112,7 +112,7 @@ struct AdminAccessView: View {
     @State private var contact = ""
     @State private var invitedRole: Role = .doorScanner
     @State private var selectedMess: MessID?
-    init(model: AdminAccessModel, nav: AdminNav, role: Role? = nil, personID: AccountID? = nil,
+    init(model: AdminAccessViewModel, nav: AdminNav, role: Role? = nil, personID: AccountID? = nil,
          initialSheet: AccessSheet? = nil, initiallyConfirming: Bool = false) {
         _model = State(initialValue: model); self.nav = nav; self.role = role; self.personID = personID
         _sheet = State(initialValue: initialSheet); _confirming = State(initialValue: initiallyConfirming)

@@ -8,7 +8,7 @@ struct AdminMealReportScreen: View {
 
     var body: some View {
         let results = environment.repositories.adminResults
-        AdminLoadedPage(model: AdminPageModel { [meal] in try await results.meal(meal) }, timeZone: nav.timeZone) { facts, model in
+        AdminLoadedPage(model: AdminPageViewModel { [meal] in try await results.meal(meal) }, timeZone: nav.timeZone) { facts, model in
             AdminMealReportBody(facts: facts, nav: nav) { Task { await model.load() } }
         }
         .frame(maxHeight: .infinity, alignment: .top)

@@ -129,7 +129,7 @@ enum GuardianNotices {
 
 /// G-5 Notifications.
 struct GuardianNotificationsPage: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
 
     private var notices: [GuardianNotice] {
         GuardianNotices.notices(request: model.request, past: model.pastAnswers, studentName: model.studentName)
@@ -178,7 +178,7 @@ struct GuardianNotificationsPage: View {
 
 /// G-6 Help: white question cards, then Call the warden (shown, not active: the prototype places no calls).
 struct GuardianHelpPage: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
 
     var body: some View {
         GuardianInfoLayout(note: nil) {

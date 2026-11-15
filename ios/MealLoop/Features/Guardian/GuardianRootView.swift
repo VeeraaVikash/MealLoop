@@ -7,7 +7,7 @@ import SwiftUI
 struct GuardianRootView: View {
     let session: Session
     /// The model the first-run flow loaded; nil until the flow is finished.
-    @State private var entered: GuardianModel?
+    @State private var entered: GuardianViewModel?
 
     /// The one check for who may see the Guardian page.
     static func allows(_ session: Session) -> Bool { session.account.role == .guardian }
@@ -41,7 +41,7 @@ struct GuardianPageView: View {
     @Environment(AppEnvironment.self) private var environment
     let account: AccountID
     /// Screenshot runs pass a prepared model and the sheet to open.
-    var preparedModel: GuardianModel?
+    var preparedModel: GuardianViewModel?
     var initialSheet: GuardianSheet?
     var recordElapsed = 0
     var photoTyped = ""
@@ -49,13 +49,13 @@ struct GuardianPageView: View {
     /// Screenshot runs pass a pushed page (G-5, G-6) to show.
     var initialInfo: GuardianInfoPage?
 
-    @State private var holder: GuardianModel?
+    @State private var holder: GuardianViewModel?
     @State private var infoPath: [GuardianInfoPage] = []
     @State private var sheet: GuardianSheet?
     @State private var rejectReason: String?
     @State private var changeFields: Set<String> = []
 
-    var model: GuardianModel { holder ?? GuardianModel(account: account, repository: RemoteOutingCaseRepository()) }
+    var model: GuardianViewModel { holder ?? GuardianViewModel(account: account, repository: RemoteOutingCaseRepository()) }
 
     var body: some View {
         NavigationStack(path: $infoPath) {
@@ -82,7 +82,7 @@ struct GuardianPageView: View {
             if let preparedModel {
                 holder = preparedModel
             } else {
-                let made = GuardianModel(account: account, repository: OutingCaseRepositories.source(for: environment))
+                let made = GuardianViewModel(account: account, repository: OutingCaseRepositories.source(for: environment))
                 holder = made
                 await made.load()
             }
@@ -238,7 +238,7 @@ struct GuardianPageView: View {
 
 /// The guardian page: mark, wordmark and the language pill; a large title; content; a footer at the bottom.
 struct GuardianLayout<Content: View, Footer: View>: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
     let title: String
     let subtitle: String?
     let onLanguage: () -> Void
@@ -406,7 +406,7 @@ struct GuardianAnswerButton: View {
 // MARK: - Consent (GV-00)
 
 struct GuardianConsentStep: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
     let onLanguage: () -> Void
     @State private var agreed = false
 
@@ -444,7 +444,7 @@ struct GuardianConsentStep: View {
 
 /// GV-01 About, Ask to change, Language; GV-08 Reject; GV-06 Withdraw.
 struct GuardianSheetView: View {
-    let model: GuardianModel
+    let model: GuardianViewModel
     let sheet: GuardianSheet?
     @Binding var rejectReason: String?
     @Binding var changeFields: Set<String>

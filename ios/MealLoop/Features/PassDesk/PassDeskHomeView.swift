@@ -60,7 +60,7 @@ struct PassDeskHomeView: View {
 struct PassDeskHomeBody: View {
     let content: PassDeskHomeContent
     let mess: Mess
-    let code: PassDeskLiveCodeModel
+    let code: PassDeskLiveCodeViewModel
     let openProblems: Int
     let compact: Bool
     let open: (PassDeskRoute) -> Void

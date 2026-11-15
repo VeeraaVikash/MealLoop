@@ -59,8 +59,8 @@ final class OutingScreenshotTests: XCTestCase {
             _ = try await repository.submitVideo(challenge, seconds: 9, guardian: guardian, by: .guardian)
         }
 
-        func wardenModel() async -> WardenModel {
-            let model = WardenModel(account: OutingSeed.wardenAccount, repository: repository)
+        func wardenModel() async -> WardenViewModel {
+            let model = WardenViewModel(account: OutingSeed.wardenAccount, repository: repository)
             await model.load()
             return model
         }
@@ -95,7 +95,7 @@ final class OutingScreenshotTests: XCTestCase {
         window.rootViewController = nil
     }
 
-    private func warden(_ model: WardenModel, tab: WardenTab = .queue, route: WardenRoute? = nil,
+    private func warden(_ model: WardenViewModel, tab: WardenTab = .queue, route: WardenRoute? = nil,
                         sheet: WardenQueueScreen.Sheet? = nil, askFields: Set<String> = [], askNote: String = "",
                         reason: String? = nil, calling: OutingRequestID? = nil, all: Bool = false) -> some View {
         WardenTabsView(account: OutingSeed.wardenAccount, initialTab: tab, initialRoute: route, preparedModel: model,
@@ -231,19 +231,19 @@ final class OutingScreenshotTests: XCTestCase {
 
     // MARK: Gate
 
-    private func gate(_ model: GateModel, _ path: [GateRoute] = [], code: String = "", srmID: String = "") -> some View {
+    private func gate(_ model: GateViewModel, _ path: [GateRoute] = [], code: String = "", srmID: String = "") -> some View {
         GateFlowView(initialPath: path, preparedModel: model, initialCode: code, initialSRMID: srmID)
     }
 
     /// Aarav's pass signed by the warden, the gate at 2:00 PM on Saturday.
-    private func gateWorld() async throws -> (World, GateModel) {
+    private func gateWorld() async throws -> (World, GateViewModel) {
         let world = World()
         try await world.guardianAcceptsByVideo()
         world.at(8, 17, 10, 40)
         _ = try await world.repository.approve(OutingSeed.aaravRequest.id, warden: OutingSeed.wardenAccount, by: .warden)
         world.at(8, 17, 14, 0)
         _ = world.session(.gate)
-        let model = GateModel(repository: world.repository)
+        let model = GateViewModel(repository: world.repository)
         await model.load()
         return (world, model)
     }
@@ -310,15 +310,15 @@ final class OutingScreenshotTests: XCTestCase {
 
     // MARK: Guardian
 
-    private func guardianView(_ model: GuardianModel, sheet: GuardianSheet? = nil, elapsed: Int = 0, typed: String = "",
+    private func guardianView(_ model: GuardianViewModel, sheet: GuardianSheet? = nil, elapsed: Int = 0, typed: String = "",
                               code: String = "") -> some View {
         GuardianPageView(account: OutingSeed.guardianAccount, preparedModel: model, initialSheet: sheet,
                          recordElapsed: elapsed, photoTyped: typed, photoCode: code)
     }
 
-    private func guardianModel(_ world: World) async -> GuardianModel {
+    private func guardianModel(_ world: World) async -> GuardianViewModel {
         _ = world.session(.guardian)
-        let model = GuardianModel(account: OutingSeed.guardianAccount, repository: world.repository)
+        let model = GuardianViewModel(account: OutingSeed.guardianAccount, repository: world.repository)
         await model.load()
         return model
     }

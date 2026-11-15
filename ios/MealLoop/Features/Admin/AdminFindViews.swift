@@ -120,7 +120,7 @@ struct AdminSafetyCasesScreen: View {
         let results = environment.repositories.adminResults
         let now = environment.clock.now()
         AdminPageScaffold(title: AdminScreenCopy.safetyCases, subtitle: AdminScreenCopy.safetyCasesSubtitle, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await results.safetyCases() }, timeZone: nav.timeZone) { cases, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await results.safetyCases() }, timeZone: nav.timeZone) { cases, _ in
                 let open = cases.filter { $0.closedAt == nil }
                 let closed = cases.filter { $0.closedAt != nil }
                 VStack(alignment: .leading, spacing: MLSpacing.s8) {
@@ -176,7 +176,7 @@ struct AdminSafetyCaseScreen: View {
 
     var body: some View {
         let results = environment.repositories.adminResults
-        AdminLoadedPage(model: AdminPageModel(fetch: { try await results.safetyCases() }), timeZone: nav.timeZone) { cases, _ in
+        AdminLoadedPage(model: AdminPageViewModel(fetch: { try await results.safetyCases() }), timeZone: nav.timeZone) { cases, _ in
             if let item = cases.first(where: { $0.id == id }) {
                 AdminSafetyCaseBody(item: item, now: environment.clock.now(), nav: nav)
             } else {

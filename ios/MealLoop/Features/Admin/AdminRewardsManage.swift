@@ -26,7 +26,7 @@ enum AdminRewardsCopy {
 
 @MainActor
 @Observable
-final class AdminRewardCatalogueModel {
+final class AdminRewardCatalogueViewModel {
     private(set) var items: LoadState<[StudentCreditTicket]> = .idle
     private(set) var isWriting = false
     private(set) var errorText: String?
@@ -84,7 +84,7 @@ final class AdminRewardCatalogueModel {
 /// The catalogue list, Add a reward and the delete confirmation, under the Rewards page's budget card.
 struct AdminRewardCatalogueSection: View {
     @Environment(AppEnvironment.self) private var environment
-    @State private var model: AdminRewardCatalogueModel?
+    @State private var model: AdminRewardCatalogueViewModel?
     let nav: AdminNav
     var addOpen = false
     @State private var adding = false
@@ -117,7 +117,7 @@ struct AdminRewardCatalogueSection: View {
         }
         .task {
             if model == nil {
-                model = AdminRewardCatalogueModel(repository: environment.repositories.rewardCatalogue,
+                model = AdminRewardCatalogueViewModel(repository: environment.repositories.rewardCatalogue,
                                                   role: nav.context.account.role)
                 adding = addOpen
             }
@@ -173,7 +173,7 @@ struct AdminRewardCatalogueSection: View {
 
 /// Add a reward: name, credits it costs, Save reward. Sized to its content.
 struct AdminAddRewardSheet: View {
-    let model: AdminRewardCatalogueModel
+    let model: AdminRewardCatalogueViewModel
     let onSaved: (String) -> Void
     let onClose: () -> Void
     @State private var name = ""

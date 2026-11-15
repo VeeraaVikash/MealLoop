@@ -37,7 +37,7 @@ enum PassRequestCopy {
 
 @MainActor
 @Observable
-final class StudentPassRequestModel {
+final class StudentPassRequestViewModel {
     private(set) var request: PassRequest?
     private(set) var isLoaded = false
     private(set) var isWriting = false
@@ -113,7 +113,7 @@ enum PassRequestFormat {
 
 /// The page body: the black card, then How it works or Your request.
 struct StudentPassRequestSection: View {
-    let model: StudentPassRequestModel
+    let model: StudentPassRequestViewModel
 
     private var chip: String {
         switch model.request?.state {

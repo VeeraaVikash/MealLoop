@@ -270,16 +270,16 @@ final class AdminResultsMoreTests: XCTestCase {
 
     func testResultsAndMoreLoadAndGoOffline() async {
         let online = repositories(.duringMeal)
-        let results = AdminPageModel { try await online.adminResults.overview() }
+        let results = AdminPageViewModel { try await online.adminResults.overview() }
         await results.load()
         XCTAssertEqual(results.state.value?.toReview.count, 2)
         XCTAssertEqual(results.state.value?.changes.count, 2)
-        let more = AdminPageModel { try await online.adminMore.hub() }
+        let more = AdminPageViewModel { try await online.adminMore.hub() }
         await more.load()
         XCTAssertEqual(more.state.value?.passUsed, 196)
 
         let down = repositories(.offline)
-        let offline = AdminPageModel { try await down.adminResults.overview() }
+        let offline = AdminPageViewModel { try await down.adminResults.overview() }
         await offline.load()
         if case .offline = offline.state {} else { XCTFail("\(offline.state)") }
     }

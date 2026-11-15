@@ -6,7 +6,7 @@ import Observation
 /// There is no text-only accept anywhere.
 @MainActor
 @Observable
-final class GuardianModel {
+final class GuardianViewModel {
     enum RecordPhase: Equatable {
         case ready
         case recording

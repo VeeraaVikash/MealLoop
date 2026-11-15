@@ -309,8 +309,8 @@ final class StaffFigmaScreenshotTests: XCTestCase {
     // Owner ruling (Prompt 2B): the check sheet and outcome frames (2533_*, 2534_*, 2531_5403) are superseded. The desk
     // shows the live code on Home and checks the last four only as a lookup.
 
-    private func checkDigits(_ world: World, _ digits: [Int]) async -> PassDeskCheckDigitsModel {
-        let model = PassDeskCheckDigitsModel(use: world.repositories.passUse, live: world.repositories.livePassCodes,
+    private func checkDigits(_ world: World, _ digits: [Int]) async -> PassDeskCheckDigitsViewModel {
+        let model = PassDeskCheckDigitsViewModel(use: world.repositories.passUse, live: world.repositories.livePassCodes,
                                              meal: DemoSeed.lunch.id)
         for digit in digits { await model.type(digit) }
         return model
@@ -340,7 +340,7 @@ final class StaffFigmaScreenshotTests: XCTestCase {
             PassDeskRequestView(form: form, digits: "0238", onBack: {}, onSent: {})
         }
         try await shot("2538_5739", world) {
-            PassDeskRequestsView(model: PassDeskRequestsModel(passes: world.repositories.specialPasses, mess: world.staff.mess.id),
+            PassDeskRequestsView(model: PassDeskRequestsViewModel(passes: world.repositories.specialPasses, mess: world.staff.mess.id),
                                  session: world.staff, mealName: "Lunch", onBack: {})
         }
         let log = PassDeskProblemLog(session: world.staff, repositories: world.repositories, clock: world.clock)

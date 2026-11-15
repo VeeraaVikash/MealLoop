@@ -135,7 +135,7 @@ enum AdminSearchEngine {
 
 @MainActor
 @Observable
-final class AdminSearchModel {
+final class AdminSearchViewModel {
     var text = ""
     var scope: AdminSearchScope = .all
     private(set) var index = AdminSearchIndex()
@@ -173,7 +173,7 @@ final class AdminSearchModel {
 }
 
 struct AdminSearchView: View {
-    @State var model: AdminSearchModel
+    @State var model: AdminSearchViewModel
     let nav: AdminNav
     let openToday: () -> Void
     let onCancel: () -> Void

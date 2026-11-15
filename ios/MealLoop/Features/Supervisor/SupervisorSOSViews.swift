@@ -25,7 +25,7 @@ enum SupervisorSOSText {
 
 /// The SOS panel as the Supervisor sees it (S04, S04b, S05, S05b). Only the Supervisor gets Close case.
 struct SupervisorSOSPanelView: View {
-    let model: SupervisorSOSModel
+    let model: SupervisorSOSViewModel
     let timeZone: TimeZone
     let onDismiss: () -> Void
     /// Called after the case closed, so the caller can show "Case closed".

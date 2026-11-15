@@ -19,7 +19,7 @@ enum AdminPassRequestsCopy {
 
 @MainActor
 @Observable
-final class AdminPassRequestsModel {
+final class AdminPassRequestsViewModel {
     private(set) var queue: LoadState<PassRequestQueue> = .idle
     private(set) var deciding: PassRequestID?
     private(set) var errorText: String?
@@ -59,7 +59,7 @@ final class AdminPassRequestsModel {
 
 struct AdminPassRequestsSection: View {
     @Environment(AppEnvironment.self) private var environment
-    @State private var model: AdminPassRequestsModel?
+    @State private var model: AdminPassRequestsViewModel?
     let nav: AdminNav
 
     var body: some View {
@@ -101,7 +101,7 @@ struct AdminPassRequestsSection: View {
         }
         .task {
             if model == nil {
-                model = AdminPassRequestsModel(repository: environment.repositories.passRequests, role: nav.context.account.role)
+                model = AdminPassRequestsViewModel(repository: environment.repositories.passRequests, role: nav.context.account.role)
             }
             await model?.load()
         }

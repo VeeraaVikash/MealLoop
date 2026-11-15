@@ -186,7 +186,7 @@ final class PassDeskProblemLog {
 /// New pass requests (P10): the statuses as the repository holds them.
 @MainActor
 @Observable
-final class PassDeskRequestsModel {
+final class PassDeskRequestsViewModel {
     private(set) var state: LoadState<[PassReissueRequest]> = .idle
 
     private let passes: any SpecialPassRepository

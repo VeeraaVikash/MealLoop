@@ -34,7 +34,7 @@ enum GateRoute: Hashable {
 /// without a signed, unused pass inside its window, and a return without an exit.
 @MainActor
 @Observable
-final class GateModel {
+final class GateViewModel {
     private(set) var overview: GateOverview?
     private(set) var outNow: [OutingCase] = []
     private(set) var overdue: [OutingCase] = []

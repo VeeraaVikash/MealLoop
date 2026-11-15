@@ -5,11 +5,11 @@ import XCTest
 /// The guardian's simulated first-run flow (G-0, G-A1 to G-A3) reads only the seeded guardian link.
 @MainActor
 final class GuardianEntryTests: XCTestCase {
-    private func loadedModel() async -> GuardianModel {
+    private func loadedModel() async -> GuardianViewModel {
         let clock = DemoClock(OutingSeed.guardianMoment)
         let repository = InMemoryOutingCaseRepository(clock: clock, simulation: ScriptedCaptureSimulation([]),
                                                       makeDigits: { String(repeating: "4", count: $0) })
-        let model = GuardianModel(account: OutingSeed.guardianAccount, repository: repository)
+        let model = GuardianViewModel(account: OutingSeed.guardianAccount, repository: repository)
         await model.load()
         return model
     }
@@ -35,7 +35,7 @@ final class GuardianEntryTests: XCTestCase {
         try await repository.recordConsent(guardian, by: .guardian)
         let challenge = try await repository.startCapture(OutingSeed.aaravRequest.id, guardian: guardian, by: .guardian)
         _ = try await repository.submitVideo(challenge, seconds: 9, guardian: guardian, by: .guardian)
-        let model = GuardianModel(account: guardian, repository: repository)
+        let model = GuardianViewModel(account: guardian, repository: repository)
         await model.load()
         let notices = GuardianNotices.notices(request: model.request, past: model.pastAnswers, studentName: model.studentName)
         XCTAssertEqual(Array(notices.prefix(2).map(\.title)), [GuardianInfoCopy.youApproved, GuardianInfoCopy.newRequest])

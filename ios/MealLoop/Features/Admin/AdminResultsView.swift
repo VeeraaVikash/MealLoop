@@ -9,7 +9,7 @@ struct AdminResultsScreen: View {
     var body: some View {
         let results = environment.repositories.adminResults
         AdminPageScaffold(title: AdminScreenCopy.results) {
-            AdminLoadedPage(model: AdminPageModel { try await results.overview() }, timeZone: nav.timeZone) { overview, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await results.overview() }, timeZone: nav.timeZone) { overview, _ in
                 AdminResultsBody(overview: overview, nav: nav)
             }
         }

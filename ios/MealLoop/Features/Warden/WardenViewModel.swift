@@ -12,7 +12,7 @@ struct WardenResult: Equatable {
 /// refuses any decision before the guardian's answer and any request outside this warden's block.
 @MainActor
 @Observable
-final class WardenModel {
+final class WardenViewModel {
     enum Phase: Equatable {
         case loading
         case ready

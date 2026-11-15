@@ -7,7 +7,7 @@ struct WardenQueueScreen: View {
         case reject
     }
 
-    let model: WardenModel
+    let model: WardenViewModel
     let onMe: () -> Void
     let onShowTab: (WardenTab) -> Void
     /// A sheet to open on arrival (screenshot runs only).
@@ -481,7 +481,7 @@ struct WardenNoteBox: View {
 
 /// WV-1 Ask (sheet): what should change, an optional note, Send.
 struct WardenAskSheet: View {
-    let model: WardenModel
+    let model: WardenViewModel
     @Binding var fields: Set<String>
     @Binding var note: String
     let onSend: () -> Void
@@ -507,7 +507,7 @@ struct WardenAskSheet: View {
 
 /// WV-1 No (sheet): a reason is required.
 struct WardenRejectSheet: View {
-    let model: WardenModel
+    let model: WardenViewModel
     @Binding var reason: String?
     let onReject: () -> Void
     let onClose: () -> Void

@@ -184,7 +184,7 @@ struct AdminRoleScreen: View {
 
     var body: some View {
         let more = environment.repositories.adminMore
-        AdminLoadedPage(model: AdminPageModel { try await more.people() }, timeZone: nav.timeZone) { people, _ in
+        AdminLoadedPage(model: AdminPageViewModel { try await more.people() }, timeZone: nav.timeZone) { people, _ in
             if let role = people.roles.first(where: { $0.id == id }) {
                 AdminPageScaffold(title: role.title, subtitle: AdminScreenCopy.peopleCount(role.count, messes: role.messes), onBack: nav.pop) {
                     if let permissions = role.permissions {

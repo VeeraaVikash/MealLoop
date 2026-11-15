@@ -391,7 +391,7 @@ final class SupervisorViewModelTests: XCTestCase {
 
     func testTheSupervisorClaimsChecksAndClosesACase() async throws {
         let world = world(.duringMeal)
-        let sos = SupervisorSOSModel(session: staff(), repositories: world.repositories, clock: world.clock)
+        let sos = SupervisorSOSViewModel(session: staff(), repositories: world.repositories, clock: world.clock)
         _ = try await raiseSOS(world)
         await sos.load()
         XCTAssertEqual(sos.stage, .notTaken)
@@ -414,7 +414,7 @@ final class SupervisorViewModelTests: XCTestCase {
     func testOnlyTheSupervisorClosesACaseOtherStaffOnlyCheck() async throws {
         let world = world(.duringMeal)
         _ = try await raiseSOS(world)
-        let door = SupervisorSOSModel(session: staff(.doorScanner), repositories: world.repositories, clock: world.clock)
+        let door = SupervisorSOSViewModel(session: staff(.doorScanner), repositories: world.repositories, clock: world.clock)
         await door.load()
         let doorClaimed = await door.claim()
         XCTAssertTrue(doorClaimed)
@@ -425,7 +425,7 @@ final class SupervisorViewModelTests: XCTestCase {
         XCTAssertEqual(door.actionError, "Only the Supervisor closes a case.")
         XCTAssertEqual(door.cases.count, 1)
 
-        let supervisor = SupervisorSOSModel(session: staff(), repositories: world.repositories, clock: world.clock)
+        let supervisor = SupervisorSOSViewModel(session: staff(), repositories: world.repositories, clock: world.clock)
         await supervisor.load()
         XCTAssertEqual(supervisor.stage, .checked(by: .doorScanner, at: world.clock.now()))
         XCTAssertEqual(SupervisorSOSText.status(supervisor.stage!, timeZone: DemoSeed.mess.timeZone),
@@ -439,7 +439,7 @@ final class SupervisorViewModelTests: XCTestCase {
         let world = world(.duringMeal)
         let raised = try await raiseSOS(world)
         _ = try await world.repositories.sos.claim(raised.id, by: .kitchenStaff)
-        let sos = SupervisorSOSModel(session: staff(), repositories: world.repositories, clock: world.clock)
+        let sos = SupervisorSOSViewModel(session: staff(), repositories: world.repositories, clock: world.clock)
         await sos.load()
         XCTAssertEqual(sos.stage, .claimedBy(.kitchenStaff))
         XCTAssertFalse(sos.isClaimedByYou)

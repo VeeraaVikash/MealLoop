@@ -12,7 +12,7 @@ struct AdminMoreScreen: View {
         let more = environment.repositories.adminMore
         let allMesses = nav.context.allMesses
         AdminPageScaffold(title: AdminScreenCopy.moreTitle) {
-            AdminLoadedPage(model: AdminPageModel { try await AdminHubValues.load(more, allMesses: allMesses) }, timeZone: nav.timeZone) { hub, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await AdminHubValues.load(more, allMesses: allMesses) }, timeZone: nav.timeZone) { hub, _ in
                 VStack(spacing: MLSpacing.s16) {
                     group {
                         AdminHubRow(title: AdminScreenCopy.weeklyMenu, value: hub.menuStatus) { nav.push(.weeklyMenu) }
@@ -258,7 +258,7 @@ struct AdminPassesScreen: View {
     var body: some View {
         let more = environment.repositories.adminMore
         AdminPageScaffold(title: AdminScreenCopy.passes, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await more.passes() }, timeZone: nav.timeZone) { page, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await more.passes() }, timeZone: nav.timeZone) { page, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s16) {
                     Color.clear.frame(height: MLSpacing.s4)
                     HStack(spacing: MLSpacing.s8) {
@@ -320,12 +320,12 @@ struct AdminVotesScreen: View {
     let nav: AdminNav
     @State private var showsRules = false
     @State private var decideSubject: String?
-    @State private var votesModel: AdminVotesModel?
+    @State private var votesModel: AdminVotesViewModel?
 
     var body: some View {
         let more = environment.repositories.adminMore
         AdminPageScaffold(title: AdminScreenCopy.menuVotes, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await more.votes() }, timeZone: nav.timeZone) { page, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await more.votes() }, timeZone: nav.timeZone) { page, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
                     Color.clear.frame(height: MLSpacing.s4)
                     Button { showsRules = true } label: {
@@ -413,7 +413,7 @@ struct AdminVotesScreen: View {
         }
         .task {
             if votesModel == nil {
-                votesModel = AdminVotesModel(repository: environment.repositories.adminVotesRewards,
+                votesModel = AdminVotesViewModel(repository: environment.repositories.adminVotesRewards,
                                              role: nav.context.account.role)
             }
             await votesModel?.load()
@@ -449,7 +449,7 @@ struct AdminRewardsScreen: View {
     var body: some View {
         let more = environment.repositories.adminMore
         AdminPageScaffold(title: AdminScreenCopy.rewards, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await more.rewards() }, timeZone: nav.timeZone) { page, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await more.rewards() }, timeZone: nav.timeZone) { page, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
                     Color.clear.frame(height: MLSpacing.s4)
                     Button { showsRules = true } label: {
@@ -513,7 +513,7 @@ struct AdminSpareFoodScreen: View {
     var body: some View {
         let more = environment.repositories.adminMore
         AdminPageScaffold(title: AdminScreenCopy.spareFood, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await more.spareFood() }, timeZone: nav.timeZone) { page, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await more.spareFood() }, timeZone: nav.timeZone) { page, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
                     Color.clear.frame(height: MLSpacing.s4)
                     AdminChip(text: page.mess, symbol: "fork.knife", isSmall: true)
@@ -568,7 +568,7 @@ struct AdminHistoryScreen: View {
     var body: some View {
         let more = environment.repositories.adminMore
         AdminPageScaffold(title: AdminScreenCopy.history, onBack: nav.pop) {
-            AdminLoadedPage(model: AdminPageModel { try await more.history() }, timeZone: nav.timeZone) { page, _ in
+            AdminLoadedPage(model: AdminPageViewModel { try await more.history() }, timeZone: nav.timeZone) { page, _ in
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
                     Color.clear.frame(height: MLSpacing.s4)
                     AdminChip(text: AdminScreenCopy.allTypes, symbol: "flag", isSmall: true)
@@ -709,7 +709,7 @@ struct AdminOutingsScreen: View {
 
     var body: some View {
         let more = environment.repositories.adminMore
-        AdminLoadedPage(model: AdminPageModel { try await more.outings() }, timeZone: nav.timeZone) { page, _ in
+        AdminLoadedPage(model: AdminPageViewModel { try await more.outings() }, timeZone: nav.timeZone) { page, _ in
             AdminPageScaffold(title: AdminScreenCopy.outings, subtitle: page.subtitle, onBack: nav.pop) {
                 HeroCard {
                     HStack(alignment: .top, spacing: MLSpacing.s24) {

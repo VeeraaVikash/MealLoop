@@ -14,7 +14,7 @@ final class SupervisorHomeViewModel {
     private(set) var actionError: String?
 
     let session: StaffSession
-    let sosModel: SupervisorSOSModel
+    let sosModel: SupervisorSOSViewModel
     private let repositories: Repositories
     private let clock: any AppClock
 
@@ -22,7 +22,7 @@ final class SupervisorHomeViewModel {
         self.session = session
         self.repositories = repositories
         self.clock = clock
-        self.sosModel = SupervisorSOSModel(session: session, repositories: repositories, clock: clock)
+        self.sosModel = SupervisorSOSViewModel(session: session, repositories: repositories, clock: clock)
     }
 
     var now: Date { clock.now() }

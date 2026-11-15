@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - Out now (WV-2)
 
 struct WardenOutNowScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let onMe: () -> Void
     let onOpen: (WardenRoute) -> Void
 
@@ -100,7 +100,7 @@ struct WardenOutStatus {
 }
 
 struct WardenOutNowAllScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let onBack: () -> Void
     let onOpen: (OutingRequestID) -> Void
 
@@ -120,7 +120,7 @@ struct WardenOutNowAllScreen: View {
 
 /// WV-2 Out now · one student: the pass and the gate times, and the calls.
 struct WardenOutNowStudentScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let outingID: OutingRequestID
     let onBack: () -> Void
 
@@ -190,7 +190,7 @@ struct WardenMethodTag: View {
 // MARK: - Escalated (WV-4)
 
 struct WardenEscalatedScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let onMe: () -> Void
     let onToast: (String) -> Void
     let onOpenInQueue: (OutingRequestID) -> Void
@@ -286,7 +286,7 @@ struct WardenEscalatedScreen: View {
 // MARK: - History (WV-3)
 
 struct WardenHistoryScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let onMe: () -> Void
     let onOpen: (String) -> Void
     /// Starts on All (screenshot runs only).
@@ -381,7 +381,7 @@ struct WardenHistoryRow: View {
 
 /// WV-3 Record: the decision, the pass and the guardian's evidence; a dashed note once the video is deleted.
 struct WardenHistoryRecordScreen: View {
-    let model: WardenModel
+    let model: WardenViewModel
     let itemID: String
     let onBack: () -> Void
 
@@ -462,7 +462,7 @@ struct WardenHistoryRecordScreen: View {
 struct WardenMeScreen: View {
     @Environment(AppRouter.self) private var router
     @Environment(SessionStore.self) private var sessionStore
-    let model: WardenModel
+    let model: WardenViewModel
     let onBack: () -> Void
     let onAlerts: () -> Void
 

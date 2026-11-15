@@ -21,7 +21,7 @@ enum PassDeskSimpleCopy {
 /// The live code on Home: the same clock-derived code and colour the student's phone shows. Read only.
 @MainActor
 @Observable
-final class PassDeskLiveCodeModel {
+final class PassDeskLiveCodeViewModel {
     private(set) var current: CurrentPassCode?
     private(set) var secondsLeft: Int?
     /// True when the code can't be trusted (offline or no answer): no code is shown as valid.
@@ -125,7 +125,7 @@ struct PassDeskCodeCard: View {
 /// Check last 4 digits: a lookup that never records. The answer comes from the repository at the pass-code instant.
 @MainActor
 @Observable
-final class PassDeskCheckDigitsModel {
+final class PassDeskCheckDigitsViewModel {
     private(set) var entry = DigitEntry()
     private(set) var result: LoadState<PassDigitCheck> = .idle
     private let use: any PassUseRepository
@@ -177,7 +177,7 @@ final class PassDeskCheckDigitsModel {
 
 /// Check last 4 digits (reference image 2): Back, the title, four boxes, one status line in a card, the keypad. No buttons.
 struct PassDeskCheckDigitsView: View {
-    @State var model: PassDeskCheckDigitsModel
+    @State var model: PassDeskCheckDigitsViewModel
     let onBack: () -> Void
 
     var body: some View {

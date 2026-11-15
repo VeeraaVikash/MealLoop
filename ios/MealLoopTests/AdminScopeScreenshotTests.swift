@@ -15,7 +15,7 @@ import XCTest
         let context = try XCTUnwrap(AdminContext(session: session))
         let env = AppEnvironment(kind: .review, repositories: core.makeRepositories().scopedAdmin(session, mess: context.mess), clock: core.clock, demoControls: nil)
         let nav = AdminNav(context: context, push: { _ in }, pop: {}, toast: { _ in })
-        let model = AdminAccessModel(session: session, repository: env.repositories.people)
+        let model = AdminAccessViewModel(session: session, repository: env.repositories.people)
         await model.load()
         let door = try XCTUnwrap(model.people(.doorScanner).first)
         try await shot("admin_people_00_roles", output, env, AdminAccessView(model: model, nav: nav))

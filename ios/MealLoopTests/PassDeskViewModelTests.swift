@@ -29,11 +29,11 @@ final class PassDeskViewModelTests: XCTestCase {
         return model
     }
 
-    private func checkDigits(_ world: World) -> PassDeskCheckDigitsModel {
-        PassDeskCheckDigitsModel(use: world.repositories.passUse, live: world.repositories.livePassCodes, meal: lunch)
+    private func checkDigits(_ world: World) -> PassDeskCheckDigitsViewModel {
+        PassDeskCheckDigitsViewModel(use: world.repositories.passUse, live: world.repositories.livePassCodes, meal: lunch)
     }
 
-    private func typed(_ digits: String, _ model: PassDeskCheckDigitsModel) async {
+    private func typed(_ digits: String, _ model: PassDeskCheckDigitsViewModel) async {
         for character in digits {
             await model.type(character.wholeNumberValue ?? 0)
         }
@@ -196,7 +196,7 @@ final class PassDeskViewModelTests: XCTestCase {
 
     func testApprovedIsNeverDone() async {
         let world = world()
-        let model = PassDeskRequestsModel(passes: world.repositories.specialPasses, mess: DemoSeed.mess.id)
+        let model = PassDeskRequestsViewModel(passes: world.repositories.specialPasses, mess: DemoSeed.mess.id)
         await model.load()
         let requests = model.state.value ?? []
         XCTAssertEqual(requests.map(\.status), [.waiting, .approved, .done, .rejected])

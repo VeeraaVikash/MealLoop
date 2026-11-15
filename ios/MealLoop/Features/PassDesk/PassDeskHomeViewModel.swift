@@ -10,7 +10,7 @@ final class PassDeskHomeViewModel {
     private(set) var shiftStartedAt: Date?
     let session: StaffSession
     /// The live code and colour on Home (owner ruling, Prompt 2B). The desk records nothing.
-    let code: PassDeskLiveCodeModel
+    let code: PassDeskLiveCodeViewModel
 
     private let repositories: Repositories
     private let clock: any AppClock
@@ -19,7 +19,7 @@ final class PassDeskHomeViewModel {
         self.session = session
         self.repositories = repositories
         self.clock = clock
-        self.code = PassDeskLiveCodeModel(use: repositories.passUse, live: repositories.livePassCodes)
+        self.code = PassDeskLiveCodeViewModel(use: repositories.passUse, live: repositories.livePassCodes)
     }
 
     func load() async {

@@ -12,7 +12,7 @@ Tabs Home, Alerts, Me (`SupervisorRootView`). Meal history opens from Me only.
 | `SupervisorAlertsView.swift` | SOS card, Shortages, Waste not recorded, all caught up. |
 | `SupervisorShortageView.swift` | Shortage details and Mark resolved. |
 | `SupervisorWasteReportView.swift` | The kitchen's waste report, read only. |
-| `SupervisorSOSModel.swift`, `SupervisorSOSViews.swift` | SOS panel: claim, mark checked, Close case. |
+| `SupervisorSOSViewModel.swift`, `SupervisorSOSViews.swift` | SOS panel: claim, mark checked, Close case. |
 | `SupervisorMeView.swift` | Me, follow-ups, Sign out. |
 | `SupervisorHistoryViews.swift` | Meal history and past meal. |
 | `SupervisorTaskViewModels.swift` | Alerts, shortage, waste, Me, history and past meal view models. |

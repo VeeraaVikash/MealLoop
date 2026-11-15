@@ -5,7 +5,7 @@ import Observation
 /// Claim, Mark as checked and Close case go to the SOS repository, which is the one that decides who may close.
 @MainActor
 @Observable
-final class SupervisorSOSModel {
+final class SupervisorSOSViewModel {
     private(set) var cases: [SOSCase] = []
     /// A claim, check or close is being written.
     private(set) var isWorking = false

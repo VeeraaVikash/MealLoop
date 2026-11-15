@@ -107,12 +107,12 @@ struct PassDeskRequestView: View {
 /// New pass requests (P10). Approved and Done are different words and different pills: Approved is never Done.
 struct PassDeskRequestsView: View {
     @Environment(AppEnvironment.self) private var environment
-    @State private var model: PassDeskRequestsModel
+    @State private var model: PassDeskRequestsViewModel
     let session: StaffSession
     let mealName: String?
     let onBack: () -> Void
 
-    init(model: PassDeskRequestsModel, session: StaffSession, mealName: String?, onBack: @escaping () -> Void) {
+    init(model: PassDeskRequestsViewModel, session: StaffSession, mealName: String?, onBack: @escaping () -> Void) {
         _model = State(initialValue: model)
         self.session = session
         self.mealName = mealName
