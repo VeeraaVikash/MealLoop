@@ -1,127 +1,162 @@
-# MealLoop CI. Runs on every push to main and on every pull request into main.
-# Put this file at .github/workflows/ios-ci.yml
+# MealLoop CI: a fast gate on Linux, then one macOS job only when the app changed.
 #
-# NOT VERIFIED: this workflow was written without running it. The first run may need small fixes
-# (the runner's Xcode version, the simulator name, scheme names). Read the first run's log before trusting it.
+#   rules (ubuntu, ~20 s)  Commit messages, tracked junk, and whether ios/ or this workflow changed. Always runs.
+#   ios   (macOS)          Only when ios/ or .github/workflows/ changed, or when started by hand:
+#                          Debug unit tests once, then the Review and Release builds compile (not tested again),
+#                          then a check that the Release app holds no demo code.
+#
+# The Review scheme runs the same test suite as Debug with other flags, so a pull request compiles it instead of
+# testing it twice. Start the workflow by hand with "Review tests" ticked to run that suite as well.
 name: ios-ci
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      review_tests:
+        description: Also run the test suite under the Review scheme
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ios-ci-${{ github.ref }}
+  group: ios-ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   rules:
     name: commit and repository rules
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      ios: ${{ steps.changes.outputs.ios }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Work out the commit range and what changed
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
+          else
+            BEFORE="${{ github.event.before }}"
+            if [ -n "$BEFORE" ] && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then BASE="$BEFORE"; else BASE="HEAD~1"; fi
+          fi
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "Changed since $BASE:"
+          git diff --name-only "$BASE" HEAD | tee changed.txt
+          if grep -qE '^(ios/|\.github/workflows/)' changed.txt; then ios=true; else ios=false; fi
+          echo "ios=$ios" >> "$GITHUB_OUTPUT"
+          echo "App or workflow changed: $ios"
+
       - name: Commit messages and tracked junk
         shell: bash
         run: |
           set -u
           fail=0
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            RANGE="origin/${{ github.base_ref }}..HEAD"
-          else
-            BEFORE="${{ github.event.before }}"
-            if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then RANGE="HEAD~1..HEAD"; else RANGE="$BEFORE..${{ github.sha }}"; fi
-          fi
-          echo "Checking commits in $RANGE"
-          # 1. No co-author trailers, no tool-attribution lines.
+          RANGE="${{ steps.changes.outputs.base }}..HEAD"
+          # No co-author trailers, no tool-attribution lines.
           if git log "$RANGE" --format=%B | grep -i -E '^co-authored-by:|generated with|claude\.ai/code'; then
             echo "::error::A commit message has a co-author trailer or a tool attribution line."; fail=1
           fi
-          # 2. Conventional Commits for every non-merge commit.
+          # Conventional Commits for every non-merge commit.
           while IFS=$'\t' read -r sha subject; do
-            case "$subject" in Merge\ *) continue;; esac
             if ! echo "$subject" | grep -q -E '^(feat|fix|docs|design|chore|refactor|test|spike)(\([^)]+\))?: .+'; then
               echo "::error::Commit $sha does not follow Conventional Commits: $subject"; fail=1
             fi
           done < <(git log "$RANGE" --no-merges --format='%h%x09%s')
-          # 3. No editor or Xcode user files tracked.
+          # No editor or Xcode user files tracked.
           if git ls-files | grep -E '(^|/)\.DS_Store$|xcuserdata/|\.xcuserstate$'; then
             echo "::error::Tracked files that should be ignored (listed above)."; fail=1
           fi
           exit $fail
 
-  ios-build-test:
-    name: build and test (Debug, Review, Release build)
+  ios:
+    name: build and test
+    needs: rules
+    if: needs.rules.outputs.ios == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: macos-latest
-    timeout-minutes: 60
+    timeout-minutes: 40
     env:
-      # The index store is only for the IDE; CI never reads it. Optimisation, dSYMs and architectures are unchanged.
-      CI_BUILD_FLAGS: CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO
+      # The index store is only for the IDE; CI never reads it.
+      FLAGS: CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO
     steps:
-      # The app, its tests and this workflow read only ios/ and .github/. The design and docs folders (about 4,000
-      # files) are left out of the checkout; tests that read files resolve them from #filePath inside ios/.
+      # The app and its tests read only ios/; docs and design (about 4,000 files) stay out of the checkout.
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
             ios
             .github
           sparse-checkout-cone-mode: true
-      - name: Select the newest Xcode on the runner
+
+      - name: Select Xcode and boot an iPhone simulator
+        id: sim
         shell: bash
         run: |
           X=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
           sudo xcode-select -s "$X/Contents/Developer"
           xcodebuild -version
-      - name: Pick an iPhone simulator
-        id: sim
-        shell: bash
-        run: |
           UDID=$(xcrun simctl list devices available -j | python3 -c "
-          import json,sys
-          d=json.load(sys.stdin)['devices']; best=''
-          for rt in sorted(d):
-              for dev in d[rt]:
-                  if dev.get('isAvailable') and dev['name'].startswith('iPhone'): best=dev['udid']
+          import json, sys
+          devices = json.load(sys.stdin)['devices']; best = ''
+          for runtime in sorted(devices):
+              for device in devices[runtime]:
+                  if device.get('isAvailable') and device['name'].startswith('iPhone'): best = device['udid']
           print(best)")
           if [ -z "$UDID" ]; then echo "::error::No iPhone simulator is available on this runner"; exit 1; fi
           echo "udid=$UDID" >> "$GITHUB_OUTPUT"
-          echo "Using simulator $UDID"
-          # Boot now, in the background, so it is ready by the time the first build finishes.
+          # Boot in the background so it is ready when the test build finishes.
           xcrun simctl boot "$UDID" >/dev/null 2>&1 &
-      - name: Debug tests (scheme MealLoop)
+
+      - name: Unit tests (Debug)
         shell: bash
         run: |
           set -o pipefail
           xcodebuild test -project ios/MealLoop.xcodeproj -scheme "MealLoop" \
-            -destination "id=${{ steps.sim.outputs.udid }}" \
-            -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 \
-            -resultBundlePath build/debug.xcresult $CI_BUILD_FLAGS
-      - name: Review tests (scheme MealLoop Review)
+            -destination "id=${{ steps.sim.outputs.udid }}" -parallel-testing-enabled NO \
+            -resultBundlePath build/debug.xcresult $FLAGS | tail -25
+
+      - name: Unit tests (Review), on request only
+        if: github.event_name == 'workflow_dispatch' && inputs.review_tests
         shell: bash
         run: |
           set -o pipefail
           xcodebuild test -project ios/MealLoop.xcodeproj -scheme "MealLoop Review" \
-            -destination "id=${{ steps.sim.outputs.udid }}" \
-            -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 \
-            -resultBundlePath build/review.xcresult $CI_BUILD_FLAGS
-      - name: Release build
+            -destination "id=${{ steps.sim.outputs.udid }}" -parallel-testing-enabled NO \
+            -resultBundlePath build/review.xcresult $FLAGS | tail -25
+
+      - name: Review and Release builds
         shell: bash
         run: |
           set -o pipefail
+          xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop Review" \
+            -destination "generic/platform=iOS Simulator" -derivedDataPath build/review $FLAGS | tail -5
           xcodebuild build -project ios/MealLoop.xcodeproj -scheme "MealLoop" -configuration Release \
-            -destination "generic/platform=iOS Simulator" $CI_BUILD_FLAGS
-      - name: Test summaries (best effort)
-        if: always()
+            -destination "generic/platform=iOS Simulator" -derivedDataPath build/release $FLAGS | tail -5
+
+      - name: No demo code in the Release app
         shell: bash
         run: |
-          for b in build/debug.xcresult build/review.xcresult; do
-            echo "== $b"; xcrun xcresulttool get test-results summary --path "$b" 2>&1 | head -40 || true
+          app=build/release/Build/Products/Release-iphonesimulator/MealLoop.app/MealLoop
+          # RemoteAPI must be found, so an empty or unreadable binary can't pass this check.
+          strings -a "$app" | grep -q RemoteAPI || { echo "::error::Could not read type names from $app"; exit 1; }
+          # Types compiled only with DEMO_DATA or REVIEW_DATA. (DemoControlling is declared for every build on purpose.)
+          for name in DemoDataProvider DemoSeed InMemoryOutingCaseRepository RunningDemoClock; do
+            if strings -a "$app" | grep -q "$name"; then echo "::error::$name is in the Release app"; exit 1; fi
           done
-      - name: Keep the result bundles
-        if: always()
+          echo "The Release app holds no demo code."
+
+      - name: Keep the result bundles when something fails
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: xcresult
