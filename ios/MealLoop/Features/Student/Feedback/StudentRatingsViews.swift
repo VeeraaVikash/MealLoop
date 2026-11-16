@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Words of the rating images. Wording only.
 enum RatingCopy {
+    static let goodSendsNow = "Good sends right away. Takes 2 seconds."
+    static let kitchenNeverSees = "The kitchen never sees your name."
     static let thanksTitle = "Thanks, noted"
     static func thanksDetail(_ slot: MealSlot) -> String { "Glad \(MLFormat.mealSlot(slot).lowercased()) was good." }
     static let good = "Good"
@@ -208,20 +210,29 @@ struct StudentRateMealView: View {
                  subtitle: RatingCopy.dayAndMess(StudentFormat.mediumDay(model.target.day, in: model.timeZone),
                                                  model.context.mess.name)) {
             VStack(spacing: MLSpacing.s16) {
-                RatingChoiceRow(symbol: "hand.thumbsup", title: RatingCopy.good, detail: RatingCopy.itWasFine,
-                                accent: true, selected: model.isGood) {
-                    Task {
-                        if await model.rate(.good) {
-                            doneAfterThanks = true
-                            feedback = model.feedbackRequest(after: .good)
+                // The two choices as faces (owner reference, 16 Nov 2026; Figma Feedback · How was breakfast 2159:6).
+                HStack(spacing: 14) {
+                    face(RatingCopy.good, happy: true) {
+                        Task {
+                            if await model.rate(.good) {
+                                doneAfterThanks = true
+                                feedback = model.feedbackRequest(after: .good)
+                            }
                         }
                     }
+                    face(RatingCopy.notGood, happy: false) {
+                        Task { if await model.rate(.notGood) { feedback = model.feedbackRequest(after: .notGood) } }
+                    }
                 }
-                RatingChoiceRow(symbol: "hand.thumbsdown", title: RatingCopy.notGood, detail: RatingCopy.tellUs,
-                                accent: false, selected: false) {
-                    Task { if await model.rate(.notGood) { feedback = model.feedbackRequest(after: .notGood) } }
+                .padding(.top, MLSpacing.s24)
+                VStack(spacing: MLSpacing.s8) {
+                    Text(RatingCopy.goodSendsNow)
+                    Text(RatingCopy.kitchenNeverSees)
                 }
-                RatingStatusLine(model: model, helper: RatingCopy.notGoodOpensForm)
+                .font(StudentType.secondary)
+                .foregroundStyle(MLColor.inkSecondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
                 Button(RatingCopy.skipForNow, action: onDone)
                     .font(StudentType.body)
                     .foregroundStyle(MLColor.ink)
@@ -240,6 +251,29 @@ struct StudentRateMealView: View {
                 onDone()
             }
         }
+    }
+
+    /// A face with its word under it; the Good face carries a tick once this meal is rated Good.
+    private func face(_ title: String, happy: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 10) {
+                StudentFaceIcon(isHappy: happy, size: 116)
+                    .overlay(alignment: .bottomTrailing) {
+                        if happy && model.isGood {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 32))
+                                .foregroundStyle(MLColor.ink, MLColor.surface)
+                                .transition(.scale.combined(with: .opacity))
+                        }
+                    }
+                Text(title).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(happy && model.isGood ? .isSelected : [])
     }
 }
 
@@ -383,5 +417,31 @@ struct StudentRateDishView: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+
+/// The round Good and Not good faces (Figma Feedback · How was breakfast 2159:6): ink eyes and mouth on a lime or white
+/// circle with an ink ring.
+struct StudentFaceIcon: View {
+    let isHappy: Bool
+    var size: CGFloat = 116
+
+    var body: some View {
+        Canvas { context, canvas in
+            let unit = canvas.width / 140
+            for x in [52.0, 88.0] {
+                let eye = CGRect(x: (x - 5) * unit, y: 56 * unit, width: 10 * unit, height: 13 * unit)
+                context.fill(Path(ellipseIn: eye), with: .color(MLColor.ink))
+            }
+            var mouth = Path()
+            mouth.move(to: CGPoint(x: 46 * unit, y: (isHappy ? 84 : 98) * unit))
+            mouth.addQuadCurve(to: CGPoint(x: 94 * unit, y: (isHappy ? 84 : 98) * unit),
+                               control: CGPoint(x: 70 * unit, y: (isHappy ? 110 : 72) * unit))
+            context.stroke(mouth, with: .color(MLColor.ink), style: StrokeStyle(lineWidth: 5 * unit, lineCap: .round))
+        }
+        .frame(width: size, height: size)
+        .background(Circle().fill(isHappy ? MLColor.lime : MLColor.surface)
+            .overlay(Circle().strokeBorder(MLColor.ink, lineWidth: 1.5)))
+        .accessibilityHidden(true)
     }
 }

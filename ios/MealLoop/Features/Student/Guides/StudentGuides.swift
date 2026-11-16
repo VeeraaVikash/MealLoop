@@ -34,10 +34,9 @@ enum StudentGuide: String, CaseIterable, Identifiable, Sendable {
             return []
         case .feedback:
             return [
-                ("Rate a dish", "It opens once your entry for a meal is recorded at the door. You can also start it here."),
-                ("Say what was wrong", "Pick the dish and choose what was wrong, like too salty or cold. Your status shows on this page."),
-                ("Something unsafe?", "Use SOS on Home for anything in your food, smells, dirty plates or feeling unwell."),
-                ("Rechecks", "If the kitchen changes a dish you reported, we ask if it was better: Better, Still a problem, or I didn't eat it today."),
+                ("Rate a dish", "Tap Good or Not good. Good sends right away; the kitchen never sees your name."),
+                ("Say what was wrong", "After Not good, pick the dish and what was wrong, like too salty or cold. Your status shows on this page."),
+                ("Something unsafe?", "Use SOS on Home for anything in your food, smells or feeling unwell."),
             ]
         case .community:
             return [

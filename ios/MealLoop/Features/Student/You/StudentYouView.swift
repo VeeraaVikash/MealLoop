@@ -708,3 +708,4 @@ struct StudentCreditsHistoryView: View {
             }
     }
 }
+

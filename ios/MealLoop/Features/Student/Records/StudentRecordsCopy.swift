@@ -86,7 +86,7 @@ enum RecordsCopy {
     static let followUps = "Follow-ups"
     static let yourFeedback = "Your feedback"
     static let rateDishTitle = "Rate a dish"
-    static func rateDishFor(_ meal: String) -> String { "From \(meal), where your entry was recorded." }
+    static func rateDishFor(_ meal: String) -> String { "Tell us how \(meal) was." }
     static let rateDishLocked = "Rate a dish opens once your entry for a meal is recorded at the door."
     /// Better saved (2159:151464) adds "Thanks, the kitchen sees it."; the prototype sends nothing, so it says only
     /// what was recorded.
