@@ -268,3 +268,19 @@ Built from the owner's student redesign brief of 15 November 2026 (walkthrough, 
 | SR-13 | Notification settings rows | Build only the two reminders; build every row of 93:9459 | Only the night-before and day-of reminders exist, because only they have behaviour. In Review the times follow the story clock and are delivered as time-interval notifications | You → Notification settings |
 | SR-14 | Where seen states live | This phone; the account on the server | This phone (`DevicePreferences`): the walkthrough per device, each guide per student and per guide. Not synced | Walkthrough, guides |
 | SR-15 | Institution registration and role picker | Build; leave out | Left out (out of scope; OD-1 bans the role picker). Register says staff accounts are created by an administrator | Register |
+
+## Student fixes (16 Nov 2026)
+
+Owner decisions given in chat on 16 November 2026, built on the student redesign branch. Where one changes an earlier row, that row is named.
+
+| # | Decision | Decided | Where it shows |
+|---|---|---|---|
+| SR-16 | Meal cutoffs (replaces SR-7) | Breakfast before 10:00 PM the night before, lunch by 9:00 AM, dinner by 2:00 PM; snacks keeps two hours before the meal (`IntentionPolicy.fixedCutoff`). At the 7:00 AM story start breakfast is already closed | Walkthrough, Home, answer page, reminders |
+| SR-17 | Credit rules (replaces SR-10 and P1 for the prototype) | Start with 20. After a meal ends: Vote yes and attend +5, vote yes and miss −3, no vote −2, vote skip and attend −2, vote skip and skip +2 (`StudentCreditRule`). **Open:** what "Not sure" earns; the code gives 0 | Walkthrough, Credits, You |
+| SR-18 | Student entry after the walkthrough | Get Started opens the sample student's Home in Debug and Review; Register and its screens are removed; Release still opens Sign in. The registration repository and its data stay unused until a real provider exists | Walkthrough |
+| SR-19 | Entry QR and special pass timing | Never limited by time in the demo: Home always offers Show entry QR; the demo pass stays open until used | Home, Special pass |
+| SR-20 | Crowd | Sample per-interval data in Debug and Review (`DemoSeed.sampleCrowdPerInterval`), not tied to the Admin live count. Quiet, Normal and Busy use the share of the meal's students already inside: under 40% Quiet, under 75% Normal, else Busy. **Open:** the real thresholds, and exits once the mess sensors exist | Home crowd row, Crowd sheet |
+| SR-21 | Meals and Community | One static page each with the native segmented picker. Community keeps Me too, Backed and Undo; the issue page and report screens are no longer reached from it | Meals, Community |
+| SR-22 | Feedback | Rate a dish is always open on My feedback; the follow-up ("was the sambar better?") is removed from Home and My feedback; the rate prompt is removed from Meals | Home, My feedback |
+| SR-23 | SOS (replaces SR-12 for the fields) | A photo is required for found something, looks bad and smells bad. Feeling unwell and another problem ask tap-only options in a native sheet, with an optional note. Location and the student's details are filled in, not typed. Plates not clean is an option under another problem | SOS |
+| SR-24 | Sheets | Every sheet uses the system background and corners with a centred title and the standard close button (`SheetHeader`, `mlSheet`): this is a shared component and changes every role's sheets | All roles |
