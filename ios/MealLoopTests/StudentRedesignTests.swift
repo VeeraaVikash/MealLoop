@@ -68,19 +68,19 @@ final class StudentRedesignTests: XCTestCase {
         let (_, clock, repositories) = world()
         let model = try home(repositories, clock)
         await model.load()
-        await model.answer(.attending, for: DemoSeed.breakfast.id)
-        let hero = try XCTUnwrap(model.state.value?.shownHero)
-        XCTAssertEqual(hero.answer, .attending)
-        XCTAssertTrue(hero.isAnswerOpen, "Before the cutoff, Change answer is offered")
-        await model.answer(.skipping, for: DemoSeed.breakfast.id)
-        XCTAssertEqual(model.card(id: DemoSeed.breakfast.id)?.answer, .skipping, "The change shows at once")
+        // Lunch: its answers stay open until 9 AM (owner decision, 16 Nov 2026).
+        await model.answer(.attending, for: DemoSeed.lunch.id)
+        let card = try XCTUnwrap(model.card(id: DemoSeed.lunch.id))
+        XCTAssertEqual(card.answer, .attending)
+        XCTAssertTrue(card.isAnswerOpen, "Before the cutoff, Change answer is offered")
+        await model.answer(.skipping, for: DemoSeed.lunch.id)
+        XCTAssertEqual(model.card(id: DemoSeed.lunch.id)?.answer, .skipping, "The change shows at once")
 
-        clock.set(IntentionPolicy.cutoff(for: DemoSeed.breakfast).addingTimeInterval(1))
-        await model.answer(.attending, for: DemoSeed.breakfast.id)
-        let after = try await repositories.intentions.response(of: aarav.id, for: DemoSeed.breakfast.id)
+        clock.set(IntentionPolicy.cutoff(for: DemoSeed.lunch).addingTimeInterval(1))
+        await model.answer(.attending, for: DemoSeed.lunch.id)
+        let after = try await repositories.intentions.response(of: aarav.id, for: DemoSeed.lunch.id)
         guard case .answered(.skipping, _) = after else { return XCTFail("A change after the cutoff was stored: \(after)") }
-        XCTAssertFalse(IntentionPolicy.canAnswer(DemoSeed.breakfast, at: clock.now()), "Change answer is gone after the cutoff")
-        XCTAssertNotEqual(model.state.value?.shownHero.id, DemoSeed.breakfast.id, "Home moved on from breakfast")
+        XCTAssertFalse(IntentionPolicy.canAnswer(DemoSeed.lunch, at: clock.now()), "Change answer is gone after the cutoff")
     }
 
     // MARK: Rate a dish after a recorded entry
@@ -169,12 +169,10 @@ final class StudentRedesignTests: XCTestCase {
         let you = try XCTUnwrap(StudentYouViewModel(session: try session, repositories: repositories, clock: clock))
         await you.loadCredits()
         let credits = try XCTUnwrap(you.credits.value)
-        XCTAssertEqual(credits.pointsPerAnswer, DemoSeed.samplePointsPerDefiniteAnswer)
-        XCTAssertTrue(credits.amountsAreSamples, "Review amounts are labelled as samples")
+        XCTAssertEqual(credits.pointsPerAnswer, StudentCreditRule.yesAttend)
         XCTAssertFalse(credits.history.contains { $0.title.localizedCaseInsensitiveContains("rated") })
         XCTAssertFalse(credits.history.contains { $0.title.localizedCaseInsensitiveContains("recheck") })
-        XCTAssertEqual(StudentCreditRule.points(for: .answered(.notSure, at: Date()), perDefiniteAnswer: 5), 0)
-        XCTAssertEqual(StudentCreditRule.points(for: .answered(.skipping, at: Date()), perDefiniteAnswer: 5), 5)
+        XCTAssertEqual(YouCopy.creditRules.map(\.points), [5, -3, -2, -2, 2])
     }
 
     // MARK: Recheck
@@ -278,15 +276,15 @@ final class StudentRedesignTests: XCTestCase {
                                                           now: DemoSeed.time(6, 0), timeZone: DemoSeed.mess.timeZone)
         let dayOf = reminders.filter { $0.kind == .dayOf }
         XCTAssertEqual(dayOf.first { $0.meal?.slot == .lunch }?.fireAt, IntentionPolicy.cutoff(for: lunch).addingTimeInterval(-7200))
-        XCTAssertEqual(dayOf.first { $0.meal?.slot == .breakfast }?.fireAt,
-                       IntentionPolicy.cutoff(for: DemoSeed.breakfast).addingTimeInterval(-7200))
+        XCTAssertNil(dayOf.first { $0.meal?.slot == .breakfast }, "Breakfast closed at 10 PM the night before")
         let night = reminders.first { $0.kind == .nightBefore }
         XCTAssertEqual(night?.fireAt, DemoSeed.time(20, 0), "8:00 PM by default, mess time")
     }
 
     /// A cutoff the night before (as a breakfast cutoff may be) puts the two-hour reminder that night as well.
     func testAReminderBeforeAPreviousNightCutoffFallsThatNight() {
-        let early = Meal(id: MealID("early"), messID: DemoSeed.mess.id, slot: .lunch,
+        // Snacks keeps the two-hour rule, so a very early one has its cutoff the evening before.
+        let early = Meal(id: MealID("early"), messID: DemoSeed.mess.id, slot: .snacks,
                          startsAt: DemoSeed.time(0, 30), endsAt: DemoSeed.time(2, 0))
         let at = StudentReminderSchedule.dayOfTime(for: early)
         XCTAssertEqual(at, DemoSeed.time(0, 30).addingTimeInterval(-4 * 3600))

@@ -60,12 +60,12 @@ final class CoreStoryTests: XCTestCase {
     }
 
     func testTheCutoffIsThatOfTheMealAnswered() async throws {
-        // Breakfast stays open until its service ends at 9:30 AM; after that it refuses.
+        // Lunch answers close at 9 AM (owner decision, 16 Nov 2026); after that a change is refused.
         let clock = TestClock()
         let demo = story(clock: clock)
-        _ = try await demo.setIntention(.skipping, of: aarav, for: DemoSeed.breakfast.id)
-        clock.set(DemoSeed.breakfast.endsAt)
-        await assertRefused { _ = try await demo.setIntention(.attending, of: self.aarav, for: DemoSeed.breakfast.id) }
+        _ = try await demo.setIntention(.skipping, of: aarav, for: DemoSeed.lunch.id)
+        clock.set(IntentionPolicy.cutoff(for: DemoSeed.lunch))
+        await assertRefused { _ = try await demo.setIntention(.attending, of: self.aarav, for: DemoSeed.lunch.id) }
     }
 
     func testTheStudentStartsWithNoLunchResponse() async throws {
@@ -74,12 +74,14 @@ final class CoreStoryTests: XCTestCase {
     }
 
     /// Home · Not answered (221:62529): at 7:00 AM breakfast is unanswered and still open to answers.
-    func testTheStudentStartsWithBreakfastUnansweredAndOpen() async throws {
+    /// At 7 AM breakfast answers closed the night before; lunch is still open until 9 AM.
+    func testTheStudentStartsWithBreakfastClosedAndLunchOpen() async throws {
         let stored = try await story().response(of: aarav, for: DemoSeed.breakfast.id)
         XCTAssertEqual(stored, .noResponse)
-        XCTAssertTrue(IntentionPolicy.canAnswer(DemoSeed.breakfast, at: DemoSeed.storyStartNow))
+        XCTAssertFalse(IntentionPolicy.canAnswer(DemoSeed.breakfast, at: DemoSeed.storyStartNow))
+        XCTAssertTrue(IntentionPolicy.canAnswer(DemoSeed.lunch, at: DemoSeed.storyStartNow))
         // The swipe-to-remind needs the cutoff more than an hour away.
-        XCTAssertGreaterThan(IntentionPolicy.cutoff(for: DemoSeed.breakfast), DemoSeed.storyStartNow.addingTimeInterval(60 * 60))
+        XCTAssertGreaterThan(IntentionPolicy.cutoff(for: DemoSeed.lunch), DemoSeed.storyStartNow.addingTimeInterval(60 * 60))
     }
 
     func testARepeatTapKeepsTheFirstAnswer() async throws {

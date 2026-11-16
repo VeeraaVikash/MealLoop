@@ -59,10 +59,12 @@ final class StudentYouScreensTests: XCTestCase {
     func testCreditsFollowTheAnswerOnHome() async throws {
         let (demo, model) = try make()
         _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.lunch.id)
+        demo.clock.set(DemoSeed.lunch.endsAt.addingTimeInterval(60))
         await model.loadCredits()
-        XCTAssertEqual(model.credits.value?.balance, 125)
+        // No breakfast answer (-2) and a yes for lunch with no entry (-3).
+        XCTAssertEqual(model.credits.value?.balance, 115)
         await model.loadProfile()
-        XCTAssertEqual(model.profile.value?.credits, 125, "The You row shows the same balance.")
+        XCTAssertEqual(model.profile.value?.credits, 115, "The You row shows the same balance.")
     }
 
 

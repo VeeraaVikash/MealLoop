@@ -55,10 +55,8 @@ struct StudentCredits: Codable, Sendable, Hashable {
     let tickets: [StudentCreditTicket]
     /// Newest first, as the ledger orders it.
     let history: [StudentCreditEntry]
-    /// What the ledger gives a definite answer (I'm in or Skip) before the cutoff. Nil when the source has no number.
+    /// What "Vote Yes and attend" earns. Nil when the source has no number.
     var pointsPerAnswer: Int? = nil
-    /// True when the amounts are the Review build's sample values, not an approved rule (open decision P1).
-    var amountsAreSamples = false
 
     /// The cheapest ticket the balance does not reach yet, and how many points are missing.
     var nextGoal: (ticket: StudentCreditTicket, missing: Int)? {
@@ -67,13 +65,29 @@ struct StudentCredits: Codable, Sendable, Hashable {
     }
 }
 
-/// Participation credits. A definite answer (I'm in or Skip) earns; Not sure and No response earn nothing.
-/// How many points a definite answer earns is not decided (open decision P1); the source passes its own number.
+/// Participation credits, owner decision of 16 Nov 2026 (credits rules reference): every student starts with 20; after
+/// a meal the answer and whether an entry was recorded decide the change. "Not sure" is not in that table, so it neither
+/// earns nor costs (open decision SR-16).
 enum StudentCreditRule {
-    static func points(for response: IntentionResponse, perDefiniteAnswer: Int) -> Int {
-        switch response {
-        case .answered(.attending, _), .answered(.skipping, _): return perDefiniteAnswer
-        case .answered(.notSure, _), .noResponse: return 0
+    static let startingBalance = 20
+
+    /// Whether an entry was recorded for the meal. Only known once the meal has ended.
+    enum Outcome: Sendable, Hashable { case attended, missed }
+
+    static let yesAttend = 5
+    static let yesMiss = -3
+    static let noVote = -2
+    static let skipAttend = -2
+    static let skipSkip = 2
+
+    static func points(for response: IntentionResponse, outcome: Outcome) -> Int {
+        switch (response, outcome) {
+        case (.answered(.attending, _), .attended): yesAttend
+        case (.answered(.attending, _), .missed): yesMiss
+        case (.answered(.skipping, _), .attended): skipAttend
+        case (.answered(.skipping, _), .missed): skipSkip
+        case (.noResponse, _): noVote
+        case (.answered(.notSure, _), _): 0
         }
     }
 }

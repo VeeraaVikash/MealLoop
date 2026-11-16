@@ -53,7 +53,7 @@ final class StudentExtrasRepositoryTests: XCTestCase {
     /// changes neither; a walk-in raises Entered so far without lowering Still expected.
     func testEntriesWalkInsAndRepeatsCountAsRecorded() async throws {
         let (demo, clock) = make()
-        clock.set(DemoSeed.time(9, 0))
+        clock.set(DemoSeed.time(8, 30))
         _ = try await demo.setIntention(.attending, of: aarav, for: lunch)
         clock.set(DemoSeed.time(12, 10))
         _ = try await demo.startMeal(lunch, by: .supervisor)

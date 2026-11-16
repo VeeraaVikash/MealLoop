@@ -21,10 +21,6 @@ extension DemoSeed {
                             at: date(12, 9, 0), isRead: true),
     ]
 
-    /// Credits history (221:64443): "Answered dinner · +5 pts", "Answered lunch · +5 pts". The amount per definite
-    /// answer is this sample; no formula exists (open decision P1).
-    static let samplePointsPerDefiniteAnswer = 5
-
     /// Credits (221:64313): Juice 50 pts and Ice cream 80 pts "At your mess counter"; Biryani coupon 200 pts,
     /// "Launches Friday".
     static let sampleCreditTickets: [StudentCreditTicket] = [

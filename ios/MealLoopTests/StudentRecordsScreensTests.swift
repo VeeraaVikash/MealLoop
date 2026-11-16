@@ -96,9 +96,10 @@ final class StudentRecordsScreensTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart)
         let you = try XCTUnwrap(StudentYouViewModel(session: try session, repositories: demo.makeRepositories(), clock: demo.clock))
         _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.lunch.id)
+        demo.clock.set(DemoSeed.lunch.endsAt.addingTimeInterval(60))
         await you.loadCredits()
         await you.loadProfile()
-        XCTAssertEqual(you.credits.value?.balance, 125)
+        XCTAssertEqual(you.credits.value?.balance, 115)
         XCTAssertEqual(you.profile.value?.credits, you.credits.value?.balance)
     }
 }

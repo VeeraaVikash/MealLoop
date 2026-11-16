@@ -36,12 +36,17 @@ final class StudentYouRepositoryTests: XCTestCase {
         XCTAssertTrue(notes.isEmpty)
     }
 
-    func testTheRuleEarnsForDefiniteAnswersOnly() {
+    /// Owner rules, 16 Nov 2026: +5, -3, -2, -2, +2, and every student starts with 20.
+    func testTheRulesFollowTheOwnersTable() {
         let at = DemoSeed.storyStartNow
-        XCTAssertEqual(StudentCreditRule.points(for: .answered(.attending, at: at), perDefiniteAnswer: 5), 5)
-        XCTAssertEqual(StudentCreditRule.points(for: .answered(.skipping, at: at), perDefiniteAnswer: 5), 5)
-        XCTAssertEqual(StudentCreditRule.points(for: .answered(.notSure, at: at), perDefiniteAnswer: 5), 0)
-        XCTAssertEqual(StudentCreditRule.points(for: .noResponse, perDefiniteAnswer: 5), 0)
+        XCTAssertEqual(StudentCreditRule.startingBalance, 20)
+        XCTAssertEqual(StudentCreditRule.points(for: .answered(.attending, at: at), outcome: .attended), 5)
+        XCTAssertEqual(StudentCreditRule.points(for: .answered(.attending, at: at), outcome: .missed), -3)
+        XCTAssertEqual(StudentCreditRule.points(for: .noResponse, outcome: .missed), -2)
+        XCTAssertEqual(StudentCreditRule.points(for: .noResponse, outcome: .attended), -2)
+        XCTAssertEqual(StudentCreditRule.points(for: .answered(.skipping, at: at), outcome: .attended), -2)
+        XCTAssertEqual(StudentCreditRule.points(for: .answered(.skipping, at: at), outcome: .missed), 2)
+        XCTAssertEqual(StudentCreditRule.points(for: .answered(.notSure, at: at), outcome: .attended), 0)
     }
 
     func testTheSampleBalanceBeforeAnyAnswerInThisRun() async throws {
@@ -52,19 +57,22 @@ final class StudentYouRepositoryTests: XCTestCase {
         XCTAssertEqual(credits.nextGoal?.missing, 80)
     }
 
-    func testADefiniteAnswerEarnsAndNotSureEarnsNothing() async throws {
+    /// Owner rules, 16 Nov 2026: a meal settles once it has ended, by the answer and whether an entry was recorded.
+    func testEachMealSettlesByTheRulesOnceItEnds() async throws {
         let (demo, you) = make()
-        _ = try await demo.setIntention(.notSure, of: aarav, for: DemoSeed.lunch.id)
-        let notSure = try await you.credits(for: aarav)
-        XCTAssertEqual(notSure.balance, 120, "Not sure earns nothing.")
         _ = try await demo.setIntention(.attending, of: aarav, for: DemoSeed.lunch.id)
-        let attending = try await you.credits(for: aarav)
-        XCTAssertEqual(attending.balance, 125)
-        XCTAssertEqual(attending.history.first?.title, "Answered lunch")
-        XCTAssertEqual(attending.history.first?.points, 5)
         _ = try await demo.setIntention(.skipping, of: aarav, for: DemoSeed.dinner.id)
-        let skipping = try await you.credits(for: aarav)
-        XCTAssertEqual(skipping.balance, 130, "Skip is a definite answer too.")
+        let before = try await you.credits(for: aarav)
+        XCTAssertEqual(before.balance, 120, "Nothing settles before a meal ends.")
+        demo.clock.set(DemoSeed.lunch.endsAt.addingTimeInterval(60))
+        let afterLunch = try await you.credits(for: aarav)
+        // Breakfast had no answer (-2); lunch was a yes with no entry (-3).
+        XCTAssertEqual(afterLunch.balance, 115)
+        XCTAssertEqual(afterLunch.history.first?.title, "Said yes and missed lunch")
+        XCTAssertEqual(afterLunch.history.first?.points, -3)
+        demo.clock.set(DemoSeed.dinner.endsAt.addingTimeInterval(60))
+        let afterDinner = try await you.credits(for: aarav)
+        XCTAssertEqual(afterDinner.balance, 117, "Skip and skip earns 2.")
     }
 
     func testAnUnknownStudentHasNoBalanceRatherThanZero() async throws {

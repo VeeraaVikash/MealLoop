@@ -27,20 +27,23 @@ enum YouCopy {
     static func idAndMess(_ maskedID: String, _ mess: String) -> String { maskedID.isEmpty ? mess : "\(maskedID) · \(mess)" }
     static func points(_ value: Int) -> String { "\(value) pts" }
 
-    static let creditsSubtitle = "Earned by answering meals before the cutoff."
+    static let creditsSubtitle = "Answer before the cutoff, then do what you said."
     static let recentActivity = "Recent activity"
     static let seeAll = "See all"
     static let noActivityTitle = "No activity yet"
-    static let noActivityDetail = "Answer I'm in or Skip before a meal's cutoff to earn credits."
+    static let noActivityDetail = "Answer before a meal's cutoff and do what you said to earn credits."
     static let couldntLoadCredits = "Couldn't load your credits"
-    static let ruleAnswer = "Answer I'm in or Skip before the cutoff"
-    static let ruleNotSure = "Answer Not sure, or don't answer"
-    static let ruleNoCredits = "0"
-    static let ruleTicket = "Get a ticket at your mess counter"
-    static let ruleTicketCost = "Its cost"
-    static let rulesSubtitle = "Only your meal answers earn credits."
-    static let rulesSamples = "Review build: point amounts are sample values and not final."
-    static let rulesAmountUnknown = "Amount not set"
+    /// The rules table (SVG pack `screens/credits-rules.svg`), amounts from `StudentCreditRule`.
+    static let creditRules: [(title: String, points: Int)] = [
+        ("Vote Yes and attend", StudentCreditRule.yesAttend),
+        ("Vote Yes and miss", StudentCreditRule.yesMiss),
+        ("Don't vote", StudentCreditRule.noVote),
+        ("Vote Skip and attend", StudentCreditRule.skipAttend),
+        ("Vote Skip and skip", StudentCreditRule.skipSkip),
+    ]
+    static func startingBalance(_ credits: Int) -> String { "You start with \(credits) credits." }
+    static func ruleAmount(_ points: Int) -> String { points > 0 ? "+\(points)" : "\u{2212}\(abs(points))" }
+    static let rulesSubtitle = "Your meal answers and entries change your credits."
     static let pts = "pts"
     static let creditsWord = "credits"
     static let tickets = "Tickets"

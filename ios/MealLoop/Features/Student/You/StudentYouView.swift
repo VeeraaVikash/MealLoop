@@ -471,15 +471,14 @@ struct StudentCreditsView: View {
     }
 }
 
-/// How points work (reference: the compact rules sheet, 15 Nov 2026). Each row is something the ledger does
-/// (`StudentCreditRule` and ticket redemption); no starting balance, penalty or feedback credit is claimed. Sample
-/// amounts are labelled as the Review build's.
+/// How credits work (SVG pack `screens/credits-rules.svg`; owner rules of 16 Nov 2026). Every row comes from
+/// `StudentCreditRule`, the same rule the ledger applies.
 struct StudentCreditsRulesSheet: View {
     let credits: StudentCredits?
     let onClose: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MLSpacing.s16) {
+        VStack(alignment: .leading, spacing: MLSpacing.s12) {
             HStack(alignment: .top, spacing: MLSpacing.s12) {
                 Image("student-credits-coins")
                     .resizable()
@@ -488,16 +487,13 @@ struct StudentCreditsRulesSheet: View {
                     .accessibilityHidden(true)
                 SheetHeader(title: StudentGuide.credits.title, subtitle: YouCopy.rulesSubtitle, onClose: onClose)
             }
+            Text(YouCopy.startingBalance(StudentCreditRule.startingBalance))
+                .font(StudentType.footnote)
+                .foregroundStyle(MLColor.inkSecondary)
             VStack(spacing: MLSpacing.s8) {
-                rule(YouCopy.ruleAnswer, credits?.pointsPerAnswer.map { "+\($0)" } ?? YouCopy.rulesAmountUnknown, earns: true)
-                rule(YouCopy.ruleNotSure, YouCopy.ruleNoCredits, earns: false)
-                rule(YouCopy.ruleTicket, YouCopy.ruleTicketCost, earns: false)
-            }
-            if credits?.amountsAreSamples == true {
-                Text(YouCopy.rulesSamples)
-                    .font(StudentType.footnote)
-                    .foregroundStyle(MLColor.inkSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                ForEach(YouCopy.creditRules, id: \.title) { item in
+                    rule(item.title, YouCopy.ruleAmount(item.points), earns: item.points > 0)
+                }
             }
             InkActionButton(title: GuideCopy.gotIt, action: onClose)
         }
