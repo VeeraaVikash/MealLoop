@@ -50,6 +50,8 @@ struct StudentHomeView: View {
     @Environment(AppEnvironment.self) private var environment
     /// Crowd opens in a sheet over Home.
     @State private var showsCrowd = false
+    /// The How was … card to hide once the Not good feedback flow closes.
+    @State private var hideAfterFeedback: String?
     @State private var model: StudentHomeViewModel
     @State private var path: [StudentHomeRoute] = []
     /// Meals whose How was … card was answered Good or skipped in this run. Skip for now records nothing.
@@ -129,6 +131,11 @@ struct StudentHomeView: View {
                 records = StudentRecordsViewModel(session: session, repositories: environment.repositories, clock: environment.clock)
             }
             await records?.loadFeedback()
+        }
+        .onChange(of: feedback == nil) { _, closed in
+            guard closed, let key = hideAfterFeedback else { return }
+            hideAfterFeedback = nil
+            withAnimation(.snappy) { _ = skippedRatings.insert(key) }
         }
         .studentDishFeedback($feedback, context: model.context, repositories: environment.repositories,
                              clock: environment.clock, onSOS: { path.append(.sos) },
@@ -277,8 +284,14 @@ struct StudentHomeView: View {
             Task {
                 let answer: StudentRatingAnswer = action == .good ? .good : .notGood
                 guard await rating.rate(answer) else { return }
-                if action == .good { skippedRatings.insert(key) }
-                feedback = rating.feedbackRequest(after: answer)
+                if action == .good {
+                    // The card already said Thanks; now it leaves (owner decision, 16 Nov 2026).
+                    withAnimation(.snappy) { _ = skippedRatings.insert(key) }
+                } else {
+                    // Not good: Which dish opens; the card leaves once that feedback is done.
+                    hideAfterFeedback = key
+                    feedback = rating.feedbackRequest(after: answer)
+                }
             }
         }
     }

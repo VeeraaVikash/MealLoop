@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Words of the rating images. Wording only.
 enum RatingCopy {
+    static let thanksTitle = "Thanks, noted"
+    static func thanksDetail(_ slot: MealSlot) -> String { "Glad \(MLFormat.mealSlot(slot).lowercased()) was good." }
     static let good = "Good"
     static let notGood = "Not good"
     static let itWasFine = "It was fine"
@@ -102,8 +104,48 @@ struct StudentHowWasCard: View {
     let onGood: () -> Void
     let onNotGood: () -> Void
     let onSkip: () -> Void
+    @State private var thanked = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Good turns the card into a short "Thanks" with a tick (owner decision, 16 Nov 2026), then Home lets it go.
     var body: some View {
+        Group {
+            if thanked { thanks } else { question }
+        }
+        .padding(.horizontal, MLSpacing.s20)
+        .padding(.vertical, MLSpacing.s12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
+        .sensoryFeedback(.success, trigger: thanked) { _, new in new }
+    }
+
+    private var thanks: some View {
+        HStack(spacing: MLSpacing.s12) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 30))
+                .foregroundStyle(MLColor.ink, MLColor.lime)
+                .symbolEffect(.bounce, value: thanked)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(RatingCopy.thanksTitle).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+                Text(RatingCopy.thanksDetail(slot)).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+            }
+            Spacer(minLength: 0)
+        }
+        .frame(minHeight: 72)
+        .transition(.scale(scale: 0.9).combined(with: .opacity))
+        .accessibilityElement(children: .combine)
+    }
+
+    private func good() {
+        if reduceMotion { thanked = true } else { withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) { thanked = true } }
+        Task {
+            try? await Task.sleep(for: .seconds(1.3))
+            onGood()
+        }
+    }
+
+    private var question: some View {
         VStack(alignment: .leading, spacing: MLSpacing.s12) {
             Button(action: onOpen) {
                 HStack {
@@ -117,7 +159,7 @@ struct StudentHowWasCard: View {
             }
             .buttonStyle(.plain)
             HStack(spacing: MLSpacing.s12) {
-                RatingPill(symbol: "hand.thumbsup", title: RatingCopy.good, filled: true, action: onGood)
+                RatingPill(symbol: "hand.thumbsup", title: RatingCopy.good, filled: true, action: good)
                 RatingPill(symbol: "hand.thumbsdown", title: RatingCopy.notGood, filled: false, action: onNotGood)
             }
             Button(RatingCopy.skipForNow, action: onSkip)
@@ -126,10 +168,6 @@ struct StudentHowWasCard: View {
                 .underline()
                 .frame(maxWidth: .infinity, minHeight: MLSize.hit)
         }
-        .padding(.horizontal, MLSpacing.s20)
-        .padding(.vertical, MLSpacing.s12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
     }
 }
 
