@@ -112,6 +112,9 @@ enum MealsCopy {
     // Crowd.
     static let crowd = "Crowd"
     static let enteredSoFar = "Students present"
+    static let timeAxis = "Time"
+    static let entriesAxis = "Entries"
+    static func barReadout(_ time: String, entries: Int) -> String { "\(time) · \(entries) came in" }
     static func level(_ level: StudentCrowd.Level) -> String {
         switch level {
         case .quiet: "Quiet"

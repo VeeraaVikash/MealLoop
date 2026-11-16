@@ -1,16 +1,18 @@
 import SwiftUI
 
-/// The round Close (×) of every sheet. The circle is 44 pt, the minimum target.
+/// The Close (×) of every sheet, as iOS draws it: a small grey circle with a 44 pt target (owner decision,
+/// 16 Nov 2026: all sheets look native).
 struct SheetCloseButton: View {
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: "xmark")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(MLColor.ink)
+            Image(systemName: "xmark.circle.fill")
+                .font(.system(size: 30))
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(.secondary)
                 .frame(width: MLSize.hit, height: MLSize.hit)
-                .background(Circle().fill(MLColor.fillQuiet))
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Close")
@@ -24,22 +26,29 @@ struct SheetHeader: View {
     var subtitle: String?
     var onClose: (() -> Void)?
 
+    /// A native sheet's top: the title centred like an inline navigation title, the subtitle under it, Close on the
+    /// right (owner decision, 16 Nov 2026).
     var body: some View {
-        HStack(alignment: .top, spacing: MLSpacing.s12) {
-            VStack(alignment: .leading, spacing: MLSpacing.s4) {
+        ZStack(alignment: .topTrailing) {
+            VStack(spacing: 2) {
                 Text(title)
-                    .font(MLType.title2)
+                    .font(MLType.staffPrimary)
                     .foregroundStyle(MLColor.ink)
+                    .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                 if let subtitle {
                     Text(subtitle)
-                        .font(MLType.body)
+                        .font(MLType.secondary)
                         .foregroundStyle(MLColor.inkSecondary)
+                        .multilineTextAlignment(.center)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, MLSize.hit)
+            .padding(.top, MLSpacing.s12)
+            .frame(maxWidth: .infinity)
             if let onClose {
                 SheetCloseButton(action: onClose)
+                    .offset(x: MLSpacing.s8)
             }
         }
     }
@@ -65,7 +74,7 @@ private struct SheetContainer<Content: View>: View {
         ScrollView {
             content
                 .padding(.horizontal, MLSpacing.margin)
-                .padding(.top, MLSpacing.s32)
+                .padding(.top, MLSpacing.s12)
                 .padding(.bottom, MLSpacing.s20)
                 .background {
                     GeometryReader { proxy in
@@ -77,8 +86,6 @@ private struct SheetContainer<Content: View>: View {
         .onPreferenceChange(SheetHeightKey.self) { height = $0 }
         .presentationDetents(MLSheetSizing.detents(forMeasuredHeight: height))
         .presentationDragIndicator(.visible)
-        .presentationCornerRadius(MLRadius.card)
-        .presentationBackground(MLColor.surface)
         // Only while a send is in flight (docs/SWIFTUI_STANDARDS.md, section 2).
         .interactiveDismissDisabled(isWorking)
     }

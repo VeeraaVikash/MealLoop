@@ -1,3 +1,4 @@
+import Charts
 import SwiftUI
 
 // Crowd (student redesign, 15 Nov 2026): recorded entries per interval, Entered so far and Still expected. The earlier
@@ -107,11 +108,11 @@ struct StudentCrowdSheet: View {
         switch model.state {
         case .loaded(let crowd), .stale(let crowd, _):
             summary(crowd)
-            CrowdChart(crowd: crowd, isOffline: false, timeZone: model.timeZone)
+            CrowdSheetChart(crowd: crowd, timeZone: model.timeZone)
         case .offline(let crowd?, _):
             StudentOfflineBanner(text: MealsCopy.crowdOffline(MLFormat.time(crowd.observedAt, in: model.timeZone)))
             summary(crowd)
-            CrowdChart(crowd: crowd, isOffline: true, timeZone: model.timeZone)
+            CrowdSheetChart(crowd: crowd, timeZone: model.timeZone)
         case .offline(nil, _):
             StudentOfflineBanner(text: MealsCopy.crowdOfflineNothing)
         case .failed, .empty:
@@ -133,6 +134,58 @@ struct StudentCrowdSheet: View {
             }
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+/// The Crowd sheet's chart, straight on the sheet (no card). Bars grow in when it opens; touching or dragging across
+/// it picks an interval and shows its time and count. Built with Apple's Charts framework.
+struct CrowdSheetChart: View {
+    let crowd: StudentCrowd
+    let timeZone: TimeZone
+    @State private var selected: String?
+    @State private var grown = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private func label(_ interval: StudentCrowdInterval) -> String { StudentFormat.shortTime(interval.startsAt, in: timeZone) }
+
+    private var picked: StudentCrowdInterval? {
+        guard let selected else { return nil }
+        return crowd.intervals.first { label($0) == selected }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: MLSpacing.s8) {
+            Text(picked.map { MealsCopy.barReadout(label($0), entries: $0.entries) } ?? MealsCopy.entriesEvery)
+                .font(StudentType.secondaryMedium)
+                .foregroundStyle(picked == nil ? MLColor.inkSecondary : MLColor.ink)
+            Chart(Array(crowd.intervals.enumerated()), id: \.offset) { index, interval in
+                BarMark(x: .value(MealsCopy.timeAxis, label(interval)),
+                        y: .value(MealsCopy.entriesAxis, grown ? interval.entries : 0),
+                        width: .ratio(0.7))
+                    .cornerRadius(6)
+                    .foregroundStyle(color(index, interval))
+            }
+            .chartXSelection(value: $selected)
+            .chartYAxis(.hidden)
+            .chartXAxis {
+                AxisMarks { value in
+                    if let index = value.index as Int?, index % 2 == 0 { AxisValueLabel() }
+                }
+            }
+            .frame(height: 200)
+            .accessibilityLabel(MealsCopy.entriesEvery)
+        }
+        .onAppear {
+            if reduceMotion { grown = true } else { withAnimation(.snappy(duration: 0.6)) { grown = true } }
+        }
+        .sensoryFeedback(.selection, trigger: selected)
+    }
+
+    /// The touched interval is lime and the rest fade; untouched, the current interval is lime and a zero is quiet.
+    private func color(_ index: Int, _ interval: StudentCrowdInterval) -> Color {
+        if let picked { return picked.startsAt == interval.startsAt ? MLColor.lime : MLColor.ink.opacity(0.25) }
+        if index == crowd.currentInterval { return MLColor.lime }
+        return interval.entries == 0 ? MLColor.track : MLColor.ink
     }
 }
 
