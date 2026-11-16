@@ -203,11 +203,16 @@ private struct RecordsPage<Content: View>: View {
 struct StudentMyReportsView: View {
     @State var model: StudentRecordsViewModel
     let onOpen: (StudentFiledReportID) -> Void
+    var onNew: (() -> Void)?
     let onBack: () -> Void
 
     var body: some View {
         RecordsPage(title: RecordsCopy.myReports, content: {
             content
+            if let onNew {
+                InkActionButton(title: RecordsCopy.reportProblem, action: onNew)
+                    .padding(.top, MLSpacing.s8)
+            }
         }, onRefresh: { await model.loadReports() })
         .task { await model.loadReports() }
     }

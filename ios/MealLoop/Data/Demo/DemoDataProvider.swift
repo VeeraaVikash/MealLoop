@@ -116,6 +116,8 @@ struct DemoState: Sendable {
     var studentIssues = DemoSeed.sampleIssues
     var issueBackers: [CommunityIssueID: Set<StudentID>] = [:]
     var reportReceipts: [IdempotencyKey: StudentReportReceipt] = [:]
+    /// Reports sent in this run, newest last, with who sent them and how far the mess has taken them (Demo menu).
+    var runReports: [(student: StudentID, receipt: StudentReportReceipt, stage: StudentFiledReportStage)] = []
     var nextReportNumber = DemoSeed.firstReportNumber
 
     init(scenario: DemoScenario) {
@@ -889,6 +891,67 @@ extension DemoDataProvider: DemoControlling {
     func failNextDirectoryLookup() async {
         failsNextDirectoryLookup = true
     }
+
+    /// SIMULATED: moves the story clock to a moment and runs the lunch the Supervisor would run by then.
+    func jump(to moment: DemoMoment) async {
+        clock.set(moment.time)
+        let lunch = state.mealStatus.meal.id
+        switch moment {
+        case .lunchServing:
+            if state.mealStatus.state == .notStarted { _ = try? await startMeal(lunch, by: .supervisor) }
+        case .afterLunch, .dinner:
+            if state.mealStatus.state == .notStarted { _ = try? await startMeal(lunch, by: .supervisor) }
+            if state.mealStatus.state == .inService { _ = try? await closeMeal(lunch, by: .supervisor) }
+        case .storyStart, .breakfastServing:
+            break
+        }
+    }
+
+    func setOffline(_ offline: Bool) async { state.isOffline = offline }
+
+    var isOfflineNow: Bool { get async { state.isOffline } }
+
+    /// SIMULATED door scan of the sample student for the meal being served. Refused, like a real scan, when none is.
+    func recordSampleEntry() async -> Bool {
+        let request = EntryRequest(mealID: state.mealStatus.meal.id, student: DemoSeed.sampleStudent, method: .typedLastFour,
+                                   idempotencyKey: .make())
+        return (try? await recordEntry(request)) != nil
+    }
+
+    /// SIMULATED: the mess takes the student's latest report one step on: Sent, Seen, Working on it, Fixed.
+    func advanceLatestReport() async -> Bool {
+        guard let index = state.runReports.lastIndex(where: { $0.stage != .fixed }) else { return false }
+        let next: StudentFiledReportStage
+        switch state.runReports[index].stage {
+        case .sent: next = .seen
+        case .seen, .needMoreInfo: next = .workingOnIt
+        case .workingOnIt, .fixed: next = .fixed
+        }
+        state.runReports[index].stage = next
+        return true
+    }
+
+    /// The reports this student sent in this run, as My reports lists them.
+    func runFiledReports(for student: StudentID) -> [StudentFiledReport] {
+        state.runReports.filter { $0.student == student }.map { item in
+            let receipt = item.receipt
+            let order: [StudentFiledReportStage] = [.sent, .seen, .workingOnIt, .fixed]
+            let reached = order.prefix { $0 != item.stage } + [item.stage]
+            let events = reached.map { stage -> StudentReportEvent in
+                let kind: StudentReportEvent.Kind
+                switch stage {
+                case .sent: kind = .sent
+                case .seen, .needMoreInfo: kind = .seen
+                case .workingOnIt: kind = .workingOnIt
+                case .fixed: kind = .fixed
+                }
+                return StudentReportEvent(kind: kind, at: stage == .sent ? receipt.sentAt : nil, isCurrent: stage == item.stage)
+            }
+            return StudentFiledReport(id: StudentFiledReportID("run-\(receipt.reference)"), reference: receipt.reference,
+                                      category: receipt.category, place: receipt.place, meal: receipt.meal,
+                                      sentAt: receipt.sentAt, stage: item.stage, question: nil, reply: nil, events: events)
+        }
+    }
 }
 
 // MARK: - StudentExtrasRepository
@@ -1177,6 +1240,7 @@ extension DemoDataProvider: StudentCommunityRepository {
                                            meal: report.meal, sentAt: now, outcome: outcome)
         state.nextReportNumber += 1
         state.reportReceipts[report.idempotencyKey] = receipt
+        state.runReports.append((report.student, receipt, .sent))
         return receipt
     }
 

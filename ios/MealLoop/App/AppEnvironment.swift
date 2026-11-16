@@ -30,6 +30,33 @@ protocol DemoControlling: Sendable {
     func demoSession(for role: Role) async -> Session?
     /// The next student directory lookup on Register fails once, so its retry can be shown. Try again then succeeds.
     func failNextDirectoryLookup() async
+    /// Moves the story clock to a moment of the day and runs lunch as the Supervisor would by then.
+    func jump(to moment: DemoMoment) async
+    func setOffline(_ offline: Bool) async
+    var isOfflineNow: Bool { get async }
+    /// A door entry for the sample student at the meal being served. False when no meal is being served.
+    func recordSampleEntry() async -> Bool
+    /// The mess moves the student's latest report one step on. False when there is none to move.
+    func advanceLatestReport() async -> Bool
+}
+
+/// The story moments the Demo menu can jump to (owner decision, 16 Nov 2026: show every state in a demo).
+enum DemoMoment: String, CaseIterable, Sendable {
+    case storyStart, breakfastServing, lunchServing, afterLunch, dinner
+
+    /// Wed 14 Aug in the mess time zone.
+    var time: Date {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = IntentionPolicy.messTimeZone
+        let (hour, minute): (Int, Int) = switch self {
+        case .storyStart: (7, 0)
+        case .breakfastServing: (8, 0)
+        case .lunchServing: (12, 30)
+        case .afterLunch: (14, 30)
+        case .dinner: (19, 45)
+        }
+        return calendar.date(from: DateComponents(year: 2024, month: 8, day: 14, hour: hour, minute: minute)) ?? Date()
+    }
 }
 
 /// Selects exactly one data source for the running app. Demo and real data are never mixed.

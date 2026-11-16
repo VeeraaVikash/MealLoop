@@ -111,6 +111,7 @@ enum RecordsCopy {
     // Spending (221:63988), Empty (221:65727), Offline (221:65753).
     static let privateChip = "Private · only you see this"
     static let monthSoFar = "This month so far"
+    static let reportProblem = "Report a problem"
     static let touchAWeek = "Touch a week to see what you spent"
     static func weekAmount(_ week: String, _ amount: String?) -> String { "\(week) · \(amount ?? "Nothing written")" }
     static let weekAxis = "Week"

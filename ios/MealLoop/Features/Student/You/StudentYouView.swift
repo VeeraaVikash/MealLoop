@@ -19,6 +19,8 @@ enum StudentYouRoute: Hashable {
     case rateMeal(day: Date, slot: MealSlot)
     case myReports
     case report(StudentFiledReportID)
+    /// Report a problem, from My reports (Community no longer starts one).
+    case newReport
     case notificationSettings
     case help
     case privacy
@@ -131,7 +133,11 @@ struct StudentYouView: View {
                 StudentRateMealView(model: rating, onSOS: {}, onMyFeedback: { path.removeLast() }) { path.removeLast() }
             }
         case .myReports:
-            records { StudentMyReportsView(model: $0, onOpen: { path.append(.report($0)) }) { path.removeLast() } }
+            records { StudentMyReportsView(model: $0, onOpen: { path.append(.report($0)) },
+                                           onNew: { path.append(.newReport) }) { path.removeLast() } }
+        case .newReport:
+            // After sending, back to My reports, where the new report now shows.
+            StudentReportScreen(session: session, onSOS: {}) { path.removeLast() }
         case .report(let id):
             records { StudentFiledReportView(model: $0, id: id) { path.removeLast() } }
         case .notificationSettings:

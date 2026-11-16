@@ -67,4 +67,21 @@ enum DemoCopy {
     static let switchRoleFooter = "Opens the role's Home. Answers, entries, reports and the time stay as they are."
     static let gettingStartedFooter = "Signs out and opens the real sign-in screens. Data and the time stay as they are."
     static let done = "Done"
+    static let studentStates = "Student states"
+    static let studentStatesFooter = "Moves the story for every role: the time, offline, a door entry, the mess acting on a report. Data you made stays."
+    static func moment(_ moment: DemoMoment) -> String {
+        switch moment {
+        case .storyStart: "7:00 AM · story start, breakfast answers closed"
+        case .breakfastServing: "8:00 AM · breakfast being served"
+        case .lunchServing: "12:30 PM · lunch being served"
+        case .afterLunch: "2:30 PM · lunch over, credits settle"
+        case .dinner: "7:45 PM · dinner time"
+        }
+    }
+    static let goOffline = "Go offline"
+    static let goOnline = "Back online"
+    static let recordEntry = "Record my entry at the door (meal being served)"
+    static let advanceReport = "Mess moves my latest report on (Sent → Seen → Working on it → Fixed)"
+    static let noMealServing = "No meal is being served. Pick 12:30 PM first."
+    static let noReportToMove = "No report to move. Send one from You → My reports → Report a problem first."
 }
