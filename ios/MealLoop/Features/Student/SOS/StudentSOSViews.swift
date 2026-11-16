@@ -89,35 +89,25 @@ struct StudentSOSView: View {
             }
         }
         .studentGuide(.sos, student: model.context.student.id, isPresented: $showsGuide)
-        .sheet(isPresented: $showsDetails, onDismiss: {
+        .mlSheet(isPresented: $showsDetails, isWorking: false, onDismiss: {
             // Review opens once the sheet has gone, so the push never fights the sheet's own animation.
             if reviewAfterDetails { reviewAfterDetails = false; showsReview = true }
         }) {
             if let category = model.category {
-                NavigationStack {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: MLSpacing.s12) { branch(category) }
-                            .padding(.horizontal, MLSpacing.margin)
-                            .padding(.bottom, MLSpacing.s24)
+                VStack(alignment: .leading, spacing: MLSpacing.s12) {
+                    SheetHeader(title: category == .unwell ? StudentSOSCopy.unwellShort : StudentSOSCopy.otherShort,
+                                onClose: { showsDetails = false })
+                    branch(category)
+                    if triedToGoOn && !model.detailProblems.isEmpty {
+                        InlineErrorText(message: StudentSOSCopy.pickWhatsMissing)
                     }
-                    .navigationTitle(category == .unwell ? StudentSOSCopy.unwellShort : StudentSOSCopy.otherShort)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button(StudentSOSCopy.close) { showsDetails = false }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button(StudentSOSCopy.reviewNext) {
-                                guard check() else { return }
-                                reviewAfterDetails = true
-                                showsDetails = false
-                            }
-                            .fontWeight(.semibold)
-                        }
+                    InkActionButton(title: StudentSOSCopy.reviewNext) {
+                        guard check() else { return }
+                        reviewAfterDetails = true
+                        showsDetails = false
                     }
+                    .padding(.top, MLSpacing.s4)
                 }
-                .presentationDetents([.medium, .large])
-                .presentationDragIndicator(.visible)
             }
         }
         .task { await model.load() }
