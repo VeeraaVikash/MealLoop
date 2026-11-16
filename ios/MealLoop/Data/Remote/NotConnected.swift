@@ -22,6 +22,18 @@ extension NotConnected: LivePassCodeRepository {
     }
 }
 
+// MARK: StudentRegistrationRepository
+
+/// No SRM student directory and no account-creation endpoint exist yet (REG-1, REG-2), so Release says so plainly.
+extension NotConnected: StudentRegistrationRepository {
+    func directoryRecord(forEmail email: String) async throws -> StudentDirectoryRecord? {
+        throw Self.missing("Student directory")
+    }
+    func registerStudent(_ request: StudentRegistrationRequest) async throws -> Session {
+        throw Self.missing("Student registration")
+    }
+}
+
 // MARK: OutingCaseRepository
 
 extension NotConnected: OutingCaseRepository {
@@ -271,7 +283,6 @@ extension NotConnected: StudentMealsRepository {
     func week(for mess: MessID) async throws -> StudentWeek { throw Self.missing("Student Meals") }
     func mealMenu(on day: Date, slot: MealSlot, mess: MessID) async throws -> StudentMealMenu { throw Self.missing("Student Meals") }
     func dishDetail(_ dish: DishID, on day: Date, slot: MealSlot, mess: MessID) async throws -> StudentDishDetail { throw Self.missing("Student Meals") }
-    func findDishes(_ text: String, mess: MessID) async throws -> [StudentDishMatch] { throw Self.missing("Student Meals") }
     func passStanding(of student: StudentID, at mess: MessID) async throws -> StudentPassStanding { throw Self.missing("Student Meals") }
     func startPass(of student: StudentID, key: IdempotencyKey) async throws -> StudentPassStanding { throw Self.missing("Student Meals") }
     func crowd(at mess: MessID) async throws -> StudentCrowd { throw Self.missing("Student Meals") }
@@ -344,7 +355,6 @@ extension NotConnected: StudentYouRepository {
     func markRead(_ id: StudentNotificationID, for student: StudentID) async throws -> StudentNotification { throw Self.missing("Student You") }
     func profile(for student: StudentID, at mess: MessID) async throws -> StudentProfileSummary { throw Self.missing("Student You") }
     func credits(for student: StudentID) async throws -> StudentCredits { throw Self.missing("Student You") }
-    func attendance(for student: StudentID, at mess: MessID) async throws -> StudentAttendanceMonth { throw Self.missing("Student You") }
 }
 
 // MARK: SuperAdminRepository

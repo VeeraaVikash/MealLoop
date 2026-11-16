@@ -8,7 +8,7 @@ struct StudentNotificationsView: View {
 
     /// On `MLScreen`: the system back button and swipe-back pop the page; `onBack` stays for callers.
     var body: some View {
-        MLScreen(YouCopy.notifications, bottomClearance: .tabBar) {
+        MLScreen(YouCopy.notifications) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }

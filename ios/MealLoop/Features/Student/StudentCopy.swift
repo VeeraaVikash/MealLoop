@@ -40,7 +40,7 @@ enum StudentCopy {
     static func decideBy(_ time: String, left: String) -> String { "Decide by \(time) · \(unbroken("\(left) left"))" }
     static func changeBy(_ time: String, left: String) -> String { "Change by \(time) · \(unbroken("\(left) left"))" }
     static func answerBy(_ range: String, time: String, left: String) -> String { "\(range) · answer by \(time), \(left) left" }
-    static func answersClosed(_ time: String) -> String { "Answers closed at \(time). Your QR still works." }
+    static func answersClosed(_ time: String) -> String { "Answers closed at \(time)." }
 
     /// Keeps a duration on one line, so "3 h left" never splits between the number and its unit.
     private static func unbroken(_ text: String) -> String { text.replacingOccurrences(of: " ", with: "\u{00A0}") }
@@ -85,22 +85,10 @@ enum StudentCopy {
     static let open = "Open"
     static let used = "Used"
     static func crowdAt(_ mess: String) -> String { "Crowd at \(mess)" }
-    static func crowdLevel(_ level: CrowdLevel) -> String {
-        switch level {
-        case .quiet: return "Quiet now"
-        case .busy: return "Busy now"
-        case .closed: return "Closed now"
-        }
-    }
-    static func crowdDetail(_ level: CrowdLevel, time: String) -> String {
-        switch level {
-        case .quiet: return "Best time \(time)"
-        case .busy: return "Quieter after \(time)"
-        case .closed: return "Opens \(time)"
-        }
-    }
+    static func enteredSoFar(_ count: Int) -> String { "\(count) students present" }
+    static func stillExpected(_ count: Int) -> String { "\(count) still expected" }
+    static let expectedUnavailable = "Still expected not available"
     static let crowdUnavailable = "Crowd not available"
-    static func crowdSpoken(_ level: CrowdLevel) -> String { "Estimate: \(crowdLevel(level))" }
 
     // Home states.
     static func offlineSaved(_ time: String?) -> String {
@@ -117,10 +105,18 @@ enum StudentCopy {
     static func youreSkipping(_ slot: MealSlot) -> String { "You're skipping \(mealWord(slot))" }
     static func reasonChangeUntil(_ reason: String, until: String) -> String { "Reason: \(reason) · change until \(until)." }
     static func changeUntil(_ until: String) -> String { "You can change this until \(until)." }
+    static func changeAnswerUntil(_ until: String) -> String { "Change answer · until \(until)" }
     static let markedNotSure = "Marked not sure"
     static func decideByTime(_ time: String) -> String { "Decide by \(time)." }
     static let youDidntAnswer = "You didn't answer"
     static let changeAnswer = "Change answer"
+
+    // Rate a dish, after the door records the entry.
+    static let rateDish = "Rate a dish"
+    static func rateDishDetail(_ slot: MealSlot, at time: String) -> String {
+        "Your \(mealWord(slot)) entry was recorded at \(time). Rate it now or later."
+    }
+    static func ratedDish(_ slot: MealSlot) -> String { "You rated \(mealWord(slot)). Tap to change it." }
     static let tryAgain = "Try again"
     static let couldntSave = "Couldn't save your answer. Try again"
     static let answerWaiting = "You're offline. Your answer will send when you're back."

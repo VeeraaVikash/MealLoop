@@ -22,7 +22,7 @@ final class StudentYouScreensTests: XCTestCase {
     func testTheHomeBellAndTheYouTabOpenTheirOwnScreens() throws {
         XCTAssertNotEqual(StudentHomeRoute.notifications, StudentHomeRoute.comingSoon(StudentCopy.notifications),
                           "The bell opens Notifications, not Coming soon.")
-        XCTAssertTrue(StudentTab.pillTabs.contains(.you))
+        XCTAssertTrue(StudentTab.allCases.contains(.you))
         XCTAssertNotNil(StudentYouViewModel(session: try session, repositories: DemoDataProvider().makeRepositories(),
                                             clock: SystemClock()), "The You tab builds its screen for a student.")
     }
@@ -59,53 +59,15 @@ final class StudentYouScreensTests: XCTestCase {
     func testCreditsFollowTheAnswerOnHome() async throws {
         let (demo, model) = try make()
         _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.lunch.id)
+        demo.clock.set(DemoSeed.lunch.endsAt.addingTimeInterval(60))
         await model.loadCredits()
-        XCTAssertEqual(model.credits.value?.balance, 125)
+        // No breakfast answer (-2) and a yes for lunch with no entry (-3).
+        XCTAssertEqual(model.credits.value?.balance, 115)
         await model.loadProfile()
-        XCTAssertEqual(model.profile.value?.credits, 125, "The You row shows the same balance.")
+        XCTAssertEqual(model.profile.value?.credits, 115, "The You row shows the same balance.")
     }
 
-    func testAttendanceStatesItsSampleCountsAndNoAbsence() async throws {
-        let (_, model) = try make()
-        await model.loadAttendance()
-        let month = try XCTUnwrap(model.attendance.value)
-        XCTAssertEqual(YouCopy.mealsOf(try XCTUnwrap(month.mealsEntered), try XCTUnwrap(month.mealsServed)), "36 of 41 meals")
-        XCTAssertFalse(YouCopy.noEntry.localizedCaseInsensitiveContains("missed"))
-        XCTAssertFalse(YouCopy.noEntry.localizedCaseInsensitiveContains("absent"))
-    }
 
-    /// S3: the missed day with a correctable record (Dinner, Tue 13 Aug) opens Entry · Discrepancy, and a sent request
-    /// is recorded only.
-    func testTheMissedDayWithACorrectableRecordOpensTheDiscrepancySheet() async throws {
-        let (_, model) = try make()
-        await model.loadAttendance()
-        let month = try XCTUnwrap(model.attendance.value)
-        let record = try XCTUnwrap(model.correctable)
-        XCTAssertEqual(record.slot, .dinner)
-        XCTAssertEqual(model.correctableDay(in: month), 13, "Tue 13 Aug, the day the Discrepancy frame draws.")
-        XCTAssertEqual(month.marks[13], .noEntryForAMeal)
-        for day in [3, 8, 10] {
-            XCTAssertNotEqual(model.correctableDay(in: month), day, "Other missed days have no correctable record.")
-        }
-        XCTAssertFalse(model.correctionRecorded)
-        let key = IdempotencyKey("s3-test")
-        try await model.sendCorrection(for: record, reason: .ateButNotScanned, note: nil, key: key)
-        try await model.sendCorrection(for: record, reason: .ateButNotScanned, note: nil, key: key)
-        XCTAssertTrue(model.correctionRecorded)
-        XCTAssertEqual(RecordsCopy.requestRecorded, "Request recorded. This prototype sends nothing.")
-    }
 
-    func testOfflineNoDayOpensTheSheetAndNothingIsRecorded() async throws {
-        let (_, model) = try make(.offline)
-        await model.loadAttendance()
-        XCTAssertNil(model.correctable, "Offline the record cannot be read, so no day opens the sheet.")
-        do {
-            try await model.sendCorrection(for: DemoSeed.sampleCorrectableRecord, reason: .ateButNotScanned, note: nil,
-                                           key: IdempotencyKey("s3-offline"))
-            XCTFail("Offline sends nothing.")
-        } catch {
-            XCTAssertFalse(model.correctionRecorded)
-        }
-    }
 }
 #endif

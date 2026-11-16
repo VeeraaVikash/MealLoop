@@ -246,3 +246,41 @@ From the Admin and Super Admin pack (`design/reference/admin_full_2026-11/`) and
 | NET-10 | Session expiry, renewal and sign-out | Re-sign-in on 401; a renewal credential; server-side revocation on sign-out | A `401` on a signed-in call says "Your session has ended. Sign in again." Nothing renews or clears the stored credential yet. Lifetimes, renewal and device limits are open (ADR-005) | Production sign-in |
 | NET-11 | `bearerFormat: JWT` in the OpenAPI draft | Remove; keep | Removed: ADR-005 superseded JWT with opaque bearer tokens | None |
 | NET-12 | The `by role:` arguments of repository methods | Send them; let the server take the role from the credential | Not sent: the server resolves role and scope from the credential, so the client cannot claim a role | Every write |
+
+## Student redesign (15 Nov 2026)
+
+Built from the owner's student redesign brief of 15 November 2026 (walkthrough, one Sign in and Register, current-meal QR, Rate a dish, Crowd, Spending, Credits, My feedback, recheck, SOS, reminders and first-visit guides). The suggested default is what the code does today, not a decision.
+
+| # | Decision | Options | Suggested default | Blocks |
+|---|---|---|---|---|
+| SR-1 | Student directory provider (REG-1) | SRM directory API; a hostel office export; other | None connected. Debug and Review answer from one seeded record (`DemoSeed.studentDirectory`, Aarav); Release answers "Student directory isn't available" (`NotConnected`) | Student Register in any real build |
+| SR-2 | Account creation and the student credential (REG-2) | Server-side account with an opaque bearer session (ADR-005); SSO | The seeded provider keeps a salted digest in memory for the session only. Production storage, verification and lifetimes stay open (ADR-005) | Student Register, Sign in |
+| SR-3 | Register field rules (REG-3) | Any password and phone rule | Prototype minimums only: a password of at least 8 characters, a phone of 10 to 13 digits, an email with `@` and a dot, a registration number of at least 6 characters. Not product policy | Register |
+| SR-4 | Password reset (REG-4) | Email link; hostel office; administrator | None: "Forgot password?" says reset isn't available yet | Sign in |
+| SR-5 | Student Search | Keep (OD-2, 7 Nov); remove | **Removed** per the 15 Nov brief, which is newer than OD-2. **Conflict reported**: confirm OD-2 is retired. Admin Search is unchanged | Student tabs |
+| SR-6 | The 4-digit shared staff role password | Keep as a prototype path; remove | **Removed** with the SRM and staff sign-in screens: every account uses the one Sign in, and the role comes from the account. `/staff/sessions` and the SRM operation in the OpenAPI draft should be dropped in the next contract review (NET-9) | Staff entry |
+| SR-7 | Breakfast cutoff | End of service (current, pending the per-meal cutoff decision); before the meal; the night before | Unchanged: `IntentionPolicy.cutoff`. Change answer, the lock and the day-of reminder all follow it, so a night-before cutoff would move them too | Home, reminders |
+| SR-8 | Entry QR token issuance and validation | As OD-4 / P-STORY-6 / NET-7 | Unchanged. Only which meal shows the QR changed: the meal being served (`MealStateRepository`), the same source Meals uses | Home, Door Scanner |
+| SR-9 | Crowd interval and wording | 15 minutes (Crowd frame 221:63246); other | 15 minutes. Entered so far counts each student's first valid entry once; Still expected counts I'm in answers without an entry. The Special pass crowd row now says Entered so far instead of an estimated level (a visible change on the pass page) | Crowd, Home, Special pass |
+| SR-10 | Credit amounts | P1 | Unchanged sample (+5 for I'm in or Skip, Review only, labelled so). The seeded "Rated a dish +2" and "Answered a recheck +2" lines were removed: no ledger rule gives credits for feedback (P-FINAL-8 stays open) | Credits |
+| SR-11 | Recheck eligibility | Any fixed, unanswered item; only on a day the dish is served | Any fixed, unanswered item: no link between a feedback item and today's serving exists in the data. "I didn't eat it today" is stored as the recheck answer so it is not asked again; it is never a rating | Recheck sheet |
+| SR-12 | SOS urgency and branch fields | A field on `SOSReport`; the title | The title: "Needs help now" leads it when the toggle is on. Unwell and safety reports send the place the student typed. `SOSReport` has no field for symptoms or urgency; the backend contract needs them | SOS, staff SOS cards |
+| SR-13 | Notification settings rows | Build only the two reminders; build every row of 93:9459 | Only the night-before and day-of reminders exist, because only they have behaviour. In Review the times follow the story clock and are delivered as time-interval notifications | You → Notification settings |
+| SR-14 | Where seen states live | This phone; the account on the server | This phone (`DevicePreferences`): the walkthrough per device, each guide per student and per guide. Not synced | Walkthrough, guides |
+| SR-15 | Institution registration and role picker | Build; leave out | Left out (out of scope; OD-1 bans the role picker). Register says staff accounts are created by an administrator | Register |
+
+## Student fixes (16 Nov 2026)
+
+Owner decisions given in chat on 16 November 2026, built on the student redesign branch. Where one changes an earlier row, that row is named.
+
+| # | Decision | Decided | Where it shows |
+|---|---|---|---|
+| SR-16 | Meal cutoffs (replaces SR-7) | Breakfast before 10:00 PM the night before, lunch by 9:00 AM, dinner by 2:00 PM; snacks keeps two hours before the meal (`IntentionPolicy.fixedCutoff`). At the 7:00 AM story start breakfast is already closed | Walkthrough, Home, answer page, reminders |
+| SR-17 | Credit rules (replaces SR-10 and P1 for the prototype) | Start with 20. After a meal ends: Vote yes and attend +5, vote yes and miss −3, no vote −2, vote skip and attend −2, vote skip and skip +2 (`StudentCreditRule`). **Open:** what "Not sure" earns; the code gives 0 | Walkthrough, Credits, You |
+| SR-18 | Student entry after the walkthrough | Get Started opens the sample student's Home in Debug and Review; Register and its screens are removed; Release still opens Sign in. The registration repository and its data stay unused until a real provider exists | Walkthrough |
+| SR-19 | Entry QR and special pass timing | Never limited by time in the demo: Home always offers Show entry QR; the demo pass stays open until used | Home, Special pass |
+| SR-20 | Crowd | Sample per-interval data in Debug and Review (`DemoSeed.sampleCrowdPerInterval`), not tied to the Admin live count. Quiet, Normal and Busy use the share of the meal's students already inside: under 40% Quiet, under 75% Normal, else Busy. **Open:** the real thresholds, and exits once the mess sensors exist | Home crowd row, Crowd sheet |
+| SR-21 | Meals and Community | One static page each with the native segmented picker. Community keeps Me too, Backed and Undo; the issue page and report screens are no longer reached from it | Meals, Community |
+| SR-22 | Feedback | Rate a dish is always open on My feedback; the follow-up ("was the sambar better?") is removed from Home and My feedback; the rate prompt is removed from Meals | Home, My feedback |
+| SR-23 | SOS (replaces SR-12 for the fields) | A photo is required for found something, looks bad and smells bad. Feeling unwell and another problem ask tap-only options in a native sheet, with an optional note. Location and the student's details are filled in, not typed. Plates not clean is an option under another problem | SOS |
+| SR-24 | Sheets | Every sheet uses the system background and corners with a centred title and the standard close button (`SheetHeader`, `mlSheet`): this is a shared component and changes every role's sheets | All roles |

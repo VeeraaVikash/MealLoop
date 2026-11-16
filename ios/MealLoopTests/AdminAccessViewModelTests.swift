@@ -22,7 +22,7 @@ import XCTest
         let directory = try await people.directory(by: session(.superAdmin))
         let north = directory.messes[1]
         let given = try await people.invite(name: "Sample name", contact: "new-head@mealloop.example", role: .admin, mess: north.id, by: session(.superAdmin))
-        let signedIn = try await core.signInStaff(email: given.person.account.email, password: given.value)
+        let signedIn = try await core.signIn(email: given.person.account.email, password: given.value)
         let context = try XCTUnwrap(AdminContext(session: signedIn))
         XCTAssertEqual(context.mess.id, north.id)
         XCTAssertFalse(context.allMesses)

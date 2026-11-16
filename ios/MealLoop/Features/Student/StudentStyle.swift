@@ -32,8 +32,8 @@ enum StudentMetric {
     static let qrZone: CGFloat = 254
     static let answerPrimary: CGFloat = 64
     static let answerSecondary: CGFloat = 56
-    /// The tab bar floats over the content, so every scrolling page keeps this clear (TabBar 74:236).
-    static let scrollBottom: CGFloat = 124
+    /// Space under Home's last row: the native tab bar insets the scroll view, so this is the breathing room only.
+    static let scrollBottom: CGFloat = 32
     static let chipHeight: CGFloat = 36
 }
 
@@ -217,13 +217,5 @@ extension View {
             self.toolbar(.hidden, for: .navigationBar)
                 .navigationBarBackButtonHidden(true)
         }
-    }
-}
-
-extension View {
-    /// A pinned primary action on a Student page: `MLScreen` pins it to the bottom safe area, and the Student tab bar
-    /// floats over that area, so the action keeps the bar's height and gap clear.
-    func studentAboveTabBar() -> some View {
-        padding(.bottom, MLScreenMetrics.floatingTabBarHeight + MLSpacing.s8)
     }
 }

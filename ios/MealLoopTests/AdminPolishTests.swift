@@ -16,7 +16,7 @@ final class AdminPolishTests: XCTestCase {
 
     private func index() async throws -> AdminSearchIndex {
         let core = DemoDataProvider(scenario: .duringMeal)
-        let session = try await core.signInStaff(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
+        let session = try await core.signIn(email: "superadmin@mealloop.example", password: DemoSeed.prototypePassword)
         let repos = core.makeRepositories()
         let directory = try await repos.admin.people.directory(by: session)
         let menu = try await repos.admin.more.weekMenu()

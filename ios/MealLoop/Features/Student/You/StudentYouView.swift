@@ -13,11 +13,15 @@ enum StudentYouRoute: Hashable {
     case creditsHistory
     /// Ticket · Juice (1529:1901), after Get on Credits.
     case rewardTicket(StudentRewardTicketID)
-    case attendance
     case spending
     case myFeedback
+    /// The rating of a meal, from Rate a dish on My feedback.
+    case rateMeal(day: Date, slot: MealSlot)
     case myReports
     case report(StudentFiledReportID)
+    /// Report a problem, from My reports (Community no longer starts one).
+    case newReport
+    case notificationSettings
     case help
     case privacy
     case comingSoon(String)
@@ -66,7 +70,7 @@ struct StudentYouView: View {
     var body: some View {
         NavigationStack(path: $path) {
             // The tab root: a large title that collapses into the bar.
-            MLScreen(YouCopy.you, bottomClearance: .tabBar) {
+            MLScreen(YouCopy.you) {
                 VStack(alignment: .leading, spacing: MLSpacing.s16) {
                     content
                 }
@@ -119,16 +123,27 @@ struct StudentYouView: View {
             if let rewards {
                 StudentRewardTicketView(model: rewards, id: id)
             }
-        case .attendance:
-            StudentAttendanceView(model: model) { path.removeLast() }
         case .spending:
             StudentSpendingScreen(session: session)
         case .myFeedback:
-            records { StudentMyFeedbackView(model: $0, onReports: { path.append(.myReports) }) { path.removeLast() } }
+            records { StudentMyFeedbackView(model: $0, onReports: { path.append(.myReports) },
+                                            onRate: { path.append(.rateMeal(day: $0.startsAt, slot: $0.slot)) }) { path.removeLast() } }
+        case .rateMeal(let day, let slot):
+            if let rating = StudentRatingViewModel(session: session, repositories: environment.repositories, day: day, slot: slot) {
+                StudentRateMealView(model: rating, onSOS: {}, onMyFeedback: { path.removeLast() }) { path.removeLast() }
+            }
         case .myReports:
-            records { StudentMyReportsView(model: $0, onOpen: { path.append(.report($0)) }) { path.removeLast() } }
+            records { StudentMyReportsView(model: $0, onOpen: { path.append(.report($0)) },
+                                           onNew: { path.append(.newReport) }) { path.removeLast() } }
+        case .newReport:
+            // After sending, back to My reports, where the new report now shows.
+            StudentReportScreen(session: session, onSOS: {}) { path.removeLast() }
         case .report(let id):
             records { StudentFiledReportView(model: $0, id: id) { path.removeLast() } }
+        case .notificationSettings:
+            if let context = session.student {
+                StudentNotificationSettingsScreen(context: context)
+            }
         case .help:
             records { StudentHelpView(model: $0) { path.removeLast() } }
         case .privacy:
@@ -204,8 +219,6 @@ struct StudentYouView: View {
             YouDivider()
             YouRow(symbol: "gift", title: YouCopy.credits, value: profile.credits.map(YouCopy.points)) { path.append(.credits) }
             YouDivider()
-            YouRow(symbol: "calendar", title: YouCopy.attendance) { path.append(.attendance) }
-            YouDivider()
             YouRow(symbol: "indianrupeesign", title: YouCopy.spending) { path.append(.spending) }
             YouDivider()
             YouRow(symbol: "text.bubble", title: YouCopy.myFeedback) { path.append(.myFeedback) }
@@ -214,6 +227,8 @@ struct StudentYouView: View {
 
     private var settingsCard: some View {
         YouCard {
+            YouRow(symbol: "bell", title: NotificationSettingsCopy.title) { path.append(.notificationSettings) }
+            YouDivider()
             YouRow(symbol: "questionmark.circle", title: YouCopy.help) { path.append(.help) }
             YouDivider()
             YouRow(symbol: "lock.shield", title: YouCopy.terms) { path.append(.privacy) }
@@ -302,22 +317,32 @@ struct YouRow: View {
 
 // MARK: - Credits
 
-/// Credits (221:64313) and its states: Getting a ticket (221:64396), Failed (221:65873), Empty (221:65843),
-/// Loading (221:65904), Offline (221:65917), Error (221:65941). Get runs: Getting… → the ticket → Used after use.
+/// Credits (reference: the credits balance and rules sheet, 15 Nov 2026; earlier 221:64313 and its states). The balance
+/// comes first, then the latest activity and How points work, then the tickets. How points work opens by itself on the
+/// first visit (`StudentGuide.credits`) and from its link at any time.
 struct StudentCreditsView: View {
     @State var model: StudentYouViewModel
     @State var rewards: StudentRewardsViewModel
     let onHistory: () -> Void
     let onTicket: (StudentRewardTicketID) -> Void
+    @State private var showsRules = false
+
+    /// The latest lines shown on the page; the rest are in History.
+    static let recentCount = 3
 
     var body: some View {
-        MLScreen(YouCopy.credits, subtitle: YouCopy.creditsSubtitle, bottomClearance: .tabBar) {
+        MLScreen(YouCopy.credits, subtitle: YouCopy.creditsSubtitle) {
+            StudentGuideInfoButton(guide: .credits) { showsRules = true }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }
         }
         .refreshable { await model.loadCredits() }
         .task { await model.loadCredits() }
+        .studentGuide(.credits, student: model.context.student.id, isPresented: $showsRules) {
+            StudentCreditsRulesSheet(credits: model.credits.value) { showsRules = false }
+        }
     }
 
     @ViewBuilder
@@ -326,7 +351,7 @@ struct StudentCreditsView: View {
         case .idle, .loading:
             YouSkeleton(heights: [146, 80, 80, 80], label: YouCopy.credits)
         case .failed(let failure):
-            MealsStateCard(symbol: "exclamationmark.circle", title: failure.message, detail: "")
+            RetryCard(title: YouCopy.couldntLoadCredits, message: failure.message) { Task { await model.loadCredits() } }
         case .empty:
             MealsStateCard(title: YouCopy.noBalance, detail: "")
         case .loaded(let credits), .stale(let credits, _):
@@ -340,10 +365,14 @@ struct StudentCreditsView: View {
     @ViewBuilder
     private func creditsBody(_ credits: StudentCredits, offline: Bool) -> some View {
         balanceCard(credits)
-        Text(YouCopy.tickets)
-            .font(StudentType.section)
-            .foregroundStyle(MLColor.ink)
-            .accessibilityAddTraits(.isHeader)
+        recent(credits)
+        if !credits.tickets.isEmpty {
+            Text(YouCopy.tickets)
+                .font(StudentType.section)
+                .foregroundStyle(MLColor.ink)
+                .accessibilityAddTraits(.isHeader)
+                .padding(.top, MLSpacing.s8)
+        }
         if let failed = rewards.failedReward, let name = credits.tickets.first(where: { $0.id == failed })?.name {
             HStack(alignment: .top, spacing: MLSpacing.s8) {
                 Image(systemName: "exclamationmark.triangle").accessibilityHidden(true)
@@ -369,8 +398,43 @@ struct StudentCreditsView: View {
                 }
             }
         }
-        YouCard {
-            YouRow(symbol: "clock", title: YouCopy.history, action: onHistory)
+    }
+
+    /// The latest lines of the ledger, in its order, then See all.
+    @ViewBuilder
+    private func recent(_ credits: StudentCredits) -> some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(YouCopy.recentActivity)
+                .font(StudentType.section)
+                .foregroundStyle(MLColor.ink)
+                .accessibilityAddTraits(.isHeader)
+            Spacer()
+            if credits.history.count > Self.recentCount {
+                Button(YouCopy.seeAll, action: onHistory)
+                    .font(StudentType.secondaryMedium)
+                    .foregroundStyle(MLColor.ink)
+                    .frame(minHeight: MLSize.hit)
+            }
+        }
+        if credits.history.isEmpty {
+            MealsStateCard(title: YouCopy.noActivityTitle, detail: YouCopy.noActivityDetail)
+        } else {
+            YouCard {
+                ForEach(Array(credits.history.prefix(Self.recentCount).enumerated()), id: \.element.id) { index, entry in
+                    if index > 0 { YouDivider() }
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(entry.title).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+                            Text(YouFormat.shortDay(entry.day, in: model.timeZone))
+                                .font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                        }
+                        Spacer(minLength: MLSpacing.s8)
+                        Text(YouCopy.signed(entry.points)).font(StudentType.mono).foregroundStyle(MLColor.ink)
+                    }
+                    .padding(.vertical, MLSpacing.s12)
+                    .accessibilityElement(children: .combine)
+                }
+            }
         }
     }
 
@@ -382,7 +446,7 @@ struct StudentCreditsView: View {
                         .font(.system(size: 56, weight: .medium, design: .monospaced))
                         .foregroundStyle(MLColor.onHero)
                         .mlNumericText(balance)
-                    Text(YouCopy.pts)
+                    Text(YouCopy.creditsWord)
                         .font(StudentType.section)
                         .foregroundStyle(MLColor.onHeroSecondary)
                 }
@@ -393,7 +457,7 @@ struct StudentCreditsView: View {
                         .foregroundStyle(MLColor.onHeroSecondary)
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
-                            Capsule().fill(Color.white.opacity(0.25))
+                            Capsule().fill(MLColor.onHeroSecondary.opacity(0.35))
                             Capsule().fill(MLColor.lime)
                                 .frame(width: geometry.size.width * CGFloat(balance) / CGFloat(max(goal.ticket.cost, 1)))
                         }
@@ -410,6 +474,62 @@ struct StudentCreditsView: View {
         .padding(MLSpacing.s20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.heroBackground))
+    }
+}
+
+/// How credits work (SVG pack `screens/credits-rules.svg`; owner rules of 16 Nov 2026). Every row comes from
+/// `StudentCreditRule`, the same rule the ledger applies.
+struct StudentCreditsRulesSheet: View {
+    let credits: StudentCredits?
+    let onClose: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: MLSpacing.s12) {
+            HStack(alignment: .top, spacing: MLSpacing.s12) {
+                Image("student-credits-coins")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 52, height: 52)
+                    .accessibilityHidden(true)
+                SheetHeader(title: StudentGuide.credits.title, subtitle: YouCopy.rulesSubtitle, onClose: onClose)
+            }
+            Text(YouCopy.startingBalance(StudentCreditRule.startingBalance))
+                .font(StudentType.footnote)
+                .foregroundStyle(MLColor.inkSecondary)
+            VStack(spacing: MLSpacing.s8) {
+                ForEach(YouCopy.creditRules, id: \.title) { item in
+                    rule(item.title, YouCopy.ruleAmount(item.points), earns: item.points > 0)
+                }
+            }
+            InkActionButton(title: GuideCopy.gotIt, action: onClose)
+        }
+    }
+
+    private func rule(_ title: String, _ value: String, earns: Bool) -> some View {
+        HStack(spacing: MLSpacing.s12) {
+            Text(title)
+                .font(StudentType.bodySemibold)
+                .foregroundStyle(MLColor.ink)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: MLSpacing.s8)
+            Text(value)
+                .font(StudentType.mono)
+                .foregroundStyle(MLColor.ink)
+                .padding(.horizontal, MLSpacing.s12)
+                .frame(minHeight: 30)
+                .background {
+                    if earns {
+                        Capsule().fill(MLColor.lime).overlay(Capsule().strokeBorder(MLColor.limeOutline, lineWidth: 1))
+                    } else {
+                        Capsule().fill(MLColor.fillQuiet)
+                    }
+                }
+        }
+        .padding(.horizontal, MLSpacing.s16)
+        .frame(minHeight: 56)
+        .background(RoundedRectangle(cornerRadius: MLRadius.compact, style: .continuous).fill(MLColor.surface))
+        .overlay(RoundedRectangle(cornerRadius: MLRadius.compact, style: .continuous).stroke(MLColor.border, lineWidth: 1))
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -510,7 +630,7 @@ struct StudentCreditsHistoryView: View {
 
     /// On `MLScreen`: the system back button and swipe-back pop the page; `onBack` stays for callers.
     var body: some View {
-        MLScreen(YouCopy.creditsHistory, bottomClearance: .tabBar) {
+        MLScreen(YouCopy.creditsHistory) {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }
@@ -589,187 +709,3 @@ struct StudentCreditsHistoryView: View {
     }
 }
 
-// MARK: - Attendance
-
-/// Attendance (221:64717) and Attendance · Offline (2173:266).
-struct StudentAttendanceView: View {
-    @State var model: StudentYouViewModel
-    let onBack: () -> Void
-    /// Entry · Discrepancy (221:63082), opened from the missed day that has a correctable record.
-    @State private var correcting: AttendanceRecord?
-
-    /// On `MLScreen`: the system back button and swipe-back pop the page; `onBack` stays for callers.
-    var body: some View {
-        MLScreen(YouCopy.attendance, subtitle: YouCopy.attendanceSubtitle, bottomClearance: .tabBar) {
-            VStack(alignment: .leading, spacing: MLSpacing.s16) {
-                content
-            }
-        }
-        .refreshable { await model.loadAttendance() }
-        .task { await model.loadAttendance() }
-        .mlSheet(isPresented: Binding(get: { correcting != nil }, set: { if !$0 { correcting = nil } })) {
-            if let record = correcting {
-                EntryDiscrepancySheet(record: record, timeZone: model.timeZone,
-                                      send: { try await model.sendCorrection(for: record, reason: $0, note: $1, key: $2) },
-                                      onClose: { correcting = nil }) {
-                    correcting = nil
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var content: some View {
-        switch model.attendance {
-        case .idle, .loading:
-            YouSkeleton(heights: [150, 340], label: YouCopy.attendance)
-        case .failed(let failure):
-            MealsStateCard(symbol: "exclamationmark.circle", title: failure.message, detail: "")
-        case .empty:
-            MealsStateCard(title: YouCopy.countsMissing, detail: "")
-        case .loaded(let month), .stale(let month, _):
-            summary(month)
-            calendar(month)
-        case .offline(let month, _):
-            StudentOfflineBanner(text: YouCopy.attendanceOffline)
-            if let month {
-                summary(month)
-                calendar(month)
-            }
-        }
-    }
-
-    private func summary(_ month: StudentAttendanceMonth) -> some View {
-        HStack(spacing: MLSpacing.s20) {
-            ZStack {
-                Circle().stroke(Color.white.opacity(0.2), lineWidth: 12)
-                if let percent = month.percentEntered {
-                    Circle()
-                        .trim(from: 0, to: CGFloat(percent) / 100)
-                        .stroke(MLColor.lime, style: StrokeStyle(lineWidth: 12, lineCap: .butt))
-                        .rotationEffect(.degrees(-90))
-                    Text("\(percent)%")
-                        .font(StudentType.secondaryMedium)
-                        .foregroundStyle(MLColor.onHero)
-                }
-            }
-            .frame(width: 100, height: 100)
-            .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: MLSpacing.s4) {
-                if let entered = month.mealsEntered, let served = month.mealsServed {
-                    Text(YouCopy.mealsOf(entered, served))
-                        .font(StudentType.section)
-                        .foregroundStyle(MLColor.onHero)
-                    Text(YouCopy.cameThisMonth)
-                        .font(StudentType.secondary)
-                        .foregroundStyle(MLColor.onHeroSecondary)
-                } else {
-                    Text(YouCopy.countsMissing)
-                        .font(StudentType.bodySemibold)
-                        .foregroundStyle(MLColor.onHero)
-                }
-                if month.bestStreak > 0 {
-                    Text(YouCopy.bestStreak(month.bestStreak))
-                        .font(StudentType.secondaryMedium)
-                        .foregroundStyle(MLColor.lime)
-                        .padding(.top, MLSpacing.s4)
-                }
-            }
-            Spacer(minLength: 0)
-        }
-        .padding(MLSpacing.s20)
-        .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.heroBackground))
-        .accessibilityElement(children: .combine)
-    }
-
-    private func calendar(_ month: StudentAttendanceMonth) -> some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 7)
-        let cells: [Int?] = Array(repeating: nil, count: month.firstWeekdayOffset) + (1...month.daysInMonth).map { Optional($0) }
-        return VStack(alignment: .leading, spacing: MLSpacing.s12) {
-            Text(YouFormat.month(month.month, in: model.timeZone))
-                .font(StudentType.bodySemibold)
-                .foregroundStyle(MLColor.ink)
-            LazyVGrid(columns: columns, spacing: 6) {
-                ForEach(Array(YouCopy.weekdays.enumerated()), id: \.offset) { _, day in
-                    Text(day).font(StudentType.footnote).foregroundStyle(MLColor.inkSecondary)
-                }
-                ForEach(Array(cells.enumerated()), id: \.offset) { _, day in
-                    if let day, day == model.correctableDay(in: month), let record = model.correctable {
-                        Button { correcting = record } label: {
-                            AttendanceDayCell(day: day, mark: month.marks[day] ?? .noRecord)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityHint(StudentCopy.somethingWrong)
-                    } else if let day {
-                        AttendanceDayCell(day: day, mark: month.marks[day] ?? .noRecord)
-                    } else {
-                        Color.clear.frame(height: 40)
-                    }
-                }
-            }
-            HStack(spacing: MLSpacing.s16) {
-                legend(filled: true, YouCopy.everyMeal)
-                legend(filled: false, YouCopy.noEntry)
-            }
-            Text(YouCopy.missingScanNote)
-                .font(StudentType.footnote)
-                .foregroundStyle(MLColor.inkSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-            if model.correctionRecorded {
-                Label(RecordsCopy.requestRecorded, systemImage: "checkmark.circle")
-                    .font(StudentType.secondaryMedium)
-                    .foregroundStyle(MLColor.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-            } else if model.correctableDay(in: month) != nil {
-                Text(YouCopy.tapMissedDay)
-                    .font(StudentType.footnote)
-                    .foregroundStyle(MLColor.inkSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .padding(MLSpacing.s20)
-        .background(RoundedRectangle(cornerRadius: StudentMetric.heroRadius, style: .continuous).fill(MLColor.surface))
-    }
-
-    private func legend(filled: Bool, _ text: String) -> some View {
-        HStack(spacing: 6) {
-            Circle()
-                .fill(filled ? MLColor.ink : Color.clear)
-                .overlay(Circle().strokeBorder(MLColor.ink, lineWidth: 1.5))
-                .frame(width: 10, height: 10)
-                .accessibilityHidden(true)
-            Text(text).font(StudentType.footnote).foregroundStyle(MLColor.inkSecondary)
-        }
-    }
-}
-
-struct AttendanceDayCell: View {
-    let day: Int
-    let mark: StudentAttendanceMark
-
-    var body: some View {
-        Text("\(day)")
-            .font(StudentType.secondaryMedium)
-            .foregroundStyle(mark == .everyMeal ? MLColor.onHero : (mark == .noRecord ? MLColor.inkSecondary : MLColor.ink))
-            .frame(width: 40, height: 40)
-            .background {
-                switch mark {
-                case .everyMeal: Circle().fill(MLColor.heroBackground)
-                case .noEntryForAMeal: Circle().strokeBorder(MLColor.ink, lineWidth: 1.5)
-                case .today: Circle().fill(MLColor.lime).overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1.5))
-                case .noRecord: EmptyView()
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .accessibilityLabel(accessibility)
-    }
-
-    private var accessibility: String {
-        switch mark {
-        case .everyMeal: return "\(day), \(YouCopy.everyMeal)"
-        case .noEntryForAMeal: return "\(day), \(YouCopy.noEntry)"
-        case .today: return "\(day), \(YouCopy.today)"
-        case .noRecord: return "\(day)"
-        }
-    }
-}

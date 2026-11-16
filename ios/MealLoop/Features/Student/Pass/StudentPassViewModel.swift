@@ -197,7 +197,7 @@ final class StudentCrowdViewModel {
         if state.value == nil { state = .loading }
         do {
             let crowd = try await repository.crowd(at: context.mess.id)
-            state = crowd.slots.isEmpty ? .empty : .loaded(crowd)
+            state = .loaded(crowd)
         } catch RepositoryError.offline {
             let kept = state.value
             state = .offline(kept, savedAt: kept?.observedAt)

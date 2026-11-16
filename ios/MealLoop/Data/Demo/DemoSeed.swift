@@ -199,11 +199,14 @@ enum DemoSeed {
     // Before the story starts, so the sample answers already exist at 7:00 AM.
     static let sampleLunchAnswersAt = time(6, 30)
 
-    /// NOT FROM THE DESIGN. The design documents no password value; this placeholder exists only so the
-    /// simulated password page can be tried. Recorded in docs/OPEN_DECISIONS.md.
-    static let simulatedRolePassword = "1234"
-    /// Couldn't sign in (135:15825): "SRM didn't answer in time. Nothing was saved."
-    static let srmNoAnswer = "SRM didn't answer in time. Nothing was saved."
+    /// SAMPLE DIRECTORY, NOT SRM DATA. The one student the seeded directory knows: Aarav, with the seeded student
+    /// account's email and a registration number ending in the sample student's last four. No real SRM directory is
+    /// connected (REG-1). Any other email is "not found".
+    static let studentDirectory: [(name: String, email: String, registrationNumber: String)] = [
+        ("Aarav", "student@mealloop.example", "RA2311003010238"),
+    ]
+    /// The seeded directory's answer when the Demo sheet makes the next lookup fail.
+    static let directoryNoAnswer = "The student directory didn't answer. Nothing was saved."
 
     /// SAMPLE, NOT MEASURED. Figma DS-8 Me (2512:173663) and PD-8 Me (2545:7144) draw "On shift · since 11:40 AM".
     static let deskShiftStartedAt = time(11, 40)

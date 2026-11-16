@@ -1,10 +1,10 @@
 import Foundation
 import Observation
 
-/// Staff sign in. The disabled, loading and error states of the form all live here.
+/// The one Sign in for every account. The disabled, loading and error states of the form live here.
 @MainActor
 @Observable
-final class StaffSignInViewModel {
+final class AccountSignInViewModel {
     var email = ""
     var password = ""
     private(set) var isSubmitting = false
@@ -24,53 +24,20 @@ final class StaffSignInViewModel {
         showsForgotPasswordMessage = true
     }
 
-    /// Returns the session when the sign-in is accepted. A second tap during a request does nothing.
+    /// Returns the session when the account is accepted. The role comes from that account only. A second tap during a
+    /// request does nothing; a failure keeps the typed email so the person can correct the password and try again.
     func submit() async -> Session? {
         guard canSubmit else { return nil }
         isSubmitting = true
         errorMessage = nil
         defer { isSubmitting = false }
         do {
-            return try await auth.signInStaff(email: email, password: password)
+            return try await auth.signIn(email: email, password: password)
         } catch RepositoryError.invalidCredentials {
             errorMessage = EntryCopy.wrongCredentials
         } catch {
             errorMessage = LoadFailure(error).message
         }
         return nil
-    }
-}
-
-/// Sign in with SRM. UNVERIFIED AND SIMULATED: see `AuthRepository.signInWithSRM`.
-/// "Getting your details" (135:15587), then the student's session or Couldn't sign in (135:15825).
-/// The pause only paces the simulated step; a real integration would replace it.
-@MainActor
-@Observable
-final class SRMSignInViewModel {
-    enum Phase: Equatable {
-        case gettingDetails
-        case failed(String)
-    }
-
-    private(set) var phase: Phase = .gettingDetails
-    private let auth: any AuthRepository
-    private let pause: @Sendable () async -> Void
-
-    init(auth: any AuthRepository,
-         pause: @escaping @Sendable () async -> Void = { try? await Task.sleep(for: .seconds(1.5)) }) {
-        self.auth = auth
-        self.pause = pause
-    }
-
-    /// Runs the step and returns the session. A failure stays on screen and is never shown as signed in.
-    func start() async -> Session? {
-        phase = .gettingDetails
-        await pause()
-        do {
-            return try await auth.signInWithSRM()
-        } catch {
-            phase = .failed(LoadFailure(error).message)
-            return nil
-        }
     }
 }

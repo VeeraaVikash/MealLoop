@@ -77,10 +77,26 @@ enum RecordsCopy {
     static func fixedOn(_ weekday: String) -> String { "Fixed \(weekday)" }
     static let betterToday = "Better today?"
     static let better = "Better"
-    static let same = "Same"
+    static let stillAProblem = "Still a problem"
+    static let didntEat = "I didn't eat it today"
+    static func wasItBetter(_ dish: String) -> String { "Was the \(dish.lowercased()) better today?" }
+    static func youSaidProblem(_ dish: String, _ problem: String) -> String { "You said the \(dish.lowercased()) was \(problem.lowercased())." }
+    static func kitchenRecorded(_ note: String) -> String { "The kitchen recorded: \(note)" }
+    static let recheckDue = "Better today?"
+    static let followUps = "Follow-ups"
+    static let yourFeedback = "Your feedback"
+    static let rateDishTitle = "Rate a dish"
+    static func rateDishFor(_ meal: String) -> String { "Tell us how \(meal) was." }
+    static let rateDishLocked = "Rate a dish opens once your entry for a meal is recorded at the door."
     /// Better saved (2159:151464) adds "Thanks, the kitchen sees it."; the prototype sends nothing, so it says only
     /// what was recorded.
-    static func youSaid(_ answer: StudentRecheckAnswer) -> String { "You said: \(answer == .better ? "better" : "same")." }
+    static func youSaid(_ answer: StudentRecheckAnswer) -> String {
+        switch answer {
+        case .better: return "You said: better."
+        case .stillAProblem: return "You said: still a problem."
+        case .didntEat: return "You didn't eat it that day."
+        }
+    }
     static func feedbackStage(_ stage: StudentFeedbackStage, _ day: String) -> String {
         switch stage {
         case .reported: return "Reported · \(day)"
@@ -89,12 +105,19 @@ enum RecordsCopy {
         }
     }
     static let noFeedbackTitle = "No feedback yet"
-    static let noFeedbackDetail = "Dish feedback you give shows here with what the kitchen did."
+    static let noFeedbackDetail = "Rate a dish once your entry for a meal is recorded. What you say and what the kitchen does show here."
     static let feedbackOffline = "You're offline. This is the feedback you last saw."
 
     // Spending (221:63988), Empty (221:65727), Offline (221:65753).
     static let privateChip = "Private · only you see this"
     static let monthSoFar = "This month so far"
+    static let reportProblem = "Report a problem"
+    static let touchAWeek = "Tap a week to see what you spent"
+    static let tapAgainForMonth = "Tap it again for the whole month"
+    static let nothingWritten = "Nothing written"
+    static func weekAmount(_ week: String, _ amount: String?) -> String { "\(week) · \(amount ?? "Nothing written")" }
+    static let weekAxis = "Week"
+    static let amountAxis = "Amount"
     static func rupees(_ amount: Int) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

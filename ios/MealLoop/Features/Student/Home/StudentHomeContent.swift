@@ -55,12 +55,21 @@ struct StudentHomeContent: Equatable {
 
     /// The card on top: the last staff-run meal stays `hero`, and a later meal replaces it on screen once it closes.
     var shownHero: StudentMealCard {
-        heroState == .closed ? (laterMeal ?? hero) : hero
+        if promotesNextMeal, let nextMeal { return nextMeal }
+        return heroState == .closed ? (laterMeal ?? hero) : hero
+    }
+
+    /// Owner decision, 16 Nov 2026 (I'm in and Skip on the top card): when the top meal is not being served yet, was
+    /// never answered and its answers have closed, the next meal still open to answers takes the top card.
+    var promotesNextMeal: Bool {
+        heroState == .notStarted && hero.answer == nil && !hero.isAnswerOpen && nextMeal?.isAnswerOpen == true
     }
 
     var heroCase: StudentHeroCase {
+        let top = shownHero
+        if promotesNextMeal { return top.answer == nil ? .question : .answered }
         // Before the doors open an open question still comes first: the answer is what the kitchen needs.
-        if extras?.isMessClosed == true && !(hero.answer == nil && hero.isAnswerOpen) { return .messClosed }
+        if extras?.isMessClosed == true && !(top.answer == nil && top.isAnswerOpen) { return .messClosed }
         if heroState == .inService { return .nowServing }
         if heroState == .closed && laterMeal != nil { return .nextMeal }
         if heroState == .notStarted && lastClosedMeal != nil { return .nextMeal }
@@ -69,10 +78,14 @@ struct StudentHomeContent: Equatable {
 
     /// The answer row under the top card (AnswerRow 2135:2382).
     var answerRow: StudentMealCard? {
+        if promotesNextMeal { return laterMeal }
         if let nextMeal { return nextMeal }
         if heroState == .notStarted && lastClosedMeal != nil { return hero }
         return laterMeal
     }
+
+    /// The meal being served right now, the only one Home offers the entry QR for. Nil between serving windows.
+    var servingMeal: StudentMealCard? { heroState == .inService ? hero : nil }
 
     /// Every meal this screen can open the answer page for.
     var cards: [StudentMealCard] { [hero, nextMeal, laterMeal].compactMap { $0 } }

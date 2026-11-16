@@ -51,15 +51,12 @@ final class StudentYouScreenshotTests: XCTestCase {
         window.frame = scene.screen.bounds
         window.windowLevel = .alert + 1
         window.overrideUserInterfaceStyle = .light
-        let framed = ZStack(alignment: .bottom) {
-            view()
-            GlassTabBar(items: StudentTab.pillTabs.map { GlassTabItem(tab: $0, title: $0.rawValue, symbol: $0.symbol) },
-                        selection: .constant(tab), searchTab: .search)
-                .padding(.horizontal, MLSpacing.s16)
-                .padding(.bottom, MLSpacing.s8)
+        let framed = TabView(selection: .constant(tab)) {
+            view().tabItem { Label(tab.rawValue, systemImage: tab.symbol) }.tag(tab)
         }
         window.rootViewController = UIHostingController(rootView: framed
-            .environment(world.environment).environment(world.router).environment(world.store))
+            .environment(world.environment).environment(world.router).environment(world.store)
+            .environment(DevicePreferences(defaults: UserDefaults(suiteName: "screenshots") ?? .standard)))
         window.makeKeyAndVisible()
         try await Task.sleep(for: .seconds(wait))
         let image = UIGraphicsImageRenderer(bounds: window.bounds).image { _ in
@@ -82,7 +79,6 @@ final class StudentYouScreenshotTests: XCTestCase {
                                onHistory: {}, onTicket: { _ in })
         }
         try await shot("credits_history_64443", world, tab: .you) { StudentCreditsHistoryView(model: world.youModel) {} }
-        try await shot("attendance_64717", world, tab: .you) { StudentAttendanceView(model: world.youModel) {} }
 
         let offline = World(.offline)
         try await shot("notifications_offline_66026", offline, tab: .home) { StudentNotificationsView(model: offline.youModel) {} }
@@ -107,9 +103,6 @@ final class StudentYouScreenshotTests: XCTestCase {
             try await base.profile(for: student, at: mess)
         }
         func credits(for student: StudentID) async throws -> StudentCredits { try await base.credits(for: student) }
-        func attendance(for student: StudentID, at mess: MessID) async throws -> StudentAttendanceMonth {
-            try await base.attendance(for: student, at: mess)
-        }
     }
 }
 #endif

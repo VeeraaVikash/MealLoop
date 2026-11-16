@@ -29,12 +29,13 @@ final class StudentHomeViewModelTests: XCTestCase {
 
     // MARK: What Home shows
 
-    func testAtSevenTheHeroIsBreakfastStillUnanswered() async throws {
+    /// Owner decision, 16 Nov 2026: breakfast answers close at 10 PM the night before, so at 7 AM they are closed.
+    func testAtSevenTheHeroIsBreakfastWithAnswersAlreadyClosed() async throws {
         let (model, _) = try await make()
         let content = try XCTUnwrap(model.state.value)
         XCTAssertEqual(content.hero.meal.slot, .breakfast)
         XCTAssertNil(content.hero.answer)
-        XCTAssertTrue(content.hero.isAnswerOpen)
+        XCTAssertFalse(content.hero.isAnswerOpen)
     }
 
     func testTheNextMealRowIsLunchWithNoResponse() async throws {
@@ -49,7 +50,8 @@ final class StudentHomeViewModelTests: XCTestCase {
     func testAfterBreakfastTheHeroIsLunchAndThereIsNoNextRow() async throws {
         let clock = TestClock()
         let (model, _) = try await make(clock: clock)
-        clock.set(IntentionPolicy.cutoff(for: lunch).addingTimeInterval(60))
+        // Lunch answers close at 9 AM while breakfast is still being served, so look once breakfast has ended.
+        clock.set(breakfast.endsAt.addingTimeInterval(60))
         await model.load()
         XCTAssertEqual(model.state.value?.hero.meal.slot, .lunch)
         XCTAssertNil(model.state.value?.nextMeal)
@@ -94,7 +96,8 @@ final class StudentHomeViewModelTests: XCTestCase {
         let clock = TestClock()
         let (model, _) = try await make(clock: clock)
         await model.answer(.skipping, for: lunch.id)
-        clock.set(IntentionPolicy.cutoff(for: lunch))
+        // Past the 9 AM lunch cutoff and after breakfast service, so lunch is the hero.
+        clock.set(breakfast.endsAt)
         await model.load()
         XCTAssertEqual(model.state.value?.hero.answerState, .locked(.skipping))
     }
@@ -184,7 +187,7 @@ final class StudentHomeViewModelTests: XCTestCase {
     func testANonStudentSessionCannotOpenStudentHome() async throws {
         let demo = DemoDataProvider(scenario: .storyStart)
         for account in DemoSeed.accounts where account.role != .student {
-            let session = try await demo.signInStaff(email: account.email, password: DemoSeed.prototypePassword)
+            let session = try await demo.signIn(email: account.email, password: DemoSeed.prototypePassword)
             XCTAssertNil(StudentHomeViewModel(session: session, repositories: demo.makeRepositories(), clock: demo.clock), "\(account.role)")
         }
         // A session claiming a student's context still needs the Student role.
@@ -194,7 +197,7 @@ final class StudentHomeViewModelTests: XCTestCase {
     }
 
     func testTheTabsMatchTheRoleRoot() {
-        XCTAssertEqual(StudentTab.pillTabs.map(\.rawValue), RoleRoot.student.placeholderTabs)
+        XCTAssertEqual(StudentTab.allCases.map(\.rawValue), RoleRoot.student.placeholderTabs)
     }
 
     // MARK: Cross-role
@@ -217,9 +220,9 @@ final class StudentHomeViewModelTests: XCTestCase {
 
     func testCutoffsShowFromTheBackendNotTheSampleText() {
         let timeZone = DemoSeed.mess.timeZone
-        XCTAssertEqual(StudentFormat.shortTime(IntentionPolicy.cutoff(for: lunch), in: timeZone), "10 AM")
-        XCTAssertEqual(StudentFormat.shortTime(IntentionPolicy.cutoff(for: breakfast), in: timeZone), "9:30 AM",
-                       "Breakfast stays open until its service ends (pending the owner's per-meal cutoffs)")
+        XCTAssertEqual(StudentFormat.shortTime(IntentionPolicy.cutoff(for: lunch), in: timeZone), "9 AM")
+        XCTAssertEqual(StudentFormat.shortTime(IntentionPolicy.cutoff(for: breakfast), in: timeZone), "10 PM",
+                       "Breakfast answers close at 10 PM the night before (owner decision, 16 Nov 2026)")
         XCTAssertEqual(StudentFormat.day(DemoSeed.storyStartNow, in: timeZone), "Wednesday 14 Aug")
     }
 }

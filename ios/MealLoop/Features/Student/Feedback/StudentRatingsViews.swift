@@ -9,6 +9,10 @@ import SwiftUI
 
 /// Words of the rating images. Wording only.
 enum RatingCopy {
+    static let goodSendsNow = "Good sends right away. Takes 2 seconds."
+    static let kitchenNeverSees = "The kitchen never sees your name."
+    static let thanksTitle = "Thanks, noted"
+    static func thanksDetail(_ slot: MealSlot) -> String { "Glad \(MLFormat.mealSlot(slot).lowercased()) was good." }
     static let good = "Good"
     static let notGood = "Not good"
     static let itWasFine = "It was fine"
@@ -102,8 +106,48 @@ struct StudentHowWasCard: View {
     let onGood: () -> Void
     let onNotGood: () -> Void
     let onSkip: () -> Void
+    @State private var thanked = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Good turns the card into a short "Thanks" with a tick (owner decision, 16 Nov 2026), then Home lets it go.
     var body: some View {
+        Group {
+            if thanked { thanks } else { question }
+        }
+        .padding(.horizontal, MLSpacing.s20)
+        .padding(.vertical, MLSpacing.s12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
+        .sensoryFeedback(.success, trigger: thanked) { _, new in new }
+    }
+
+    private var thanks: some View {
+        HStack(spacing: MLSpacing.s12) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 30))
+                .foregroundStyle(MLColor.ink, MLColor.lime)
+                .symbolEffect(.bounce, value: thanked)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(RatingCopy.thanksTitle).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+                Text(RatingCopy.thanksDetail(slot)).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+            }
+            Spacer(minLength: 0)
+        }
+        .frame(minHeight: 72)
+        .transition(.scale(scale: 0.9).combined(with: .opacity))
+        .accessibilityElement(children: .combine)
+    }
+
+    private func good() {
+        if reduceMotion { thanked = true } else { withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) { thanked = true } }
+        Task {
+            try? await Task.sleep(for: .seconds(1.3))
+            onGood()
+        }
+    }
+
+    private var question: some View {
         VStack(alignment: .leading, spacing: MLSpacing.s12) {
             Button(action: onOpen) {
                 HStack {
@@ -117,7 +161,7 @@ struct StudentHowWasCard: View {
             }
             .buttonStyle(.plain)
             HStack(spacing: MLSpacing.s12) {
-                RatingPill(symbol: "hand.thumbsup", title: RatingCopy.good, filled: true, action: onGood)
+                RatingPill(symbol: "hand.thumbsup", title: RatingCopy.good, filled: true, action: good)
                 RatingPill(symbol: "hand.thumbsdown", title: RatingCopy.notGood, filled: false, action: onNotGood)
             }
             Button(RatingCopy.skipForNow, action: onSkip)
@@ -126,10 +170,6 @@ struct StudentHowWasCard: View {
                 .underline()
                 .frame(maxWidth: .infinity, minHeight: MLSize.hit)
         }
-        .padding(.horizontal, MLSpacing.s20)
-        .padding(.vertical, MLSpacing.s12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
     }
 }
 
@@ -166,33 +206,46 @@ struct StudentRateMealView: View {
     let onDone: () -> Void
 
     var body: some View {
+        // The faces sit in the middle of the page and Skip for now is pinned at the bottom, so no empty band is left
+        // under them (owner feedback, 16 Nov 2026).
         MLScreen(StudentCopy.howWas(model.target.slot),
                  subtitle: RatingCopy.dayAndMess(StudentFormat.mediumDay(model.target.day, in: model.timeZone),
                                                  model.context.mess.name),
-                 bottomClearance: .tabBar) {
-            VStack(spacing: MLSpacing.s16) {
-                RatingChoiceRow(symbol: "hand.thumbsup", title: RatingCopy.good, detail: RatingCopy.itWasFine,
-                                accent: true, selected: model.isGood) {
-                    Task {
-                        if await model.rate(.good) {
-                            doneAfterThanks = true
-                            feedback = model.feedbackRequest(after: .good)
+                 fillsViewport: true) {
+            VStack(spacing: MLSpacing.s24) {
+                Spacer(minLength: MLSpacing.s16)
+                // The two choices as faces (owner reference, 16 Nov 2026; Figma Feedback · How was breakfast 2159:6).
+                HStack(spacing: 14) {
+                    face(RatingCopy.good, happy: true) {
+                        Task {
+                            if await model.rate(.good) {
+                                doneAfterThanks = true
+                                feedback = model.feedbackRequest(after: .good)
+                            }
                         }
                     }
+                    face(RatingCopy.notGood, happy: false) {
+                        Task { if await model.rate(.notGood) { feedback = model.feedbackRequest(after: .notGood) } }
+                    }
                 }
-                RatingChoiceRow(symbol: "hand.thumbsdown", title: RatingCopy.notGood, detail: RatingCopy.tellUs,
-                                accent: false, selected: false) {
-                    Task { if await model.rate(.notGood) { feedback = model.feedbackRequest(after: .notGood) } }
+                VStack(spacing: MLSpacing.s8) {
+                    Text(RatingCopy.goodSendsNow)
+                    Text(RatingCopy.kitchenNeverSees)
                 }
-                RatingStatusLine(model: model, helper: RatingCopy.notGoodOpensForm)
-                Button(RatingCopy.skipForNow, action: onDone)
-                    .font(StudentType.body)
-                    .foregroundStyle(MLColor.ink)
-                    .underline()
-                    .frame(minHeight: MLSize.hit)
-                    .padding(.top, MLSpacing.s24)
+                .font(StudentType.secondary)
+                .foregroundStyle(MLColor.inkSecondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                Spacer(minLength: MLSpacing.s16)
             }
+            .frame(maxHeight: .infinity)
             .disabled(!model.canRate)
+        } bottom: {
+            Button(RatingCopy.skipForNow, action: onDone)
+                .font(StudentType.body)
+                .foregroundStyle(MLColor.ink)
+                .underline()
+                .frame(maxWidth: .infinity, minHeight: MLSize.hit)
         }
         .task { await model.load() }
         .sensoryFeedback(.success, trigger: model.isGood) { _, good in good }
@@ -203,6 +256,29 @@ struct StudentRateMealView: View {
                 onDone()
             }
         }
+    }
+
+    /// A face with its word under it; the Good face carries a tick once this meal is rated Good.
+    private func face(_ title: String, happy: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 10) {
+                StudentFaceIcon(isHappy: happy, size: 148)
+                    .overlay(alignment: .bottomTrailing) {
+                        if happy && model.isGood {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 32))
+                                .foregroundStyle(MLColor.ink, MLColor.surface)
+                                .transition(.scale.combined(with: .opacity))
+                        }
+                    }
+                Text(title).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(happy && model.isGood ? .isSelected : [])
     }
 }
 
@@ -315,7 +391,6 @@ struct StudentRateDishView: View {
             }
         } bottom: {
             InkActionButton(title: RatingCopy.done, action: onDone)
-                .studentAboveTabBar()
         }
         .task {
             if model.dishName == nil { model.dishName = try? await loadDish().dish.name }
@@ -347,5 +422,31 @@ struct StudentRateDishView: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+
+/// The round Good and Not good faces (Figma Feedback · How was breakfast 2159:6): ink eyes and mouth on a lime or white
+/// circle with an ink ring.
+struct StudentFaceIcon: View {
+    let isHappy: Bool
+    var size: CGFloat = 116
+
+    var body: some View {
+        Canvas { context, canvas in
+            let unit = canvas.width / 140
+            for x in [52.0, 88.0] {
+                let eye = CGRect(x: (x - 5) * unit, y: 56 * unit, width: 10 * unit, height: 13 * unit)
+                context.fill(Path(ellipseIn: eye), with: .color(MLColor.ink))
+            }
+            var mouth = Path()
+            mouth.move(to: CGPoint(x: 46 * unit, y: (isHappy ? 84 : 98) * unit))
+            mouth.addQuadCurve(to: CGPoint(x: 94 * unit, y: (isHappy ? 84 : 98) * unit),
+                               control: CGPoint(x: 70 * unit, y: (isHappy ? 110 : 72) * unit))
+            context.stroke(mouth, with: .color(MLColor.ink), style: StrokeStyle(lineWidth: 5 * unit, lineCap: .round))
+        }
+        .frame(width: size, height: size)
+        .background(Circle().fill(isHappy ? MLColor.lime : MLColor.surface)
+            .overlay(Circle().strokeBorder(MLColor.ink, lineWidth: 1.5)))
+        .accessibilityHidden(true)
     }
 }

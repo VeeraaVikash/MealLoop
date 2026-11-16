@@ -1,23 +1,5 @@
 import Foundation
 
-/// An estimate of how busy the mess is. It never claims how many people are inside.
-enum CrowdLevel: String, Codable, Sendable, Hashable {
-    case quiet
-    case busy
-    case closed
-}
-
-/// The Crowd row on Student Home: seven hourly bars and one estimated level.
-struct CrowdReading: Codable, Sendable, Hashable {
-    let level: CrowdLevel
-    /// Bar heights for the seven hours, in points as drawn.
-    let bars: [Int]
-    /// The hour the student is in. Nil while the mess is closed.
-    let currentBar: Int?
-    /// Quiet: the best time. Busy: when it gets quieter. Closed: when it opens. Nil when nothing is known.
-    let detailTime: Date?
-}
-
 enum StudentPassRowStatus: String, Codable, Sendable, Hashable {
     case open
     case used
@@ -30,19 +12,13 @@ struct StudentPassRow: Codable, Sendable, Hashable {
     let status: StudentPassRowStatus
 }
 
-/// "You said the sambar was too salty." A follow-up on the student's own earlier feedback.
-struct StudentRecheck: Codable, Sendable, Hashable {
-    let title: String
-    let detail: String
-}
-
 /// Everything on Student Home that is not the meal answer. Each part is optional: a missing value is hidden or
 /// shown as missing, never as zero.
 struct StudentHomeExtras: Codable, Sendable, Hashable {
     let credits: Int?
-    let crowd: CrowdReading?
+    /// The same counts as the Crowd page, so the two never disagree. Nil when they could not be read.
+    let crowd: StudentCrowd?
     let pass: StudentPassRow?
-    let recheck: StudentRecheck?
     let isMessClosed: Bool
     /// A meal of the day after the staff-run ones, which the student can still answer.
     let laterMeal: Meal?
@@ -68,6 +44,26 @@ enum StudentEntryStanding: Sendable, Hashable {
     case scannedAgain(firstAt: Date)
     /// The student opened the code at another mess. `homeMess` is the mess it belongs to.
     case wrongMess(homeMess: String)
+}
+
+extension StudentEntryStanding {
+    /// True only when the door recorded a valid entry for this student, meal and mess. Showing the code, a pending or
+    /// rejected scan, an offline scan or a scan at another mess is never a recorded entry.
+    var isRecorded: Bool {
+        switch self {
+        case .scanned, .scannedAgain: return true
+        case .notScanned, .wrongMess: return false
+        }
+    }
+
+    /// When the entry was first recorded.
+    var recordedAt: Date? {
+        switch self {
+        case .scanned(let at): return at
+        case .scannedAgain(let firstAt): return firstAt
+        case .notScanned, .wrongMess: return nil
+        }
+    }
 }
 
 /// What the QR carries for one 12-second window: the seeded code plus a changing token.

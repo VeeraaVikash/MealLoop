@@ -64,7 +64,6 @@ struct StudentPassView: View {
             }
         } bottom: {
             bottomButton
-                .studentAboveTabBar()
         }
         .task(id: environment.dataRevision) {
             await model.load()
@@ -560,7 +559,7 @@ struct PassNextMealRow: View {
     }
 }
 
-/// "Getting busy · Updated 12:08", which opens Crowd.
+/// "Entered so far 412 · Updated 12:08", which opens Crowd. (It said an estimated level before the student redesign.)
 struct PassCrowdRow: View {
     let crowd: StudentCrowd
     let timeZone: TimeZone
@@ -573,7 +572,7 @@ struct PassCrowdRow: View {
                     .font(.system(size: 20))
                     .foregroundStyle(MLColor.ink)
                     .accessibilityHidden(true)
-                Text(MealsCopy.crowdShort(crowd.level))
+                Text(MealsCopy.enteredShort(crowd.enteredSoFar.value))
                     .font(StudentType.bodySemibold)
                     .foregroundStyle(MLColor.ink)
                 Spacer(minLength: 0)
@@ -595,7 +594,7 @@ struct PassCrowdRow: View {
         .buttonStyle(.plain)
         .disabled(action == nil)
         .accessibilityElement(children: .combine)
-        .accessibilityHint(MealsCopy.estimateSpoken)
+        .accessibilityHint(MealsCopy.countsSpoken)
     }
 }
 

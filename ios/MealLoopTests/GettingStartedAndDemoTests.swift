@@ -11,7 +11,7 @@ private final class FixedClock: StoryClock, @unchecked Sendable {
     func set(_ date: Date) { current = date }
 }
 
-/// Getting started (both sign-in paths), the Demo sheet's controls and the shared clock.
+/// The Demo sheet's controls and the shared clock. Sign in and Register are in `AccountSignInTests`.
 final class GettingStartedAndDemoTests: XCTestCase {
     private let lunch = DemoSeed.lunch
     private let aarav = DemoSeed.sampleStudent.id
@@ -19,51 +19,6 @@ final class GettingStartedAndDemoTests: XCTestCase {
     private func clean() -> (DemoDataProvider, FixedClock) {
         let clock = FixedClock(DemoSeed.storyStartNow)
         return (DemoDataProvider(scenario: .storyStart, clock: clock), clock)
-    }
-
-    // MARK: Sign in with SRM
-
-    func testWelcomeSRMSignsInTheStudent() async throws {
-        let (demo, _) = clean()
-        let session = try await demo.signInWithSRM()
-        XCTAssertEqual(session.account.role, .student)
-        XCTAssertNil(session.staff)
-    }
-
-    /// Couldn't sign in (135:15825) is a retry branch: it fails once, signs nobody in, and Try again succeeds.
-    @MainActor
-    func testAFailedSRMSignInFailsOnceThenTryAgainSucceeds() async throws {
-        let (demo, _) = clean()
-        await demo.failNextSRMSignIn()
-        let model = SRMSignInViewModel(auth: demo, pause: {})
-        let first = await model.start()
-        XCTAssertNil(first)
-        XCTAssertEqual(model.phase, .failed(DemoSeed.srmNoAnswer))
-        let retry = await model.start()
-        XCTAssertEqual(retry?.account.role, .student)
-        XCTAssertEqual(model.phase, .gettingDetails)
-    }
-
-    /// Choose your role → What you do → the role's shared password signs in that role's account at its mess.
-    func testTheRightRolePasswordSignsInThatRolesAccount() async throws {
-        let (demo, _) = clean()
-        let result = try await demo.verifyRolePassword(DemoSeed.simulatedRolePassword, for: .kitchenStaff)
-        guard case .granted(let session) = result else { return XCTFail("Expected granted, got \(result)") }
-        XCTAssertEqual(session.account.role, .kitchenStaff)
-        XCTAssertEqual(session.staff?.role, .kitchenStaff)
-        XCTAssertEqual(session.staff?.mess, DemoSeed.mess)
-    }
-
-    func testOnlyMessStaffRolesHaveARolePassword() async {
-        let (demo, _) = clean()
-        do {
-            _ = try await demo.verifyRolePassword(DemoSeed.simulatedRolePassword, for: .admin)
-            XCTFail("Admin has no shared role password")
-        } catch RepositoryError.notAllowed {
-            // Expected.
-        } catch {
-            XCTFail("Unexpected error \(error)")
-        }
     }
 
     // MARK: Shared clock
@@ -121,21 +76,8 @@ final class GettingStartedAndDemoTests: XCTestCase {
 #endif
 
 #if DEMO_DATA || REVIEW_DATA
-/// Choose your role lists Food Head and Admin after the four mess staff roles; they sign in with their own account.
-final class ChooseRoleAccountsTests: XCTestCase {
-    func testFoodHeadAndAdminAreOfferedWithTheirOwnSignIn() async throws {
-        XCTAssertEqual(StaffEntryCopy.accountRoles, [.admin, .superAdmin])
-        XCTAssertEqual(StaffEntryCopy.roleTitle(.admin), "Food Head")
-        XCTAssertEqual(StaffEntryCopy.roleTitle(.superAdmin), "Admin")
-        XCTAssertFalse(StaffEntryCopy.accountRoles.contains { $0.isMessStaff }, "No shared role password for them")
-        let demo = DemoDataProvider(scenario: .storyStart)
-        for role in StaffEntryCopy.accountRoles {
-            let email = try XCTUnwrap(DemoSeed.accounts.first { $0.role == role }).email
-            let session = try await demo.signInStaff(email: email, password: DemoSeed.prototypePassword)
-            XCTAssertEqual(session.account.role, role)
-        }
-    }
-
+/// Student type scaling.
+final class StudentTypeScalingTests: XCTestCase {
     func testStudentTextScalesAndIsCappedForTheDesignedRows() {
         XCTAssertEqual(StudentType.largestSize, .accessibility1)
         XCTAssertEqual(StudentType.body, Font.custom("Inter-Regular", size: 17, relativeTo: .body))

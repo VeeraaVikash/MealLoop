@@ -13,7 +13,8 @@ final class RewardCatalogueRepositoryTests: XCTestCase {
         let credits = try await repositories.student.you.credits(for: aarav)
         XCTAssertTrue(credits.tickets.contains { $0.id == coffee.id && $0.cost == 30 })
         let ticket = try await repositories.student.rewards.getTicket(coffee.id, for: aarav)
-        XCTAssertEqual(ticket.balanceAfter, 90)
+        // 120, less 2 for the unanswered breakfast that has ended in this scenario, less the 30-point coffee.
+        XCTAssertEqual(ticket.balanceAfter, 88)
     }
 
     func testADeletedRewardLeavesCreditsAndTicketsGotStayValid() async throws {

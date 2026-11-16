@@ -53,7 +53,10 @@ struct StudentCreditEntry: Codable, Sendable, Hashable, Identifiable {
 struct StudentCredits: Codable, Sendable, Hashable {
     let balance: Int?
     let tickets: [StudentCreditTicket]
+    /// Newest first, as the ledger orders it.
     let history: [StudentCreditEntry]
+    /// What "Vote Yes and attend" earns. Nil when the source has no number.
+    var pointsPerAnswer: Int? = nil
 
     /// The cheapest ticket the balance does not reach yet, and how many points are missing.
     var nextGoal: (ticket: StudentCreditTicket, missing: Int)? {
@@ -62,55 +65,30 @@ struct StudentCredits: Codable, Sendable, Hashable {
     }
 }
 
-/// Participation credits. A definite answer (I'm in or Skip) earns; Not sure and No response earn nothing.
-/// How many points a definite answer earns is not decided (open decision P1); the source passes its own number.
+/// Participation credits, owner decision of 16 Nov 2026 (credits rules reference): every student starts with 20; after
+/// a meal the answer and whether an entry was recorded decide the change. "Not sure" is not in that table, so it neither
+/// earns nor costs (open decision SR-16).
 enum StudentCreditRule {
-    static func points(for response: IntentionResponse, perDefiniteAnswer: Int) -> Int {
-        switch response {
-        case .answered(.attending, _), .answered(.skipping, _): return perDefiniteAnswer
-        case .answered(.notSure, _), .noResponse: return 0
+    static let startingBalance = 20
+
+    /// Whether an entry was recorded for the meal. Only known once the meal has ended.
+    enum Outcome: Sendable, Hashable { case attended, missed }
+
+    static let yesAttend = 5
+    static let yesMiss = -3
+    static let noVote = -2
+    static let skipAttend = -2
+    static let skipSkip = 2
+
+    static func points(for response: IntentionResponse, outcome: Outcome) -> Int {
+        switch (response, outcome) {
+        case (.answered(.attending, _), .attended): yesAttend
+        case (.answered(.attending, _), .missed): yesMiss
+        case (.answered(.skipping, _), .attended): skipAttend
+        case (.answered(.skipping, _), .missed): skipSkip
+        case (.noResponse, _): noVote
+        case (.answered(.notSure, _), _): 0
         }
-    }
-}
-
-/// One day on the attendance calendar. A day with no entry recorded is never called absent: a missing scan is not
-/// proof that the student was away.
-enum StudentAttendanceMark: String, Codable, Sendable, Hashable {
-    /// An entry was recorded for every meal the mess served.
-    case everyMeal
-    /// At least one meal has no entry recorded.
-    case noEntryForAMeal
-    case today
-    /// Nothing is recorded for this day (a future day, or no record).
-    case noRecord
-}
-
-struct StudentAttendanceMonth: Codable, Sendable, Hashable {
-    /// The first day of the month, in the mess's time zone.
-    let month: Date
-    /// Day of the month (1...31) to its mark. Days missing here have no record.
-    let marks: [Int: StudentAttendanceMark]
-    let daysInMonth: Int
-    /// Weekday of the 1st, Monday = 0.
-    let firstWeekdayOffset: Int
-    /// Meals with an entry recorded and meals served this month so far. Nil when unknown, never zero.
-    let mealsEntered: Int?
-    let mealsServed: Int?
-
-    /// Rounded share of served meals with an entry, or nil when either count is missing.
-    var percentEntered: Int? {
-        guard let mealsEntered, let mealsServed, mealsServed > 0 else { return nil }
-        return Int((Double(mealsEntered) / Double(mealsServed) * 100).rounded())
-    }
-
-    /// The longest run of consecutive days with an entry for every meal.
-    var bestStreak: Int {
-        var best = 0
-        var run = 0
-        for day in 1...max(1, daysInMonth) {
-            if marks[day] == .everyMeal { run += 1; best = max(best, run) } else { run = 0 }
-        }
-        return best
     }
 }
 

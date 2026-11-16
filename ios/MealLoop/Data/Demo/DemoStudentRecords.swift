@@ -45,7 +45,7 @@ struct DemoStudentRecords: StudentRecordsRepository {
     func reports(for student: StudentID) async throws -> [StudentFiledReport] {
         try await core.requireConnection()
         guard isSample(student) else { return [] }
-        var all: [StudentFiledReport] = []
+        var all: [StudentFiledReport] = await core.runFiledReports(for: student)
         for report in DemoSeed.sampleFiledReports { all.append(await withReply(report)) }
         let active = all.filter { !$0.stage.isClosed }.sorted { $0.sentAt > $1.sentAt }
         let closed = all.filter { $0.stage.isClosed }.sorted { $0.sentAt > $1.sentAt }
@@ -54,6 +54,7 @@ struct DemoStudentRecords: StudentRecordsRepository {
 
     func report(_ id: StudentFiledReportID, for student: StudentID) async throws -> StudentFiledReport {
         try await core.requireConnection()
+        if let sent = await core.runFiledReports(for: student).first(where: { $0.id == id }) { return sent }
         guard isSample(student), let report = DemoSeed.sampleFiledReports.first(where: { $0.id == id }) else {
             throw RepositoryError.notFound
         }
@@ -127,6 +128,8 @@ struct DemoStudentRecords: StudentRecordsRepository {
         guard item.stage == .fixed else {
             throw RepositoryError.notAllowed(reason: "Only a fixed dish asks if it is better.")
         }
+        // The first answer stays: a second tap, or a reopen after answering, changes nothing. "I didn't eat it today"
+        // closes the recheck and adds no rating anywhere.
         await store.recordRecheck(id, answer)
         return try await feedback(for: student)
     }

@@ -23,17 +23,37 @@ struct MealAnswerCounts: Codable, Sendable, Hashable {
 }
 
 enum IntentionPolicy {
-    /// Planning cutoff: two hours before the meal starts (owner decision).
+    /// Snacks' planning cutoff: two hours before the meal starts (owner decision). The other meals have fixed times.
     static let cutoffBeforeMeal: TimeInterval = 2 * 60 * 60
 
-    /// Breakfast stays open to answers until its service ends. PENDING the owner's per-meal cutoff decision (Figma
-    /// "Open decision / Cutoff time for each meal"): Home · Not answered (221:62529) asks "Breakfast today?" with I'm in,
-    /// Skip and the swipe-to-remind at 7:00 AM, which no cutoff before the meal allows.
-    static func cutoff(for meal: Meal) -> Date {
-        switch meal.slot {
-        case .breakfast: meal.endsAt
-        case .lunch, .snacks, .dinner: meal.startsAt.addingTimeInterval(-cutoffBeforeMeal)
+    /// The mess clock. Cutoffs are wall-clock times in India Standard Time, as the server keeps them (NFR-REL-010).
+    static let messTimeZone = TimeZone(identifier: "Asia/Kolkata") ?? .current
+
+    /// A fixed cutoff on the wall clock: `daysBefore` 1 means the evening before the meal's day.
+    struct FixedCutoff: Sendable, Hashable {
+        let hour: Int
+        let minute: Int
+        let daysBefore: Int
+    }
+
+    /// Owner decision, 16 Nov 2026 (walkthrough reference "Attendance & Meals"): breakfast before 10:00 PM the night
+    /// before, lunch by 9:00 AM, dinner by 2:00 PM. Snacks is not in that reference and keeps the two-hour rule.
+    static func fixedCutoff(for slot: MealSlot) -> FixedCutoff? {
+        switch slot {
+        case .breakfast: FixedCutoff(hour: 22, minute: 0, daysBefore: 1)
+        case .lunch: FixedCutoff(hour: 9, minute: 0, daysBefore: 0)
+        case .dinner: FixedCutoff(hour: 14, minute: 0, daysBefore: 0)
+        case .snacks: nil
         }
+    }
+
+    static func cutoff(for meal: Meal) -> Date {
+        guard let fixed = fixedCutoff(for: meal.slot) else { return meal.startsAt.addingTimeInterval(-cutoffBeforeMeal) }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = messTimeZone
+        let day = calendar.startOfDay(for: meal.startsAt)
+        let base = calendar.date(byAdding: .day, value: -fixed.daysBefore, to: day) ?? day
+        return calendar.date(bySettingHour: fixed.hour, minute: fixed.minute, second: 0, of: base) ?? base
     }
 
     /// After the cutoff the answer buttons are disabled. The entry QR is never locked.

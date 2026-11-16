@@ -22,12 +22,22 @@ struct StudentSOSScreen: View {
     }
 }
 
-/// SOS · new (2162:6) and I feel unwell (2162:161): pick one, optionally a dish, then the photo.
+/// SOS (student redesign, 15 Nov 2026; earlier SOS · new 2162:6 and I feel unwell 2162:161): pick a reason, then the
+/// fields that reason needs. The food reasons pick a dish; Found something needs a photo, the other food reasons may
+/// add one; I feel unwell and Another safety problem have no photo step.
 struct StudentSOSView: View {
     @State private var model: StudentSOSViewModel
     @State private var showsCamera = false
     @State private var showsReview = false
+    /// Set after a tap on a disabled Next, so the missing fields are marked only once the student tried.
+    @State private var triedToGoOn = false
+    @State private var showsGuide = false
+    @State private var showsDetails = false
+    @State private var reviewAfterDetails = false
     let onClose: () -> Void
+
+    /// Every reason asks its questions in the app's sheet (owner decision, 16 Nov 2026), Which dish included.
+    private static func asksInSheet(_ category: StudentSOSCategory) -> Bool { true }
 
     init(model: StudentSOSViewModel, onClose: @escaping () -> Void) {
         _model = State(initialValue: model)
@@ -35,37 +45,74 @@ struct StudentSOSView: View {
     }
 
     var body: some View {
+        @Bindable var model = model
         MLScreen(StudentSOSCopy.title, subtitle: StudentSOSCopy.pickOne) {
+            StudentGuideInfoButton(guide: .sos) { showsGuide = true }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s12) {
-                ForEach(StudentSOSCategory.allCases, id: \.self) { category in
+                ForEach(StudentSOSCategory.offered, id: \.self) { category in
                     StudentSOSCategoryRow(category: category, selected: model.category == category) {
                         model.choose(category)
+                        triedToGoOn = false
+                        // Feeling unwell and another problem ask their questions in a native sheet (owner decision,
+                        // 16 Nov 2026); the food reasons stay on the page.
+                        if Self.asksInSheet(category) { showsDetails = true }
                     }
                 }
-                if !model.dishes.isEmpty {
-                    Text(StudentSOSCopy.whichDish)
-                        .font(StudentType.secondaryMedium)
-                        .foregroundStyle(MLColor.inkSecondary)
+                if let category = model.category, !Self.asksInSheet(category) {
+                    branch(category)
                         .padding(.top, MLSpacing.s8)
-                    StudentChipFlow(spacing: MLSpacing.s8) {
-                        ForEach(model.dishes, id: \.self) { dish in
-                            StudentSOSDishChip(dish: dish, selected: model.dish == dish) { model.toggle(dish: dish) }
-                        }
-                    }
                 }
             }
         } bottom: {
             VStack(spacing: MLSpacing.s8) {
-                PassBottomButton(title: StudentSOSCopy.next) { showsCamera = true }
-                    .disabled(!model.canGoOn)
-                    .opacity(model.canGoOn ? 1 : 0.4)
+                if triedToGoOn && !model.detailProblems.isEmpty {
+                    InlineErrorText(message: StudentSOSCopy.pickWhatsMissing)
+                }
+                PassBottomButton(title: nextTitle) { goOn() }
+                    .opacity(model.category == nil ? 0.4 : 1)
+                    .disabled(model.category == nil)
+                if model.category?.photo == .optional {
+                    Button(StudentSOSCopy.continueWithoutPhoto) {
+                        guard check() else { return }
+                        model.continueWithoutPhoto()
+                        showsReview = true
+                    }
+                    .font(StudentType.bodySemibold)
+                    .foregroundStyle(MLColor.ink)
+                    .frame(minHeight: MLSize.hit)
+                }
                 Text(StudentSOSCopy.footnote)
                     .font(StudentType.footnote)
                     .foregroundStyle(MLColor.inkSecondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .studentAboveTabBar()
+        }
+        .studentGuide(.sos, student: model.context.student.id, isPresented: $showsGuide)
+        .mlSheet(isPresented: $showsDetails, isWorking: false, onDismiss: {
+            // The next step opens once the sheet has gone, so it never fights the sheet's own animation: the camera for
+            // a reason that takes a photo, otherwise the review.
+            if reviewAfterDetails {
+                reviewAfterDetails = false
+                if model.category?.photo == StudentSOSCategory.Photo.none { showsReview = true } else { showsCamera = true }
+            }
+        }) {
+            if let category = model.category {
+                VStack(alignment: .leading, spacing: MLSpacing.s12) {
+                    SheetHeader(title: sheetTitle(category), onClose: { showsDetails = false })
+                    branch(category)
+                    if triedToGoOn && !model.detailProblems.isEmpty {
+                        InlineErrorText(message: StudentSOSCopy.pickWhatsMissing)
+                    }
+                    InkActionButton(title: nextTitle) {
+                        guard check() else { return }
+                        reviewAfterDetails = true
+                        showsDetails = false
+                    }
+                    .padding(.top, MLSpacing.s4)
+                }
+            }
         }
         .task { await model.load() }
         .fullScreenCover(isPresented: $showsCamera, onDismiss: {
@@ -77,6 +124,134 @@ struct StudentSOSView: View {
             StudentSOSReviewPage(model: model, onRetake: { showsCamera = true }, onClose: onClose)
         }
         .mlAnimation(.snappy, value: model.category)
+    }
+
+    private func sheetTitle(_ category: StudentSOSCategory) -> String {
+        switch category {
+        case .unwell: StudentSOSCopy.unwellShort
+        case .otherSafety: StudentSOSCopy.otherShort
+        default: category.title
+        }
+    }
+
+    private var nextTitle: String {
+        switch model.category?.photo {
+        case .required?: return StudentSOSCopy.next
+        case .optional?: return StudentSOSCopy.nextPhotoOptional
+        case .none?, nil: return StudentSOSCopy.reviewNext
+        }
+    }
+
+    private func check() -> Bool {
+        triedToGoOn = true
+        return model.detailProblems.isEmpty
+    }
+
+    private func goOn() {
+        guard check(), let category = model.category else { return }
+        if category.photo == .none { showsReview = true } else { showsCamera = true }
+    }
+
+    private func missing(_ problem: StudentSOSProblem) -> Bool { triedToGoOn && model.detailProblems.contains(problem) }
+
+    /// Only the current reason's fields. Switching reasons cleared the others in the view model.
+    @ViewBuilder
+    private func branch(_ category: StudentSOSCategory) -> some View {
+        @Bindable var model = model
+        if category.asksForDish {
+            label(StudentSOSCopy.whichDish, missing: missing(.dish))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(model.dishes + [StudentSOSCopy.notListed], id: \.self) { dish in
+                    StudentSOSDishChip(dish: dish, selected: model.dish == dish) { model.toggle(dish: dish) }
+                }
+            }
+            if category.photo == .required {
+                Label(StudentSOSCopy.photoRequired, systemImage: "camera")
+                    .font(StudentType.footnote)
+                    .foregroundStyle(MLColor.inkSecondary)
+            }
+        } else if category == .unwell {
+            label(StudentSOSCopy.whichMeal, missing: missing(.meal))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(model.mealsToday, id: \.self) { slot in
+                    StudentSOSDishChip(dish: MLFormat.mealSlot(slot), selected: model.unwellMeal == slot) {
+                        model.unwellMeal = model.unwellMeal == slot ? nil : slot
+                    }
+                }
+            }
+            label(StudentSOSCopy.symptoms, missing: missing(.symptoms))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(StudentSOSCopy.symptomOptions, id: \.self) { option in
+                    StudentSOSDishChip(dish: option, selected: model.pickedSymptoms.contains(option)) { model.toggle(symptom: option) }
+                }
+            }
+            label(StudentSOSCopy.startedWhen, missing: missing(.startedWhen))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(StudentSOSCopy.startedOptions, id: \.self) { option in
+                    StudentSOSDishChip(dish: option, selected: model.startedWhen == option) { model.pick(started: option) }
+                }
+            }
+            field(StudentSOSCopy.anythingElse, prompt: "", text: $model.extraNote, missing: false)
+            detailsCard
+        } else {
+            label(StudentSOSCopy.whatsWrong, missing: missing(.whatHappened))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(StudentSOSCopy.problemOptions, id: \.self) { option in
+                    StudentSOSDishChip(dish: option, selected: model.pickedProblem == option) { model.pick(problem: option) }
+                }
+            }
+            field(StudentSOSCopy.anythingElse, prompt: "", text: $model.extraNote, missing: false)
+            detailsCard
+            Toggle(isOn: $model.needsHelpNow) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(StudentSOSCopy.needHelpNow).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+                    Text(StudentSOSCopy.needHelpDetail).font(StudentType.footnote).foregroundStyle(MLColor.inkSecondary)
+                }
+            }
+            .tint(MLColor.ink)
+            .padding(MLSpacing.s16)
+            .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
+        }
+    }
+
+    /// What goes with the SOS without typing: where the phone is and who is sending it.
+    private var detailsCard: some View {
+        VStack(alignment: .leading, spacing: MLSpacing.s8) {
+            Text(StudentSOSCopy.yourDetails).font(StudentType.secondaryMedium).foregroundStyle(MLColor.inkSecondary)
+            HStack(spacing: MLSpacing.s8) {
+                Image(systemName: "location.fill").foregroundStyle(MLColor.ink).accessibilityHidden(true)
+                Text(StudentSOSCopy.locationLabel).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                Spacer(minLength: MLSpacing.s8)
+                Text(model.locationText).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+            }
+            HStack(spacing: MLSpacing.s8) {
+                Image(systemName: "person.fill").foregroundStyle(MLColor.ink).accessibilityHidden(true)
+                Text(StudentSOSCopy.youLabel).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                Spacer(minLength: MLSpacing.s8)
+                Text("\(model.context.student.maskedID) · \(model.context.mess.name)")
+                    .font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+            }
+        }
+        .padding(MLSpacing.s16)
+        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
+        .accessibilityElement(children: .combine)
+    }
+
+    private func label(_ text: String, missing: Bool) -> some View {
+        HStack(spacing: MLSpacing.s4) {
+            if missing { Image(systemName: "exclamationmark.circle").accessibilityHidden(true) }
+            Text(text)
+        }
+        .font(StudentType.secondaryMedium)
+        .foregroundStyle(missing ? MLColor.danger : MLColor.inkSecondary)
+        .accessibilityValue(missing ? StudentSOSCopy.required : "")
+    }
+
+    private func field(_ title: String, prompt: String, text: Binding<String>, missing: Bool, lines: Int = 1) -> some View {
+        EntryField(label: title, error: missing ? StudentSOSCopy.required : nil) {
+            TextField(title, text: text, prompt: Text(prompt), axis: .vertical)
+                .lineLimit(lines...max(lines, 4))
+        }
     }
 }
 
@@ -247,21 +422,26 @@ private struct StudentSOSCameraDenied: View {
             .padding(MLSpacing.s24)
             .frame(maxWidth: .infinity, minHeight: 360)
             .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(StudentSOSDark.preview))
-            Button {
-                model.continueWithoutPhoto()
-                onClose()
-            } label: {
-                Text(StudentSOSCopy.sendWithoutPhoto)
-                    .font(StudentType.bodySemibold)
+            if model.category?.photo == .required {
+                // Found something in my food cannot be sent without a photo.
+                Text(StudentSOSCopy.photoRequiredCameraOff)
+                    .font(StudentType.body)
                     .foregroundStyle(MLColor.onHero)
-                    .frame(maxWidth: .infinity, minHeight: 56)
-                    .overlay(Capsule().strokeBorder(MLColor.onHero, lineWidth: 1.5))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Button {
+                    model.continueWithoutPhoto()
+                    onClose()
+                } label: {
+                    Text(StudentSOSCopy.sendWithoutPhoto)
+                        .font(StudentType.bodySemibold)
+                        .foregroundStyle(MLColor.onHero)
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .overlay(Capsule().strokeBorder(MLColor.onHero, lineWidth: 1.5))
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
-            Text(StudentSOSCopy.flagged)
-                .font(StudentType.footnote)
-                .foregroundStyle(MLColor.onHeroSecondary)
-                .multilineTextAlignment(.center)
         }
     }
 }
@@ -341,6 +521,9 @@ struct StudentSOSReviewPage: View {
                     StudentOfflineBanner(text: StudentSOSCopy.offline).mlTransition(.fromTop)
                 }
                 StudentSOSProofCard(model: model, onRetake: onRetake)
+                if model.category?.photo == .required && !model.hasPhoto {
+                    InlineErrorText(message: StudentSOSCopy.photoRequired)
+                }
                 StudentSOSChecks(model: model)
                 if model.sendState == .failed {
                     HStack(alignment: .top, spacing: MLSpacing.s8) {
@@ -363,14 +546,13 @@ struct StudentSOSReviewPage: View {
                         if raised { finish() }
                     }
                 }
-                .disabled(model.isSending || model.sendState == .waitingForConnection)
+                .disabled(model.isSending || model.sendState == .waitingForConnection || !model.problems.isEmpty)
                 Text(StudentSOSCopy.toldAtOnce)
                     .font(StudentType.footnote)
                     .foregroundStyle(MLColor.inkSecondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .studentAboveTabBar()
         }
         .navigationBarBackButtonHidden(model.isSending)
         // On appear and whenever the data changes (the prototype's reconnect): a kept SOS is sent with the same key.
@@ -414,7 +596,7 @@ private struct StudentSOSProofCard: View {
             if let at = model.photoAt {
                 StudentSOSPreview(time: MLFormat.time(at, in: model.timeZone), model: model)
                     .frame(height: 150)
-            } else {
+            } else if model.category?.photo != StudentSOSCategory.Photo.none {
                 VStack(spacing: MLSpacing.s4) {
                     Image(systemName: "camera").accessibilityHidden(true)
                     Text(StudentSOSCopy.noPhoto).font(StudentType.secondary)
@@ -429,7 +611,11 @@ private struct StudentSOSProofCard: View {
                 .font(StudentType.bodySemibold)
                 .foregroundStyle(MLColor.ink)
                 .fixedSize(horizontal: false, vertical: true)
-            if model.hasPhoto {
+            if model.category?.photo == StudentSOSCategory.Photo.none {
+                Text(StudentSOSCopy.placeLine(model.place))
+                    .font(StudentType.secondary)
+                    .foregroundStyle(MLColor.inkSecondary)
+            } else if model.hasPhoto {
                 Button(action: onRetake) {
                     Text(StudentSOSCopy.retake).font(StudentType.secondaryMedium).foregroundStyle(MLColor.ink).underline()
                         .frame(minHeight: MLSize.hit)
@@ -452,7 +638,7 @@ private struct StudentSOSChecks: View {
         VStack(alignment: .leading, spacing: MLSpacing.s12) {
             if model.hasPhoto {
                 check(ok: true, StudentSOSCopy.takenLive)
-            } else {
+            } else if model.category?.photo == .optional {
                 check(ok: false, StudentSOSCopy.noPhotoFlagged)
             }
             check(ok: model.location == .atMess,
@@ -498,7 +684,6 @@ struct StudentSOSSentView: View {
             }
         } bottom: {
             PassBottomButton(title: ReportCopy.done, action: onClose)
-                .studentAboveTabBar()
         }
         .navigationBarBackButtonHidden(true)
     }

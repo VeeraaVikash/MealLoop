@@ -65,7 +65,7 @@ final class AppEnvironmentTests: XCTestCase {
 
     func testRemoteSignInFailureSaysItIsNotAvailable() async {
         do {
-            _ = try await RemoteAPI(baseURL: nil).signInStaff(email: "a", password: "b")
+            _ = try await RemoteAPI(baseURL: nil).signIn(email: "a", password: "b")
             XCTFail("RemoteAPI must never show a sign-in as success")
         } catch {
             XCTAssertEqual(LoadFailure(error).message, "Remote sign in isn't available yet")

@@ -64,7 +64,7 @@ final class StudentRecordsRepositoryTests: XCTestCase {
         let sambar = StudentFeedbackID("demo-feedback-sambar")
         let first = try await records.answerRecheck(sambar, .better, by: aarav)
         XCTAssertEqual(first.items.first { $0.id == sambar }?.recheck, .better)
-        let second = try await records.answerRecheck(sambar, .same, by: aarav)
+        let second = try await records.answerRecheck(sambar, .stillAProblem, by: aarav)
         XCTAssertEqual(second.items.first { $0.id == sambar }?.recheck, .better)
         do {
             _ = try await records.answerRecheck(StudentFeedbackID("demo-feedback-pulao"), .better, by: aarav)

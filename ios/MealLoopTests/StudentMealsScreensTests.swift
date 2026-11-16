@@ -28,9 +28,6 @@ private final class SwitchableMeals: StudentMealsRepository, @unchecked Sendable
     func dishDetail(_ dish: DishID, on day: Date, slot: MealSlot, mess: MessID) async throws -> StudentDishDetail {
         try check(); return try await source.dishDetail(dish, on: day, slot: slot, mess: mess)
     }
-    func findDishes(_ text: String, mess: MessID) async throws -> [StudentDishMatch] {
-        try check(); return try await source.findDishes(text, mess: mess)
-    }
     func passStanding(of student: StudentID, at mess: MessID) async throws -> StudentPassStanding {
         try check(); return try await source.passStanding(of: student, at: mess)
     }
@@ -43,12 +40,12 @@ private final class SwitchableMeals: StudentMealsRepository, @unchecked Sendable
         try check()
         let crowd = try await source.crowd(at: mess)
         guard crowdHasNoSlots else { return crowd }
-        return StudentCrowd(meal: crowd.meal, observedAt: crowd.observedAt, level: crowd.level, detailTime: crowd.detailTime, slots: [],
-                            currentSlot: nil, bestSlot: nil, waitNowMinutes: nil, busiestWaitMinutes: nil, busiestAt: nil)
+        return StudentCrowd(meal: crowd.meal, mealState: crowd.mealState, observedAt: crowd.observedAt,
+                            enteredSoFar: .unavailable, stillExpected: .unavailable, intervals: [])
     }
 }
 
-/// The Meals tab, Search, the Special pass and Crowd as rebuilt from the Figma frames.
+/// The Meals tab, the Special pass and Crowd as rebuilt from the Figma frames.
 @MainActor
 final class StudentMealsScreensTests: XCTestCase {
     private let wednesday = DemoSeed.date(14, 0, 0)
@@ -125,39 +122,7 @@ final class StudentMealsScreensTests: XCTestCase {
         guard case .offline(nil, _) = model.state else { return XCTFail("A meal never shown has nothing saved") }
     }
 
-    // MARK: Search
 
-    func testSearchNarrowsByNameAndShowsTheEmptyResult() async throws {
-        let (_, _, repositories, _) = try make()
-        let model = try XCTUnwrap(StudentSearchViewModel(session: try session, repositories: repositories))
-        model.text = "sambar"
-        await model.search()
-        let wide = try XCTUnwrap(model.state.value)
-        XCTAssertTrue(wide.allSatisfy { $0.dish.name.localizedCaseInsensitiveContains("sambar") })
-
-        model.text = "masala sambar"
-        await model.search()
-        let narrow = try XCTUnwrap(model.state.value)
-        XCTAssertLessThan(narrow.count, wide.count)
-
-        model.text = "biryani"
-        await model.search()
-        guard case .empty = model.state else { return XCTFail("No dish is called biryani on the board") }
-        XCTAssertEqual(model.searchedText, "biryani")
-        XCTAssertEqual(MealsCopy.noResults(model.searchedText), "No results for \"biryani\"")
-
-        model.clear()
-        guard case .idle = model.state else { return XCTFail("Clearing goes back to the start") }
-    }
-
-    func testSearchOfflineIsNeverAnEmptyResult() async throws {
-        let (_, meals, repositories, _) = try make()
-        meals.isOffline = true
-        let model = try XCTUnwrap(StudentSearchViewModel(session: try session, repositories: repositories))
-        model.text = "sambar"
-        await model.search()
-        guard case .offline = model.state else { return XCTFail("Offline, not no results") }
-    }
 
     // MARK: Special pass
 
@@ -270,22 +235,25 @@ final class StudentMealsScreensTests: XCTestCase {
         let model = try XCTUnwrap(StudentCrowdViewModel(session: try session, repositories: repositories))
         await model.load()
         let crowd = try XCTUnwrap(model.state.value)
-        XCTAssertEqual(CrowdBody.eyebrow(crowd, isOffline: false, timeZone: model.timeZone), "Lunch · 7:00 AM · ESTIMATE")
+        XCTAssertEqual(CrowdBody.eyebrow(crowd, isOffline: false, timeZone: model.timeZone), "Lunch · Updated 7:00 AM")
 
         meals.isOffline = true
         await model.load()
         guard case .offline(let kept?, let savedAt) = model.state else { return XCTFail("Offline keeps the last reading") }
         XCTAssertEqual(savedAt, kept.observedAt)
         XCTAssertEqual(CrowdBody.eyebrow(kept, isOffline: true, timeZone: model.timeZone), "Lunch · Updated 7:00 AM")
-        XCTAssertEqual(MealsCopy.levelAt(kept.level, time: "7:00"), "Quiet at 7:00")
+        XCTAssertEqual(kept.enteredSoFar, crowd.enteredSoFar, "Offline shows the last counts, labelled with their time")
     }
 
-    func testTooFewEntriesIsAnHonestEmptyStateNotZero() async throws {
+    func testUnreadableCountsAreShownAsMissingNotZero() async throws {
         let (_, meals, repositories, _) = try make()
         meals.crowdHasNoSlots = true
         let model = try XCTUnwrap(StudentCrowdViewModel(session: try session, repositories: repositories))
         await model.load()
-        guard case .empty = model.state else { return XCTFail("Not enough entries yet") }
+        let crowd = try XCTUnwrap(model.state.value)
+        XCTAssertNil(crowd.enteredSoFar.value)
+        XCTAssertNil(crowd.stillExpected.value)
+        XCTAssertEqual(MealsCopy.noCount, "—")
     }
 
     func testAnUnbuiltCrowdServiceSaysSoAndNeverShowsAReading() async throws {

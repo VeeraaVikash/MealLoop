@@ -103,7 +103,6 @@ struct StudentRemindSwipe<Content: View>: View {
             .modifier(RemindSwipeGesture(enabled: enabled, edge: Self.edge, drag: drag,
                                          onChanged: { dx in track(dx) }, onEnded: { end() }))
             .sensoryFeedback(.impact(weight: .light), trigger: crossed) { _, new in new }
-            .mlAnimation(.crossFade, value: crossed)
             .accessibilityActions {
                 if enabled { Button(ReminderCopy.remindAction, action: onRemind) }
             }
@@ -148,16 +147,31 @@ struct StudentRemindSwipe<Content: View>: View {
             }
     }
 
+    /// Follows the finger 1:1 up to half the card, then with resistance, so the card never runs off. No implicit
+    /// animation while tracking: an animated frame during a drag was what made the swipe stutter.
     private func track(_ dx: CGFloat) {
-        offset = max(0, dx)
-        crossed = offset >= threshold
+        let limit = max(width / 2, threshold)
+        let raw = max(0, dx)
+        let eased = raw <= limit ? raw : limit + (raw - limit) * 0.25
+        var quiet = Transaction()
+        quiet.disablesAnimations = true
+        withTransaction(quiet) {
+            offset = eased
+            crossed = eased >= threshold
+        }
     }
 
+    /// Springs back to rest; the reminder is set only when the swipe passed the threshold.
     private func end() {
         let set = crossed
-        MLMotion.animate(.snappy, reduceMotion: reduceMotion) {
+        if reduceMotion {
             offset = 0
             crossed = false
+        } else {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                offset = 0
+                crossed = false
+            }
         }
         if set { onRemind() }
     }

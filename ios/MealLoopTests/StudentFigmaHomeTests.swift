@@ -49,12 +49,12 @@ final class StudentFigmaHomeTests: XCTestCase {
     // MARK: The top card
 
     /// Home · Not answered (221:62529): "Breakfast today?" with I'm in, Skip and Entry QR.
-    func testAtSevenTheCardAsksAboutBreakfast() async throws {
+    /// At 7 AM breakfast answers have been closed since 10 PM the night before.
+    func testAtSevenTheBreakfastCardIsClosedToAnswers() async throws {
         let (model, _) = try await make()
         let home = try content(model)
-        XCTAssertEqual(home.heroCase, .question)
         XCTAssertEqual(home.hero.meal.slot, .breakfast)
-        XCTAssertEqual(home.hero.answerState, .unanswered)
+        XCTAssertEqual(home.hero.answerState, .locked(nil))
     }
 
     func testAnOpenBreakfastQuestionComesBeforeTheClosedMess() async throws {
@@ -68,16 +68,22 @@ final class StudentFigmaHomeTests: XCTestCase {
                                         student: StudentRepositories(extras: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.load()
+        // Breakfast answers closed at 10 PM the night before, so the open lunch question takes the top card.
         XCTAssertEqual(try content(model).heroCase, .question)
+        XCTAssertEqual(try content(model).shownHero.meal.slot, .lunch)
     }
 
     /// Before the doors open an open question comes first; once answered, the card says the mess is closed.
-    func testBeforeTheDoorsOpenTheCardSaysTheMessIsClosedOnceAnswered() async throws {
+    /// Before the doors open, with breakfast answers already closed, the card says the mess is closed.
+    /// Before the doors open, with breakfast closed, the top card asks about lunch; once lunch is answered and
+    /// breakfast is still unanswered, it keeps showing lunch, answered.
+    func testBeforeTheDoorsOpenTheTopCardAsksAboutTheNextOpenMeal() async throws {
         let (model, demo) = try await make(at: DemoSeed.time(6, 30))
         XCTAssertEqual(try content(model).heroCase, .question)
-        _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.breakfast.id)
+        XCTAssertEqual(try content(model).shownHero.meal.slot, .lunch)
+        _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.lunch.id)
         await model.load()
-        XCTAssertEqual(try content(model).heroCase, .messClosed)
+        XCTAssertEqual(try content(model).heroCase, .answered)
     }
 
     func testDuringBreakfastTheCardSaysItIsOpen() async throws {
@@ -93,11 +99,12 @@ final class StudentFigmaHomeTests: XCTestCase {
         XCTAssertEqual(home.lastClosedMeal?.slot, .breakfast)
     }
 
-    func testAfterTheCutoffTheRowSaysLunchAnswersAreClosed() async throws {
+    /// Lunch closes at 9 AM and dinner stays open until 2 PM (owner decision, 16 Nov 2026), so the row moves on.
+    func testAfterTheLunchCutoffTheRowAsksAboutDinner() async throws {
         let (model, _) = try await make(at: IntentionPolicy.cutoff(for: lunch).addingTimeInterval(60))
         let row = try XCTUnwrap(try content(model).answerRow)
-        XCTAssertEqual(row.meal.slot, .lunch)
-        XCTAssertFalse(row.isAnswerOpen)
+        XCTAssertEqual(row.meal.slot, .dinner)
+        XCTAssertTrue(row.isAnswerOpen)
     }
 
     func testDuringLunchTheCardIsOpenAndTheRowAsksAboutDinner() async throws {
@@ -138,7 +145,8 @@ final class StudentFigmaHomeTests: XCTestCase {
         await model.answer(.notSure, for: lunch.id)
         XCTAssertEqual(model.card(id: lunch.id)?.answer, .notSure)
 
-        clock.set(IntentionPolicy.cutoff(for: lunch))
+        // After the 9 AM lunch cutoff and after breakfast service, so lunch is on Home.
+        clock.set(DemoSeed.breakfast.endsAt)
         await model.answer(.skipping, for: lunch.id)
         let stored = try await demo.response(of: aarav, for: lunch.id)
         guard case .answered(.notSure, _) = stored else { return XCTFail("The backend must refuse it, got \(stored)") }
@@ -338,7 +346,9 @@ final class StudentFigmaHomeTests: XCTestCase {
         let home = try content(model)
         XCTAssertNil(home.extras)
         XCTAssertEqual(StudentCopy.points(home.extras?.credits), "— pts")
-        XCTAssertEqual(home.answerRow?.meal.slot, .lunch)
+        // Breakfast closed the night before, so lunch, still open, is on the top card (owner decision, 16 Nov 2026).
+        XCTAssertEqual(home.shownHero.meal.slot, .lunch)
+        XCTAssertTrue(home.promotesNextMeal)
     }
 
     func testAMenuFallsBackWithoutExtras() async throws {
@@ -353,7 +363,7 @@ final class StudentFigmaHomeTests: XCTestCase {
 
     func testCutoffTextComesFromTheBackendNotTheFrame() {
         let row = StudentCopy.decideBy(StudentFormat.shortTime(IntentionPolicy.cutoff(for: lunch), in: DemoSeed.mess.timeZone), left: "3h")
-        XCTAssertTrue(row.hasPrefix("Decide by 10 AM"))
+        XCTAssertTrue(row.hasPrefix("Decide by 9 AM"))
         XCTAssertEqual(StudentFormat.compactLeft("1 h 50 min"), "1h 50m")
     }
 }

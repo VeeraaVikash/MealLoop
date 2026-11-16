@@ -365,7 +365,7 @@ final class RemoteAPIContractTests: XCTestCase {
         let issued = UUID().uuidString
         let json = #"{"token":"\#(issued)","account":{"id":"a1","displayName":"Food Head","email":"foodhead@example.invalid","role":"admin","scope":{"kind":"mess","id":"main"}},"staff":null,"student":null}"#
         let (api, tokens) = api(token: nil) { _ in .json(201, json) }
-        let session = try await api.signInStaff(email: "foodhead@example.invalid", password: UUID().uuidString)
+        let session = try await api.signIn(email: "foodhead@example.invalid", password: UUID().uuidString)
         let sent = try XCTUnwrap(StubURLProtocol.requests.first)
         XCTAssertEqual(sent.httpMethod, "POST")
         XCTAssertEqual(sent.url?.path, "/v1/sessions")
@@ -381,7 +381,7 @@ final class RemoteAPIContractTests: XCTestCase {
             .json(401, #"{"type":"about:blank","title":"Unauthorized","status":401,"code":"invalid_credentials"}"#)
         }
         do {
-            _ = try await api.signInStaff(email: "someone@example.invalid", password: UUID().uuidString)
+            _ = try await api.signIn(email: "someone@example.invalid", password: UUID().uuidString)
             XCTFail("A refused sign-in is never a session")
         } catch RepositoryError.invalidCredentials {
         } catch {
@@ -391,24 +391,6 @@ final class RemoteAPIContractTests: XCTestCase {
         XCTAssertNil(saved)
     }
 
-    func testSRMAndTheRolePasswordAreNotConnected() async {
-        let (api, _) = api { _ in .empty(200) }
-        do {
-            _ = try await api.signInWithSRM()
-            XCTFail("No SRM integration exists")
-        } catch RepositoryError.notImplemented {
-        } catch {
-            XCTFail("\(error)")
-        }
-        do {
-            _ = try await api.verifyRolePassword("1234", for: .doorScanner)
-            XCTFail("The shared role password is never production authentication")
-        } catch RepositoryError.notImplemented {
-        } catch {
-            XCTFail("\(error)")
-        }
-        XCTAssertTrue(StubURLProtocol.requests.isEmpty, "Neither sends anything")
-    }
 
     func testAnExpiredSessionAsksToSignInAgain() async {
         do {

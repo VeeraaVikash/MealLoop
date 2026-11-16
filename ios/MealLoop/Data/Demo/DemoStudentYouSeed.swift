@@ -21,10 +21,6 @@ extension DemoSeed {
                             at: date(12, 9, 0), isRead: true),
     ]
 
-    /// Credits history (221:64443): "Answered dinner · +5 pts", "Answered lunch · +5 pts". The amount per definite
-    /// answer is this sample; no formula exists (open decision P1).
-    static let samplePointsPerDefiniteAnswer = 5
-
     /// Credits (221:64313): Juice 50 pts and Ice cream 80 pts "At your mess counter"; Biryani coupon 200 pts,
     /// "Launches Friday".
     static let sampleCreditTickets: [StudentCreditTicket] = [
@@ -35,29 +31,13 @@ extension DemoSeed {
                             availability: .notYet(note: "Launches Friday")),
     ]
 
-    /// Credits history (221:64443): the August lines as drawn. The balance stays `sampleCredits` (120, Credits
-    /// 221:64313 and Home 221:62529): the history frame is drawn after a juice, at 70.
+    /// Credits history (221:64443): the August answer lines as drawn. The frame's "Rated a dish +2" and "Answered a
+    /// recheck +2" were removed (student redesign, 15 Nov 2026): the ledger gives no credit for feedback (P-FINAL-8).
+    /// The balance stays `sampleCredits` (120, Credits 221:64313 and Home 221:62529).
     static let sampleCreditHistory: [StudentCreditEntry] = [
-        StudentCreditEntry(id: "demo-credit-rated", title: "Rated a dish", day: date(12, 13, 0), points: 2),
         StudentCreditEntry(id: "demo-credit-dinner", title: "Answered dinner", day: date(11, 17, 0), points: 5),
-        StudentCreditEntry(id: "demo-credit-recheck", title: "Answered a recheck", day: date(11, 13, 0), points: 2),
         StudentCreditEntry(id: "demo-credit-lunch", title: "Answered lunch", day: date(10, 9, 0), points: 5),
     ]
 
-    /// Attendance (221:64717), August: filled days 1, 2, 4, 5, 6, 7, 9, 11, 12; outlined days 3, 8, 10, 13;
-    /// day 14 is today. "36 of 41 meals". The percentage and the best streak are computed from these.
-    static let sampleAttendanceMarks: [Int: StudentAttendanceMark] = {
-        var marks: [Int: StudentAttendanceMark] = [:]
-        for day in [1, 2, 4, 5, 6, 7, 9, 11, 12] { marks[day] = .everyMeal }
-        for day in [3, 8, 10, 13] { marks[day] = .noEntryForAMeal }
-        marks[14] = .today
-        return marks
-    }()
-    static let sampleMealsEntered = 36
-    static let sampleMealsServed = 41
-    /// August 2024 has 31 days and starts on a Thursday (Monday = 0, so 3).
-    static let sampleMonthStart = date(1, 0, 0)
-    static let sampleMonthDays = 31
-    static let sampleMonthFirstWeekday = 3
 }
 #endif

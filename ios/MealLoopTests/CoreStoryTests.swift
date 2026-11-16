@@ -60,12 +60,12 @@ final class CoreStoryTests: XCTestCase {
     }
 
     func testTheCutoffIsThatOfTheMealAnswered() async throws {
-        // Breakfast stays open until its service ends at 9:30 AM; after that it refuses.
+        // Lunch answers close at 9 AM (owner decision, 16 Nov 2026); after that a change is refused.
         let clock = TestClock()
         let demo = story(clock: clock)
-        _ = try await demo.setIntention(.skipping, of: aarav, for: DemoSeed.breakfast.id)
-        clock.set(DemoSeed.breakfast.endsAt)
-        await assertRefused { _ = try await demo.setIntention(.attending, of: self.aarav, for: DemoSeed.breakfast.id) }
+        _ = try await demo.setIntention(.skipping, of: aarav, for: DemoSeed.lunch.id)
+        clock.set(IntentionPolicy.cutoff(for: DemoSeed.lunch))
+        await assertRefused { _ = try await demo.setIntention(.attending, of: self.aarav, for: DemoSeed.lunch.id) }
     }
 
     func testTheStudentStartsWithNoLunchResponse() async throws {
@@ -74,12 +74,14 @@ final class CoreStoryTests: XCTestCase {
     }
 
     /// Home · Not answered (221:62529): at 7:00 AM breakfast is unanswered and still open to answers.
-    func testTheStudentStartsWithBreakfastUnansweredAndOpen() async throws {
+    /// At 7 AM breakfast answers closed the night before; lunch is still open until 9 AM.
+    func testTheStudentStartsWithBreakfastClosedAndLunchOpen() async throws {
         let stored = try await story().response(of: aarav, for: DemoSeed.breakfast.id)
         XCTAssertEqual(stored, .noResponse)
-        XCTAssertTrue(IntentionPolicy.canAnswer(DemoSeed.breakfast, at: DemoSeed.storyStartNow))
+        XCTAssertFalse(IntentionPolicy.canAnswer(DemoSeed.breakfast, at: DemoSeed.storyStartNow))
+        XCTAssertTrue(IntentionPolicy.canAnswer(DemoSeed.lunch, at: DemoSeed.storyStartNow))
         // The swipe-to-remind needs the cutoff more than an hour away.
-        XCTAssertGreaterThan(IntentionPolicy.cutoff(for: DemoSeed.breakfast), DemoSeed.storyStartNow.addingTimeInterval(60 * 60))
+        XCTAssertGreaterThan(IntentionPolicy.cutoff(for: DemoSeed.lunch), DemoSeed.storyStartNow.addingTimeInterval(60 * 60))
     }
 
     func testARepeatTapKeepsTheFirstAnswer() async throws {
@@ -304,7 +306,7 @@ final class CoreStoryTests: XCTestCase {
         let vendor = try XCTUnwrap(DemoSeed.accounts.first { $0.role == .vendor }).email
 
         // Sign-in, and the student answers and has the entry QR.
-        let student = try await data.auth.srmStudentSession()
+        let student = try await data.auth.registeredStudentSession()
         let aaravRef = try XCTUnwrap(student.student?.student)
         _ = try await data.intentions.setIntention(.attending, of: aaravRef.id, for: lunch.id)
         let code = try await data.entries.entryCode(for: aaravRef.id)
@@ -312,7 +314,7 @@ final class CoreStoryTests: XCTestCase {
         // The Food Head approves and publishes; the vendor acknowledges.
         _ = try await data.headcount.approveHeadcount(DemoSeed.forecastDiners, reason: nil, for: lunch.id, by: .admin)
         _ = try await data.headcount.publishHeadcount(for: lunch.id, by: .admin)
-        let vendorSession = try await data.auth.signInStaff(email: vendor, password: DemoSeed.prototypePassword)
+        let vendorSession = try await data.auth.signIn(email: vendor, password: DemoSeed.prototypePassword)
         let acknowledged = try await data.headcount.acknowledgeHeadcount(for: lunch.id, by: vendorSession.account.id)
         guard case .acknowledged = acknowledged.vendorAcknowledgmentStatus else { return XCTFail("Expected acknowledged") }
 
@@ -398,7 +400,7 @@ final class CoreStoryTests: XCTestCase {
     // MARK: Session
 
     func testAStudentSessionHasIdentityAndAMess() async throws {
-        let session = try await story().srmStudentSession()
+        let session = try await story().registeredStudentSession()
         XCTAssertEqual(session.student?.student, DemoSeed.sampleStudent)
         XCTAssertEqual(session.student?.mess, DemoSeed.mess)
         XCTAssertNil(session.staff)
@@ -406,7 +408,7 @@ final class CoreStoryTests: XCTestCase {
 
     func testNoOtherSessionHasAStudent() async throws {
         for account in DemoSeed.accounts where account.role != .student {
-            let session = try await story().signInStaff(email: account.email, password: DemoSeed.prototypePassword)
+            let session = try await story().signIn(email: account.email, password: DemoSeed.prototypePassword)
             XCTAssertNil(session.student, "\(account.role)")
         }
     }

@@ -21,7 +21,7 @@ final class StudentRecordsScreensTests: XCTestCase {
     }
 
     func testEveryYouRowOpensItsOwnPage() {
-        let routes: [StudentYouRoute] = [.outings, .credits, .attendance, .spending, .myFeedback, .help, .privacy]
+        let routes: [StudentYouRoute] = [.outings, .credits, .spending, .myFeedback, .notificationSettings, .help, .privacy]
         XCTAssertEqual(Set(routes).count, routes.count)
         for route in [StudentYouRoute.spending, .myFeedback, .help, .privacy] {
             XCTAssertNotEqual(route, .comingSoon(YouCopy.spending))
@@ -96,9 +96,10 @@ final class StudentRecordsScreensTests: XCTestCase {
         let demo = DemoDataProvider(scenario: .storyStart)
         let you = try XCTUnwrap(StudentYouViewModel(session: try session, repositories: demo.makeRepositories(), clock: demo.clock))
         _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.lunch.id)
+        demo.clock.set(DemoSeed.lunch.endsAt.addingTimeInterval(60))
         await you.loadCredits()
         await you.loadProfile()
-        XCTAssertEqual(you.credits.value?.balance, 125)
+        XCTAssertEqual(you.credits.value?.balance, 115)
         XCTAssertEqual(you.profile.value?.credits, you.credits.value?.balance)
     }
 }

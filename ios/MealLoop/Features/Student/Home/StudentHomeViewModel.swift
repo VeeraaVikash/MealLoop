@@ -23,6 +23,9 @@ final class StudentHomeViewModel {
     private(set) var entrySecondsLeft = StudentHomeViewModel.entryQRWindow
     private(set) var isRefreshingQR = false
     private(set) var standing: StudentEntryStanding = .notScanned
+    /// The meal whose entry the door recorded for this student, and when: it unlocks Rate a dish for that meal only.
+    /// Read from the shared entry records after every load and every QR tick, so a scan shows here at once.
+    private(set) var recordedEntry: (meal: Meal, at: Date)?
     /// When Home last loaded, so a saved QR can say how old it is.
     private(set) var lastLoadedAt: Date?
 
@@ -78,8 +81,9 @@ final class StudentHomeViewModel {
         }
     }
 
-    /// The meal the entry code is shown for.
-    var entryMeal: StudentMealCard? { state.value?.shownHero }
+    /// The meal the entry code is shown for: the one being served (Home offers the QR for no other meal). The top
+    /// card stands in only for the fallback QR, when Home could not load.
+    var entryMeal: StudentMealCard? { state.value?.servingMeal ?? state.value?.shownHero }
 
     func load() async {
         if state.value == nil {
@@ -109,6 +113,7 @@ final class StudentHomeViewModel {
                                                lastClosedMeal: statuses.last { $0.state == .closed }?.meal,
                                                laterMeal: laterCard, extras: homeExtras))
             lastLoadedAt = clock.now()
+            await refreshRecordedEntry()
             await loadSkipReasons()
             await sendPendingAnswer()
         } catch RepositoryError.offline(let savedAt) {
@@ -222,8 +227,24 @@ final class StudentHomeViewModel {
     }
 
     private func loadStanding() async {
-        guard let meal = entryMeal?.id else { return }
-        standing = (try? await extras.entryStanding(of: context.student.id, for: meal, at: context.mess.id)) ?? .notScanned
+        guard let meal = entryMeal?.meal else { return }
+        standing = (try? await extras.entryStanding(of: context.student.id, for: meal.id, at: context.mess.id)) ?? .notScanned
+        if let at = standing.recordedAt, meal.id == state.value?.servingMeal?.id { recordedEntry = (meal, at) }
+    }
+
+    /// Rate a dish follows a recorded entry: the meal being served, else the last meal that closed today. The
+    /// standing comes from the same records the Door Scanner writes; nothing on this side can set it.
+    func refreshRecordedEntry() async {
+        guard let content = state.value else { return }
+        let candidates = [content.servingMeal?.meal, content.lastClosedMeal].compactMap { $0 }
+        for meal in candidates {
+            let standing = try? await extras.entryStanding(of: context.student.id, for: meal.id, at: context.mess.id)
+            if let at = standing?.recordedAt {
+                recordedEntry = (meal, at)
+                return
+            }
+        }
+        recordedEntry = nil
     }
 
     /// One second of the Entry QR. Every 12 seconds the code moves to its next token.

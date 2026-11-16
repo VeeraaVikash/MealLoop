@@ -10,17 +10,24 @@ import SwiftUI
 // same key, so a retry never opens a second case. The camera is a static preview and the location is the student's
 // mess: neither is verified on a device.
 
-/// The four SOS choices of 2162:6. Wording of the frame.
+/// The SOS reasons (student redesign, 15 Nov 2026; earlier the four choices of 2162:6). Each reason has its own fields
+/// and photo rule; see `photo` and `asksForDish`.
 enum StudentSOSCategory: String, CaseIterable, Hashable, Sendable {
     case foundInFood
-    case spoiled
+    case smellsBad
+    case looksBad
+    case platesNotClean
     case unwell
     case otherSafety
+
+    enum Photo: Equatable, Sendable { case required, optional, none }
 
     var title: String {
         switch self {
         case .foundInFood: return "Found something in my food"
-        case .spoiled: return "Food smells or looks spoiled"
+        case .smellsBad: return "Smells bad"
+        case .looksBad: return "Looks bad"
+        case .platesNotClean: return "Plates not clean"
         case .unwell: return "I feel unwell after eating"
         case .otherSafety: return "Another safety problem"
         }
@@ -29,11 +36,38 @@ enum StudentSOSCategory: String, CaseIterable, Hashable, Sendable {
     var symbol: String {
         switch self {
         case .foundInFood: return "magnifyingglass"
-        case .spoiled: return "nose"
+        case .smellsBad: return "nose"
+        case .looksBad: return "eye"
+        case .platesNotClean: return "fork.knife"
         case .unwell: return "hand.raised"
         case .otherSafety: return "exclamationmark.triangle"
         }
     }
+
+    /// The food reasons pick a dish; the other two never show the dish picker.
+    var asksForDish: Bool {
+        switch self {
+        case .foundInFood, .smellsBad, .looksBad, .platesNotClean: return true
+        case .unwell, .otherSafety: return false
+        }
+    }
+
+    /// Owner decision, 16 Nov 2026: a photo is required for found something, looks bad and smells bad.
+    var photo: Photo {
+        switch self {
+        case .foundInFood, .smellsBad, .looksBad: return .required
+        case .platesNotClean: return .optional
+        case .unwell, .otherSafety: return .none
+        }
+    }
+
+    /// The reasons SOS offers (owner decision, 16 Nov 2026). Dirty plates is now an option under Another problem.
+    static let offered: [StudentSOSCategory] = [.foundInFood, .looksBad, .smellsBad, .unwell, .otherSafety]
+}
+
+/// What is still missing before the current reason can be sent. Checked again when Send is tapped.
+enum StudentSOSProblem: Equatable, Sendable {
+    case reason, dish, photo, meal, symptoms, startedWhen, whereNow, whereHappened, whatHappened
 }
 
 @MainActor
@@ -48,8 +82,23 @@ final class StudentSOSViewModel {
     let context: StudentContext
     let camera: Camera
     let location: Location
-    var category: StudentSOSCategory?
+    private(set) var category: StudentSOSCategory?
     var dish: String?
+    /// I feel unwell after eating.
+    var unwellMeal: MealSlot?
+    var symptoms = ""
+    var startedWhen = ""
+    var whereNow = ""
+    /// Another safety problem.
+    var whereHappened = ""
+    var whatHappened = ""
+    var needsHelpNow = false
+    /// Tap-only answers (owner decision, 16 Nov 2026: no forced typing). Each writes the field it stands for.
+    private(set) var pickedSymptoms: [String] = []
+    var extraNote = "" { didSet { syncTaps() } }
+    private(set) var pickedProblem: String?
+    /// Today's meals that have started, for "Which meal?" on I feel unwell.
+    private(set) var mealsToday: [MealSlot] = []
     private(set) var dishes: [String] = []
     private(set) var meal: MealSlot?
     /// When the live photo was taken; nil until then, and nil when sent without a photo.
@@ -77,24 +126,72 @@ final class StudentSOSViewModel {
 
     var now: Date { clock.now() }
     var timeZone: TimeZone { context.mess.timeZone }
-    var canGoOn: Bool { category != nil }
+    var canGoOn: Bool { problems.isEmpty }
+
+    /// Everything the current reason still needs, photo excluded until the photo step.
+    var detailProblems: [StudentSOSProblem] {
+        guard let category else { return [.reason] }
+        func blank(_ text: String) -> Bool { text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var missing: [StudentSOSProblem] = []
+        if category.asksForDish && dish == nil { missing.append(.dish) }
+        if category == .unwell {
+            if unwellMeal == nil { missing.append(.meal) }
+            if blank(symptoms) { missing.append(.symptoms) }
+            if blank(startedWhen) { missing.append(.startedWhen) }
+            if blank(whereNow) { missing.append(.whereNow) }
+        }
+        if category == .otherSafety {
+            if blank(whereHappened) { missing.append(.whereHappened) }
+            if blank(whatHappened) { missing.append(.whatHappened) }
+        }
+        return missing
+    }
+
+    /// Everything still missing for sending, the required photo included.
+    var problems: [StudentSOSProblem] {
+        var missing = detailProblems
+        if category?.photo == .required && photoAt == nil { missing.append(.photo) }
+        return missing
+    }
     var hasPhoto: Bool { photoAt != nil }
     var isSending: Bool { sendState == .sending }
     var isOffline: Bool { sendState == .offline || sendState == .waitingForConnection }
 
-    /// "Found something in my food · Masala Sambar", or the meal for I feel unwell, as Review draws it.
+    /// What the report says, built only from the current reason's fields, so nothing of an earlier reason goes with it.
     var subject: String {
         guard let category else { return "" }
-        if let dish { return "\(category.title) · \(dish)" }
-        if category == .unwell, let meal { return "\(category.title) · \(MLFormat.mealSlot(meal))" }
-        return category.title
+        func clean(_ text: String) -> String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
+        switch category {
+        case .foundInFood, .smellsBad, .looksBad, .platesNotClean:
+            return dish.map { "\(category.title) · \($0)" } ?? category.title
+        case .unwell:
+            return [category.title, unwellMeal.map(MLFormat.mealSlot), clean(symptoms).isEmpty ? nil : clean(symptoms),
+                    clean(startedWhen).isEmpty ? nil : StudentSOSCopy.since(clean(startedWhen))]
+                .compactMap { $0 }.joined(separator: " · ")
+        case .otherSafety:
+            return [needsHelpNow ? StudentSOSCopy.needsHelpTag : nil, category.title,
+                    clean(whatHappened).isEmpty ? nil : clean(whatHappened)].compactMap { $0 }.joined(separator: " · ")
+        }
     }
 
-    /// The place sent with the SOS. With no location, it says so; nothing is guessed.
-    var place: String { location == .atMess ? context.mess.name : StudentSOSCopy.placeNotRecorded }
+    /// The place sent with the SOS: where the student says they are or where it happened, else the mess. With no
+    /// location for a food reason, it says so; nothing is guessed.
+    var place: String {
+        func clean(_ text: String) -> String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
+        switch category {
+        case .unwell?: if !clean(whereNow).isEmpty { return clean(whereNow) }
+        case .otherSafety?: if !clean(whereHappened).isEmpty { return clean(whereHappened) }
+        default: break
+        }
+        return location == .atMess ? context.mess.name : StudentSOSCopy.placeNotRecorded
+    }
 
     /// The dishes of the meal the mess is in or about to start, for "Which dish? (optional)".
     func load() async {
+        // The meals that have started; before the first one starts, every meal of the day, so a choice is always there.
+        let today = (try? await mealState.meals(for: context.mess.id)) ?? []
+        let started = today.filter { $0.state != .notStarted }.map(\.meal.slot)
+        mealsToday = started.isEmpty ? today.map(\.meal.slot) : started
         guard dishes.isEmpty, let status = try? await mealState.currentMeal(for: context.mess.id) else { return }
         meal = status.meal.slot
         var calendar = Calendar(identifier: .gregorian)
@@ -107,11 +204,54 @@ final class StudentSOSViewModel {
         }
     }
 
+    /// Picks a reason and clears every field that belonged to another reason, the photo included, so an earlier
+    /// branch never goes with the report.
     func choose(_ category: StudentSOSCategory) {
+        guard category != self.category else { return }
         self.category = category
+        dish = nil
+        unwellMeal = nil
+        symptoms = ""
+        startedWhen = ""
+        whereNow = ""
+        whereHappened = ""
+        whatHappened = ""
+        needsHelpNow = false
+        pickedSymptoms = []
+        pickedProblem = nil
+        extraNote = ""
+        // Where the student is comes from the phone, never typed.
+        whereNow = locationText
+        whereHappened = locationText
+        photoAt = nil
+        withoutPhoto = false
+        key = IdempotencyKey.make()
     }
 
     func toggle(dish name: String) { dish = dish == name ? nil : name }
+
+    /// The place shown and sent: the mess the phone is at, or that it could not be read.
+    var locationText: String { location == .atMess ? context.mess.name : StudentSOSCopy.placeNotRecorded }
+
+    func toggle(symptom: String) {
+        if let index = pickedSymptoms.firstIndex(of: symptom) { pickedSymptoms.remove(at: index) } else { pickedSymptoms.append(symptom) }
+        syncTaps()
+    }
+
+    func pick(started: String) { startedWhen = startedWhen == started ? "" : started }
+
+    func pick(problem: String) {
+        pickedProblem = pickedProblem == problem ? nil : problem
+        syncTaps()
+    }
+
+    /// Writes the tapped answers and the optional note into the fields the report is built from.
+    private func syncTaps() {
+        let note = extraNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        symptoms = (pickedSymptoms + (note.isEmpty || category != .unwell ? [] : [note])).joined(separator: ", ")
+        whatHappened = ([pickedProblem].compactMap { $0 } + (note.isEmpty || category != .otherSafety ? [] : [note]))
+            .joined(separator: ", ")
+    }
 
     /// The shutter: a live photo at the clock's time (a static preview in the simulator).
     func takePhoto() {
@@ -121,8 +261,9 @@ final class StudentSOSViewModel {
 
     /// Camera denied: "Send without photo". It goes flagged so the team asks for details.
     func continueWithoutPhoto() {
+        guard category?.photo != .required else { return }
         photoAt = nil
-        withoutPhoto = true
+        withoutPhoto = category?.photo == .optional
     }
 
     /// Checks the connection on Review, so the Offline state shows before the student taps.
@@ -138,7 +279,8 @@ final class StudentSOSViewModel {
 
     /// Raises the SOS. True only when the case is open; offline it waits and nothing is shown as sent.
     func send() async -> Bool {
-        guard category != nil, sendState != .sending else { return false }
+        // The current reason is checked again here: a required photo, a dish, or the unwell and safety details.
+        guard category != nil, problems.isEmpty, sendState != .sending else { return false }
         let waiting = sendState == .offline || sendState == .waitingForConnection
         sendState = .sending
         let title = withoutPhoto ? "\(subject) · \(StudentSOSCopy.noPhotoTag)" : subject
@@ -165,6 +307,17 @@ final class StudentSOSViewModel {
 
 /// Words of the SOS frames. Wording only.
 enum StudentSOSCopy {
+    static let symptomOptions = ["Vomiting", "Stomach pain", "Loose motions", "Fever", "Headache", "Dizzy"]
+    static let startedOptions = ["Just now", "Within an hour", "Earlier today"]
+    static let problemOptions = ["Dirty plates or utensils", "Insects or pests", "Slippery floor", "Gas or burning smell",
+                                 "Something else"]
+    static let anythingElse = "Anything else? (optional)"
+    static let unwellShort = "Feeling unwell"
+    static let otherShort = "Other problem"
+    static let whatsWrong = "What's wrong?"
+    static let yourDetails = "Sent with your SOS"
+    static let locationLabel = "Location"
+    static let youLabel = "You"
     // Camera and Sent wording, shared with SOS · Camera (221:63493) and SOS · Sent (221:63509).
     static let takePhoto = "Take a photo of the problem"
     static let keepInFrame = "Keep the problem in the frame."
@@ -176,9 +329,31 @@ enum StudentSOSCopy {
     static let feelingUnwell = "Feeling unwell? Tell a warden or call for help now."
     static let title = "SOS"
     static let pickOne = "What's wrong? Pick one."
-    static let whichDish = "Which dish? (optional)"
+    static let whichDish = "Which dish?"
+    static let notListed = "Not on this list"
+    static let whichMeal = "Which meal?"
+    static let symptoms = "Symptoms"
+    static let symptomsPrompt = "For example: stomach ache, vomiting"
+    static let startedWhen = "When did it start?"
+    static let startedPrompt = "For example: 1:30 PM"
+    static let whereNow = "Where are you now?"
+    static let whereNowPrompt = "Room, block or place"
+    static let whereHappened = "Where did it happen?"
+    static let whatHappened = "What happened?"
+    static let needHelpNow = "I need help now"
+    static let needHelpDetail = "Marks the SOS as needing help at once."
+    static let needsHelpTag = "Needs help now"
+    static func since(_ when: String) -> String { "since \(when)" }
+    static let photoRequired = "A photo is required for this reason."
+    static let photoRequiredCameraOff = "A photo is required for this reason. Turn the camera on in Settings to send it."
+    static let nextPhotoOptional = "Next: add a photo"
+    static let continueWithoutPhoto = "Continue without a photo"
+    static let reviewNext = "Next: review"
+    static let pickWhatsMissing = "Fill in what's marked to go on."
+    static let required = "Required"
+    static func placeLine(_ place: String) -> String { "Place: \(place)" }
     static let next = "Next: take a photo"
-    static let footnote = "A live photo and your location go with it. The food head and mess supervisor are told at once."
+    static let footnote = "The food head and mess supervisor are told once it sends."
     static let noGPS = "No GPS · place not recorded"
     static let noGPSShort = "No GPS"
     static let placeNotRecorded = "Place not recorded"
@@ -203,7 +378,7 @@ enum StudentSOSCopy {
     static let sendWhenOnline = "Send when online"
     static let offline = "You're offline. SOS sends the moment you're back. Tell the counter staff now."
     static let failed = "Couldn't send SOS. Try again, and tell the counter staff now."
-    static let toldAtOnce = "The food head and mess supervisor are told at once. The photo and location go with it."
+    static let toldAtOnce = "Once it sends, the food head and mess supervisor see it with the place you gave."
     static let photoAttached = "photo attached"
     static let noPhotoTag = "no photo"
     static func placeAndPhoto(_ place: String, photo: Bool) -> String { "\(place) · \(photo ? photoAttached : noPhoto.lowercased())" }

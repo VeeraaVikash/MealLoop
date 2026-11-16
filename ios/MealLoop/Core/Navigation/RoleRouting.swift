@@ -42,13 +42,9 @@ enum RoleRoot: String, CaseIterable, Hashable, Sendable {
     /// The value that selects Search in a tab bar. It is not a tab title, so it can never match one.
     static let searchTab = "search"
 
-    /// Student and Admin have the round Search button (03_home, A01_today). Staff and Warden designs do not.
-    var hasSearch: Bool {
-        switch self {
-        case .student, .admin: return true
-        default: return false
-        }
-    }
+    /// Only Admin has the round Search button (A01_today). Student Search was removed (student redesign, 15 Nov 2026,
+    /// superseding OD-2); staff and Warden designs never had it.
+    var hasSearch: Bool { self == .admin }
 
     /// The Warden tabs are words only (W01). Every other placeholder tab has an icon.
     var showsTabIcons: Bool { self != .warden }

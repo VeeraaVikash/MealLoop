@@ -39,9 +39,11 @@ actor DemoPeopleStore {
         return GivenPassword(person: person(account), value: password)
     }
     func authenticate(email: String, password: String) throws -> Account {
-        guard let account = accounts.first(where: { $0.email.lowercased() == email }), account.role != .student else {
+        guard let account = accounts.first(where: { $0.email.lowercased() == email }) else {
             throw RepositoryError.invalidCredentials
         }
+        // A student signs in only after Register gave the account a password. No shared prototype password for them.
+        if account.role == .student, credentials[account.id] == nil { throw RepositoryError.invalidCredentials }
         switch credentials[account.id] {
         case .revoked?: throw RepositoryError.invalidCredentials
         case .temporary(let salt, let digest)?:
@@ -49,6 +51,24 @@ actor DemoPeopleStore {
         case nil:
             guard password == DemoSeed.prototypePassword else { throw RepositoryError.invalidCredentials }
         }
+        return account
+    }
+    /// True once the student account for this email has a password from Register.
+    func isRegistered(email: String) -> Bool {
+        guard let account = accounts.first(where: { $0.email.lowercased() == email }) else { return false }
+        return credentials[account.id] != nil
+    }
+
+    /// Gives the seeded student account its password. Only a salted digest is kept.
+    func registerStudent(email: String, password: String) throws -> Account {
+        guard let account = accounts.first(where: { $0.email.lowercased() == email && $0.role == .student }) else {
+            throw RepositoryError.notFound
+        }
+        guard credentials[account.id] == nil else {
+            throw RepositoryError.notAllowed(reason: "This email already has an account. Sign in instead.")
+        }
+        let salt = UUID().uuidString
+        credentials[account.id] = .temporary(salt: salt, digest: SHA256.hash(data: Data((salt + password).utf8)))
         return account
     }
     func directory(by session: Session) throws -> AccessDirectory {

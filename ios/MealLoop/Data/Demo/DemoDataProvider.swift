@@ -89,7 +89,6 @@ struct DemoState: Sendable {
     var intentions: [IntentionKey: IntentionResponse] = [:]
     var wasteReports: [MealID: WasteReport] = [:]
     var sosCases: [SOSCase] = []
-    var wrongPasswordCount: [Role: Int] = [:]
     var recordedSummaryOnly = false
     var headcountApproval: HeadcountApproval = .notApproved
     var headcountPublication: VendorPublication = .notSent
@@ -117,6 +116,8 @@ struct DemoState: Sendable {
     var studentIssues = DemoSeed.sampleIssues
     var issueBackers: [CommunityIssueID: Set<StudentID>] = [:]
     var reportReceipts: [IdempotencyKey: StudentReportReceipt] = [:]
+    /// Reports sent in this run, newest last, with who sent them and how far the mess has taken them (Demo menu).
+    var runReports: [(student: StudentID, receipt: StudentReportReceipt, stage: StudentFiledReportStage)] = []
     var nextReportNumber = DemoSeed.firstReportNumber
 
     init(scenario: DemoScenario) {
@@ -177,8 +178,8 @@ actor DemoDataProvider: MealRepository, MealStateRepository, HeadcountRepository
     nonisolated let clock: any StoryClock
     private(set) var scenario: DemoScenario
     private var state: DemoState
-    /// Demo control: the next Sign in with SRM fails once, so "Couldn't sign in" (135:15825) can be shown. Not data.
-    private var failsNextSRMSignIn = false
+    /// Demo control: the next student directory lookup fails once, so Register's retry can be shown. Not data.
+    private var failsNextDirectoryLookup = false
     private nonisolated let adminStore = DemoAdminStore()
     private nonisolated let adminMessStore = DemoAdminMessStore()
     private nonisolated let studentYouStore = DemoStudentYouStore()
@@ -220,7 +221,7 @@ actor DemoDataProvider: MealRepository, MealStateRepository, HeadcountRepository
         let you = DemoStudentYou(core: self, store: studentYouStore, rewards: studentRewardsStore, catalogue: rewardCatalogueStore)
         return Repositories(
             meals: self, mealState: self, headcount: self, entries: self, intentions: self,
-            shortages: self, wasteReports: self, sos: self, auth: self, staffDirectory: self,
+            shortages: self, wasteReports: self, sos: self, auth: self, registration: self, staffDirectory: self,
             passes: PassRepositories(special: self, liveCodes: self, use: self,
                                      requests: DemoPassRequests(core: self, store: passRequestStore)),
             outings: OutingRepositories(cases: outingCases, student: outingCases),
@@ -718,25 +719,10 @@ actor DemoDataProvider: MealRepository, MealStateRepository, HeadcountRepository
 
     // MARK: AuthRepository (SIMULATED)
 
-    func signInStaff(email: String, password: String) async throws -> Session {
+    func signIn(email: String, password: String) async throws -> Session {
         try failIfOffline()
         let wanted = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let account = try await peopleStore.authenticate(email: wanted, password: password)
-        return session(for: account)
-    }
-
-    /// UNVERIFIED AND SIMULATED: no SRM SSO exists and its feasibility is unconfirmed.
-    /// With no real identity to read, this always returns the seeded student. Super Admin is also meant to use
-    /// SRM, so until a real identity exists the prototype lets that account in through `signInStaff`.
-    func signInWithSRM() async throws -> Session {
-        try failIfOffline()
-        if failsNextSRMSignIn {
-            failsNextSRMSignIn = false
-            throw RepositoryError.unavailable(reason: DemoSeed.srmNoAnswer)
-        }
-        guard let account = DemoSeed.accounts.first(where: { $0.role == .student }) else {
-            throw RepositoryError.notFound
-        }
         return session(for: account)
     }
 
@@ -750,26 +736,36 @@ actor DemoDataProvider: MealRepository, MealStateRepository, HeadcountRepository
         let student = account.role == .student ? StudentContext(student: DemoSeed.sampleStudent, mess: DemoSeed.mess) : nil
         return Session(account: account, staff: staff, student: student)
     }
+}
 
-    /// SIMULATED shared role password. The seeded account of the role is the one signed in.
-    func verifyRolePassword(_ password: String, for role: Role) async throws -> RolePasswordResult {
+// SIMULATED student directory and registration. The records are `DemoSeed.studentDirectory`; account creation gives
+// the seeded student account a password in `DemoPeopleStore`. Nothing reaches SRM.
+extension DemoDataProvider: StudentRegistrationRepository {
+    func directoryRecord(forEmail email: String) async throws -> StudentDirectoryRecord? {
         try failIfOffline()
-        guard role.isMessStaff else { throw RepositoryError.notAllowed(reason: "Not a mess staff role.") }
-        let wrongSoFar = state.wrongPasswordCount[role] ?? 0
-        if wrongSoFar >= RolePasswordPolicy.maximumTries {
-            return .locked(resetBy: DemoSeed.supervisorName)
+        if failsNextDirectoryLookup {
+            failsNextDirectoryLookup = false
+            throw RepositoryError.unavailable(reason: DemoSeed.directoryNoAnswer)
         }
-        if password == DemoSeed.simulatedRolePassword {
-            state.wrongPasswordCount[role] = 0
-            guard let account = DemoSeed.accounts.first(where: { $0.role == role }) else { throw RepositoryError.notFound }
-            return .granted(session(for: account))
+        let wanted = StudentRegistrationPolicy.normalisedEmail(email)
+        guard let entry = DemoSeed.studentDirectory.first(where: { $0.email == wanted }) else { return nil }
+        return StudentDirectoryRecord(name: entry.name, email: entry.email, registrationNumber: entry.registrationNumber,
+                                      messName: DemoSeed.mess.name, hostelName: nil,
+                                      hasAccount: await peopleStore.isRegistered(email: wanted))
+    }
+
+    func registerStudent(_ request: StudentRegistrationRequest) async throws -> Session {
+        let query = StudentIdentityQuery(email: StudentRegistrationPolicy.normalisedEmail(request.email),
+                                         registrationNumber: StudentRegistrationPolicy.normalisedRegistrationNumber(request.registrationNumber))
+        // The source checks the match again: the client's "Is this you?" is never enough on its own.
+        switch StudentRegistrationPolicy.match(try await directoryRecord(forEmail: query.email), to: query) {
+        case .confirm: break
+        case .emailNotFound: throw RepositoryError.notFound
+        case .registrationNumberMismatch: throw RepositoryError.notAllowed(reason: "The registration number doesn't match.")
+        case .alreadyRegistered: throw RepositoryError.notAllowed(reason: "This email already has an account. Sign in instead.")
         }
-        let wrong = wrongSoFar + 1
-        state.wrongPasswordCount[role] = wrong
-        if wrong >= RolePasswordPolicy.maximumTries {
-            return .locked(resetBy: DemoSeed.supervisorName)
-        }
-        return .wrong(triesLeft: RolePasswordPolicy.maximumTries - wrong)
+        let account = try await peopleStore.registerStudent(email: query.email, password: request.password)
+        return session(for: account)
     }
 }
 
@@ -892,8 +888,69 @@ extension DemoDataProvider: DemoControlling {
         DemoSeed.accounts.first { $0.role == role }.map(session(for:))
     }
 
-    func failNextSRMSignIn() async {
-        failsNextSRMSignIn = true
+    func failNextDirectoryLookup() async {
+        failsNextDirectoryLookup = true
+    }
+
+    /// SIMULATED: moves the story clock to a moment and runs the lunch the Supervisor would run by then.
+    func jump(to moment: DemoMoment) async {
+        clock.set(moment.time)
+        let lunch = state.mealStatus.meal.id
+        switch moment {
+        case .lunchServing:
+            if state.mealStatus.state == .notStarted { _ = try? await startMeal(lunch, by: .supervisor) }
+        case .afterLunch, .dinner:
+            if state.mealStatus.state == .notStarted { _ = try? await startMeal(lunch, by: .supervisor) }
+            if state.mealStatus.state == .inService { _ = try? await closeMeal(lunch, by: .supervisor) }
+        case .storyStart, .breakfastServing:
+            break
+        }
+    }
+
+    func setOffline(_ offline: Bool) async { state.isOffline = offline }
+
+    var isOfflineNow: Bool { get async { state.isOffline } }
+
+    /// SIMULATED door scan of the sample student for the meal being served. Refused, like a real scan, when none is.
+    func recordSampleEntry() async -> Bool {
+        let request = EntryRequest(mealID: state.mealStatus.meal.id, student: DemoSeed.sampleStudent, method: .typedLastFour,
+                                   idempotencyKey: .make())
+        return (try? await recordEntry(request)) != nil
+    }
+
+    /// SIMULATED: the mess takes the student's latest report one step on: Sent, Seen, Working on it, Fixed.
+    func advanceLatestReport() async -> Bool {
+        guard let index = state.runReports.lastIndex(where: { $0.stage != .fixed }) else { return false }
+        let next: StudentFiledReportStage
+        switch state.runReports[index].stage {
+        case .sent: next = .seen
+        case .seen, .needMoreInfo: next = .workingOnIt
+        case .workingOnIt, .fixed: next = .fixed
+        }
+        state.runReports[index].stage = next
+        return true
+    }
+
+    /// The reports this student sent in this run, as My reports lists them.
+    func runFiledReports(for student: StudentID) -> [StudentFiledReport] {
+        state.runReports.filter { $0.student == student }.map { item in
+            let receipt = item.receipt
+            let order: [StudentFiledReportStage] = [.sent, .seen, .workingOnIt, .fixed]
+            let reached = order.prefix { $0 != item.stage } + [item.stage]
+            let events = reached.map { stage -> StudentReportEvent in
+                let kind: StudentReportEvent.Kind
+                switch stage {
+                case .sent: kind = .sent
+                case .seen, .needMoreInfo: kind = .seen
+                case .workingOnIt: kind = .workingOnIt
+                case .fixed: kind = .fixed
+                }
+                return StudentReportEvent(kind: kind, at: stage == .sent ? receipt.sentAt : nil, isCurrent: stage == item.stage)
+            }
+            return StudentFiledReport(id: StudentFiledReportID("run-\(receipt.reference)"), reference: receipt.reference,
+                                      category: receipt.category, place: receipt.place, meal: receipt.meal,
+                                      sentAt: receipt.sentAt, stage: item.stage, question: nil, reply: nil, events: events)
+        }
     }
 }
 
@@ -905,26 +962,50 @@ extension DemoDataProvider: StudentExtrasRepository {
     func homeExtras(for student: StudentID, mess: MessID) async throws -> StudentHomeExtras {
         try failIfOffline()
         let isClosed = clock.now() < DemoSeed.messOpensForTheDay
-        return StudentHomeExtras(credits: DemoSeed.sampleCredits, crowd: crowd(isClosed: isClosed), pass: passRow(for: student),
-                                 recheck: DemoSeed.sampleRecheck, isMessClosed: isClosed, laterMeal: DemoSeed.dinner)
+        return StudentHomeExtras(credits: DemoSeed.sampleCredits, crowd: crowdNow(), pass: passRow(for: student),
+                                 isMessClosed: isClosed, laterMeal: DemoSeed.dinner)
     }
 
-    /// SAMPLE: no hourly arrivals exist yet, so the level follows the meal state and the bars are the drawn ones.
-    private func crowd(isClosed: Bool) -> CrowdReading {
-        if isClosed {
-            return CrowdReading(level: .closed, bars: DemoSeed.crowdBars, currentBar: nil, detailTime: DemoSeed.breakfast.startsAt)
+    /// Crowd from the shared records: the meal being served (else the story meal), its valid entries and the
+    /// students who answered I'm in. The same numbers reach Home, Crowd, Community and the Special pass.
+    func crowdNow() -> StudentCrowd {
+        let now = clock.now()
+        let status = dayMeals.first { $0.state == .inService } ?? state.mealStatus
+        let attending = Set(state.intentions.compactMap { key, response -> StudentID? in
+            guard key.meal == status.meal.id, case .answered(.attending, _) = response else { return nil }
+            return key.student
+        })
+        let counted = StudentCrowd.counted(meal: status.meal, state: status.state, now: now,
+                                           entries: Array(state.entries.values), attending: attending)
+        return Self.withSampleCrowd(counted)
+    }
+
+    /// SIMULATED sample crowd (owner decision, 16 Nov 2026: the Crowd sheet shows sample data for the demo). The sample
+    /// per-interval entries are added to the entries recorded in this run, over the whole serving window, so the chart
+    /// and the present count are never empty in a walkthrough. Not tied to the Admin live count.
+    static func withSampleCrowd(_ crowd: StudentCrowd) -> StudentCrowd {
+        let sample = DemoSeed.sampleCrowdPerInterval
+        let length = StudentCrowd.intervalLength
+        let slots = max(sample.count, Int(ceil(crowd.meal.endsAt.timeIntervalSince(crowd.meal.startsAt) / length)))
+        let intervals = (0..<slots).map { index -> StudentCrowdInterval in
+            let real = index < crowd.intervals.count ? crowd.intervals[index].entries : 0
+            return StudentCrowdInterval(startsAt: crowd.meal.startsAt.addingTimeInterval(Double(index) * length),
+                                        entries: real + (index < sample.count ? sample[index] : 0))
         }
-        if let serving = serviceMeal {
-            let quieter = serving.slot == .breakfast ? DemoSeed.crowdQuieterAfterBreakfast : DemoSeed.crowdBestTime
-            return CrowdReading(level: .busy, bars: DemoSeed.crowdBars, currentBar: DemoSeed.crowdBusyBar, detailTime: quieter)
-        }
-        return CrowdReading(level: .quiet, bars: DemoSeed.crowdBars, currentBar: DemoSeed.crowdQuietBar, detailTime: DemoSeed.crowdBestTime)
+        let present = intervals.reduce(0) { $0 + $1.entries }
+        let realExpected = crowd.stillExpected.value ?? 0
+        // Only the sample's own arrivals lower the sample's expected count; a real entry lowers the real one.
+        let expected = max(0, DemoSeed.sampleCrowdExpected - sample.reduce(0, +)) + realExpected
+        return StudentCrowd(meal: crowd.meal, mealState: crowd.mealState, observedAt: crowd.observedAt,
+                            enteredSoFar: .available(present, asOf: crowd.observedAt),
+                            stillExpected: .available(expected, asOf: crowd.observedAt), intervals: intervals)
     }
 
     private func passRow(for student: StudentID) -> StudentPassRow? {
         guard let slot = DemoSeed.samplePasses[student], let meal = dayMeals.first(where: { $0.meal.slot == slot }) else { return nil }
         if state.specialEntries[student] != nil { return StudentPassRow(meal: meal.meal, status: .used) }
-        return StudentPassRow(meal: meal.meal, status: meal.state == .closed ? .closed : .open)
+        // Owner decision, 16 Nov 2026: for the demo the pass is never closed by the clock; only using it ends it.
+        return StudentPassRow(meal: meal.meal, status: .open)
     }
 
     func studentMenu(for meal: MealID) async throws -> [Dish] {
@@ -1054,19 +1135,6 @@ extension DemoDataProvider: StudentMealsRepository {
                                  portion: facts?.portion, allergens: facts?.allergens ?? [], verifiedOn: facts?.verifiedOn)
     }
 
-    func findDishes(_ text: String, mess: MessID) async throws -> [StudentDishMatch] {
-        try failIfOffline()
-        let query = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !query.isEmpty else { return [] }
-        let week = await adminStore.weekMenu
-        return week.days.flatMap { day in
-            Self.slotOrder.flatMap { slot in
-                (day.meals[slot] ?? []).filter { $0.name.range(of: query, options: [.caseInsensitive, .diacriticInsensitive]) != nil }
-                    .map { StudentDishMatch(dish: Self.dish($0), day: day.day, slot: slot) }
-            }
-        }
-    }
-
     func passStanding(of student: StudentID, at mess: MessID) async throws -> StudentPassStanding {
         try failIfOffline()
         guard let slot = DemoSeed.samplePasses[student], let status = dayMeals.first(where: { $0.meal.slot == slot }),
@@ -1102,19 +1170,7 @@ extension DemoDataProvider: StudentMealsRepository {
     /// SAMPLE: the level and its time are Home's estimate; the bars are the drawn pattern of lunch.
     func crowd(at mess: MessID) async throws -> StudentCrowd {
         try failIfOffline()
-        let now = clock.now()
-        let meal = state.mealStatus.meal
-        let reading = crowd(isClosed: now < DemoSeed.messOpensForTheDay)
-        let busiest = DemoSeed.lunchCrowdHeights.max() ?? 1
-        let slots = DemoSeed.lunchCrowdHeights.enumerated().map { index, height in
-            StudentCrowdSlot(startsAt: meal.startsAt.addingTimeInterval(Double(index) * DemoSeed.crowdSlotLength), activity: height / busiest)
-        }
-        let serving = state.mealStatus.state == .inService
-        let current = serving ? slots.lastIndex { $0.startsAt <= now } : nil
-        return StudentCrowd(meal: meal, observedAt: now, level: reading.level, detailTime: reading.detailTime, slots: slots,
-                            currentSlot: current, bestSlot: DemoSeed.crowdBestSlot,
-                            waitNowMinutes: serving ? DemoSeed.crowdWaitNowMinutes : nil,
-                            busiestWaitMinutes: DemoSeed.crowdBusiestWaitMinutes, busiestAt: DemoSeed.crowdBusiestAt)
+        return crowdNow()
     }
 }
 
@@ -1184,6 +1240,7 @@ extension DemoDataProvider: StudentCommunityRepository {
                                            meal: report.meal, sentAt: now, outcome: outcome)
         state.nextReportNumber += 1
         state.reportReceipts[report.idempotencyKey] = receipt
+        state.runReports.append((report.student, receipt, .sent))
         return receipt
     }
 
@@ -1292,9 +1349,7 @@ extension DemoDataProvider: PassUseRepository {
               let sample = DemoSeed.sampleStudents.first(where: { $0.ref.id == student }) else {
             throw RepositoryError.notAllowed(reason: "This pass can't be used now.")
         }
-        guard state.mealStatus.state != .closed else {
-            throw RepositoryError.notAllowed(reason: "This pass can't be used now.")
-        }
+        // Owner decision, 16 Nov 2026: the demo pass is not limited to its serving time.
         let instant = passCodeTicker.instant(story: clock.now())
         if state.passStarts[student] == nil { state.passStarts[student] = clock.now() }
         state.passUses[student] = instant

@@ -50,6 +50,7 @@ Features/Student/
 | Access | Holds | Used by |
 |---|---|---|
 | `repositories.meals`, `.mealState`, `.headcount`, `.entries`, `.intentions`, `.shortages`, `.wasteReports`, `.sos`, `.auth` | Shared dining operations | Nearly every role |
+| `repositories.registration` | Student Register: directory lookup and account creation (`Features/Entry/StudentRegistrationRepository.swift`) | Entry (before sign-in) |
 | `repositories.staffDirectory` | Names and shift times | Door Scanner, Pass Desk |
 | `repositories.passes.special`, `.liveCodes`, `.use`, `.requests` | The special-meal pass | Student, Pass Desk, Admin |
 | `repositories.outings.cases`, `.student` | Outings (one source) | Student, Guardian, Warden, Gate |
@@ -90,6 +91,11 @@ URLSession → backend         docs/backend/openapi.yaml (0.2.0 draft; no server
 | Debug (`DEMO_DATA`) | `makeDemo()` | `DemoDataProvider.makeRepositories()` |
 | Review (`REVIEW_DATA`) | `makeReview()` | `DemoDataProvider.makeRepositories()` |
 | Release | `makeAPI(baseURL:)` | `RemoteAPI(client: HTTPClient(baseURL:credential:), tokens: KeychainTokenStore())` |
+
+`AppEnvironment` also holds `reminders` (`Core/Notifications/ReminderScheduler.swift`, the system notification centre).
+`DevicePreferences` (`Core/Session/DevicePreferences.swift`), made in `MealLoopApp` and passed through the environment,
+keeps what belongs to this phone rather than an account: the walkthrough seen flag, each student's first-visit guides
+and reminder choices.
 
 Screens get `AppEnvironment` from the SwiftUI environment and pass `environment.repositories` (or one repository from
 it) and `environment.clock` into their ViewModel's initializer. Nothing else creates a repository: no static registry,

@@ -70,7 +70,7 @@ extension AdminHeadcountSnapshot {
         var approvedBy: String?
         var approvedTime: String?
         if case .approved(let approved) = headcount.approved {
-            approvedBy = approved.approvedBy == context.account.role ? context.account.firstName : StaffEntryCopy.roleTitle(approved.approvedBy)
+            approvedBy = approved.approvedBy == context.account.role ? context.account.firstName : MLFormat.roleTitle(approved.approvedBy)
             approvedTime = MLFormat.time(approved.approvedAt, in: timeZone)
             approvedLine = AdminCopy.byWhom(approvedBy ?? "", time: approvedTime ?? "")
         }
@@ -133,7 +133,7 @@ extension AdminHeadcountSnapshot {
             for change in approved.adjustments {
                 hasChanges = true
                 history.append(.init(title: AdminCopy.historyAdjusted(from: change.from, to: change.to),
-                                     detail: "\(change.reason) · \(StaffEntryCopy.roleTitle(change.adjustedBy)) · \(MLFormat.time(change.adjustedAt, in: timeZone))",
+                                     detail: "\(change.reason) · \(MLFormat.roleTitle(change.adjustedBy)) · \(MLFormat.time(change.adjustedAt, in: timeZone))",
                                      isDone: true))
             }
             history.append(.init(title: AdminCopy.approvedCount(approved.count), detail: "\(approvedBy ?? "") · \(approvedTime ?? "")", isDone: true))
@@ -164,7 +164,7 @@ extension AdminHeadcountSnapshot {
         let timeZone = content.mess.timeZone
         // The same meal slot closes at the same time in every mess.
         let cutoff = content.meal.map { MLFormat.time(IntentionPolicy.cutoff(for: $0.meal), in: timeZone) } ?? AdminFormat.missing
-        let approvedBy = mess.approvedBy.map { $0 == context.account.role ? context.account.firstName : StaffEntryCopy.roleTitle($0) }
+        let approvedBy = mess.approvedBy.map { $0 == context.account.role ? context.account.firstName : MLFormat.roleTitle($0) }
         let approvedTime = mess.approvedAt.map { MLFormat.time($0, in: timeZone) }
         let approvedLine = approvedBy.flatMap { who in approvedTime.map { AdminCopy.byWhom(who, time: $0) } }
 

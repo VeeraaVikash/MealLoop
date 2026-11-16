@@ -20,15 +20,39 @@ final class StudentRecordsViewModel {
     private(set) var dataRequestSend: Send = .idle
     private(set) var dataRequests: [StudentDataRequestReceipt] = []
 
+    /// The latest meal today whose entry the door recorded: Rate a dish on My feedback opens its rating. Nil when
+    /// there is none, and the tile then says why.
+    private(set) var rateTarget: Meal?
+
     let context: StudentContext
     private let records: any StudentRecordsRepository
+    private let mealState: any MealStateRepository
+    private let extras: any StudentExtrasRepository
     private let clock: any AppClock
 
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
         self.context = context
         self.records = repositories.student.records
+        self.mealState = repositories.mealState
+        self.extras = repositories.student.extras
         self.clock = clock
+    }
+
+    /// Rechecks waiting for an answer, newest first.
+    var rechecksDue: [StudentFeedbackItem] { (feedback.value?.items ?? []).filter(\.isRecheckDue) }
+
+    /// Reads the same entry records Home reads; nothing here can mark an entry.
+    /// The meal Rate a dish opens: the latest one with a recorded entry, otherwise (owner decision, 16 Nov 2026: Rate a
+    /// dish is always open on My feedback) the latest meal that has started, or today's first meal.
+    func loadRateTarget() async {
+        let all = ((try? await mealState.meals(for: context.mess.id)) ?? []).sorted { $0.meal.startsAt > $1.meal.startsAt }
+        let started = all.filter { $0.state != .notStarted }
+        for status in started {
+            let standing = try? await extras.entryStanding(of: student, for: status.meal.id, at: context.mess.id)
+            if standing?.isRecorded == true { rateTarget = status.meal; return }
+        }
+        rateTarget = started.first?.meal ?? all.last?.meal
     }
 
     var timeZone: TimeZone { context.mess.timeZone }
@@ -94,8 +118,10 @@ final class StudentRecordsViewModel {
         feedback = await Self.load(feedback) { [records, student] in try await records.feedback(for: student) }
     }
 
+    /// Records the answer once. A second tap while it sends, or an item already answered, does nothing.
     func answerRecheck(_ id: StudentFeedbackID, _ answer: StudentRecheckAnswer) async {
-        guard recheckSend != .sending else { return }
+        guard recheckSend != .sending,
+              feedback.value?.items.first(where: { $0.id == id })?.recheck == nil else { return }
         recheckSend = .sending
         do {
             feedback = .loaded(try await records.answerRecheck(id, answer, by: student))

@@ -39,13 +39,13 @@ final class StudentReminderTests: XCTestCase {
     /// The cutoff is 10:00 AM for lunch at 12. A reminder never extends it.
     func testTheCutoffGuard() {
         let reminders = StudentMealReminders()
-        XCTAssertTrue(reminders.canOffer(lunch(), now: DemoSeed.time(8, 59)))
-        XCTAssertFalse(reminders.canOffer(lunch(), now: DemoSeed.time(9, 0)), "Now + 1 hour at the cutoff: not offered.")
+        XCTAssertTrue(reminders.canOffer(lunch(), now: DemoSeed.time(7, 59)))
+        XCTAssertFalse(reminders.canOffer(lunch(), now: DemoSeed.time(8, 0)), "Now + 1 hour at the 9 AM cutoff: not offered.")
         XCTAssertNil(reminders.set(lunch(), now: DemoSeed.time(9, 30)))
         XCTAssertFalse(reminders.canOffer(lunch(open: false), now: seven), "Closed answers: not offered.")
         let breakfast = StudentMealCard(meal: DemoSeed.breakfast, response: .noResponse, isAnswerOpen: false,
                                         cutoff: IntentionPolicy.cutoff(for: DemoSeed.breakfast))
-        XCTAssertFalse(reminders.canOffer(breakfast, now: seven), "Breakfast's cutoff (5:30 AM) has passed at 7:00.")
+        XCTAssertFalse(reminders.canOffer(breakfast, now: seven), "Breakfast's cutoff (10 PM the night before) has passed at 7:00.")
     }
 
     func testAnsweringCancelsIt() {

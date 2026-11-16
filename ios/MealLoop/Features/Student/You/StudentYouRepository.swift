@@ -1,6 +1,6 @@
 import Foundation
 
-/// Notifications, the profile, Credits and Attendance for one student. Separate from the core repositories, so no
+/// Notifications, the profile and Credits for one student. Separate from the core repositories, so no
 /// existing operation changes.
 protocol StudentYouRepository: Sendable {
     /// Newest first.
@@ -10,5 +10,4 @@ protocol StudentYouRepository: Sendable {
     func profile(for student: StudentID, at mess: MessID) async throws -> StudentProfileSummary
     /// The balance counts definite answers (I'm in, Skip) only; Not sure and No response earn nothing.
     func credits(for student: StudentID) async throws -> StudentCredits
-    func attendance(for student: StudentID, at mess: MessID) async throws -> StudentAttendanceMonth
 }

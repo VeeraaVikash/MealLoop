@@ -1,4 +1,5 @@
 import Observation
+import Charts
 import SwiftUI
 
 // Spending (221:63988) with Add expense (221:64118), Saving (221:64141), Failed (221:65703), Saved (221:64164), Edit
@@ -27,6 +28,7 @@ enum SpendingCopy {
     static let delete = "Delete"
     static let didNotDelete = "Didn't delete. Try again."
     static let emptyTitle = "Nothing added yet"
+    static let couldntLoad = "Couldn't load your spending"
     static let emptyDetail = "Add what you spend outside the mess. Only you can see it."
     static let amountHint = "Amount in rupees"
     static func saved(_ category: StudentExpenseCategory, _ amount: Int) -> String {
@@ -60,6 +62,8 @@ final class StudentSpendingViewModel {
     let context: StudentContext
     private let spending: any StudentSpendingRepository
     private let clock: any AppClock
+    /// The saved entries the chart, the totals and the list are all computed from, so the four never disagree.
+    private var entries: [StudentExpense] = []
 
     init?(session: Session, repositories: Repositories, clock: any AppClock) {
         guard session.account.role == .student, let context = session.student else { return nil }
@@ -75,13 +79,18 @@ final class StudentSpendingViewModel {
     func load() async {
         if state.value == nil { state = .loading }
         do {
-            let entries = try await spending.expenses(for: student)
-            state = .loaded(StudentSpendingMath.summary(of: entries, today: today, timeZone: timeZone))
+            entries = try await spending.expenses(for: student)
+            recompute()
         } catch RepositoryError.offline(let savedAt) {
             state = .offline(state.value, savedAt: savedAt)
         } catch {
             state = .failed(LoadFailure(error))
         }
+    }
+
+    /// One summary from `entries`: chart, month total, this week and the list.
+    private func recompute() {
+        state = .loaded(StudentSpendingMath.summary(of: entries, today: today, timeZone: timeZone))
     }
 
     func beginEditing() {
@@ -99,6 +108,10 @@ final class StudentSpendingViewModel {
             }
             savedLine = SpendingCopy.saved(saved.category, saved.amount)
             write = .idle
+            // The saved entry shows at once; the reload then confirms it against the source.
+            entries.removeAll { $0.id == saved.id }
+            entries.append(saved)
+            recompute()
             await load()
             return true
         } catch {
@@ -113,6 +126,8 @@ final class StudentSpendingViewModel {
             try await spending.deleteExpense(id, for: student)
             savedLine = nil
             write = .idle
+            entries.removeAll { $0.id == id }
+            recompute()
             await load()
             return true
         } catch {
@@ -156,6 +171,8 @@ struct StudentSpendingScreen: View {
 }
 
 struct StudentSpendingView: View {
+    /// The week picked on the chart; nil shows the whole month.
+    @State private var selectedWeek: Date?
     @State private var model: StudentSpendingViewModel
     @State private var form: SpendingForm?
     /// A form to open once loaded (previews and the verification captures).
@@ -167,7 +184,18 @@ struct StudentSpendingView: View {
     }
 
     var body: some View {
-        MLScreen(YouCopy.spending, bottomClearance: .tabBar) {
+        // Add is the + at the top right (owner decision, 16 Nov 2026).
+        MLScreen(YouCopy.spending) {
+            if canAddFromBar {
+                Button {
+                    model.beginEditing()
+                    form = .add
+                } label: {
+                    Image(systemName: "plus")
+                }
+                .accessibilityLabel(SpendingCopy.addSpending)
+            }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }
@@ -183,6 +211,14 @@ struct StudentSpendingView: View {
         .sensoryFeedback(trigger: model.savedLine) { _, line in line == nil ? nil : .success }
     }
 
+    /// The + shows once the page has loaded and is online, like the old Add button.
+    private var canAddFromBar: Bool {
+        switch model.state {
+        case .loaded, .stale, .empty: true
+        default: false
+        }
+    }
+
     @ViewBuilder
     private var content: some View {
         switch model.state {
@@ -191,7 +227,7 @@ struct StudentSpendingView: View {
             YouSkeleton(heights: [259, 216], label: YouCopy.spending)
         case .failed(let failure):
             SpendingPrivateChip()
-            MealsStateCard(symbol: "exclamationmark.circle", title: failure.message, detail: "")
+            RetryCard(title: SpendingCopy.couldntLoad, message: failure.message) { Task { await model.load() } }
         case .empty:
             page(nil)
         case .loaded(let summary), .stale(let summary, _):
@@ -209,15 +245,22 @@ struct StudentSpendingView: View {
             SpendingSavedBanner(text: line)
                 .mlTransition(.fromTop)
         }
+        if let summary, !summary.weeks.isEmpty {
+            // Drawn even with no entries, so deleting the last one leaves an empty chart, not a jump.
+            SpendingHero(summary: summary, timeZone: model.timeZone, selectedWeek: $selectedWeek)
+        }
         if let summary, !summary.isEmpty {
-            SpendingHero(summary: summary, timeZone: model.timeZone)
             Text(RecordsCopy.recent)
                 .font(StudentType.secondaryMedium)
                 .foregroundStyle(MLColor.inkSecondary)
                 .accessibilityAddTraits(.isHeader)
                 .padding(.top, MLSpacing.s4)
             VStack(spacing: 0) {
-                ForEach(summary.recent) { expense in
+                // A picked week narrows Recent to that week's lines (owner decision, 16 Nov 2026).
+                ForEach(summary.recent.filter { expense in
+                    guard let week = summary.weeks.first(where: { $0.id == selectedWeek }) else { return true }
+                    return SpendingHero.contains(week, expense.day, timeZone: model.timeZone)
+                }) { expense in
                     Rectangle().fill(MLColor.border).frame(height: 1)
                     SpendingRow(expense: expense, timeZone: model.timeZone) {
                         model.beginEditing()
@@ -228,13 +271,6 @@ struct StudentSpendingView: View {
             }
         } else {
             SpendingEmptyCard()
-        }
-        if canAdd {
-            InkActionButton(title: SpendingCopy.addSpending) {
-                model.beginEditing()
-                form = .add
-            }
-            .padding(.top, MLSpacing.s4)
         }
     }
 }
@@ -301,13 +337,46 @@ struct SpendingEmptyCard: View {
 struct SpendingHero: View {
     let summary: StudentSpendingSummary
     let timeZone: TimeZone
+    /// The picked week (its start). It stays picked after the finger lifts; tapping it again shows the month.
+    @Binding var selectedWeek: Date?
+
+    private var picked: StudentSpendingWeek? {
+        guard let selectedWeek else { return nil }
+        return summary.weeks.first { $0.id == selectedWeek }
+    }
+
+    /// Whether a day falls inside a week, by calendar day in the mess time zone.
+    static func contains(_ week: StudentSpendingWeek, _ day: Date, timeZone: TimeZone) -> Bool {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        let start = calendar.startOfDay(for: week.start)
+        let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: week.end)) ?? week.end
+        return day >= start && day < end
+    }
+
+    /// The touched week is lime and the others fade; untouched, this week is lime.
+    private func barColor(_ week: StudentSpendingWeek) -> Color {
+        if let picked { return picked.id == week.id ? MLColor.lime : MLColor.track.opacity(0.4) }
+        return week.isCurrent ? MLColor.lime : MLColor.track
+    }
 
     var body: some View {
-        let maxAmount = max(summary.weeks.compactMap(\.amount).max() ?? 1, 1)
         VStack(alignment: .leading, spacing: MLSpacing.s12) {
-            Text(RecordsCopy.monthSoFar).font(StudentType.secondary).foregroundStyle(MLColor.onHeroSecondary)
+            Text(picked.map(range) ?? RecordsCopy.monthSoFar).font(StudentType.secondary).foregroundStyle(MLColor.onHeroSecondary)
             HStack(alignment: .firstTextBaseline, spacing: MLSpacing.s12) {
-                if let total = summary.monthTotal {
+                if let picked {
+                    // The picked week's own total; a week with nothing written says so, never ₹0.
+                    if let amount = picked.amount {
+                        Text(RecordsCopy.rupees(amount))
+                            .font(.system(size: 48, weight: .medium, design: .monospaced))
+                            .foregroundStyle(MLColor.lime)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                            .mlNumericText(amount)
+                    } else {
+                        Text(RecordsCopy.nothingWritten).font(StudentType.bodySemibold).foregroundStyle(MLColor.onHero)
+                    }
+                } else if let total = summary.monthTotal {
                     Text(RecordsCopy.rupees(total))
                         .font(.system(size: 48, weight: .medium, design: .monospaced))
                         .foregroundStyle(MLColor.onHero)
@@ -317,37 +386,39 @@ struct SpendingHero: View {
                 } else {
                     Text(RecordsCopy.totalMissing).font(StudentType.bodySemibold).foregroundStyle(MLColor.onHero)
                 }
-                if let week = summary.thisWeek {
+                if picked == nil, let week = summary.thisWeek {
                     Text(RecordsCopy.thisWeek(week)).font(StudentType.secondary).foregroundStyle(MLColor.onHeroSecondary)
                 }
             }
             .accessibilityElement(children: .combine)
-            HStack(alignment: .bottom, spacing: MLSpacing.s16) {
-                ForEach(summary.weeks) { week in
-                    VStack(spacing: MLSpacing.s8) {
-                        Spacer(minLength: 0)
-                        if let amount = week.amount {
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(week.isCurrent ? MLColor.lime : MLColor.track)
-                                .frame(height: max(16, 88 * CGFloat(amount) / CGFloat(maxAmount)))
-                        } else {
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .strokeBorder(MLColor.onHeroSecondary, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
-                                .frame(height: 16)
-                        }
-                        Text(range(week))
-                            .font(StudentType.footnote)
-                            .foregroundStyle(week.isCurrent ? MLColor.onHero : MLColor.onHeroSecondary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(range(week))
-                    .accessibilityValue(week.amount.map(RecordsCopy.rupees) ?? "")
+            Text(picked == nil ? RecordsCopy.touchAWeek : RecordsCopy.tapAgainForMonth)
+                .font(StudentType.secondaryMedium)
+                .foregroundStyle(MLColor.onHeroSecondary)
+            Chart(summary.weeks) { week in
+                BarMark(x: .value(RecordsCopy.weekAxis, range(week)),
+                        y: .value(RecordsCopy.amountAxis, week.amount ?? 0),
+                        width: .ratio(0.6))
+                    .cornerRadius(10)
+                    .foregroundStyle(barColor(week))
+            }
+            .chartOverlay { proxy in
+                // Tap or drag picks a week and keeps it; tapping the picked week again goes back to the month.
+                Rectangle().fill(.clear).contentShape(Rectangle())
+                    .gesture(DragGesture(minimumDistance: 0).onEnded { value in
+                        guard let label: String = proxy.value(atX: value.location.x),
+                              let week = summary.weeks.first(where: { range($0) == label }) else { return }
+                        withAnimation(.snappy) { selectedWeek = selectedWeek == week.id ? nil : week.id }
+                    })
+            }
+            .chartYAxis(.hidden)
+            .chartXAxis {
+                AxisMarks { _ in
+                    AxisValueLabel().foregroundStyle(MLColor.onHeroSecondary)
                 }
             }
             .frame(height: 118)
+            .sensoryFeedback(.selection, trigger: selectedWeek)
+            .accessibilityLabel(RecordsCopy.monthSoFar)
         }
         .padding(MLSpacing.s20)
         .frame(maxWidth: .infinity, alignment: .leading)
