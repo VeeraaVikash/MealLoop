@@ -24,8 +24,6 @@ enum StudentType {
 
 /// Sizes from the frames, where the shared tokens differ.
 enum StudentMetric {
-    /// The corner of a native grouped cell.
-    static let nativeCardRadius: CGFloat = 22
     static let heroRadius: CGFloat = 30
     static let heroPadding: CGFloat = 24
     static let rowRadius: CGFloat = 22
@@ -219,14 +217,5 @@ extension View {
             self.toolbar(.hidden, for: .navigationBar)
                 .navigationBarBackButtonHidden(true)
         }
-    }
-}
-
-extension View {
-    /// A native grouped cell (owner decision, 16 Nov 2026: cards look native): the system cell colour, the system's
-    /// continuous rounded corners and no drawn border.
-    func studentNativeCard() -> some View {
-        background(RoundedRectangle(cornerRadius: StudentMetric.nativeCardRadius, style: .continuous)
-            .fill(Color(uiColor: .secondarySystemGroupedBackground)))
     }
 }

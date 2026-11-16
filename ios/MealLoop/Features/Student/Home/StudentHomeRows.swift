@@ -42,7 +42,7 @@ struct StudentAnswerRow: View {
             }
             .padding(MLSpacing.s16)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .studentNativeCard()
+            .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
         } else {
             HStack(spacing: 14) {
                 rowLabel
@@ -52,7 +52,7 @@ struct StudentAnswerRow: View {
             .padding(.leading, MLSpacing.s16)
             .padding(.trailing, MLSpacing.s12)
             .padding(.vertical, 14)
-            .studentNativeCard()
+            .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
         }
     }
 
@@ -176,17 +176,16 @@ struct StudentTicketRow: View {
                 .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
                 if !typeSize.isAccessibilitySize {
+                    StudentPerforation()
+                        .stroke(MLColor.border, style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                        .frame(width: 1.5, height: 40)
+                        .accessibilityHidden(true)
                     statusLabel
                 }
-                // A native disclosure in place of the ticket's perforation (owner decision, 16 Nov 2026).
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.tertiary)
-                    .accessibilityHidden(true)
             }
             .padding(.horizontal, MLSpacing.s20)
             .padding(.vertical, 14)
-            .studentNativeCard()
+            .background(StudentTicketShape().fill(MLColor.surface))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -258,7 +257,7 @@ struct StudentCrowdRow: View {
         }
         .padding(.horizontal, MLSpacing.s20)
         .padding(.vertical, MLSpacing.s16)
-        .studentNativeCard()
+        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).strokeBorder(MLColor.border, lineWidth: 1.5))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel([StudentCopy.crowdAt(mess), headline, detail].compactMap { $0 }.joined(separator: ", "))
     }
