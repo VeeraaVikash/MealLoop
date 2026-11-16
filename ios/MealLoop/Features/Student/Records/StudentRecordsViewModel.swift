@@ -43,15 +43,16 @@ final class StudentRecordsViewModel {
     var rechecksDue: [StudentFeedbackItem] { (feedback.value?.items ?? []).filter(\.isRecheckDue) }
 
     /// Reads the same entry records Home reads; nothing here can mark an entry.
+    /// The meal Rate a dish opens: the latest one with a recorded entry, otherwise (owner decision, 16 Nov 2026: Rate a
+    /// dish is always open on My feedback) the latest meal that has started, or today's first meal.
     func loadRateTarget() async {
-        let meals = ((try? await mealState.meals(for: context.mess.id)) ?? [])
-            .filter { $0.state != .notStarted }
-            .sorted { $0.meal.startsAt > $1.meal.startsAt }
-        for status in meals {
+        let all = ((try? await mealState.meals(for: context.mess.id)) ?? []).sorted { $0.meal.startsAt > $1.meal.startsAt }
+        let started = all.filter { $0.state != .notStarted }
+        for status in started {
             let standing = try? await extras.entryStanding(of: student, for: status.meal.id, at: context.mess.id)
             if standing?.isRecorded == true { rateTarget = status.meal; return }
         }
-        rateTarget = nil
+        rateTarget = started.first?.meal ?? all.last?.meal
     }
 
     var timeZone: TimeZone { context.mess.timeZone }

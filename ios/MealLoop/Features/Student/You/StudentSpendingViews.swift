@@ -1,4 +1,5 @@
 import Observation
+import Charts
 import SwiftUI
 
 // Spending (221:63988) with Add expense (221:64118), Saving (221:64141), Failed (221:65703), Saved (221:64164), Edit
@@ -181,7 +182,18 @@ struct StudentSpendingView: View {
     }
 
     var body: some View {
+        // Add is the + at the top right (owner decision, 16 Nov 2026).
         MLScreen(YouCopy.spending) {
+            if canAddFromBar {
+                Button {
+                    model.beginEditing()
+                    form = .add
+                } label: {
+                    Image(systemName: "plus")
+                }
+                .accessibilityLabel(SpendingCopy.addSpending)
+            }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s16) {
                 content
             }
@@ -195,6 +207,14 @@ struct StudentSpendingView: View {
             ExpenseFormSheet(model: model, form: form) { self.form = nil }
         }
         .sensoryFeedback(trigger: model.savedLine) { _, line in line == nil ? nil : .success }
+    }
+
+    /// The + shows once the page has loaded and is online, like the old Add button.
+    private var canAddFromBar: Bool {
+        switch model.state {
+        case .loaded, .stale, .empty: true
+        default: false
+        }
     }
 
     @ViewBuilder
@@ -245,13 +265,6 @@ struct StudentSpendingView: View {
             }
         } else {
             SpendingEmptyCard()
-        }
-        if canAdd {
-            InkActionButton(title: SpendingCopy.addSpending) {
-                model.beginEditing()
-                form = .add
-            }
-            .padding(.top, MLSpacing.s4)
         }
     }
 }
@@ -318,9 +331,20 @@ struct SpendingEmptyCard: View {
 struct SpendingHero: View {
     let summary: StudentSpendingSummary
     let timeZone: TimeZone
+    @State private var selected: String?
+
+    private var picked: StudentSpendingWeek? {
+        guard let selected else { return nil }
+        return summary.weeks.first { range($0) == selected }
+    }
+
+    /// The touched week is lime and the others fade; untouched, this week is lime.
+    private func barColor(_ week: StudentSpendingWeek) -> Color {
+        if let picked { return picked.id == week.id ? MLColor.lime : MLColor.track.opacity(0.4) }
+        return week.isCurrent ? MLColor.lime : MLColor.track
+    }
 
     var body: some View {
-        let maxAmount = max(summary.weeks.compactMap(\.amount).max() ?? 1, 1)
         VStack(alignment: .leading, spacing: MLSpacing.s12) {
             Text(RecordsCopy.monthSoFar).font(StudentType.secondary).foregroundStyle(MLColor.onHeroSecondary)
             HStack(alignment: .firstTextBaseline, spacing: MLSpacing.s12) {
@@ -339,32 +363,27 @@ struct SpendingHero: View {
                 }
             }
             .accessibilityElement(children: .combine)
-            HStack(alignment: .bottom, spacing: MLSpacing.s16) {
-                ForEach(summary.weeks) { week in
-                    VStack(spacing: MLSpacing.s8) {
-                        Spacer(minLength: 0)
-                        if let amount = week.amount {
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(week.isCurrent ? MLColor.lime : MLColor.track)
-                                .frame(height: max(16, 88 * CGFloat(amount) / CGFloat(maxAmount)))
-                        } else {
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .strokeBorder(MLColor.onHeroSecondary, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
-                                .frame(height: 16)
-                        }
-                        Text(range(week))
-                            .font(StudentType.footnote)
-                            .foregroundStyle(week.isCurrent ? MLColor.onHero : MLColor.onHeroSecondary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(range(week))
-                    .accessibilityValue(week.amount.map(RecordsCopy.rupees) ?? "")
+            // Touch or drag across the weeks: the picked week's amount shows above the chart.
+            Text(picked.map { RecordsCopy.weekAmount(range($0), $0.amount.map(RecordsCopy.rupees)) } ?? RecordsCopy.touchAWeek)
+                .font(StudentType.secondaryMedium)
+                .foregroundStyle(picked == nil ? MLColor.onHeroSecondary : MLColor.onHero)
+            Chart(summary.weeks) { week in
+                BarMark(x: .value(RecordsCopy.weekAxis, range(week)),
+                        y: .value(RecordsCopy.amountAxis, week.amount ?? 0),
+                        width: .ratio(0.6))
+                    .cornerRadius(10)
+                    .foregroundStyle(barColor(week))
+            }
+            .chartXSelection(value: $selected)
+            .chartYAxis(.hidden)
+            .chartXAxis {
+                AxisMarks { _ in
+                    AxisValueLabel().foregroundStyle(MLColor.onHeroSecondary)
                 }
             }
             .frame(height: 118)
+            .sensoryFeedback(.selection, trigger: selected)
+            .accessibilityLabel(RecordsCopy.monthSoFar)
         }
         .padding(MLSpacing.s20)
         .frame(maxWidth: .infinity, alignment: .leading)

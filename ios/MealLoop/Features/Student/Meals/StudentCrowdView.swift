@@ -98,7 +98,7 @@ struct StudentCrowdSheet: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.height(360), .large])
         .presentationDragIndicator(.visible)
         .task(id: environment.dataRevision) { await model.load() }
     }
@@ -164,6 +164,12 @@ struct CrowdSheetChart: View {
                         width: .ratio(0.7))
                     .cornerRadius(6)
                     .foregroundStyle(color(index, interval))
+                    .annotation(position: .top, spacing: 4) {
+                        Text("\(interval.entries)")
+                            .font(.system(size: 11, weight: .medium, design: .monospaced))
+                            .foregroundStyle(MLColor.inkSecondary)
+                            .opacity(grown ? 1 : 0)
+                    }
             }
             .chartXSelection(value: $selected)
             .chartYAxis(.hidden)
@@ -172,7 +178,7 @@ struct CrowdSheetChart: View {
                     if let index = value.index as Int?, index % 2 == 0 { AxisValueLabel() }
                 }
             }
-            .frame(height: 200)
+            .frame(height: 140)
             .accessibilityLabel(MealsCopy.entriesEvery)
         }
         .onAppear {
@@ -181,11 +187,16 @@ struct CrowdSheetChart: View {
         .sensoryFeedback(.selection, trigger: selected)
     }
 
-    /// The touched interval is lime and the rest fade; untouched, the current interval is lime and a zero is quiet.
+    /// The brand lime marks one bar: the touched one, else the interval the clock is in, else the busiest. The rest
+    /// are ink, and fade while another is touched.
     private func color(_ index: Int, _ interval: StudentCrowdInterval) -> Color {
         if let picked { return picked.startsAt == interval.startsAt ? MLColor.lime : MLColor.ink.opacity(0.25) }
-        if index == crowd.currentInterval { return MLColor.lime }
+        if index == highlighted { return MLColor.lime }
         return interval.entries == 0 ? MLColor.track : MLColor.ink
+    }
+
+    private var highlighted: Int? {
+        crowd.currentInterval ?? crowd.intervals.indices.max { crowd.intervals[$0].entries < crowd.intervals[$1].entries }
     }
 }
 

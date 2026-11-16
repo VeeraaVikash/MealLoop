@@ -468,42 +468,27 @@ struct RecordsReplySheet: View {
 
 // MARK: - My feedback
 
-/// My feedback (student redesign, 15 Nov 2026): Rate a dish first, then any recheck waiting, then what the student
-/// reported with its status. How feedback works opens by itself on the first visit and from its link.
+/// My feedback: Rate a dish first, always open, then what the student reported with its status (owner decision,
+/// 16 Nov 2026: less text, no follow-ups). How feedback works opens by itself on the first visit and from its link.
 struct StudentMyFeedbackView: View {
     @State var model: StudentRecordsViewModel
     let onReports: () -> Void
     var onRate: (Meal) -> Void = { _ in }
     let onBack: () -> Void
     @State private var showsGuide = false
-    @State private var rechecking: StudentFeedbackItem?
 
     var body: some View {
-        RecordsPage(title: YouCopy.myFeedback, subtitle: RecordsCopy.feedbackSubtitle, content: {
+        RecordsPage(title: YouCopy.myFeedback, subtitle: nil, content: {
             rateTile
             content
         }, onRefresh: { await load() }, guide: (.feedback, { showsGuide = true }))
         .task { await load() }
-        .studentGuide(.feedback, student: model.context.student.id, isPresented: $showsGuide, isBlocked: rechecking != nil)
-        .mlSheet(item: $rechecking, isWorking: model.recheckSend == .sending) { item in
-            StudentRecheckSheet(item: item, isSending: model.recheckSend == .sending, error: recheckError,
-                                onAnswer: { answer in
-                                    Task {
-                                        await model.answerRecheck(item.id, answer)
-                                        if model.recheckSend == .idle { rechecking = nil }
-                                    }
-                                }, onClose: { rechecking = nil })
-        }
+        .studentGuide(.feedback, student: model.context.student.id, isPresented: $showsGuide)
     }
 
     private func load() async {
         await model.loadFeedback()
         await model.loadRateTarget()
-    }
-
-    private var recheckError: String? {
-        if case .failed(let message) = model.recheckSend { return message }
-        return nil
     }
 
     /// The Rate a dish tile. It opens the rating of the latest meal with a recorded entry, or says why it cannot.
@@ -559,32 +544,6 @@ struct StudentMyFeedbackView: View {
 
     @ViewBuilder
     private func page(_ summary: StudentFeedbackSummary, offline: Bool) -> some View {
-        let due = summary.items.filter(\.isRecheckDue)
-        if !due.isEmpty {
-            section(RecordsCopy.followUps)
-            ForEach(due) { item in
-                Button { rechecking = item } label: {
-                    HStack(spacing: MLSpacing.s12) {
-                        Image(systemName: "arrow.clockwise").foregroundStyle(MLColor.ink).accessibilityHidden(true)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(RecordsCopy.wasItBetter(item.dish)).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
-                            Text(RecordsCopy.youSaidProblem(item.dish, item.problem))
-                                .font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
-                        }
-                        .multilineTextAlignment(.leading)
-                        Spacer(minLength: 0)
-                        Image(systemName: "chevron.right").foregroundStyle(MLColor.ink).accessibilityHidden(true)
-                    }
-                    .padding(MLSpacing.s16)
-                    .background(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).fill(MLColor.surface))
-                    .overlay(RoundedRectangle(cornerRadius: RecordsTint.cardRadius, style: .continuous).strokeBorder(MLColor.ink, lineWidth: 1.5))
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .disabled(offline)
-                .accessibilityElement(children: .combine)
-            }
-        }
         section(RecordsCopy.yourFeedback)
         if summary.items.isEmpty {
             MealsStateCard(title: RecordsCopy.noFeedbackTitle, detail: RecordsCopy.noFeedbackDetail)
@@ -620,13 +579,6 @@ struct StudentMyFeedbackView: View {
                 }
             }
             .accessibilityHidden(true)
-            if let note = item.fixNote {
-                Text(RecordsCopy.kitchenRecorded(note)).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            if let answer = item.recheck {
-                Text(RecordsCopy.youSaid(answer)).font(StudentType.secondaryMedium).foregroundStyle(MLColor.ink)
-            }
         }
         .padding(MLSpacing.s16)
         .frame(maxWidth: .infinity, alignment: .leading)
