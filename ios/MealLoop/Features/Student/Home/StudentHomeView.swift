@@ -665,6 +665,23 @@ struct StudentHomeHero: View {
             }
             .buttonStyle(.plain)
             .padding(.top, -MLSpacing.s4)
+        } else if content.heroCase == .answered && card.answer == .attending && !isOffline {
+            // After I'm in, the entry QR is what the student needs next (owner decision, 16 Nov 2026); changing the
+            // answer stays one tap away while its cutoff is open.
+            VStack(spacing: MLSpacing.s8) {
+                StudentHeroButton(title: StudentCopy.showEntryQR, style: .cream, action: onShowEntry)
+                if card.isAnswerOpen {
+                    Button(action: onChangeAnswer) {
+                        Text(StudentCopy.changeAnswerUntil(StudentFormat.shortTime(card.cutoff, in: timeZone)))
+                            .font(StudentType.secondaryMedium)
+                            .underline()
+                            .foregroundStyle(MLColor.onHeroSecondary)
+                            .frame(maxWidth: .infinity, minHeight: MLSize.hit)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
         } else if content.heroCase == .answered && card.isAnswerOpen && !isOffline {
             VStack(alignment: .leading, spacing: MLSpacing.s12) {
                 StudentHeroButton(title: StudentCopy.changeAnswer, style: .outline, action: onChangeAnswer)

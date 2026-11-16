@@ -105,6 +105,7 @@ enum StudentCopy {
     static func youreSkipping(_ slot: MealSlot) -> String { "You're skipping \(mealWord(slot))" }
     static func reasonChangeUntil(_ reason: String, until: String) -> String { "Reason: \(reason) · change until \(until)." }
     static func changeUntil(_ until: String) -> String { "You can change this until \(until)." }
+    static func changeAnswerUntil(_ until: String) -> String { "Change answer · until \(until)" }
     static let markedNotSure = "Marked not sure"
     static func decideByTime(_ time: String) -> String { "Decide by \(time)." }
     static let youDidntAnswer = "You didn't answer"

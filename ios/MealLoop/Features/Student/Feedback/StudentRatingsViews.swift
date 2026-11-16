@@ -206,10 +206,14 @@ struct StudentRateMealView: View {
     let onDone: () -> Void
 
     var body: some View {
+        // The faces sit in the middle of the page and Skip for now is pinned at the bottom, so no empty band is left
+        // under them (owner feedback, 16 Nov 2026).
         MLScreen(StudentCopy.howWas(model.target.slot),
                  subtitle: RatingCopy.dayAndMess(StudentFormat.mediumDay(model.target.day, in: model.timeZone),
-                                                 model.context.mess.name)) {
-            VStack(spacing: MLSpacing.s16) {
+                                                 model.context.mess.name),
+                 fillsViewport: true) {
+            VStack(spacing: MLSpacing.s24) {
+                Spacer(minLength: MLSpacing.s16)
                 // The two choices as faces (owner reference, 16 Nov 2026; Figma Feedback · How was breakfast 2159:6).
                 HStack(spacing: 14) {
                     face(RatingCopy.good, happy: true) {
@@ -224,7 +228,6 @@ struct StudentRateMealView: View {
                         Task { if await model.rate(.notGood) { feedback = model.feedbackRequest(after: .notGood) } }
                     }
                 }
-                .padding(.top, MLSpacing.s24)
                 VStack(spacing: MLSpacing.s8) {
                     Text(RatingCopy.goodSendsNow)
                     Text(RatingCopy.kitchenNeverSees)
@@ -233,14 +236,16 @@ struct StudentRateMealView: View {
                 .foregroundStyle(MLColor.inkSecondary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
-                Button(RatingCopy.skipForNow, action: onDone)
-                    .font(StudentType.body)
-                    .foregroundStyle(MLColor.ink)
-                    .underline()
-                    .frame(minHeight: MLSize.hit)
-                    .padding(.top, MLSpacing.s24)
+                Spacer(minLength: MLSpacing.s16)
             }
+            .frame(maxHeight: .infinity)
             .disabled(!model.canRate)
+        } bottom: {
+            Button(RatingCopy.skipForNow, action: onDone)
+                .font(StudentType.body)
+                .foregroundStyle(MLColor.ink)
+                .underline()
+                .frame(maxWidth: .infinity, minHeight: MLSize.hit)
         }
         .task { await model.load() }
         .sensoryFeedback(.success, trigger: model.isGood) { _, good in good }
@@ -257,7 +262,7 @@ struct StudentRateMealView: View {
     private func face(_ title: String, happy: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             VStack(spacing: 10) {
-                StudentFaceIcon(isHappy: happy, size: 116)
+                StudentFaceIcon(isHappy: happy, size: 148)
                     .overlay(alignment: .bottomTrailing) {
                         if happy && model.isGood {
                             Image(systemName: "checkmark.circle.fill")
