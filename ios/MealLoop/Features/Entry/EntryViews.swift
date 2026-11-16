@@ -1,11 +1,13 @@
 import SwiftUI
 
-/// Everything before sign-in. The stack root is the walkthrough on a phone that has not finished it, otherwise Sign in;
-/// Register is pushed from Sign in, so the system back button and swipe-back work.
+/// Everything before sign-in. The stack root is the walkthrough on a phone that has not finished it, otherwise Sign in.
+/// Owner decision, 16 Nov 2026: in Debug and Review, Get Started opens the sample student's Home directly (no Register);
+/// the release build has no such shortcut and goes to Sign in.
 struct EntryFlowView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppRouter.self) private var router
     @Environment(DevicePreferences.self) private var preferences
+    @Environment(SessionStore.self) private var sessionStore
 
     var body: some View {
         @Bindable var router = router
@@ -14,26 +16,37 @@ struct EntryFlowView: View {
                 if preferences.hasSeenWalkthrough {
                     AccountSignInView(model: AccountSignInViewModel(auth: environment.repositories.auth))
                 } else {
-                    WalkthroughView { preferences.markWalkthroughSeen() }
+                    WalkthroughView(onFinish: finishWalkthrough)
                 }
             }
             .navigationDestination(for: EntryRoute.self) { route in
                 switch route {
                 case .signIn:
                     AccountSignInView(model: AccountSignInViewModel(auth: environment.repositories.auth))
-                case .register:
-                    StudentRegisterView(model: StudentRegisterViewModel(registration: environment.repositories.registration))
                 }
             }
+        }
+    }
+
+    private func finishWalkthrough() {
+        Task {
+            #if DEMO_DATA || REVIEW_DATA
+            if let session = await environment.demoControls?.demoSession(for: .student) {
+                sessionStore.signIn(session)
+                preferences.markWalkthroughSeen()
+                return
+            }
+            #endif
+            preferences.markWalkthroughSeen()
         }
     }
 }
 
 // MARK: - Walkthrough
 
-/// For Students → Attendance & Meals → Crowd Tracking → Credits & Incentives (walkthrough reference, 15 Nov 2026).
-/// Next and Back move one page; swiping does too. "Sign in" at the top skips straight to Sign in, and Get started on the
-/// last page finishes it. Either way the phone remembers, so a returning student opens on Sign in.
+/// For Students → Attendance & Meals → Crowd Tracking → Credits & Incentives (SVG pack `screens/for-students.svg`,
+/// `attendance-and-meals.svg`, `crowd-tracking.svg`, `credits-and-incentives.svg`). Next and Back move one page; swiping
+/// does too. Get Started on the last page finishes it.
 struct WalkthroughView: View {
     let onFinish: () -> Void
     @State private var page = 0
@@ -57,26 +70,19 @@ struct WalkthroughView: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
-        .overlay(alignment: .top) { DemoEntryButton().padding(.top, MLSpacing.s4) }
+        .overlay(alignment: .topTrailing) { DemoEntryButton().padding(.trailing, MLSpacing.margin).padding(.top, MLSpacing.s8) }
     }
 
+    /// The round Back control, top left. On the first page there is nothing to go back to, so it is not drawn and its
+    /// space is kept, so the brand does not jump between pages.
     private var topBar: some View {
         HStack {
-            if page > 0 {
-                BackButton { move(-1) }
-                    .accessibilityLabel(EntryCopy.back)
-            }
-            Spacer(minLength: MLSpacing.s8)
-            Button(action: onFinish) {
-                Text(EntryCopy.skipToSignIn)
-                    .mlFont(.bodyEmphasis)
-                    .foregroundStyle(MLColor.ink)
-                    .underline()
-                    .frame(minWidth: MLSize.hit, minHeight: MLSize.hit)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(EntryCopy.skipToSignInLabel)
+            BackButton { move(-1) }
+                .accessibilityLabel(EntryCopy.back)
+                .opacity(page > 0 ? 1 : 0)
+                .disabled(page == 0)
+                .accessibilityHidden(page == 0)
+            Spacer()
         }
         .frame(minHeight: MLSize.hit)
         .padding(.horizontal, MLSpacing.margin)
@@ -85,6 +91,7 @@ struct WalkthroughView: View {
 
     private var bottomBar: some View {
         HStack(spacing: MLSpacing.s16) {
+            Spacer(minLength: 0)
             PageDots(count: pages.count, current: page)
             Spacer(minLength: MLSpacing.s8)
             Button {
@@ -114,37 +121,230 @@ struct WalkthroughView: View {
     }
 }
 
-/// One walkthrough page: the brand, the title, one line and the illustration. Scrolls at large text sizes and on a
-/// small iPhone, so nothing is cut off.
+/// One walkthrough page: the brand, the title, one line, the illustration and the page's card. The illustration takes
+/// whatever height is left, so the page fills the screen without gaps; at accessibility text sizes the page scrolls.
 private struct WalkthroughPageView: View {
     let page: EntryCopy.Page
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: MLSpacing.s16) {
-                BrandLockup()
+        if typeSize.isAccessibilitySize {
+            ScrollView { content(fill: false) }
+                .scrollBounceBehavior(.basedOnSize)
+        } else {
+            content(fill: true)
+        }
+    }
+
+    private func content(fill: Bool) -> some View {
+        VStack(spacing: MLSpacing.s12) {
+            BrandLockup(stacked: true)
+            VStack(spacing: MLSpacing.s8) {
                 Text(page.title)
                     .mlFont(.largeTitle)
                     .foregroundStyle(MLColor.ink)
                     .multilineTextAlignment(.center)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                     .accessibilityAddTraits(.isHeader)
-                Text(page.body)
-                    .mlFont(.staffBody)
-                    .foregroundStyle(MLColor.inkSecondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                Image(page.art)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 300, maxHeight: 280)
-                    .padding(.top, MLSpacing.s8)
-                    .accessibilityLabel(page.artLabel)
+                if let body = page.body {
+                    Text(body)
+                        .mlFont(.staffBody)
+                        .foregroundStyle(MLColor.inkSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, MLSpacing.s24)
+                }
             }
-            .padding(.horizontal, MLSpacing.margin)
-            .padding(.vertical, MLSpacing.s16)
-            .frame(maxWidth: .infinity)
+            .padding(.top, MLSpacing.s8)
+            Image(page.art)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity, minHeight: 90, maxHeight: fill ? .infinity : 220)
+                .accessibilityLabel(page.artLabel)
+            switch page.extra {
+            case .none: EmptyView()
+            case .cutoffs: WalkthroughCutoffCard()
+            case .crowd: WalkthroughCrowdCard()
+            case .credits: WalkthroughCreditsCard()
+            }
         }
-        .scrollBounceBehavior(.basedOnSize)
+        .padding(.horizontal, MLSpacing.margin)
+        .padding(.bottom, MLSpacing.s8)
+        .frame(maxWidth: .infinity, maxHeight: fill ? .infinity : nil, alignment: .top)
+    }
+}
+
+/// The white card the reference puts under an illustration.
+private struct WalkthroughCard<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        content
+            .padding(MLSpacing.s16)
+            .frame(maxWidth: .infinity)
+            .background(RoundedRectangle(cornerRadius: MLRadius.card, style: .continuous).fill(MLColor.surface))
+            .overlay(RoundedRectangle(cornerRadius: MLRadius.card, style: .continuous).stroke(MLColor.border, lineWidth: 1))
+    }
+}
+
+/// The reference's time pill: a soft lime fill, no outline, one width for every row so the column lines up.
+private struct WalkthroughLimeChip: View {
+    let text: String
+    var note: String?
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(text).mlFont(.eyebrow)
+            if let note { Text(note).mlFont(.meta) }
+        }
+        .foregroundStyle(MLColor.ink)
+        .multilineTextAlignment(.center)
+        .padding(.horizontal, MLSpacing.s12)
+        .padding(.vertical, MLSpacing.s4)
+        .frame(width: 140)
+        .frame(minHeight: 32)
+        .background(Capsule().fill(MLColor.lime.opacity(0.75)))
+    }
+}
+
+/// Attendance & Meals: Breakfast, Lunch and Dinner on a timeline, each with its answer cutoff (reference card).
+private struct WalkthroughCutoffCard: View {
+    var body: some View {
+        WalkthroughCard {
+            VStack(spacing: MLSpacing.s16) {
+                ForEach(Array(EntryCopy.cutoffMeals.enumerated()), id: \.element) { index, slot in
+                    row(slot, isLast: index == EntryCopy.cutoffMeals.count - 1)
+                }
+            }
+        }
+    }
+
+    private func row(_ slot: MealSlot, isLast: Bool) -> some View {
+        let chip = EntryCopy.cutoffChip(slot)
+        return HStack(spacing: MLSpacing.s12) {
+            Circle()
+                .fill(MLColor.lime)
+                .overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1.5))
+                .frame(width: 12, height: 12)
+                .background(alignment: .top) {
+                    if !isLast {
+                        Rectangle().fill(MLColor.border).frame(width: 1.5, height: 48).offset(y: 12)
+                    }
+                }
+            Image(systemName: icon(slot))
+                .font(.system(size: 18, weight: .regular))
+                .foregroundStyle(MLColor.ink)
+                .frame(width: 26)
+                .accessibilityHidden(true)
+            Text(MLFormat.mealSlot(slot))
+                .mlFont(.bodyEmphasis)
+                .foregroundStyle(MLColor.ink)
+            Spacer(minLength: MLSpacing.s8)
+            WalkthroughLimeChip(text: chip.main, note: chip.note)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private func icon(_ slot: MealSlot) -> String {
+        switch slot {
+        case .breakfast: "cup.and.saucer"
+        case .lunch: "fork.knife"
+        case .snacks: "takeoutbag.and.cup.and.straw"
+        case .dinner: "moon.stars"
+        }
+    }
+}
+
+/// Crowd Tracking: "Updates every 15 min" and "See current crowd count", side by side.
+private struct WalkthroughCrowdCard: View {
+    var body: some View {
+        WalkthroughCard {
+            HStack(spacing: 0) {
+                half(icon: "clock", lead: EntryCopy.crowdUpdatesLead, value: EntryCopy.crowdUpdatesValue, boldValue: true)
+                Rectangle().fill(MLColor.border).frame(width: 1, height: 56)
+                half(icon: "person.3", lead: EntryCopy.crowdCountLead, value: EntryCopy.crowdCountValue, boldValue: false)
+            }
+        }
+    }
+
+    private func half(icon: String, lead: String, value: String, boldValue: Bool) -> some View {
+        VStack(spacing: MLSpacing.s4) {
+            Image(systemName: icon)
+                .font(.system(size: 22, weight: .regular))
+                .foregroundStyle(MLColor.ink)
+                .accessibilityHidden(true)
+            Text(lead).mlFont(.body).foregroundStyle(MLColor.ink)
+            Text(value).mlFont(boldValue ? .bodyEmphasis : .body).foregroundStyle(MLColor.ink)
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// Credits & Incentives: the starting balance and all five rules from `StudentCreditRule` (owner table, 16 Nov 2026),
+/// then what credits are for.
+private struct WalkthroughCreditsCard: View {
+    var body: some View {
+        VStack(spacing: MLSpacing.s8) {
+            WalkthroughCard {
+                VStack(spacing: MLSpacing.s8) {
+                    HStack {
+                        Text(EntryCopy.startWith).mlFont(.body).foregroundStyle(MLColor.inkSecondary)
+                        Spacer(minLength: MLSpacing.s8)
+                        Text(EntryCopy.startingCredits(StudentCreditRule.startingBalance))
+                            .mlFont(.bodyEmphasis)
+                            .foregroundStyle(MLColor.ink)
+                    }
+                    .accessibilityElement(children: .combine)
+                    Rectangle().fill(MLColor.border).frame(height: 1)
+                    ForEach(EntryCopy.creditRules, id: \.title) { rule in
+                        row(rule.title, points: rule.points)
+                    }
+                }
+            }
+            WalkthroughCard {
+                HStack(spacing: MLSpacing.s12) {
+                    Image(systemName: "gift")
+                        .font(.system(size: 18, weight: .regular))
+                        .foregroundStyle(MLColor.ink)
+                        .frame(width: 36, height: 36)
+                        .background(Circle().fill(MLColor.lime.opacity(0.35)))
+                        .accessibilityHidden(true)
+                    (Text(EntryCopy.useCreditsLead + " ") + Text(EntryCopy.useCreditsValue).bold())
+                        .mlFont(.body)
+                        .foregroundStyle(MLColor.ink)
+                    Spacer(minLength: 0)
+                }
+                .accessibilityElement(children: .combine)
+            }
+        }
+    }
+
+    /// A gain is lime with an ink outline; a loss is a soft tint of the danger colour. Both carry a sign and a symbol,
+    /// so colour is never the only signal.
+    private func row(_ title: String, points: Int) -> some View {
+        let earns = points > 0
+        let fill = earns ? MLColor.lime.opacity(0.75) : MLColor.danger.opacity(0.22)
+        return HStack(spacing: MLSpacing.s12) {
+            Image(systemName: earns ? "checkmark" : "xmark")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(MLColor.ink)
+                .frame(width: 26, height: 26)
+                .background(Circle().fill(fill))
+                .accessibilityHidden(true)
+            Text(title)
+                .mlFont(.bodyEmphasis)
+                .foregroundStyle(MLColor.ink)
+            Spacer(minLength: MLSpacing.s8)
+            Text(EntryCopy.points(points))
+                .mlFont(.eyebrow)
+                .foregroundStyle(MLColor.ink)
+                .frame(width: 72, height: 28)
+                .background(Capsule().fill(fill))
+        }
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -168,11 +368,14 @@ struct PageDots: View {
     }
 }
 
-/// The mark and the wordmark, centred.
+/// The mark and the wordmark, centred: side by side on Sign in, stacked on the walkthrough (SVG pack screens).
 private struct BrandLockup: View {
+    var stacked = false
+
     var body: some View {
-        HStack(spacing: MLSpacing.s8) {
-            OrbitMarkView(size: MLSize.avatar)
+        let layout = stacked ? AnyLayout(VStackLayout(spacing: MLSpacing.s4)) : AnyLayout(HStackLayout(spacing: MLSpacing.s8))
+        layout {
+            OrbitMarkView(size: stacked ? 48 : MLSize.avatar)
             Text(EntryCopy.wordmark)
                 .mlFont(.heroTitle)
                 .foregroundStyle(MLColor.ink)
@@ -233,16 +436,6 @@ struct AccountSignInView: View {
         } bottom: {
             InkActionButton(title: EntryCopy.signIn, isLoading: model.isSubmitting, action: submit)
                 .disabled(!model.canSubmit && !model.isSubmitting)
-            HStack(spacing: MLSpacing.s12) {
-                Rectangle().fill(MLColor.border).frame(height: 1)
-                Text(EntryCopy.noAccount)
-                    .mlFont(.meta)
-                    .foregroundStyle(MLColor.inkSecondary)
-                    .fixedSize()
-                Rectangle().fill(MLColor.border).frame(height: 1)
-            }
-            .accessibilityElement(children: .combine)
-            OutlineActionButton(title: EntryCopy.register) { router.entryPath.append(.register) }
             EntryTermsText()
         }
         // Debug and Review only; kept clear of the centred brand.
@@ -306,187 +499,6 @@ struct AccountSignInView: View {
                 sessionStore.signIn(session)
             }
         }
-    }
-}
-
-// MARK: - Register
-
-/// Register as Student (Register reference, 15 Nov 2026): email, registration number, password, optional hostel and
-/// phone, then the directory lookup and "Is this you?". The Institution tab and the role picker of the reference are
-/// out of scope: staff accounts are created by an administrator.
-struct StudentRegisterView: View {
-    @Environment(AppRouter.self) private var router
-    @Environment(SessionStore.self) private var sessionStore
-    @State private var model: StudentRegisterViewModel
-    @State private var isPasswordVisible = false
-    @FocusState private var focus: Field?
-
-    enum Field: Hashable { case email, number, password, hostel, phone }
-
-    init(model: StudentRegisterViewModel) {
-        _model = State(initialValue: model)
-    }
-
-    var body: some View {
-        @Bindable var model = model
-        MLScreen(EntryCopy.registerTitle, subtitle: EntryCopy.registerSubtitle) {
-            fields
-        } bottom: {
-            if model.phase == .lookingUp {
-                Text(EntryCopy.checking)
-                    .mlFont(.secondary)
-                    .foregroundStyle(MLColor.inkSecondary)
-            }
-            InkActionButton(title: EntryCopy.continueAction, isLoading: model.isWorking) {
-                focus = nil
-                Task { await model.continueTapped() }
-            }
-        }
-        .mlSheet(isPresented: Binding(get: { model.confirmation != nil || model.phase == .creating },
-                                      set: { if !$0 { model.cancelConfirmation() } }),
-                 isWorking: model.phase == .creating) {
-            if let record = model.confirmation ?? lastRecord {
-                ConfirmIdentitySheet(record: record, isCreating: model.phase == .creating,
-                                     onConfirm: confirm, onNotMe: { model.cancelConfirmation() })
-            }
-        }
-        .onChange(of: model.confirmation) { _, record in if let record { lastRecord = record } }
-    }
-
-    /// Keeps the sheet's content while "Creating" runs, after the phase has left `.confirming`.
-    @State private var lastRecord: StudentDirectoryRecord?
-
-    private var fields: some View {
-        @Bindable var model = model
-        return VStack(alignment: .leading, spacing: MLSpacing.s16) {
-            Image("entry-student-id-cards")
-                .resizable()
-                .scaledToFit()
-                .frame(maxHeight: 120)
-                .frame(maxWidth: .infinity)
-                .accessibilityHidden(true)
-            EntryField(label: EntryCopy.emailLabel,
-                       error: model.problem(.email) ? EntryCopy.emailProblem : emailOutcome) {
-                TextField(EntryCopy.emailLabel, text: $model.form.email, prompt: nil)
-                    .keyboardType(.emailAddress)
-                    .textContentType(.username)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .focused($focus, equals: .email)
-                    .submitLabel(.next)
-                    .onSubmit { focus = .number }
-            }
-            if model.outcome == .alreadyRegistered {
-                Button(EntryCopy.signInInstead) { router.entryPath = [.signIn] }
-                    .font(MLType.bodyEmphasis)
-                    .foregroundStyle(MLColor.ink)
-                    .frame(minHeight: MLSize.hit)
-            }
-            EntryField(label: EntryCopy.registrationNumber,
-                       error: model.problem(.registrationNumber) ? EntryCopy.registrationNumberProblem
-                           : (model.outcome == .registrationNumberMismatch ? EntryCopy.mismatch : nil)) {
-                TextField(EntryCopy.registrationNumber, text: $model.form.registrationNumber, prompt: nil)
-                    .textInputAutocapitalization(.characters)
-                    .autocorrectionDisabled()
-                    .focused($focus, equals: .number)
-                    .submitLabel(.next)
-                    .onSubmit { focus = .password }
-            }
-            EntryField(label: EntryCopy.passwordLabel,
-                       error: model.problem(.password) ? EntryCopy.passwordProblem(StudentRegistrationPolicy.minimumPasswordLength) : nil) {
-                PasswordInput(title: EntryCopy.passwordLabel, text: $model.form.password, isVisible: $isPasswordVisible,
-                              contentType: .newPassword)
-                    .focused($focus, equals: .password)
-                    .submitLabel(.next)
-                    .onSubmit { focus = .hostel }
-            }
-            EntryField(label: EntryCopy.hostelOptional) {
-                TextField(EntryCopy.hostelOptional, text: $model.form.hostel, prompt: nil)
-                    .focused($focus, equals: .hostel)
-                    .submitLabel(.next)
-                    .onSubmit { focus = .phone }
-            }
-            EntryField(label: EntryCopy.phone, error: model.problem(.phone) ? EntryCopy.phoneProblem : nil) {
-                TextField(EntryCopy.phone, text: $model.form.phone, prompt: nil)
-                    .keyboardType(.phonePad)
-                    .textContentType(.telephoneNumber)
-                    .focused($focus, equals: .phone)
-            }
-            if case .lookupFailed(let message) = model.outcome {
-                RetryCard(title: EntryCopy.lookupFailedTitle, message: message) {
-                    Task { await model.continueTapped() }
-                }
-            }
-            if case .creationFailed(let message) = model.outcome {
-                InlineErrorText(message: message)
-            }
-        }
-        .disabled(model.phase == .creating)
-        .mlAnimation(.snappy, value: model.outcome)
-    }
-
-    private var emailOutcome: String? {
-        switch model.outcome {
-        case .emailNotFound: EntryCopy.emailNotFound
-        case .alreadyRegistered: EntryCopy.alreadyRegistered
-        default: nil
-        }
-    }
-
-    private func confirm() {
-        Task {
-            if let session = await model.confirm() {
-                router.reset()
-                sessionStore.signIn(session)
-            }
-        }
-    }
-}
-
-/// "Is this you?": only what the student needs to recognise the record, with the number masked.
-private struct ConfirmIdentitySheet: View {
-    let record: StudentDirectoryRecord
-    let isCreating: Bool
-    let onConfirm: () -> Void
-    let onNotMe: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: MLSpacing.s16) {
-            SheetHeader(title: EntryCopy.isThisYou, subtitle: EntryCopy.isThisYouDetail, onClose: isCreating ? nil : onNotMe)
-            VStack(spacing: 0) {
-                row(EntryCopy.name, record.name)
-                Divider()
-                row(EntryCopy.registrationNumber, record.maskedRegistrationNumber, mono: true)
-                Divider()
-                row(EntryCopy.emailLabel, record.email)
-                Divider()
-                row(EntryCopy.mess, record.messName)
-                if let hostel = record.hostelName {
-                    Divider()
-                    row(EntryCopy.hostel, hostel)
-                }
-            }
-            .padding(.horizontal, MLSpacing.s16)
-            .background(RoundedRectangle(cornerRadius: MLRadius.compact, style: .continuous).fill(MLColor.fillQuiet))
-            InkActionButton(title: EntryCopy.confirm, isLoading: isCreating, action: onConfirm)
-            OutlineActionButton(title: EntryCopy.notMe, action: onNotMe)
-                .disabled(isCreating)
-        }
-    }
-
-    private func row(_ label: String, _ value: String, mono: Bool = false) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(label)
-                .mlFont(.body)
-                .foregroundStyle(MLColor.inkSecondary)
-            Spacer(minLength: MLSpacing.s8)
-            Text(value)
-                .font(mono ? MLType.monoBody : MLType.bodyEmphasis)
-                .foregroundStyle(MLColor.ink)
-                .multilineTextAlignment(.trailing)
-        }
-        .frame(minHeight: MLSize.hit)
-        .accessibilityElement(children: .combine)
     }
 }
 

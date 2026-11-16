@@ -34,15 +34,6 @@ struct DemoSheet: View {
                         preferences.markWalkthroughSeen()
                         start([])
                     }
-                    row("Register") {
-                        preferences.markWalkthroughSeen()
-                        start([.register])
-                    }
-                    row("Register · directory lookup fails once") {
-                        await environment.demoControls?.failNextDirectoryLookup()
-                        preferences.markWalkthroughSeen()
-                        start([.register])
-                    }
                     row("Student · show first-visit guides again") {
                         if let student = sessionStore.current?.student?.student.id {
                             preferences.clearFlags(withPrefix: StudentGuide.flagPrefix(for: student))

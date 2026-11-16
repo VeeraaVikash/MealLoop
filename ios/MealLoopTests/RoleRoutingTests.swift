@@ -70,7 +70,7 @@ final class RoleRoutingTests: XCTestCase {
 
     func testRouterResetClearsPositionForTheNextAccount() {
         let router = AppRouter()
-        router.entryPath = [.signIn, .register]
+        router.entryPath = [.signIn]
         router.selectedStaffTab = .me
         router.reset()
         XCTAssertTrue(router.entryPath.isEmpty)

@@ -5,7 +5,6 @@ import Observation
 /// Every account uses the one Sign in; Register is for students only.
 enum EntryRoute: Hashable, Sendable {
     case signIn
-    case register
 }
 
 /// The shared staff tab pattern: Home, Alerts, Me. There is no fourth tab.
