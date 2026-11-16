@@ -547,7 +547,7 @@ struct StudentHomeHero: View {
                 .font(StudentType.secondary)
                 .foregroundStyle(MLColor.onHeroSecondary)
                 .fixedSize(horizontal: false, vertical: true)
-            actions.padding(.top, MLSpacing.s16)
+            actions.padding(.top, MLSpacing.s12)
         }
     }
 
@@ -589,7 +589,11 @@ struct StudentHomeHero: View {
         case .messClosed: return StudentCopy.mealRange(meal.slot, range: range, mess: mess)
         case .nowServing: return StudentCopy.till(StudentFormat.shortTime(meal.endsAt, in: timeZone), mess: mess)
         case .nextMeal: return StudentCopy.servingAt(range, mess: mess)
-        case .question: return StudentCopy.serving(range)
+        // The deadline matters most on a question, so it leads: "Serving 12–2 PM · Decide by 9 AM".
+        case .question:
+            guard card.isAnswerOpen else { return StudentCopy.serving(range) }
+            return StudentCopy.serving(range) + " · " + StudentCopy.decideByTime(StudentFormat.shortTime(card.cutoff, in: timeZone))
+                .trimmingCharacters(in: CharacterSet(charactersIn: "."))
         case .answered:
             switch card.answer {
             case .skipping?: return StudentCopy.canStillEat
@@ -634,15 +638,20 @@ struct StudentHomeHero: View {
                 StudentHeroButton(title: StudentCopy.skip, style: .outline, expands: typeSize.isAccessibilitySize) { onAnswer(.skipping) }
             }
             .disabled(isSaving)
-            // The entry QR is never limited by time (owner decision, 16 Nov 2026), so it stays one tap away.
+            // The entry QR is never limited by time (owner decision, 16 Nov 2026), so it stays one tap away, centred
+            // under the answer buttons.
             Button(action: onShowEntry) {
-                Label(StudentCopy.showEntryQR, systemImage: "qrcode")
-                    .font(MLType.secondary)
-                    .underline()
-                    .foregroundStyle(MLColor.onHeroSecondary)
-                    .frame(minHeight: MLSize.hit)
+                HStack(spacing: MLSpacing.s8) {
+                    Image(systemName: "qrcode").accessibilityHidden(true)
+                    Text(StudentCopy.showEntryQR)
+                }
+                .font(StudentType.secondaryMedium)
+                .foregroundStyle(MLColor.onHero)
+                .frame(maxWidth: .infinity, minHeight: MLSize.hit)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .padding(.top, -MLSpacing.s4)
         } else if content.heroCase == .answered && card.isAnswerOpen && !isOffline {
             VStack(alignment: .leading, spacing: MLSpacing.s12) {
                 StudentHeroButton(title: StudentCopy.changeAnswer, style: .outline, action: onChangeAnswer)

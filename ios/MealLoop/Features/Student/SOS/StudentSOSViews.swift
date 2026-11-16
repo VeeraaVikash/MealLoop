@@ -36,7 +36,8 @@ struct StudentSOSView: View {
     @State private var reviewAfterDetails = false
     let onClose: () -> Void
 
-    private static func asksInSheet(_ category: StudentSOSCategory) -> Bool { category == .unwell || category == .otherSafety }
+    /// Every reason asks its questions in the app's sheet (owner decision, 16 Nov 2026), Which dish included.
+    private static func asksInSheet(_ category: StudentSOSCategory) -> Bool { true }
 
     init(model: StudentSOSViewModel, onClose: @escaping () -> Void) {
         _model = State(initialValue: model)
@@ -90,18 +91,21 @@ struct StudentSOSView: View {
         }
         .studentGuide(.sos, student: model.context.student.id, isPresented: $showsGuide)
         .mlSheet(isPresented: $showsDetails, isWorking: false, onDismiss: {
-            // Review opens once the sheet has gone, so the push never fights the sheet's own animation.
-            if reviewAfterDetails { reviewAfterDetails = false; showsReview = true }
+            // The next step opens once the sheet has gone, so it never fights the sheet's own animation: the camera for
+            // a reason that takes a photo, otherwise the review.
+            if reviewAfterDetails {
+                reviewAfterDetails = false
+                if model.category?.photo == StudentSOSCategory.Photo.none { showsReview = true } else { showsCamera = true }
+            }
         }) {
             if let category = model.category {
                 VStack(alignment: .leading, spacing: MLSpacing.s12) {
-                    SheetHeader(title: category == .unwell ? StudentSOSCopy.unwellShort : StudentSOSCopy.otherShort,
-                                onClose: { showsDetails = false })
+                    SheetHeader(title: sheetTitle(category), onClose: { showsDetails = false })
                     branch(category)
                     if triedToGoOn && !model.detailProblems.isEmpty {
                         InlineErrorText(message: StudentSOSCopy.pickWhatsMissing)
                     }
-                    InkActionButton(title: StudentSOSCopy.reviewNext) {
+                    InkActionButton(title: nextTitle) {
                         guard check() else { return }
                         reviewAfterDetails = true
                         showsDetails = false
@@ -120,6 +124,14 @@ struct StudentSOSView: View {
             StudentSOSReviewPage(model: model, onRetake: { showsCamera = true }, onClose: onClose)
         }
         .mlAnimation(.snappy, value: model.category)
+    }
+
+    private func sheetTitle(_ category: StudentSOSCategory) -> String {
+        switch category {
+        case .unwell: StudentSOSCopy.unwellShort
+        case .otherSafety: StudentSOSCopy.otherShort
+        default: category.title
+        }
     }
 
     private var nextTitle: String {
