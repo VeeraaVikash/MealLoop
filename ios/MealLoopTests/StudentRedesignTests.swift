@@ -217,14 +217,21 @@ final class StudentRedesignTests: XCTestCase {
             XCTAssertEqual(model.detailProblems, [.dish])
         }
         XCTAssertEqual(StudentSOSCategory.foundInFood.photo, .required)
-        XCTAssertEqual(StudentSOSCategory.smellsBad.photo, .optional)
+        XCTAssertEqual(StudentSOSCategory.smellsBad.photo, .required, "Owner decision, 16 Nov 2026")
+        XCTAssertEqual(StudentSOSCategory.looksBad.photo, .required)
         XCTAssertEqual(StudentSOSCategory.unwell.photo, .none)
         XCTAssertEqual(StudentSOSCategory.otherSafety.photo, .none)
 
+        // Where the student is comes from the phone, so only the tapped answers can be missing.
         model.choose(.unwell)
-        XCTAssertEqual(model.detailProblems, [.meal, .symptoms, .startedWhen, .whereNow])
+        XCTAssertEqual(model.detailProblems, [.meal, .symptoms, .startedWhen])
+        model.toggle(symptom: StudentSOSCopy.symptomOptions[0])
+        model.pick(started: StudentSOSCopy.startedOptions[0])
+        XCTAssertEqual(model.detailProblems, [.meal])
         model.choose(.otherSafety)
-        XCTAssertEqual(model.detailProblems, [.whereHappened, .whatHappened])
+        XCTAssertEqual(model.detailProblems, [.whatHappened])
+        model.pick(problem: StudentSOSCopy.problemOptions[0])
+        XCTAssertEqual(model.detailProblems, [])
     }
 
     func testFoundSomethingCannotSendWithoutAPhoto() async throws {
@@ -348,7 +355,8 @@ final class StudentRedesignTests: XCTestCase {
         let relaunched = DevicePreferences(defaults: try XCTUnwrap(UserDefaults(suiteName: suite)))
         XCTAssertTrue(relaunched.hasSeen(StudentGuide.credits.flag(for: aarav.id)))
         XCTAssertEqual(StudentGuide.allCases.map(\.title),
-                       ["How points work", "How feedback works", "How Community works", "How the outing pass works"])
+                       ["How points work", "How feedback works", "How Community works", "How the outing pass works",
+                        "How SOS works"])
     }
 }
 

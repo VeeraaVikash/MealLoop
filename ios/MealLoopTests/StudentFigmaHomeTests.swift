@@ -68,15 +68,22 @@ final class StudentFigmaHomeTests: XCTestCase {
                                         student: StudentRepositories(extras: demo))
         let model = try XCTUnwrap(StudentHomeViewModel(session: try session, repositories: repositories, clock: demo.clock))
         await model.load()
-        // Breakfast answers closed at 10 PM the night before, so at 5 AM there is no question to ask.
-        XCTAssertEqual(try content(model).heroCase, .messClosed)
+        // Breakfast answers closed at 10 PM the night before, so the open lunch question takes the top card.
+        XCTAssertEqual(try content(model).heroCase, .question)
+        XCTAssertEqual(try content(model).shownHero.meal.slot, .lunch)
     }
 
     /// Before the doors open an open question comes first; once answered, the card says the mess is closed.
     /// Before the doors open, with breakfast answers already closed, the card says the mess is closed.
-    func testBeforeTheDoorsOpenTheCardSaysTheMessIsClosed() async throws {
-        let (model, _) = try await make(at: DemoSeed.time(6, 30))
-        XCTAssertEqual(try content(model).heroCase, .messClosed)
+    /// Before the doors open, with breakfast closed, the top card asks about lunch; once lunch is answered and
+    /// breakfast is still unanswered, it keeps showing lunch, answered.
+    func testBeforeTheDoorsOpenTheTopCardAsksAboutTheNextOpenMeal() async throws {
+        let (model, demo) = try await make(at: DemoSeed.time(6, 30))
+        XCTAssertEqual(try content(model).heroCase, .question)
+        XCTAssertEqual(try content(model).shownHero.meal.slot, .lunch)
+        _ = try await demo.setIntention(.attending, of: DemoSeed.sampleStudent.id, for: DemoSeed.lunch.id)
+        await model.load()
+        XCTAssertEqual(try content(model).heroCase, .answered)
     }
 
     func testDuringBreakfastTheCardSaysItIsOpen() async throws {
@@ -339,7 +346,9 @@ final class StudentFigmaHomeTests: XCTestCase {
         let home = try content(model)
         XCTAssertNil(home.extras)
         XCTAssertEqual(StudentCopy.points(home.extras?.credits), "— pts")
-        XCTAssertEqual(home.answerRow?.meal.slot, .lunch)
+        // Breakfast closed the night before, so lunch, still open, is on the top card (owner decision, 16 Nov 2026).
+        XCTAssertEqual(home.shownHero.meal.slot, .lunch)
+        XCTAssertTrue(home.promotesNextMeal)
     }
 
     func testAMenuFallsBackWithoutExtras() async throws {

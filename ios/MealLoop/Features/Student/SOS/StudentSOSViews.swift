@@ -31,7 +31,12 @@ struct StudentSOSView: View {
     @State private var showsReview = false
     /// Set after a tap on a disabled Next, so the missing fields are marked only once the student tried.
     @State private var triedToGoOn = false
+    @State private var showsGuide = false
+    @State private var showsDetails = false
+    @State private var reviewAfterDetails = false
     let onClose: () -> Void
+
+    private static func asksInSheet(_ category: StudentSOSCategory) -> Bool { category == .unwell || category == .otherSafety }
 
     init(model: StudentSOSViewModel, onClose: @escaping () -> Void) {
         _model = State(initialValue: model)
@@ -41,14 +46,19 @@ struct StudentSOSView: View {
     var body: some View {
         @Bindable var model = model
         MLScreen(StudentSOSCopy.title, subtitle: StudentSOSCopy.pickOne) {
+            StudentGuideInfoButton(guide: .sos) { showsGuide = true }
+        } content: {
             VStack(alignment: .leading, spacing: MLSpacing.s12) {
-                ForEach(StudentSOSCategory.allCases, id: \.self) { category in
+                ForEach(StudentSOSCategory.offered, id: \.self) { category in
                     StudentSOSCategoryRow(category: category, selected: model.category == category) {
                         model.choose(category)
                         triedToGoOn = false
+                        // Feeling unwell and another problem ask their questions in a native sheet (owner decision,
+                        // 16 Nov 2026); the food reasons stay on the page.
+                        if Self.asksInSheet(category) { showsDetails = true }
                     }
                 }
-                if let category = model.category {
+                if let category = model.category, !Self.asksInSheet(category) {
                     branch(category)
                         .padding(.top, MLSpacing.s8)
                 }
@@ -76,6 +86,38 @@ struct StudentSOSView: View {
                     .foregroundStyle(MLColor.inkSecondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .studentGuide(.sos, student: model.context.student.id, isPresented: $showsGuide)
+        .sheet(isPresented: $showsDetails, onDismiss: {
+            // Review opens once the sheet has gone, so the push never fights the sheet's own animation.
+            if reviewAfterDetails { reviewAfterDetails = false; showsReview = true }
+        }) {
+            if let category = model.category {
+                NavigationStack {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: MLSpacing.s12) { branch(category) }
+                            .padding(.horizontal, MLSpacing.margin)
+                            .padding(.bottom, MLSpacing.s24)
+                    }
+                    .navigationTitle(category.title)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button(StudentSOSCopy.close) { showsDetails = false }
+                        }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button(StudentSOSCopy.reviewNext) {
+                                guard check() else { return }
+                                reviewAfterDetails = true
+                                showsDetails = false
+                            }
+                            .fontWeight(.semibold)
+                        }
+                    }
+                }
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
             }
         }
         .task { await model.load() }
@@ -135,16 +177,29 @@ struct StudentSOSView: View {
                     }
                 }
             }
-            field(StudentSOSCopy.symptoms, prompt: StudentSOSCopy.symptomsPrompt, text: $model.symptoms, missing: missing(.symptoms))
-            field(StudentSOSCopy.startedWhen, prompt: StudentSOSCopy.startedPrompt, text: $model.startedWhen, missing: missing(.startedWhen))
-            field(StudentSOSCopy.whereNow, prompt: StudentSOSCopy.whereNowPrompt, text: $model.whereNow, missing: missing(.whereNow))
-            Text(StudentSOSCopy.feelingUnwell)
-                .font(StudentType.footnote)
-                .foregroundStyle(MLColor.inkSecondary)
+            label(StudentSOSCopy.symptoms, missing: missing(.symptoms))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(StudentSOSCopy.symptomOptions, id: \.self) { option in
+                    StudentSOSDishChip(dish: option, selected: model.pickedSymptoms.contains(option)) { model.toggle(symptom: option) }
+                }
+            }
+            label(StudentSOSCopy.startedWhen, missing: missing(.startedWhen))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(StudentSOSCopy.startedOptions, id: \.self) { option in
+                    StudentSOSDishChip(dish: option, selected: model.startedWhen == option) { model.pick(started: option) }
+                }
+            }
+            field(StudentSOSCopy.anythingElse, prompt: "", text: $model.extraNote, missing: false)
+            detailsCard
         } else {
-            field(StudentSOSCopy.whereHappened, prompt: StudentSOSCopy.whereNowPrompt, text: $model.whereHappened,
-                  missing: missing(.whereHappened))
-            field(StudentSOSCopy.whatHappened, prompt: "", text: $model.whatHappened, missing: missing(.whatHappened), lines: 3)
+            label(StudentSOSCopy.whatsWrong, missing: missing(.whatHappened))
+            StudentChipFlow(spacing: MLSpacing.s8) {
+                ForEach(StudentSOSCopy.problemOptions, id: \.self) { option in
+                    StudentSOSDishChip(dish: option, selected: model.pickedProblem == option) { model.pick(problem: option) }
+                }
+            }
+            field(StudentSOSCopy.anythingElse, prompt: "", text: $model.extraNote, missing: false)
+            detailsCard
             Toggle(isOn: $model.needsHelpNow) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(StudentSOSCopy.needHelpNow).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
@@ -155,6 +210,29 @@ struct StudentSOSView: View {
             .padding(MLSpacing.s16)
             .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
         }
+    }
+
+    /// What goes with the SOS without typing: where the phone is and who is sending it.
+    private var detailsCard: some View {
+        VStack(alignment: .leading, spacing: MLSpacing.s8) {
+            Text(StudentSOSCopy.yourDetails).font(StudentType.secondaryMedium).foregroundStyle(MLColor.inkSecondary)
+            HStack(spacing: MLSpacing.s8) {
+                Image(systemName: "location.fill").foregroundStyle(MLColor.ink).accessibilityHidden(true)
+                Text(StudentSOSCopy.locationLabel).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                Spacer(minLength: MLSpacing.s8)
+                Text(model.locationText).font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+            }
+            HStack(spacing: MLSpacing.s8) {
+                Image(systemName: "person.fill").foregroundStyle(MLColor.ink).accessibilityHidden(true)
+                Text(StudentSOSCopy.youLabel).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+                Spacer(minLength: MLSpacing.s8)
+                Text("\(model.context.student.maskedID) · \(model.context.mess.name)")
+                    .font(StudentType.bodySemibold).foregroundStyle(MLColor.ink)
+            }
+        }
+        .padding(MLSpacing.s16)
+        .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).fill(MLColor.surface))
+        .accessibilityElement(children: .combine)
     }
 
     private func label(_ text: String, missing: Bool) -> some View {

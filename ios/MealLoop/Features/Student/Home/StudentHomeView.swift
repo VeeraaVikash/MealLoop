@@ -634,6 +634,15 @@ struct StudentHomeHero: View {
                 StudentHeroButton(title: StudentCopy.skip, style: .outline, expands: typeSize.isAccessibilitySize) { onAnswer(.skipping) }
             }
             .disabled(isSaving)
+            // The entry QR is never limited by time (owner decision, 16 Nov 2026), so it stays one tap away.
+            Button(action: onShowEntry) {
+                Label(StudentCopy.showEntryQR, systemImage: "qrcode")
+                    .font(MLType.secondary)
+                    .underline()
+                    .foregroundStyle(MLColor.onHeroSecondary)
+                    .frame(minHeight: MLSize.hit)
+            }
+            .buttonStyle(.plain)
         } else if content.heroCase == .answered && card.isAnswerOpen && !isOffline {
             VStack(alignment: .leading, spacing: MLSpacing.s12) {
                 StudentHeroButton(title: StudentCopy.changeAnswer, style: .outline, action: onChangeAnswer)

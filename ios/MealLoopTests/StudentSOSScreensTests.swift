@@ -89,7 +89,8 @@ final class StudentSOSScreensTests: XCTestCase {
     func testCameraDeniedSendsAnOptionalPhotoReasonFlagged() async throws {
         let (model, _, _) = make(camera: .denied)
         await model.load()
-        model.choose(.smellsBad)
+        // Plates not clean keeps an optional photo; smells bad needs one since 16 Nov 2026.
+        model.choose(.platesNotClean)
         model.dish = StudentSOSCopy.notListed
         model.continueWithoutPhoto()
         XCTAssertFalse(model.hasPhoto)

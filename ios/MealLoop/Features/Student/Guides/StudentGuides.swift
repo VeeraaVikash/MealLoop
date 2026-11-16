@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The four first-visit guides. Each opens by itself the first time a student reaches its page after signing in, and
+/// The first-visit guides (Credits, feedback, Community, the outing pass and SOS). Each opens by itself the first time a student reaches its page after signing in, and
 /// the ⓘ button in that page's navigation bar always opens it again. Seen state is kept per student and per guide in
 /// `DevicePreferences`, so it survives relaunches and later sign-ins and dismissing one leaves the others eligible.
 enum StudentGuide: String, CaseIterable, Identifiable, Sendable {
@@ -8,6 +8,7 @@ enum StudentGuide: String, CaseIterable, Identifiable, Sendable {
     case feedback
     case community
     case outingPass
+    case sos
 
     var id: String { rawValue }
 
@@ -22,6 +23,7 @@ enum StudentGuide: String, CaseIterable, Identifiable, Sendable {
         case .feedback: return "How feedback works"
         case .community: return "How Community works"
         case .outingPass: return "How the outing pass works"
+        case .sos: return "How SOS works"
         }
     }
 
@@ -51,6 +53,13 @@ enum StudentGuide: String, CaseIterable, Identifiable, Sendable {
                 ("3 · The warden decides", "Only after your guardian. Nothing is approved by waiting."),
                 ("4 · Your pass", "Once the warden approves, your signed pass shows here."),
                 ("5 · At the gate", "Show the pass when you leave and when you come back."),
+            ]
+        case .sos:
+            return [
+                ("Pick what happened", "Found something, looks bad, smells bad, feeling unwell, or another problem."),
+                ("Tap, don't type", "Choose from the options. Add a note only if you want to."),
+                ("Photo", "Found something, looks bad and smells bad need a photo of the food."),
+                ("Sent with it", "Your location and your details go with the SOS, so the mess team can find you."),
             ]
         }
     }

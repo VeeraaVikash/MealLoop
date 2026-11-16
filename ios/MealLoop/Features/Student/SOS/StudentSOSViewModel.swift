@@ -52,13 +52,17 @@ enum StudentSOSCategory: String, CaseIterable, Hashable, Sendable {
         }
     }
 
+    /// Owner decision, 16 Nov 2026: a photo is required for found something, looks bad and smells bad.
     var photo: Photo {
         switch self {
-        case .foundInFood: return .required
-        case .smellsBad, .looksBad, .platesNotClean: return .optional
+        case .foundInFood, .smellsBad, .looksBad: return .required
+        case .platesNotClean: return .optional
         case .unwell, .otherSafety: return .none
         }
     }
+
+    /// The reasons SOS offers (owner decision, 16 Nov 2026). Dirty plates is now an option under Another problem.
+    static let offered: [StudentSOSCategory] = [.foundInFood, .looksBad, .smellsBad, .unwell, .otherSafety]
 }
 
 /// What is still missing before the current reason can be sent. Checked again when Send is tapped.
@@ -89,6 +93,10 @@ final class StudentSOSViewModel {
     var whereHappened = ""
     var whatHappened = ""
     var needsHelpNow = false
+    /// Tap-only answers (owner decision, 16 Nov 2026: no forced typing). Each writes the field it stands for.
+    private(set) var pickedSymptoms: [String] = []
+    var extraNote = "" { didSet { syncTaps() } }
+    private(set) var pickedProblem: String?
     /// Today's meals that have started, for "Which meal?" on I feel unwell.
     private(set) var mealsToday: [MealSlot] = []
     private(set) var dishes: [String] = []
@@ -180,7 +188,10 @@ final class StudentSOSViewModel {
 
     /// The dishes of the meal the mess is in or about to start, for "Which dish? (optional)".
     func load() async {
-        mealsToday = ((try? await mealState.meals(for: context.mess.id)) ?? []).filter { $0.state != .notStarted }.map(\.meal.slot)
+        // The meals that have started; before the first one starts, every meal of the day, so a choice is always there.
+        let today = (try? await mealState.meals(for: context.mess.id)) ?? []
+        let started = today.filter { $0.state != .notStarted }.map(\.meal.slot)
+        mealsToday = started.isEmpty ? today.map(\.meal.slot) : started
         guard dishes.isEmpty, let status = try? await mealState.currentMeal(for: context.mess.id) else { return }
         meal = status.meal.slot
         var calendar = Calendar(identifier: .gregorian)
@@ -206,12 +217,41 @@ final class StudentSOSViewModel {
         whereHappened = ""
         whatHappened = ""
         needsHelpNow = false
+        pickedSymptoms = []
+        pickedProblem = nil
+        extraNote = ""
+        // Where the student is comes from the phone, never typed.
+        whereNow = locationText
+        whereHappened = locationText
         photoAt = nil
         withoutPhoto = false
         key = IdempotencyKey.make()
     }
 
     func toggle(dish name: String) { dish = dish == name ? nil : name }
+
+    /// The place shown and sent: the mess the phone is at, or that it could not be read.
+    var locationText: String { location == .atMess ? context.mess.name : StudentSOSCopy.placeNotRecorded }
+
+    func toggle(symptom: String) {
+        if let index = pickedSymptoms.firstIndex(of: symptom) { pickedSymptoms.remove(at: index) } else { pickedSymptoms.append(symptom) }
+        syncTaps()
+    }
+
+    func pick(started: String) { startedWhen = startedWhen == started ? "" : started }
+
+    func pick(problem: String) {
+        pickedProblem = pickedProblem == problem ? nil : problem
+        syncTaps()
+    }
+
+    /// Writes the tapped answers and the optional note into the fields the report is built from.
+    private func syncTaps() {
+        let note = extraNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        symptoms = (pickedSymptoms + (note.isEmpty || category != .unwell ? [] : [note])).joined(separator: ", ")
+        whatHappened = ([pickedProblem].compactMap { $0 } + (note.isEmpty || category != .otherSafety ? [] : [note]))
+            .joined(separator: ", ")
+    }
 
     /// The shutter: a live photo at the clock's time (a static preview in the simulator).
     func takePhoto() {
@@ -267,6 +307,15 @@ final class StudentSOSViewModel {
 
 /// Words of the SOS frames. Wording only.
 enum StudentSOSCopy {
+    static let symptomOptions = ["Vomiting", "Stomach pain", "Loose motions", "Fever", "Headache", "Dizzy"]
+    static let startedOptions = ["Just now", "Within an hour", "Earlier today"]
+    static let problemOptions = ["Dirty plates or utensils", "Insects or pests", "Slippery floor", "Gas or burning smell",
+                                 "Something else"]
+    static let anythingElse = "Anything else? (optional)"
+    static let whatsWrong = "What's wrong?"
+    static let yourDetails = "Sent with your SOS"
+    static let locationLabel = "Location"
+    static let youLabel = "You"
     // Camera and Sent wording, shared with SOS · Camera (221:63493) and SOS · Sent (221:63509).
     static let takePhoto = "Take a photo of the problem"
     static let keepInFrame = "Keep the problem in the frame."
