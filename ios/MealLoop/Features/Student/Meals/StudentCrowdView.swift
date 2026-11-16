@@ -68,6 +68,74 @@ struct StudentCrowdView: View {
     }
 }
 
+/// Crowd in a native sheet from Home (owner decision, 16 Nov 2026): Quiet, Normal or Busy, who is present, and the
+/// chart. Nothing more.
+struct StudentCrowdSheet: View {
+    @Environment(AppEnvironment.self) private var environment
+    @State private var model: StudentCrowdViewModel
+    let onClose: () -> Void
+
+    init(model: StudentCrowdViewModel, onClose: @escaping () -> Void) {
+        _model = State(initialValue: model)
+        self.onClose = onClose
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: MLSpacing.s16) {
+                    content
+                }
+                .padding(.horizontal, MLSpacing.margin)
+                .padding(.bottom, MLSpacing.s16)
+            }
+            .navigationTitle(MealsCopy.crowd)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(MealsCopy.close, action: onClose)
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+        .task(id: environment.dataRevision) { await model.load() }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch model.state {
+        case .loaded(let crowd), .stale(let crowd, _):
+            summary(crowd)
+            CrowdChart(crowd: crowd, isOffline: false, timeZone: model.timeZone)
+        case .offline(let crowd?, _):
+            StudentOfflineBanner(text: MealsCopy.crowdOffline(MLFormat.time(crowd.observedAt, in: model.timeZone)))
+            summary(crowd)
+            CrowdChart(crowd: crowd, isOffline: true, timeZone: model.timeZone)
+        case .offline(nil, _):
+            StudentOfflineBanner(text: MealsCopy.crowdOfflineNothing)
+        case .failed, .empty:
+            Text(MealsCopy.crowdFailed).font(StudentType.secondary).foregroundStyle(MLColor.inkSecondary)
+        case .idle, .loading:
+            ProgressView().frame(maxWidth: .infinity, minHeight: 200)
+        }
+    }
+
+    private func summary(_ crowd: StudentCrowd) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(crowd.level.map(MealsCopy.level) ?? MealsCopy.crowd)
+                .font(StudentType.section)
+                .foregroundStyle(MLColor.ink)
+            if let present = crowd.enteredSoFar.value {
+                Text(MealsCopy.presentLine(present, expected: crowd.stillExpected.value) + " · " + model.context.mess.name)
+                    .font(StudentType.secondary)
+                    .foregroundStyle(MLColor.inkSecondary)
+            }
+        }
+        .accessibilityElement(children: .combine)
+    }
+}
+
 struct CrowdBody: View {
     let crowd: StudentCrowd
     let isOffline: Bool
@@ -95,7 +163,7 @@ struct CrowdBody: View {
                 count(MealsCopy.enteredSoFar, crowd.enteredSoFar, large: true)
                 count(MealsCopy.stillExpected, crowd.stillExpected, large: false)
             }
-            if crowd.mealState == .notStarted {
+            if crowd.mealState == .notStarted && (crowd.enteredSoFar.value ?? 0) == 0 {
                 Text(MealsCopy.notStartedCrowd(StudentFormat.shortTime(crowd.meal.startsAt, in: timeZone)))
                     .font(StudentType.secondary)
                     .foregroundStyle(MLColor.onHeroSecondary)

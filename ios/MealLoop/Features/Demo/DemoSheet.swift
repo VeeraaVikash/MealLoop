@@ -32,7 +32,7 @@ struct DemoSheet: View {
                     }
                     row("Sign in") {
                         preferences.markWalkthroughSeen()
-                        start([])
+                        start([.signIn])
                     }
                     row("Student · show first-visit guides again") {
                         if let student = sessionStore.current?.student?.student.id {

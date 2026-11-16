@@ -16,6 +16,7 @@ enum MealsCopy {
     static func answerBy(_ time: String) -> String { "Answer I'm in or Skip by \(time)." }
     static let noDishesYet = "The menu for this meal isn't published yet."
     static let showQROnHome = "Show entry QR on Home"
+    static let mealPickerLabel = "Meal"
 
     // Meals.
     static let title = "Meals"
@@ -110,17 +111,27 @@ enum MealsCopy {
 
     // Crowd.
     static let crowd = "Crowd"
-    static let enteredSoFar = "Entered so far"
+    static let enteredSoFar = "Students present"
+    static func level(_ level: StudentCrowd.Level) -> String {
+        switch level {
+        case .quiet: "Quiet"
+        case .normal: "Normal"
+        case .busy: "Busy"
+        }
+    }
+    static func presentLine(_ present: Int, expected: Int?) -> String {
+        expected.map { "\(present) present · \($0) still expected" } ?? "\(present) present"
+    }
     static let stillExpected = "Still expected"
     static let noCount = "—"
     static func notAvailable(_ label: String) -> String { "\(label) · not available" }
     static let entriesEvery = "Recorded entries, every 15 minutes"
-    static let countsNote = "Entered so far counts each student's first valid entry once. Still expected counts students who said I'm in and have no entry yet."
+    static let countsNote = "Students present counts each student's first entry at the door once. Still expected counts students who said I'm in and have not come in yet."
     static let countsSpoken = "Counts of recorded door entries."
     static func notStartedCrowd(_ time: String) -> String { "Service starts at \(time)." }
     static func notStartedChart(_ time: String) -> String { "No entries yet. Entries show here from \(time)." }
     static let crowdUnavailableDetail = "Entries can't be read right now."
-    static func enteredShort(_ count: Int?) -> String { count.map { "\($0) entered so far" } ?? "Entries not available" }
+    static func enteredShort(_ count: Int?) -> String { count.map { "\($0) students present" } ?? "Entries not available" }
     static func crowdEyebrow(_ slot: MealSlot, time: String) -> String { "\(MLFormat.mealSlot(slot)) · \(time)" }
     static func crowdUpdatedEyebrow(_ slot: MealSlot, time: String) -> String { "\(MLFormat.mealSlot(slot)) · Updated \(time)" }
     static func crowdOffline(_ time: String) -> String { "You're offline · Updated \(time)" }

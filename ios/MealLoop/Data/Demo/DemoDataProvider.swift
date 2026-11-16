@@ -912,14 +912,37 @@ extension DemoDataProvider: StudentExtrasRepository {
             guard key.meal == status.meal.id, case .answered(.attending, _) = response else { return nil }
             return key.student
         })
-        return StudentCrowd.counted(meal: status.meal, state: status.state, now: now,
-                                    entries: Array(state.entries.values), attending: attending)
+        let counted = StudentCrowd.counted(meal: status.meal, state: status.state, now: now,
+                                           entries: Array(state.entries.values), attending: attending)
+        return Self.withSampleCrowd(counted)
+    }
+
+    /// SIMULATED sample crowd (owner decision, 16 Nov 2026: the Crowd sheet shows sample data for the demo). The sample
+    /// per-interval entries are added to the entries recorded in this run, over the whole serving window, so the chart
+    /// and the present count are never empty in a walkthrough. Not tied to the Admin live count.
+    static func withSampleCrowd(_ crowd: StudentCrowd) -> StudentCrowd {
+        let sample = DemoSeed.sampleCrowdPerInterval
+        let length = StudentCrowd.intervalLength
+        let slots = max(sample.count, Int(ceil(crowd.meal.endsAt.timeIntervalSince(crowd.meal.startsAt) / length)))
+        let intervals = (0..<slots).map { index -> StudentCrowdInterval in
+            let real = index < crowd.intervals.count ? crowd.intervals[index].entries : 0
+            return StudentCrowdInterval(startsAt: crowd.meal.startsAt.addingTimeInterval(Double(index) * length),
+                                        entries: real + (index < sample.count ? sample[index] : 0))
+        }
+        let present = intervals.reduce(0) { $0 + $1.entries }
+        let realExpected = crowd.stillExpected.value ?? 0
+        // Only the sample's own arrivals lower the sample's expected count; a real entry lowers the real one.
+        let expected = max(0, DemoSeed.sampleCrowdExpected - sample.reduce(0, +)) + realExpected
+        return StudentCrowd(meal: crowd.meal, mealState: crowd.mealState, observedAt: crowd.observedAt,
+                            enteredSoFar: .available(present, asOf: crowd.observedAt),
+                            stillExpected: .available(expected, asOf: crowd.observedAt), intervals: intervals)
     }
 
     private func passRow(for student: StudentID) -> StudentPassRow? {
         guard let slot = DemoSeed.samplePasses[student], let meal = dayMeals.first(where: { $0.meal.slot == slot }) else { return nil }
         if state.specialEntries[student] != nil { return StudentPassRow(meal: meal.meal, status: .used) }
-        return StudentPassRow(meal: meal.meal, status: meal.state == .closed ? .closed : .open)
+        // Owner decision, 16 Nov 2026: for the demo the pass is never closed by the clock; only using it ends it.
+        return StudentPassRow(meal: meal.meal, status: .open)
     }
 
     func studentMenu(for meal: MealID) async throws -> [Dish] {
@@ -1262,9 +1285,7 @@ extension DemoDataProvider: PassUseRepository {
               let sample = DemoSeed.sampleStudents.first(where: { $0.ref.id == student }) else {
             throw RepositoryError.notAllowed(reason: "This pass can't be used now.")
         }
-        guard state.mealStatus.state != .closed else {
-            throw RepositoryError.notAllowed(reason: "This pass can't be used now.")
-        }
+        // Owner decision, 16 Nov 2026: the demo pass is not limited to its serving time.
         let instant = passCodeTicker.instant(story: clock.now())
         if state.passStarts[student] == nil { state.passStarts[student] = clock.now() }
         state.passUses[student] = instant

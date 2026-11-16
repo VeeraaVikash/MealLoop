@@ -85,7 +85,7 @@ enum StudentCopy {
     static let open = "Open"
     static let used = "Used"
     static func crowdAt(_ mess: String) -> String { "Crowd at \(mess)" }
-    static func enteredSoFar(_ count: Int) -> String { "\(count) entered so far" }
+    static func enteredSoFar(_ count: Int) -> String { "\(count) students present" }
     static func stillExpected(_ count: Int) -> String { "\(count) still expected" }
     static let expectedUnavailable = "Still expected not available"
     static let crowdUnavailable = "Crowd not available"

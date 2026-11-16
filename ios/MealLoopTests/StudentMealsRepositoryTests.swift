@@ -228,16 +228,26 @@ final class StudentMealsRepositoryTests: XCTestCase {
 
     // MARK: Crowd
 
-    func testBeforeLunchTheCrowdHasNoChartAndARealZero() async throws {
+    /// The counting rule itself: before service, with no entries, there is no chart and a real zero.
+    func testBeforeServiceTheCountedCrowdHasNoChartAndARealZero() {
+        let crowd = StudentCrowd.counted(meal: DemoSeed.lunch, state: .notStarted, now: DemoSeed.storyStartNow,
+                                         entries: [], attending: [])
+        XCTAssertTrue(crowd.intervals.isEmpty)
+        XCTAssertEqual(crowd.enteredSoFar.value, 0)
+        XCTAssertNil(crowd.currentInterval)
+    }
+
+    /// SIMULATED sample crowd (owner decision, 16 Nov 2026): the demo chart and present count are never empty, and Home
+    /// and the Crowd sheet read the same numbers.
+    func testTheDemoCrowdShowsTheSampleAndHomeAgrees() async throws {
         let (demo, _) = make()
         let crowd = try await demo.crowd(at: mess)
         let extras = try await demo.homeExtras(for: aarav, mess: mess)
         XCTAssertEqual(crowd.enteredSoFar, extras.crowd?.enteredSoFar)
         XCTAssertEqual(crowd.meal, DemoSeed.lunch)
-        XCTAssertEqual(crowd.mealState, .notStarted)
-        XCTAssertTrue(crowd.intervals.isEmpty)
-        XCTAssertEqual(crowd.enteredSoFar.value, 0)
-        XCTAssertNil(crowd.currentInterval)
+        XCTAssertEqual(crowd.intervals.map(\.entries), DemoSeed.sampleCrowdPerInterval)
+        XCTAssertEqual(crowd.enteredSoFar.value, DemoSeed.sampleCrowdPerInterval.reduce(0, +))
+        XCTAssertNil(crowd.currentInterval, "Nothing is lime before service")
     }
 
     func testDuringLunchTheChartRunsFromServiceStartToNow() async throws {
@@ -246,7 +256,7 @@ final class StudentMealsRepositoryTests: XCTestCase {
         clock.set(DemoSeed.time(12, 40))
         let crowd = try await demo.crowd(at: mess)
         XCTAssertEqual(crowd.intervals.first?.startsAt, DemoSeed.lunch.startsAt)
-        XCTAssertEqual(crowd.intervals.count, 3)
+        XCTAssertEqual(crowd.intervals.count, 8, "The sample covers the whole two-hour window")
         XCTAssertEqual(crowd.currentInterval, 2)
         XCTAssertEqual(crowd.observedAt, DemoSeed.time(12, 40))
     }

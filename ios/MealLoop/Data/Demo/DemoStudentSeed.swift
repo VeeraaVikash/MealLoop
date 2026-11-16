@@ -5,6 +5,10 @@ import Foundation
 /// (file nzzTAm9YnJRSdKEeYUWUEb). Nothing here is a real balance or a real record.
 extension DemoSeed {
     // Home · Not answered (221:62529), CreditsChip: "120 pts". No formula exists (open decision P1).
+    /// SIMULATED: students entering per 15-minute interval across a two-hour meal, for the Crowd sheet's chart.
+    static let sampleCrowdPerInterval = [38, 84, 126, 112, 71, 29, 11, 6]
+    /// SIMULATED: how many students the sample meal expects in all.
+    static let sampleCrowdExpected = 560
     static let sampleCredits = 120
 
     // Home · Mess closed (221:64833) is drawn at 6:30 AM and every open frame from 7:00 AM.

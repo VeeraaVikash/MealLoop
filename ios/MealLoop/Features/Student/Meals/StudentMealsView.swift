@@ -68,13 +68,20 @@ struct StudentMealsView: View {
                             Task { await model.select(day: day) }
                         }
                     }
-                    MealsSegments(selected: model.selectedSlot,
-                                  serving: model.isToday ? model.servingMeal?.slot : nil) { slot in
-                        Task { await model.select(slot: slot) }
+                    // The native segmented picker (owner decision, 16 Nov 2026).
+                    Picker(MealsCopy.mealPickerLabel, selection: Binding(get: { model.selectedSlot },
+                                                                         set: { slot in Task { await model.select(slot: slot) } })) {
+                        ForEach(StudentMealsViewModel.slots, id: \.self) { slot in
+                            Text(MLFormat.mealSlot(slot)).tag(slot)
+                        }
                     }
+                    .pickerStyle(.segmented)
                     if model.isToday {
+                        // Meals is one static page (owner decision, 16 Nov 2026): the banner informs, it opens nothing.
                         MealsServingBanner(selected: model.selectedSlot, serving: model.servingMeal, next: model.nextMeal,
-                                           timeZone: model.timeZone) { showsMealDetails = true }
+                                           timeZone: model.timeZone, showsDetails: false) {}
+                            .allowsHitTesting(false)
+                            .accessibilityRemoveTraits(.isButton)
                     }
                     content
                 }
@@ -164,10 +171,10 @@ struct StudentMealsView: View {
             } else if showsBanners, let changed = menu.changedAt {
                 MealsNotice(symbol: "arrow.clockwise", text: MealsCopy.changedAt(StudentFormat.shortTime(changed, in: model.timeZone)))
             }
-            MealsMenuLayout(menu: menu,
-                            onDish: { dish in path.append(.dish(dish.id, day: menu.day, slot: menu.slot)) },
-                            onHighlightInfo: { showsHighlightInfo = true },
-                            onSpecial: { path.append(.pass) })
+            // Static: the dishes are shown, nothing opens another screen.
+            MealsMenuLayout(menu: menu, onDish: { _ in }, onHighlightInfo: {}, onSpecial: {})
+                .allowsHitTesting(false)
+                .accessibilityRemoveTraits(.isButton)
         }
     }
 }
@@ -223,45 +230,6 @@ struct MealsWeekStrip: View {
     }
 }
 
-/// MealSegments4 2133:2323: four slots, the selected one a black pill. The meal being served carries a lime dot with
-/// an ink outline and says "serving now" to VoiceOver, so it never relies on colour alone.
-struct MealsSegments: View {
-    let selected: MealSlot
-    var serving: MealSlot?
-    let onSelect: (MealSlot) -> Void
-
-    var body: some View {
-        HStack(spacing: 2) {
-            ForEach(StudentMealsViewModel.slots, id: \.self) { slot in
-                let isSelected = slot == selected
-                Button { onSelect(slot) } label: {
-                    HStack(spacing: 4) {
-                        if slot == serving {
-                            Circle().fill(MLColor.lime).overlay(Circle().strokeBorder(MLColor.limeOutline, lineWidth: 1))
-                                .frame(width: 8, height: 8)
-                                .accessibilityHidden(true)
-                        }
-                        Text(MLFormat.mealSlot(slot))
-                            .font(isSelected ? StudentType.secondaryMedium : StudentType.secondary)
-                            .foregroundStyle(isSelected ? MLColor.onHero : MLColor.inkSecondary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.85)
-                    }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: MLSize.hit)
-                        .background { if isSelected { Capsule().fill(MLColor.ink) } }
-                        .contentShape(Capsule())
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-                .accessibilityValue(slot == serving ? MealsCopy.servingNow : "")
-            }
-        }
-        .padding(4)
-        .background(Capsule().fill(MLColor.track))
-    }
-}
-
 /// Under the segments, today only: "Serving now" for the meal being served, otherwise when the next meal starts.
 /// Both come from the same meal state Home reads, so the two screens never disagree.
 struct MealsServingBanner: View {
@@ -269,6 +237,7 @@ struct MealsServingBanner: View {
     let serving: Meal?
     let next: Meal?
     let timeZone: TimeZone
+    var showsDetails = true
     let onDetails: () -> Void
 
     var body: some View {
@@ -294,10 +263,12 @@ struct MealsServingBanner: View {
                         .foregroundStyle(MLColor.inkSecondary)
                 }
                 Spacer(minLength: MLSpacing.s8)
-                Text(MealsCopy.details)
-                    .font(StudentType.secondaryMedium)
-                    .foregroundStyle(MLColor.ink)
-                    .underline()
+                if showsDetails {
+                    Text(MealsCopy.details)
+                        .font(StudentType.secondaryMedium)
+                        .foregroundStyle(MLColor.ink)
+                        .underline()
+                }
             }
             .fixedSize(horizontal: false, vertical: true)
             .frame(minHeight: MLSize.hit)

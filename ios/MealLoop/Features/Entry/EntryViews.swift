@@ -13,7 +13,7 @@ struct EntryFlowView: View {
         @Bindable var router = router
         NavigationStack(path: $router.entryPath) {
             Group {
-                if preferences.hasSeenWalkthrough {
+                if preferences.hasSeenWalkthrough && !Self.opensOnWalkthrough {
                     AccountSignInView(model: AccountSignInViewModel(auth: environment.repositories.auth))
                 } else {
                     WalkthroughView(onFinish: finishWalkthrough)
@@ -26,6 +26,16 @@ struct EntryFlowView: View {
                 }
             }
         }
+    }
+
+    /// Debug and Review always open on the walkthrough, whose Get Started leads to the sample student's Home; there is
+    /// no student Register, so a student could not use Sign in. Release opens on Sign in once the walkthrough is seen.
+    private static var opensOnWalkthrough: Bool {
+        #if DEMO_DATA || REVIEW_DATA
+        true
+        #else
+        false
+        #endif
     }
 
     private func finishWalkthrough() {

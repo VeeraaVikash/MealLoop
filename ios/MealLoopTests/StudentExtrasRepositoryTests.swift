@@ -118,12 +118,13 @@ final class StudentExtrasRepositoryTests: XCTestCase {
         XCTAssertNil(extras.pass)
     }
 
-    func testThePassRowClosesWithItsMeal() async throws {
+    /// Owner decision, 16 Nov 2026: the demo pass is not closed by the clock; only using it ends it.
+    func testThePassRowStaysOpenAfterItsMealUntilUsed() async throws {
         let (demo, _) = make()
         _ = try await demo.startMeal(lunch, by: .supervisor)
         _ = try await demo.closeMeal(lunch, by: .supervisor)
         let extras = try await demo.homeExtras(for: aarav, mess: mess)
-        XCTAssertEqual(extras.pass?.status, .closed)
+        XCTAssertEqual(extras.pass?.status, .open)
     }
 
     func testExtrasAreNotServedOffline() async throws {

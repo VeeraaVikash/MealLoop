@@ -114,6 +114,17 @@ struct StudentCrowd: Codable, Sendable, Hashable {
     /// From the start of service to now (or to its end), one per interval. Empty before service starts.
     let intervals: [StudentCrowdInterval]
 
+    /// How full the mess is: the share of this meal's students (present plus still expected) already inside.
+    /// PROTOTYPE thresholds (owner asked for Quiet, Normal and Busy on 16 Nov 2026; the cut-offs are open, SR-17):
+    /// under 40% Quiet, under 75% Normal, otherwise Busy. Nil when either count is missing, never a guess.
+    enum Level: Sendable, Hashable { case quiet, normal, busy }
+
+    var level: Level? {
+        guard let present = enteredSoFar.value, let expected = stillExpected.value, present + expected > 0 else { return nil }
+        let share = Double(present) / Double(present + expected)
+        return share < 0.4 ? .quiet : (share < 0.75 ? .normal : .busy)
+    }
+
     /// The interval the clock is in, while the meal is being served.
     var currentInterval: Int? {
         guard mealState == .inService, !intervals.isEmpty else { return nil }

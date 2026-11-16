@@ -111,7 +111,12 @@ struct StudentCommunityView: View {
                 StudentGuideInfoButton(guide: .community) { showsInfo = true }
             } content: {
                 VStack(alignment: .leading, spacing: MLSpacing.s16) {
-                    CommunitySegments(showsFixed: $showsFixed)
+                    // The native segmented picker (owner decision, 16 Nov 2026).
+                    Picker(CommunityCopy.title, selection: $showsFixed) {
+                        Text(CommunityCopy.open).tag(false)
+                        Text(CommunityCopy.fixed).tag(true)
+                    }
+                    .pickerStyle(.segmented)
                     content
                 }
             }
@@ -174,46 +179,16 @@ struct StudentCommunityView: View {
                     MealsStateCard(title: CommunityCopy.noFixedTitle, detail: CommunityCopy.noFixedDetail)
                 } else {
                     MealsStateCard(title: CommunityCopy.noOpenTitle, detail: CommunityCopy.noOpenDetail)
-                    InkActionButton(title: CommunityCopy.reportProblem) { path.append(.report) }
                 }
             } else {
                 ForEach(issues) { issue in
                     CommunityIssueCard(issue: issue, now: model.now, sending: model.sending == issue.id,
                                        waiting: model.waiting.contains(issue.id),
-                                       onOpen: { path.append(.issue(issue.id)) },
                                        onMeToo: { Task { await model.meToo(issue.id) } },
                                        onUndo: { Task { await model.undo(issue.id) } })
                 }
             }
         }
-    }
-}
-
-/// Open | Fixed, a white pill on the track.
-struct CommunitySegments: View {
-    @Binding var showsFixed: Bool
-
-    var body: some View {
-        HStack(spacing: 2) {
-            segment(CommunityCopy.open, selected: !showsFixed) { showsFixed = false }
-            segment(CommunityCopy.fixed, selected: showsFixed) { showsFixed = true }
-        }
-        .padding(4)
-        .background(Capsule().fill(MLColor.track.opacity(0.6)))
-    }
-
-    private func segment(_ title: String, selected: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(title)
-                .font(selected ? StudentType.bodySemibold : StudentType.secondary)
-                .foregroundStyle(MLColor.ink)
-                .frame(maxWidth: .infinity)
-                .frame(height: 38)
-                .background { if selected { Capsule().fill(MLColor.surface) } }
-                .contentShape(Capsule())
-        }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 
@@ -239,13 +214,13 @@ struct CommunityIssueCard: View {
     let now: Date
     let sending: Bool
     let waiting: Bool
-    let onOpen: () -> Void
     let onMeToo: () -> Void
     let onUndo: () -> Void
 
+    /// One card per issue, with only Me too, then Backed and Undo (owner decision, 16 Nov 2026): it opens nothing.
     var body: some View {
         VStack(alignment: .leading, spacing: MLSpacing.s12) {
-            Button(action: onOpen) {
+            Group {
                 VStack(alignment: .leading, spacing: MLSpacing.s8) {
                     Text(issue.title)
                         .font(StudentType.bodySemibold)
@@ -262,9 +237,7 @@ struct CommunityIssueCard: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
             HStack(alignment: .center) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text("\(issue.backers)")

@@ -48,6 +48,8 @@ struct StudentHomeScreen: View {
 /// Student Home: header, greeting, the top card and the rows under it (Home frames, page 07).
 struct StudentHomeView: View {
     @Environment(AppEnvironment.self) private var environment
+    /// Crowd opens in a sheet over Home.
+    @State private var showsCrowd = false
     @State private var model: StudentHomeViewModel
     @State private var path: [StudentHomeRoute] = []
     /// Meals whose How was … card was answered Good or skipped in this run. Skip for now records nothing.
@@ -55,7 +57,6 @@ struct StudentHomeView: View {
     @State private var skipping: MealID?
     /// The student's feedback, for the recheck row and sheet. Nil where there is no session (previews).
     @State private var records: StudentRecordsViewModel?
-    @State private var rechecking: StudentFeedbackItem?
     /// Meals the student has already rated, so Rate a dish says so instead of asking again.
     @State private var ratedMeals: Set<MealID> = []
     /// Thanks after Good, or Which dish after Not good, on the How was … card (2159:159, 2159:285).
@@ -133,14 +134,10 @@ struct StudentHomeView: View {
                              clock: environment.clock, onSOS: { path.append(.sos) },
                              onCommunity: selectTab.map { select in { select(.community) } },
                              onMyFeedback: { path.append(.myFeedback) })
-        .mlSheet(item: $rechecking, isWorking: records?.recheckSend == .sending) { item in
-            StudentRecheckSheet(item: item, isSending: records?.recheckSend == .sending, error: recheckError,
-                                onAnswer: { answer in
-                                    Task {
-                                        await records?.answerRecheck(item.id, answer)
-                                        if records?.recheckSend == .idle { rechecking = nil }
-                                    }
-                                }, onClose: { rechecking = nil })
+        .sheet(isPresented: $showsCrowd) {
+            if let session, let crowd = StudentCrowdViewModel(session: session, repositories: environment.repositories) {
+                StudentCrowdSheet(model: crowd) { showsCrowd = false }
+            }
         }
         .mlSheet(isPresented: Binding(get: { skipping != nil }, set: { if !$0 { skipping = nil } })) {
             if let meal = skipping, let card = model.card(id: meal) {
@@ -244,11 +241,6 @@ struct StudentHomeView: View {
         }
     }
 
-    private var recheckError: String? {
-        if case .failed(let message)? = records?.recheckSend { return message }
-        return nil
-    }
-
     /// Whether the meal Rate a dish is for was already rated; the existing rating stays the source of truth.
     private func loadRatedState() async {
         guard let session, let meal = model.recordedEntry?.meal,
@@ -319,7 +311,7 @@ struct StudentHomeView: View {
                             onShowEntry: { path.append(.entryQR) },
                             onOpenAnswer: { path.append(.answer($0)) },
                             onOpenPass: { path.append(.pass) },
-                            onOpenCrowd: { path.append(.crowd) },
+                            onOpenCrowd: { showsCrowd = true },
                             showsRating: { !skippedRatings.contains(Self.ratingKey($0.startsAt, $0.slot)) },
                             onRating: rating,
                             onOpenMyFeedback: { path.append(.myFeedback) },
@@ -329,9 +321,7 @@ struct StudentHomeView: View {
                             onUndoReminder: { reminders.undo($0) },
                             recordedEntry: model.recordedEntry,
                             hasRatedRecordedMeal: model.recordedEntry.map { ratedMeals.contains($0.meal.id) } ?? false,
-                            onRateDish: { meal in path.append(.rateMeal(day: meal.startsAt, slot: meal.slot)) },
-                            recheck: records?.rechecksDue.first,
-                            onRecheck: { rechecking = $0 })
+                            onRateDish: { meal in path.append(.rateMeal(day: meal.startsAt, slot: meal.slot)) })
         } else if model.isLoadingHome {
             StudentHomeLoading()
         } else {
@@ -425,9 +415,6 @@ struct StudentHomeBody: View {
     /// True when the student already rated that meal: the card then says so instead of asking again.
     var hasRatedRecordedMeal = false
     var onRateDish: (Meal) -> Void = { _ in }
-    /// A recheck waiting for the student's answer, and what opens its sheet.
-    var recheck: StudentFeedbackItem?
-    var onRecheck: (StudentFeedbackItem) -> Void = { _ in }
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var extras: StudentHomeExtras? { content.extras }
@@ -466,11 +453,6 @@ struct StudentHomeBody: View {
             }
             .buttonStyle(.plain)
             .accessibilityAddTraits(.isButton)
-            if let recheck, !isOffline {
-                Rectangle().fill(MLColor.border).frame(height: 1)
-                StudentRecheckRow(title: RecordsCopy.youSaidProblem(recheck.dish, recheck.problem),
-                                  detail: RecordsCopy.wasItBetter(recheck.dish)) { onRecheck(recheck) }
-            }
         }
     }
 }
@@ -635,8 +617,9 @@ struct StudentHomeHero: View {
         }
     }
 
-    /// The hero's actions. Show entry QR only for the meal being served; the answer buttons only while its cutoff is
-    /// open; Change answer only before the cutoff of an answered meal. The repository checks the cutoff again on save.
+    /// The hero's actions. The answer buttons only while its cutoff is open; Change answer only before the cutoff of an
+    /// answered meal; otherwise Show entry QR, which is never limited by time (owner decision, 16 Nov 2026). The
+    /// repository checks the cutoff again on save.
     @ViewBuilder
     private var actions: some View {
         let isServing = content.heroCase == .nowServing
@@ -658,10 +641,15 @@ struct StudentHomeHero: View {
                     .font(MLType.secondary)
                     .foregroundStyle(MLColor.onHeroSecondary)
             }
-        } else if content.heroCase == .question || content.heroCase == .answered {
-            Text(StudentCopy.answersClosed(StudentFormat.shortTime(card.cutoff, in: timeZone)))
-                .font(MLType.secondary)
-                .foregroundStyle(MLColor.onHeroSecondary)
+        } else {
+            VStack(alignment: .leading, spacing: MLSpacing.s12) {
+                StudentHeroButton(title: StudentCopy.showEntryQR, style: .cream, action: onShowEntry)
+                if content.heroCase == .question || content.heroCase == .answered {
+                    Text(StudentCopy.answersClosed(StudentFormat.shortTime(card.cutoff, in: timeZone)))
+                        .font(MLType.secondary)
+                        .foregroundStyle(MLColor.onHeroSecondary)
+                }
+            }
         }
     }
 

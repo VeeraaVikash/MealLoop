@@ -110,7 +110,6 @@ struct StudentAnswerView: View {
         case .saved(let answer):
             AnswerStatusCard(title: answer == .attending ? StudentCopy.youreIn(slot) : StudentCopy.youreSkipping(slot),
                              detail: savedDetail(card, answer: answer, cutoff: cutoff))
-            AnswerInkButton(title: StudentCopy.showEntryQR, action: onShowEntry)
             AnswerOutlineButton(title: StudentCopy.changeAnswer, height: StudentMetric.answerSecondary) { isChanging = true }
         case .notSure:
             AnswerStatusCard(title: StudentCopy.markedNotSure, detail: StudentCopy.decideByTime(cutoff))
@@ -131,7 +130,6 @@ struct StudentAnswerView: View {
                 }
             }
             .accessibilityHidden(true)
-            AnswerInkButton(title: StudentCopy.showEntryQR, height: 60, action: onShowEntry)
         }
     }
 

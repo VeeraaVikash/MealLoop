@@ -223,9 +223,14 @@ struct StudentCrowdRow: View {
     let timeZone: TimeZone
 
     private var detail: String? {
-        guard let crowd else { return nil }
-        let expected = crowd.stillExpected.value.map { StudentCopy.stillExpected($0) } ?? StudentCopy.expectedUnavailable
-        return "\(expected) · \(MLFormat.mealSlot(crowd.meal.slot))"
+        guard let present = crowd?.enteredSoFar.value else { return nil }
+        return MealsCopy.presentLine(present, expected: nil)
+    }
+
+    /// Quiet, Normal or Busy; the count itself when the level can't be worked out.
+    private var headline: String {
+        if let level = crowd?.level { return MealsCopy.level(level) }
+        return crowd?.enteredSoFar.value.map(StudentCopy.enteredSoFar) ?? StudentCopy.crowdUnavailable
     }
 
     var body: some View {
@@ -234,7 +239,7 @@ struct StudentCrowdRow: View {
                 Text(StudentCopy.crowdAt(mess))
                     .font(StudentType.footnote)
                     .foregroundStyle(MLColor.inkSecondary)
-                Text(crowd?.enteredSoFar.value.map(StudentCopy.enteredSoFar) ?? StudentCopy.crowdUnavailable)
+                Text(headline)
                     .font(StudentType.section)
                     .foregroundStyle(crowd?.enteredSoFar.value == nil ? MLColor.inkSecondary : MLColor.ink)
                     .lineLimit(1)
@@ -254,8 +259,7 @@ struct StudentCrowdRow: View {
         .padding(.vertical, MLSpacing.s16)
         .background(RoundedRectangle(cornerRadius: StudentMetric.rowRadius, style: .continuous).strokeBorder(MLColor.border, lineWidth: 1.5))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel([StudentCopy.crowdAt(mess), crowd?.enteredSoFar.value.map(StudentCopy.enteredSoFar) ?? StudentCopy.crowdUnavailable,
-                             detail].compactMap { $0 }.joined(separator: ", "))
+        .accessibilityLabel([StudentCopy.crowdAt(mess), headline, detail].compactMap { $0 }.joined(separator: ", "))
     }
 
     /// The last seven intervals, scaled to the busiest of them.
