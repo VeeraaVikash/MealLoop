@@ -100,7 +100,7 @@ struct StudentSOSView: View {
                             .padding(.horizontal, MLSpacing.margin)
                             .padding(.bottom, MLSpacing.s24)
                     }
-                    .navigationTitle(category.title)
+                    .navigationTitle(category == .unwell ? StudentSOSCopy.unwellShort : StudentSOSCopy.otherShort)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {

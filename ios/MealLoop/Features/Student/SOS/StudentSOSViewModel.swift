@@ -312,6 +312,8 @@ enum StudentSOSCopy {
     static let problemOptions = ["Dirty plates or utensils", "Insects or pests", "Slippery floor", "Gas or burning smell",
                                  "Something else"]
     static let anythingElse = "Anything else? (optional)"
+    static let unwellShort = "Feeling unwell"
+    static let otherShort = "Other problem"
     static let whatsWrong = "What's wrong?"
     static let yourDetails = "Sent with your SOS"
     static let locationLabel = "Location"
